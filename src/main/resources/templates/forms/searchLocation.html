@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/w3.css" />
+<link rel="stylesheet" type="text/css" href="/css/datatables.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+<link rel="stylesheet" type="text/css" th:href="${theme}" />
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/gridstack.min.css" />
+<head>
+
+
+</head>
+<body>
+	<form class="w3-container">
+		<h2>Search Location</h2>
+		<table class="w3-table w3-hoverable">
+			<tr>
+				<td><label for="name">**Name</label></td>
+				<td><input class="w3-input w3-border" type="text" /></td>
+				<td><label for="name">Country</label></td>
+				<td><input class="w3-input w3-border" type="text" /></td>
+			</tr>
+			<tr>
+				<td><label for="name">**Code</label></td>
+				<td><input class="w3-input w3-border" type="text" /></td>
+				<td><label for="name">Status</label></td>
+				<td><select id="StatusLov" class="w3-input w3-border">
+						<option value="">--Select--</option>
+						<option value="Active">Active</option>
+						<option value="Inactive">Inactive</option>
+				</select></td>
+			</tr>
+		</table>
+	</form>
+	<div class="w3-center w3-marging-top">
+		<a href="" class="w3-btn w3-teal">Search</a>
+	</div>
+
+	<div class="w3-row w3-container">
+		<div class="w3-col l12">
+		<a href="/createlocation" class="w3-btn w3-teal">Create</a>
+		<a href="" class="w3-btn w3-teal">Edit</a>
+		<a href="" class="w3-btn w3-teal">Export</a>
+		</div>
+	</div>
+
+	<div class="w3-container">
+		<h3>Search Results</h3>
+		<div class="w3-table w3-hoverable">
+			<table class="w3-table-all w3-card-4">
+				<thead>
+					<tr class="w3=grey">
+						<th>Name</th>
+						<th>Country</th>
+						<th>Code</th>
+						<th>Status</th>
+					</tr>
+
+					<tr>
+						<td>ABC</td>
+						<td>India</td>
+						<td>IND</td>
+						<td>Active</td>
+					</tr>
+
+				</thead>
+			</table>
+		</div>
+	</div>
+
+
+
+
+
+	<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/js/navBar.js"></script>
+	<script src="/js/gridstack.all.js"></script>
+
+
+	<!-- Charts JS-->
+
+	<script src="/js/Chart.min.js"></script>
+	<script src="/js/chartJsHelper.js"></script>
+
+	<!-- ------------------------------- -->
+
+	<script src="/js/datatables.min.js"></script>
+
+	<script type="text/javascript">
+		var grid = GridStack.init();
+	</script>
+</body>

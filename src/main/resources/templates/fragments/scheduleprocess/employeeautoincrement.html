@@ -1,0 +1,116 @@
+<div th:fragment="employeeautoincrement">
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var openmode = /*[[${mode}]]*/;
+		/*]]>*/
+	</script>
+
+    <div class="w3-main w3-margin-top">
+	<div style="position: relative;">
+		<div class="w3-container w3-margin-bottom">
+			<h4 style="font-weight: 400; display:inline-block;">
+				<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+					style="cursor: pointer;"> Employee Auto Increment
+			</h4>
+		</div>
+	</div>
+	<div class="w3-container"><hr class="hrline" style="margin-top: -10px; margin-bottom: -10px;"></div>
+	
+		<div class="w3-bar">
+			<div class="w3-bar-item" style="margin-top: 5px;">
+				<label>Nature of Employment</label><span style="color: red"> *</span>
+				<select id="ASGN_NATEMPL" class="w3-select w3-border w3-margin-bottom">
+					<option value="0" disabled selected></option>
+					<option value="56">IDA</option>
+					<option value="58">CDA</option>
+				</select>
+			</div>
+			<div class="w3-bar-item" style="margin-top: 5px;">
+				<label>Business Unit</label><span style="color: red"> *</span>
+				<select id="BULOV" class="w3-select w3-border w3-margin-bottom">
+					<option value="0" disabled selected></option>
+					<option th:each="bures : ${bures}"
+							th:value="${bures.getBusinessunitid()}"
+							th:text="${bures.getName()}" />
+				</select>
+			</div>
+			<div class="w3-bar-item" style="margin-top: 5px;">
+				<label>Month</label><span style="color: red"> *</span>
+				<select id="MONTHLOV" class="w3-select w3-border w3-margin-bottom">
+					<option value="" disabled selected></option>
+					<option value="January">January</option>
+					<option value="February">February</option>
+					<option value="March">March</option>
+					<option value="April">April</option>
+					<option value="May">May</option>
+					<option value="June">June</option>
+					<option value="July">July</option>
+					<option value="August">August</option>
+					<option value="September">September</option>
+					<option value="October">October</option>
+					<option value="November">November</option>
+					<option value="December">December</option>
+				</select>
+			</div>
+
+			<div class="w3-bar-item" style="margin-top: 5px;">
+				<label>Year</label><span style="color: red"> *</span>
+				<select id="YEARLOV" class="w3-select w3-border w3-margin-bottom">
+					<option value="0" disabled selected></option>
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+					<option value="2023">2023</option>
+					<option value="2024">2024</option>
+					<option value="2025">2025</option>
+					<option value="2026">2026</option>
+					<option value="2027">2027</option>
+					<option value="2028">2028</option>
+					<option value="2029">2029</option>
+					<option value="2030">2030</option>
+				</select>
+			</div>
+			<div class="w3-bar-item" style="padding: 16px 0px 0px 2px">
+				<div style="display:inline-block; margin-inline: 0px;" type="button" id="INCR_SEARCH_BTN"  onClick="searchempl();" class="w3-btn w3-theme w3-round-large w3-margin-top"><i class="fas fa-search"></i></div>
+			</div>
+			<div class="w3-bar-item w3-right" style="padding: 16px 0px 0px 2px">
+				<div style="display:none;" type="button" id="INCR_SUBMIT_BTN" onClick="saveautoincr();" class="w3-btn w3-blue w3-round-large w3-margin-top"><i class="fas fa-forward"></i> Next</div>
+			</div>
+		</div>
+
+		<form id="autoincrform">
+		<div id="resultDiv" class="w3-container w3-row w3-margin-top" style="display:none;" >
+			<table id="INCR_RES" class="w3-striped w3-table" >
+				<thead>
+				<th><input onclick="checkuncheckAll()" id="checkuncheckbtn" type="checkbox" class="w3-check"></th>
+					<th>Person Number</th>
+					<th>Name</th>
+					<th>Department</th>
+					<th>Designation</th>
+					<th>Last Increment Date</th>
+					<th>Current Grade</th>
+					<th>Current ROP</th>
+				</thead>
+			</table>
+		</div>
+		</form>
+	
+	
+		<div id="noData" class="w3-container w3-responsive" style="display: none">
+			<div>
+				<p>No record found...</p>
+			</div>
+		</div>
+
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+
+		<div id="AUTO_INCR_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:11%; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+			<!--<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>-->
+		</div>
+
+<script src="/js/scheduleprocess/employeeautoincrement.js"></script>
+	
+</div>
+</div>

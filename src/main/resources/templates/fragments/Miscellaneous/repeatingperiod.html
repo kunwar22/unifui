@@ -1,0 +1,168 @@
+<div th:fragment="createrepeatingperiod">
+    <form  method="post" id="frmRptprd" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+        
+        <div class="w3-row  w3-padding-large w3-margin-top">
+   
+            <h4 class="w3-text-theme" style="font-weight: bold">Period Definitions</h4>
+                     <hr class="hrline">
+            
+         <input th:value="${repeating.getActionid()}" id="txtRPid" name="actionid" type="text" hidden />
+		 <input th:value="${repeating.getRepeatingperiodid()}" id="txtRPActionid" name="repeatingperiodid" type="text" hidden />  
+           
+
+            <div class="w3-container">
+               
+                <div id="Eligibility" class="w3-container city" >
+
+                    <div class=w3-half>
+                        <div class="w3-container">
+                        
+                        
+                            <p>
+                                <label>Name</label><span style="color:red"> *</span>
+                                <input th:value="${repeating.getName()}" class="w3-input w3-border" name="name"
+                                       id="CR_RPT_NAME" type="text">
+                            <span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("name") != null}' th:text='${bindingResult.getFieldError("name").getDefaultMessage()}'></span>
+                            </p>
+                             <p>
+                                <label>Description</label><span style="color:red"> *</span>
+                                <input th:value="${repeating.getDescription()}"  class="w3-input w3-border" name="description"
+                                       id="CR_PRD_DSCR" type="text">
+                                <span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("description") != null}' th:text='${bindingResult.getFieldError("description").getDefaultMessage()}'></span>       
+                            </p>
+                             
+                          
+              
+				
+                   <p  th:if="${repeating.getPeriodtype()==0}">
+								<label>Period Type</label> <span style="color:red"> *</span>
+								<select id="CR_PRD_TYPE"
+									class="w3-select w3-border" name="periodtype">
+									<option value="0"  selected></option>
+									<option th:each="PT : ${loadPeriodType}"							
+										th:value="${PT.getId()}"
+										th:text="${PT.getDescription()}"></option>
+								</select>
+								<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("periodtype") != null}' th:text='${bindingResult.getFieldError("periodtype").getDefaultMessage()}'></span>
+						</p>
+						
+							<p  th:if="${repeating.getPeriodtype()!=0}">
+								<label>Period Type</label> <span style="color:red"> *</span>
+								<select id="CR_PRD_TYPE"
+									class="w3-select w3-border" name="periodtype">
+									<option th:each="PT : ${loadPeriodType}"
+										th:selected="${PT.getId() eq repeating.getPeriodtype()}"
+										th:value="${PT.getId()}"
+										th:text="${PT.getDescription()}"></option>
+								</select>
+								<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("periodtype") != null}' th:text='${bindingResult.getFieldError("periodtype").getDefaultMessage()}'></span>
+							</p>
+							<p>
+                      <label>Period Start Date</label> <span style="color:red"> *</span>
+                      <input  class="w3-input w3-border" 
+                     	 th:value="${repeating.getPreviewperiodstartdate()}"
+                             name="previewperiodstartdate" id="CR_RPT_EFFDT" type="date" data-date=""
+                             data-date-format="YYYY MM DD" tabindex="8" max="9999-12-31"/>
+                            <span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("previewperiodstartdate") != null}' th:text='${bindingResult.getFieldError("previewperiodstartdate").getDefaultMessage()}'></span>
+                   </p>
+ 						
+                        </div>
+                    </div>
+                    
+                    <div class=w3-half>
+                        <div class="w3-container">
+                        
+                       
+                        <p>
+                                <label>Code</label><span style="color:red"> *</span>
+                                <input th:value="${repeating.getCode()}" class="w3-input w3-border" name="code"
+                                       id="" type="text">
+                                       <span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("code") != null}' th:text='${bindingResult.getFieldError("code").getDefaultMessage()}'></span>
+                            </p>
+                           
+                    <p>
+					<label>Status</label> <span style="color:red"> *</span><select id="REP_STATUS" style="height:43px"
+						class="w3-select w3-border" name="status" tabindex="5">
+						<option th:each="status : ${status}" th:selected="${status == 'Active'}" th:value="${status}"
+							th:text="${status}">
+					</select>
+
+					</p>
+					
+                         
+				           
+							 <p  th:if="${repeating.getPeriodlength()==0}">
+					<label>Period Length</label> <span style="color:red"> *</span>
+					<select id="CR_PRD_LNTH"
+						class="w3-select w3-border" name="periodlength">
+						<option value="0"  selected></option>
+						<option th:each="Pl : ${loadPeriodLength}"							
+							th:value="${Pl.getId()}"
+							th:text="${Pl.getDescription()}"></option>
+					</select>
+					<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("periodlength") != null}' th:text='${bindingResult.getFieldError("periodlength").getDefaultMessage()}'></span>
+			</p>
+			
+				<p  th:if="${repeating.getPeriodlength()!=0}">
+					<label>Period Length</label> <span style="color:red"> *</span>
+					<select id="CR_PRD_LNTH"
+						class="w3-select w3-border" name="periodlength">
+						<option th:each="Pl : ${loadPeriodLength}"
+							th:selected="${Pl.getId() eq repeating.getPeriodlength()}"
+							th:value="${Pl.getId()}"
+							th:text="${Pl.getDescription()}"></option>
+					</select>
+					<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("periodlength") != null}' th:text='${bindingResult.getFieldError("periodlength").getDefaultMessage()}'></span>
+				</p>
+				 <p>
+                            <label>Period End Date</label> <span style="color:red"> *</span>
+                            <input  class="w3-input w3-border" th:value="${repeating.getPreviewperiodenddate()}"
+                                   name="previewperiodenddate" id="CR_RPT_EFFENDDT" type="date" data-date=""
+                                   data-date-format="YYYY MM DD" tabindex="1" max="9999-12-31" />
+                                   <span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("previewperiodenddate") != null}' th:text='${bindingResult.getFieldError("previewperiodenddate").getDefaultMessage()}'></span>
+                         </p>
+                            
+                            
+                        </div>
+                     </div>
+                    
+                    
+
+                </div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+<button type="button" rm="/repeatingperiod/manageRepeatingperiod" id="CANCEL_BTN_REP" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; ">Cancel</button>
+<button type="button" onclick="ajaxPost()" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; ">Submit</button>
+
+        </div>
+        
+        <div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="/repeatingperiod/manageRepeatingperiod">OK</a>
+
+				</div>
+
+			</div>
+		</div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var message = /*[[${response}]]*/;
+    console.log(message);   
+/*]]>*/
+</script>
+		
+        <script src="/js/create/repeatingPeriod.js"></script>
+        
+    </form>
+</div>
+
+
+
+
+
+

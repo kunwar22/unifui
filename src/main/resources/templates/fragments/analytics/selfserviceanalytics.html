@@ -1,0 +1,45 @@
+<div th:fragment="selfserviceanalytics">
+	       
+	<div class="w3-row-padding" >
+		<div class="w3-col w3-margin-top">
+			<div id="chart_div" style="height:500px"></div>
+		</div>
+		<!-- <div class="w3-col w3-margin-top" style="width:50%;">
+			 <div id="chart_div1" style="height:400px;"></div>
+		</div>
+		<div class="w3-col w3-margin-top" style="width:50%;">
+			 <div id="chart_div2" style="height:400px;"></div>
+		</div> -->
+	</div>
+	       	
+<script src="/js/analytics/selfserviceanalytics.js"></script>	   
+</div>
+
+<div th:fragment="managereimbursement">
+	<div class="w3-row-padding" >
+		<div class="w3-col w3-margin-top">
+			<div id="chart_div" style="height:500px;"></div>
+		</div>		
+	</div>
+	       	
+<script src="/js/analytics/managereimbursement.js"></script>	   
+</div>
+
+<div th:fragment="holidayanalytics">
+	<div class="w3-full w3-container w3-row" style="margin-top:10px">
+		<div id="holidayanalytics" class="w3-responsive">
+			<table class="w3-table-all" id="holidaytable" style="text-align: center;">
+        		<thead>
+        			<th style="text-align: left;">Location</th>		        		
+        			<th style="text-align: left;">Holiday Date</th>
+        			<th style="text-align: left;">Holiday Name</th>
+        			<th style="text-align: left;">Description</th>        				
+        		</thead>        		
+        	</table>
+        </div>
+       	<div id="noHolidayData" style="display:none">
+       		<p>No Results Found...</p>
+       	</div>	        	    	  
+	</div>
+<script src="/js/analytics/holidayanalytics.js"></script>   
+</div>               

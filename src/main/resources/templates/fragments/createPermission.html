@@ -1,0 +1,74 @@
+<div th:fragment="PermissionCreate">
+    <div class="w3-container" style="margin-top: 26px;">
+        <div class="w3-bar w3-theme-l5">
+            <h4 class="w3-bar-item w3-text-theme"
+                style="padding-top: 0px; padding-bottom: 0px;">
+                <i class="fas fa-tasks"></i>&nbsp;&nbsp;Create Permission
+            </h4>
+        </div>
+        <br>
+
+        <form method="post" id="frmPerm" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+            <div class="w3-row">
+                <div class="w3-padding w3-border">
+                    <div>
+                        <input onclick="addrow();" class="w3-btn w3-theme w3-right" type="button"
+                               id="add" value="Add row"/>
+
+                        <table id="PERMSN_TBL" class="display compact w3-table"
+                               style="width: 100%;">
+                            <thead>
+                            <th style="text-align: center;">Permission Name</th>
+                            <th>Created By</th>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td style="width: 50%">
+                                    <!--<div th:if="${entry.getPrimary()!='YES'}">-->
+                                    <input  class="w3-input w3-border"
+                                           th:name="'createpermission[0].permissionname'"
+                                           id="txtName" type="text"> <!--</div>-->
+
+                                </td>
+                                <td style="width: 50%">
+                                    <!--<div th:if="${entry.getPrimary()!='YES'}">-->
+                                    <input  class="w3-input w3-border"
+                                           th:name="'createpermission[0].createdby'"
+                                           id="txtCreated" type="text"> <!--</div>-->
+
+                                </td>
+                                <td style="width: 5%">
+                                    <input th:index="0" flg="permision" class="w3-btn w3-theme" id="delete"
+                                           type="button" value="x">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+				<br>
+
+
+				<div class="w3-bar">
+					<div id="PERM_CREATE"  onclick="sendPermissionData()" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" type="button"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Save</div>
+					<div id="PERM_CANCEL" class="w3-bar-item w3-btn w3-grey w3-round-large w3-right buttonbarmargin" type="button"><i class="fa fa-times" aria-hidden="true" style="color: red"></i>&nbsp;&nbsp;Cancel</div>
+				</div>
+
+
+                <div id="idSave" class="w3-modal">
+                    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:400px;">
+                        <div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+                            <label><b>
+                                Successfully Saved. Click OK to continue.</b>
+                            </label>
+                            <a id="btnOK" class="w3-button w3-green" rm="enterprisesetup/managePosition">OK</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="/js/permissionrole.js"></script>
+        </form>
+    </div>
+</div>
+

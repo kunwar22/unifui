@@ -1,0 +1,109 @@
+<div th:fragment="carperqReport">
+	<style>
+	#addCarPer {
+		z-index: 9997;
+	}
+	
+	#id02 {
+		z-index: 9998;
+		
+	}
+	
+	.buttons-excel {
+		background-color: blue;
+		color: white;
+	}
+	</style>
+	<script src="/js/cdn1/jquery-3.5.1.js"></script>
+	<script src="/js/cdn1/jquery.dataTables.min.js"></script>
+	<script src="/js/cdn1/dataTables.buttons.min.js"></script>
+	<script src="/js/cdn1/buttons.flash.min.js"></script>
+	<script src="/js/cdn1/jszip.min.js"></script>
+	<script src="/js/cdn1/pdfmake.min.js"></script>
+	<script src="/js/cdn1/vfs_fonts.js"></script>
+	<script src="/js/cdn1/buttons.html5.min.js"></script>
+	<script src="/js/cdn1/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    
+    <div id="REPORTS_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+	</div>
+	<div class="w3-main" id="myDiv" style="display:none;margin-top: 14px; margin-bottom: 16px;">
+		<div class="w3-row ">
+			<div class="w3-container">
+				<h4 style="font-weight: 400; display: inline-block;">
+					<img onclick="w3_open()" class="w3-hide-large"
+						src="/images/hide-grader-panel.png" style="cursor: pointer;">
+					<i class="fas fa-file-invoice-dollar"
+						style="color: rgb(255, 128, 0);"></i>&nbsp;Vehicle Report
+				</h4> </div>
+			<div>
+				<hr class="hrline"> </div>
+		</div>
+		
+		
+		<div class="w3-quarter w3-container">
+			<label>Select Financial Year<span style="color: red;">*</span></label>
+			<select class="w3-select w3-border" name="Financial_year" id="Financial_year">
+				<option value="" disabled selected></option>
+				<option th:each="finYear: ${calperiod}" th:value="${finYear.getYearid()}" th:text="${finYear.getYears()}">
+			</select>	
+			
+		</div>
+		<div class="w3-quarter w3-container">
+			<label>Business Unit<span style="color: red;">*</span></label>
+            <select class="w3-select w3-border" name="paygrp" id="paygrp" >
+                <option disabled selected></option>
+                  <option value="0">All</option>
+                 <option th:each="bu : ${busunit}" th:value="${bu.getBusinessunitid()}" th:text="${bu.getName()}"></option>
+            </select>			
+		</div>
+		<div class="w3-quarter w3-container" style=" margin-top: 16px; ">
+			<button id="carperqSearch" class="w3-button w3-theme w3-large">Search</button>
+		</div>
+		<br>
+		<br>
+
+		
+			
+			<!---------------------------------------------------------------------------------------------------------------------->
+			 <div >
+				<div class="w3-row">
+					<div id="btnexport_carpeq" class="w3-btn w3-green w3-round w3-left" style="margin-left:10px;display: none;margin-top: 8px;transform: scale(1);" onclick="export_carpeqTableToExcel('_carpeq_REPORT','Vehicle REPORT');"><i class="fa fa-save"></i>&nbsp;&nbsp;Export to Excel</div>
+					<div class="w3-row">
+						<div id="resultSec_carpeq" class="w3-responsive" style="display: none">
+							<table border="1" id="_carpeq_REPORT" class="display compact w3-table" style="width: 100%;">
+								 <thead>
+                                    <tr class="w3-theme-d3">
+                                        <th>Person Number</th>
+                                        <th>Person Name</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Perq. Amount</th>
+                                        <th>Recovery Amount</th>
+                                     </tr>
+                                    </thead>
+							</table>
+						</div>
+						<div id="noData_carpeq" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+						<div id="jsonLoaderPage_carpeq" class="w3-responsive" style="display: none">
+							<div>
+								<div class='w3-container' style='width: 100%; text-align: center'> <i class='fa fa-cog fa-spin' style='font-size: 30px;'></i>
+									<p style="color: black;">Loading......</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div></div>
+				</div>
+			</div> 
+			
+		
+	</div>
+	<script src="/js/tax_report/financetaxreport/managecarperqreport.js"></script>
+	<script src="/js/table2excel.js"></script>
+</div>

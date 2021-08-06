@@ -1,0 +1,447 @@
+<div th:fragment="travelExpenseClaim">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var resultfinal = /*[[${result}]]*/;
+        var optionsString = /*[[${optionsString}]]*/;
+        var flag = /*[[${flag}]]*/;
+        /*]]>*/
+    </script>
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+        <div style="position: relative;">
+            <div class="w3-container">
+                <h4 style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+                         style="cursor: pointer;">
+                    <i class="fas fa-plane-departure" style="color: greenyellow;"></i>
+                    &nbsp;Travel Expense Reimbursement
+                </h4> </div>
+        </div>
+        <div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+        <div class="w3-bar w3-theme-l3">
+            <h5 class="w3-bar-item">Claim Details</h5>
+            <div id="saveData" class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${travelExpense.getClaimid()==0} or ${travelExpense.getClaimid()==null}">
+                <div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"> <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search </div>
+                <div type="button" class="w3-btn w3-blue w3-round-large" id="addsave" onclick="saveDataFunc('saved','travelformSave',this);"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Claim </div>
+            	 <div type="button" class="w3-btn w3-green w3-round-large" id="submitupdate" onclick="saveDataFunc('submit','travelformSave',this);" value="Submit Claim for Approval"><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Save & Submit </div> 
+            </div>
+            <div id="updateSubmit" class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${travelExpense.getClaimid() != 0 and (mode == 'edit' or mode == 'blank') }">
+                <div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search </div>
+                <div type="button" class="w3-btn w3-blue w3-round-large" id="saveupdate" onclick="saveDataFunc('saved','travelformUpdate',this);"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update </div>
+                <div type="button" class="w3-btn w3-green w3-round-large" id="submitupdate" onclick="saveDataFunc('submit','travelformUpdate',this);" value="Submit Claim for Approval"><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit </div>
+            </div>
+            <div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${travelExpense.getClaimid() != 0 and mode == 'view'}">
+                <div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search </div>
+                <div type="button" class="w3-btn w3-grey w3-round-large" th:onclick="travelExpenseDeclearation();"> <i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Declaration </div>
+            </div>
+        </div>
+        <br>
+        <form method="post" id="Travel_Remb_Form" enctype="multipart/form-data" onsubmit="return false;">
+            <div class="w3-container">
+                <div style="display: none">
+                    <input id="txtclaimidid" type="text" name="claimid" th:value="${travelExpense.getClaimid()}" />
+                    <input id="txtpersonid" type="text" th:name="personid" th:value="${personInfo.getPersonid()}" />
+                    <input id="personnumber" type="text" th:name="personnumber" th:value="${personInfo.getPersonnumber()}" />
+                    <input id="txtRembId" type="text" th:name="reimburseid" value="17" />
+                    <input id="txtRembName" type="text" th:name="reimbursename" value="TravelExpense" />
+                    <input id="approvedamt" type="text" name="approvedamt" value="0.0" />
+                    <input id="statusid" type="hidden" name="statusid" /> </div>
+                <!--------------------------------------------create mode start here-------------------------------------------->
+                <div th:if="${travelExpense.getClaimid()==0}">
+                    <div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Travelling Out From:<span style="color: red">*</span></label>
+                            <input id="travelingdatefrom" th:name="travelingdatefrom" data-date="" class="w3-input w3-border" type="date" max="9999-12-31" th:value="${travelExpense.getTravelingdatefrom()}" data-date-format="DD MM YYYY" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingdatefrom")!=null}' th:text='${bindingResult.getFieldError("travelingdatefrom").getDefaultMessage()}'></span> </div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Start Time:<span style="color: red">*</span></label>
+                            <input id="travelingstarttime" th:name="travelingstarttime" class="w3-input w3-border" type="time" th:value="${travelExpense.getTravelingstarttime()}" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingstarttime")!=null}' th:text='${bindingResult.getFieldError("travelingstarttime").getDefaultMessage()}'></span> </div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Return date:<span style="color: red">*</span></label>
+                            <input id="travelingdateto" th:name="travelingdateto" disabled class="w3-input w3-border" type="date" max="9999-12-31" th:value="${travelExpense.getTravelingdateto()}" data-date-format="YYYY MM DD" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingdateto")!=null}' th:text='${bindingResult.getFieldError("travelingdateto").getDefaultMessage()}'></span> </div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Return Time:<span style="color: red">*</span></label>
+                            <input id="travelingendtime" th:name="travelingendtime" class="w3-input w3-border" type="time" th:value="${travelExpense.getTravelingendtime()}" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingendtime")!=null}' th:text='${bindingResult.getFieldError("travelingendtime").getDefaultMessage()}'></span> </div>
+                    </div>
+                    <br>
+                    
+                     <div class=w3-half>
+                      <div class="w3-container">
+                      <p>
+                       <label>Visiting Country First:<span style="color: red">*</span></label>
+                        <input id="firstcountry" th:name="firstcountry" class="w3-input w3-border" type="text" th:value="${travelExpense.getFirstcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcountry")!=null}' th:text='${bindingResult.getFieldError("firstcountry").getDefaultMessage()}'></span> 
+                      
+                      </p>
+                      <p>
+                        <label>From City:<span style="color: red">*</span></label>
+                        <input id="firstcity" th:name="firstcity" class="w3-input w3-border" type="text" th:value="${travelExpense.getFirstcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcity")!=null}' th:text='${bindingResult.getFieldError("firstcity").getDefaultMessage()}'></span>
+  
+                      </p>
+                      <p>
+                      <label>To city (Visiting City First)</label>
+                        <input id="secondCity" th:name="secondcity" class="w3-input w3-border" type="text" th:value="${travelExpense.getSecondcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> 
+                      
+                      </p>
+                      </div>
+                     </div>
+                     
+                      <div class=w3-half>
+                      <div class="w3-container">
+                      <p>
+                       <label>Visiting Country Second:</label>
+                        <input id="secondcountry" th:name="secondcountry" class="w3-input w3-border" type="text" th:value="${travelExpense.getSecondcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> 
+                      
+                      </p>
+                      <p>
+                       <label>To city (Visiting City Second)</label>
+                        <input id="secondCity" th:name="thirdcity" class="w3-input w3-border" type="text" th:value="${travelExpense.getSecondcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> 
+                      
+                      </p>
+                      <p>
+                       <label>Total Amount:&nbsp;</label>
+                        <input type="text" name="claimamount" th:value="${travelExpense.getClaimamount()}" id="totalamount" class="w3-input w3-border w3-round" readonly> 
+                      
+                      </p>
+                  
+                      
+                      </div>
+                     </div>
+                    
+                    
+                    
+                    <!-- 
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>Visiting Country First:<span style="color: red">*</span></label>
+                        <input id="firstcountry" th:name="firstcountry" class="w3-input w3-border" type="text" th:value="${travelExpense.getFirstcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcountry")!=null}' th:text='${bindingResult.getFieldError("firstcountry").getDefaultMessage()}'></span> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>Visiting Country Second:</label>
+                        <input id="secondcountry" th:name="secondcountry" class="w3-input w3-border" type="text" th:value="${travelExpense.getSecondcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>From City:<span style="color: red">*</span></label>
+                        <input id="firstcity" th:name="firstcity" class="w3-input w3-border" type="text" th:value="${travelExpense.getFirstcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcity")!=null}' th:text='${bindingResult.getFieldError("firstcity").getDefaultMessage()}'></span> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>To city (Visiting City First)</label>
+                        <input id="secondCity" th:name="secondcity" class="w3-input w3-border" type="text" th:value="${travelExpense.getSecondcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>To city (Visiting City second)</label>
+                        <input id="thirdcity" th:name="thirdcity" class="w3-input w3-border" type="text" th:value="${travelExpense.getThirdcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("thirdcity")!=null}' th:text='${bindingResult.getFieldError("thirdcity").getDefaultMessage()}'></span> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>Total Amount:&nbsp;</label>
+                        <input type="text" name="claimamount" th:value="${travelExpense.getClaimamount()}" id="totalamount" class="w3-input w3-border w3-round" readonly> </div>
+                    -->
+                    <div id="TravelDiv" class="w3-container myrowclass" style="margin-top: 0px;">
+                        <div class="w3-padding-large">
+                            <h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display:inline;">Traveling
+                                Details</h5>
+                            <input onclick="addrowmanager();" class="w3-right w3-btn w3-theme w3-round-large" type="button" id="addmgr" value="+"> </div>
+                        <div class="w3-padding " style="display: block">
+                            <div class="w3-padding-large w3-border " style="display: block">
+                                <table id="REIMBURSEMENT_TYPE_TBL" class="display compact w3-table" style="width: 100%;">
+                                    <thead>
+                                    <th style="text-align: center;">Expense Type <span style="color: red">*</span></th>
+                                    <th style="text-align: center">Date <span style="color: red">*</span></th>
+                                    <th style="text-align: center;">Expense Description</th>
+                                    <th style="text-align: center">Amount paid <span style="color: red">*</span></th>
+                                    <th style="text-align: center;">File</th>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="myrowclass" th:each="em, stats: ${travelExpense.getExpensedetails()}">
+                                        <td style="width: 30%">
+                                            <div th:if="${em.getId()==null}">
+                                                <select id="expensetypevalue0" th:name="'expensedetails['+${stats.index}+'].expencetype'" class="w3-select w3-border expensetypeClass">
+                                                    <option id="1" value="0" hidden selected></option>
+                                                    <option id="2" hidden></option>
+                                                    <option th:each="exp:${expenseType}" th:value="${exp.getDescription()}" th:text="${exp.getDescription()}" th:selected="${exp.getDescription() eq em.getExpencetype()}">
+                                                </select>
+                                            </div>
+                                            <div th:if="${em.getId()!=null}">
+                                                <select id="expensetypevalue0" th:name="'expensedetails['+${stats.index}+'].expencetype'" class="w3-select w3-border expensetypeClass">
+                                                    <option id="1" value="0" hidden selected></option>
+                                                    <option id="2" hidden></option>
+                                                    <option th:each="exp:${expenseType}" th:value="${exp.getDescription()}" th:text="${exp.getDescription()}" th:selected="${exp.getDescription() eq em.getExpencetype()}">
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td style="width: 30%;">
+                                            <input class="w3-input w3-border traveldate traveldateClass" th:name="'expensedetails['+${stats.index}+'].traveldate'" th:value="${em.getTraveldate()}" onclick="daterange()" type="date" data-date="" data-date-format="YYYY MM DD"> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("traveldate")!=null && (travelExpense.getExpensedetails().get(stats.index).getTraveldate()==""|| travelExpense.getExpensedetails().get(stats.index).getTraveldate()==null  || travelExpense.getExpensedetails().get(stats.index).getTraveldate()==0)}' th:text='${bindingResult.getFieldError("traveldate").getDefaultMessage()}'></span> </td>
+                                        <td style="width: 30%;">
+                                            <input class="w3-input w3-border expenseDescrClass" th:name="'expensedetails['+${stats.index}+'].expencedescription'" th:value="${em.getExpencedescription()}" type="text">
+                                        </td>
+                                        <td style="width: 30%;">
+                                            <input class="w3-input w3-border billamount amountpaidClass" onchange="billcount()" oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');" th:name="'expensedetails['+${stats.index}+'].amountpaid'" th:value="${em.getAmountpaid()}" type="text">
+                                        </td>
+                                        <td style="width: 10%">
+                                            <input type="file" id="files" name="file" class="file" /> </td>
+                                        <td style="width: 10%" th:if="${stats.index!=0}">
+                                            <input th:index="${stats.index}" flg="manager" class="w3-btn w3-theme" id="deletemgr" type="button" value="x">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+                <!--------------------------------------------create mode end here-------------------------------------------->
+                <!--------------------------------------------edit mode start here-------------------------------------------->
+                <div th:if="${travelExpense.getClaimid()!=0} and ${mode=='edit' or mode == 'blank'}">
+                    <div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Travelling Out From:<span style="color: red">*</span></label>
+                            <input id="travelingdatefrom" th:name="travelingdatefrom" class="w3-input w3-border" type="date" th:value="${travelExpense.getTravelingdatefrom()}" data-date-format="YYYY MM DD" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingdatefrom")!=null}' th:text='${bindingResult.getFieldError("travelingdatefrom").getDefaultMessage()}'></span> </div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Start Time:<span style="color: red">*</span></label>
+                            <input id="travelingstarttime" th:name="travelingstarttime" class="w3-input w3-border" type="time" th:value="${travelExpense.getTravelingstarttime()}" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingstarttime")!=null}' th:text='${bindingResult.getFieldError("travelingstarttime").getDefaultMessage()}'></span> </div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Return date:<span style="color: red">*</span></label>
+                            <input id="travelingdateto" th:name="travelingdateto" class="w3-input w3-border" type="date" th:value="${travelExpense.getTravelingdateto()}" data-date-format="YYYY MM DD" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingdateto")!=null}' th:text='${bindingResult.getFieldError("travelingdateto").getDefaultMessage()}'></span> </div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Return Time:<span style="color: red">*</span></label>
+                            <input id="travelingendtime" th:name="travelingendtime" class="w3-input w3-border" type="time" th:value="${travelExpense.getTravelingendtime()}" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingendtime")!=null}' th:text='${bindingResult.getFieldError("travelingendtime").getDefaultMessage()}'></span> </div>
+                    </div>
+                    <br>
+                    
+                    <div class=w3-half>
+                      <div class="w3-container">
+                      <p>
+                      <label>Visiting Country First:<span style="color: red">*</span></label>
+                        <input id="firstcountry" th:name="firstcountry" class="w3-input w3-border" type="text" th:value="${travelExpense.getFirstcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcountry")!=null}' th:text='${bindingResult.getFieldError("firstcountry").getDefaultMessage()}'></span>
+                      
+                      </p>
+                      <p>
+                       <label>From City:<span style="color: red">*</span></label>
+                        <input id="firstcity" th:name="firstcity" class="w3-input w3-border" type="text" th:value="${travelExpense.getFirstcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcity")!=null}' th:text='${bindingResult.getFieldError("firstcity").getDefaultMessage()}'></span> 
+  
+                      </p>
+                      <p>
+                        <label>To city (Visiting City First)</label>
+                        <input id="secondCity" th:name="secondcity" class="w3-input w3-border" type="text" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" th:value="${travelExpense.getSecondcity()}" />
+                      
+                      </p>
+                      </div>
+                     </div>
+                     
+                      <div class=w3-half>
+                      <div class="w3-container">
+                      <p>
+                       <label>Visiting Country Second:</label>
+                        <input id="secondcountry" th:name="secondcountry" class="w3-input w3-border" type="text" th:value="${travelExpense.getSecondcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" />
+                      
+                      </p>
+                      <p>
+                        <label>To city (Visiting City second)</label>
+                        <input id="thirdcity" th:name="thirdcity" class="w3-input w3-border" type="text" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" th:value="${travelExpense.getThirdcity()}" />
+                      
+                      </p>
+                      <p>
+                        <label>Total Amount:&nbsp;</label>
+                        <input type="text" name="claimamount" id="totalamount" class="w3-input w3-border w3-round" th:value="${travelExpense.getClaimamount()}" readonly> 
+                      
+                      </p>
+                  
+                      
+                      </div>
+                     </div>
+                    
+                    
+                   <!--  
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>Visiting Country First:<span style="color: red">*</span></label>
+                        <input id="firstcountry" th:name="firstcountry" class="w3-input w3-border" type="text" th:value="${travelExpense.getFirstcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcountry")!=null}' th:text='${bindingResult.getFieldError("firstcountry").getDefaultMessage()}'></span> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>Visiting Country Second:</label>
+                        <input id="secondcountry" th:name="secondcountry" class="w3-input w3-border" type="text" th:value="${travelExpense.getSecondcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>From City:<span style="color: red">*</span></label>
+                        <input id="firstcity" th:name="firstcity" class="w3-input w3-border" type="text" th:value="${travelExpense.getFirstcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcity")!=null}' th:text='${bindingResult.getFieldError("firstcity").getDefaultMessage()}'></span> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>To city (Visiting City First)</label>
+                        <input id="secondCity" th:name="secondcity" class="w3-input w3-border" type="text" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" th:value="${travelExpense.getSecondcity()}" /> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>To city (Visiting City second)</label>
+                        <input id="thirdcity" th:name="thirdcity" class="w3-input w3-border" type="text" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" th:value="${travelExpense.getThirdcity()}" /> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>Total Amount:&nbsp;</label>
+                        <input type="text" name="claimamount" id="totalamount" class="w3-input w3-border w3-round" th:value="${travelExpense.getClaimamount()}" readonly> </div>
+                     -->
+                    
+                    
+                    
+                    <div class="w3-padding-large">
+                        <h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display:inline;">Traveling
+                            Details</h5>
+                        <input onclick="addrowmanager();" class="w3-right w3-btn w3-theme w3-round-large" type="button" id="addmgr" value="+"> </div>
+                    <div class="w3-padding ">
+                        <div class="w3-padding-large w3-border ">
+                            <table id="REIMBURSEMENT_TYPE_TBL" class="display compact w3-table" style="width: 100%;">
+                                <thead>
+                                <th style="text-align: center;">Expense Type <span style="color: red">*</span></th>
+                                <th style="text-align: center">Date <span style="color: red">*</span></th>
+                                <th style="text-align: center;">Expense Description</th>
+                                <th style="text-align: center">Amount paid</th>
+                                <th style="text-align: center;">File</th>
+                                <th></th>
+                                </thead>
+                                <tbody>
+                                <tr class="myrowclass" th:each="em, stats: ${travelExpense.getExpensedetails()}">
+                                    <td style="width: 30%">
+                                        <div th:if="${em.getId()==null}">
+                                            <select id="expensetypevalue0" th:name="'expensedetails['+${stats.index}+'].expencetype'" class="w3-select w3-border expensetypeClass">
+                                                <option id="1" value="0" hidden selected></option>
+                                                <option id="2" hidden></option>
+                                                <option th:each="exp:${expenseType}" th:value="${exp.getDescription()}" th:text="${exp.getDescription()}" th:selected="${exp.getDescription() eq em.getExpencetype()}">
+                                            </select>
+                                        </div>
+                                        <div th:if="${em.getId()!=null}">
+                                            <select id="expensetypevalue0" th:name="'expensedetails['+${stats.index}+'].expencetype'" class="w3-select w3-border expensetypeClass">
+                                                <option id="1" value="0" hidden selected></option>
+                                                <option id="2" hidden></option>
+                                                <option th:each="exp:${expenseType}" th:value="${exp.getDescription()}" th:text="${exp.getDescription()}" th:selected="${exp.getDescription() eq em.getExpencetype()}">
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td style="width: 15%;">
+                                        <input class="w3-input w3-border traveldate traveldateClass" th:name="'expensedetails['+${stats.index}+'].traveldate'" th:value="${em.getTraveldate()}" type="date" data-date="" data-date-format="YYYY MM DD">
+                                    </td>
+                                    <td style="width: 15%;">
+                                        <input class="w3-input w3-border expenseDescrClass" th:name="'expensedetails['+${stats.index}+'].expencedescription'" th:value="${em.getExpencedescription()}" type="text"> </td>
+                                    <td style="width: 15%;">
+                                        <input class="w3-input w3-border billamount amountpaidClass" onchange="billcount()" oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');" th:name="'expensedetails['+${stats.index}+'].amountpaid'" th:value="${em.getAmountpaid()}" type="text">
+                                    </td>
+                                    <td style="width: 20%">
+                                        <a class="w3-right" th:if="${(em.getAttachments() !=null) and (em.getAttachments() !='')}" th:href="'/getContent?location='+${em.getAttachments()}" target="_blank" download> <i class="fa fa-download" aria-hidden="true"></i></a>
+                                        <input th:id="'attachments['+${stats.index}+']'" th:name="'expensedetails['+${stats.index}+'].attachments'" type="hidden" th:value="${em.getAttachments()}" />
+                                        <input type="file" name="file" class="file w3-input w3-round" /> </td>
+                                    <td th:if="${stats.index!=0}" style="width: 10%">
+                                        <input th:index="${stats.index}" flg="manager" class="w3-btn w3-theme" id="deletemgr" type="button" value="x"> </td>
+                                    <td>
+                                        <input th:id="'id['+${stats.index}+']'" th:value="${em.getId()}" th:name="'expensedetails['+${stats.index}+'].id'" class="w3-input w3-border" type="hidden" /> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--------------------------------------------edit mode end here-------------------------------------------->
+                <!--------------------------------------------view mode start here-------------------------------------------->
+                <div th:if="${travelExpense.getClaimid()!=0} and ${mode=='view'}">
+                    <div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Travelling Out From:<span style="color: red">*</span></label>
+                            <input id="travelingdatefrom" th:name="travelingdatefrom" disabled class="w3-input w3-border" type="date" th:value="${travelExpense.getTravelingdatefrom()}" data-date-format="YYYY MM DD" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingdatefrom")!=null}' th:text='${bindingResult.getFieldError("travelingdatefrom").getDefaultMessage()}'></span> </div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Start Time:<span style="color: red">*</span></label>
+                            <input id="travelingstarttime" th:name="travelingstarttime" class="w3-input w3-border" type="time" disabled th:value="${travelExpense.getTravelingstarttime()}" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingstarttime")!=null}' th:text='${bindingResult.getFieldError("travelingstarttime").getDefaultMessage()}'></span> </div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Return date:<span style="color: red">*</span></label>
+                            <input id="travelingdateto" th:name="travelingdateto" class="w3-input w3-border" type="date" disabled th:value="${travelExpense.getTravelingdateto()}" data-date-format="YYYY MM DD" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingdateto")!=null}' th:text='${bindingResult.getFieldError("travelingdateto").getDefaultMessage()}'></span> </div>
+                        <div class="w3-container w3-quarter" style="margin-bottom: 20px;">
+                            <label>Return Time:<span style="color: red">*</span></label>
+                            <input id="travelingendtime" th:name="travelingendtime" class="w3-input w3-border" type="time" disabled th:value="${travelExpense.getTravelingendtime()}" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("travelingendtime")!=null}' th:text='${bindingResult.getFieldError("travelingendtime").getDefaultMessage()}'></span> </div>
+                    </div>
+                    <br>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>Visiting Country First:<span style="color: red">*</span></label>
+                        <input id="firstcountry" th:name="firstcountry" class="w3-input w3-border" type="text" disabled th:value="${travelExpense.getFirstcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcountry")!=null}' th:text='${bindingResult.getFieldError("firstcountry").getDefaultMessage()}'></span> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>Visiting Country Second:</label>
+                        <input id="secondcountry" th:name="secondcountry" class="w3-input w3-border" type="text" disabled th:value="${travelExpense.getSecondcountry()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>From City:<span style="color: red">*</span></label>
+                        <input id="firstcity" th:name="firstcity" disabled class="w3-input w3-border" type="text" th:value="${travelExpense.getFirstcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("firstcity")!=null}' th:text='${bindingResult.getFieldError("firstcity").getDefaultMessage()}'></span> </div>
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>To city (Visiting City second)</label>
+                        <input id="thirdcity" th:name="thirdcity" disabled class="w3-input w3-border" type="text" th:value="${travelExpense.getThirdcity()}" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" /> <span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("thirdcity")!=null}' th:text='${bindingResult.getFieldError("thirdcity").getDefaultMessage()}'></span> </div>
+                   <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>To city (Visiting City First)</label>
+                        <input id="secondCity" th:name="secondcity" disabled class="w3-input w3-border" type="text" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" th:value="${travelExpense.getSecondcity()}" /> </div>
+                   
+                    <div class="w3-container w3-half" style="margin-bottom: 20px;">
+                        <label>Total Amount:&nbsp;</label>
+                        <input type="text" name="claimamount" id="totalamount" class="w3-input w3-border w3-round" th:value="${travelExpense.getClaimamount()}" disabled> </div>
+                    <div class="w3-container"> </div>
+                    <div class="w3-padding-large">
+                        <h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display:inline;">Traveling
+                            Details</h5> </div>
+                    <div class="w3-padding ">
+                        <div class="w3-padding-large w3-border ">
+                            <table id="REIMBURSEMENT_TYPE_TBL" class="display compact w3-table" style="width: 100%;">
+                                <thead>
+                                <th style="text-align: center;">Expense Type</th>
+                                <th style="text-align: center">Date</th>
+                                <th style="text-align: center;">Expense Description</th>
+                                <th style="text-align: center">Amount paid</th>
+                                <th style="text-align: center;">File</th>
+                                </thead>
+                                <tbody>
+                                <tr class="myrowclass" th:each="em, stats: ${travelExpense.getExpensedetails()}">
+                                    <td style="width: 30%">
+                                        <div th:if="${em.getId()==null}">
+                                            <select id="expensetypevalue0" th:name="'expensedetails['+${stats.index}+'].expencetype'" class="w3-select w3-border expensetypeClass" disabled>
+                                                <option id="1" value="0" hidden selected></option>
+                                                <option id="2" hidden></option>
+                                                <option th:each="exp:${expenseType}" th:value="${exp.getDescription()}" th:text="${exp.getDescription()}" th:selected="${exp.getDescription() eq em.getExpencetype()}">
+                                            </select>
+                                        </div>
+                                        <div th:if="${em.getId()!=null}">
+                                            <select id="expensetypevalue0" th:name="'expensedetails['+${stats.index}+'].expencetype'" class="w3-select w3-border expensetypeClass" disabled>
+                                                <option id="1" value="0" hidden selected></option>
+                                                <option id="2" hidden></option>
+                                                <option th:each="exp:${expenseType}" th:value="${exp.getDescription()}" th:text="${exp.getDescription()}" th:selected="${exp.getDescription() eq em.getExpencetype()}">
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td style="width: 15%;">
+                                        <input class="w3-input w3-border traveldate traveldateClass" th:name="'expensedetails['+${stats.index}+'].traveldate'" th:value="${em.getTraveldate()}" type="date" disabled data-date="" data-date-format="YYYY MM DD"> </td>
+                                    <td style="width: 15%;">
+                                        <input class="w3-input w3-border expenseDescrClass" disabled th:name="'expensedetails['+${stats.index}+'].expencedescription'" th:value="${em.getExpencedescription()}" type="text"> </td>
+                                    <td style="width: 15%;">
+                                        <input class="w3-input w3-border billamount amountpaidClass" onchange="billcount()" disabled th:name="'expensedetails['+${stats.index}+'].amountpaid'" th:value="${em.getAmountpaid()}" type="text">
+                                    </td>
+                                    <td style="width: 8%"> <a class="w3-right" th:if="${(em.getAttachments() !=null) and (em.getAttachments() !='')}" th:href="'/getContent?location='+${em.getAttachments()}" target="_blank" download>Download</a>
+                                        <input id="attachments" th:name="'expensedetails['+${stats.index}+'].attachments'" type="hidden" th:value="${em.getAttachments()}" />
+                                    </td>
+                                    <td style="width: 10%">
+                                        <input id="id" th:value="${em.getId()}" th:name="'expensedetails['+${stats.index}+'].id'" class="w3-input w3-border" type="hidden" disabled/> </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <h5> Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history"
+                                                                    th:id="${travelExpense.getClaimid()}"
+                                                                    aria-hidden="true"
+                                                                    th:onclick='getapprovalhistory(17,this.id);'></i>
+                    </h5>
+                    <section class="container" th:if="${mode == 'view'}">
+                        <div class="container__sources">
+                            <div style="box-shadow: none;background: none;" th:each="aprdata ,stats: ${(approverdata)}">
+                                <div class="sources&#45;&#45;cms" style="width: 160px"> Approval
+                                    <label th:text='${aprdata.getApprovallevel()}'></label>
+                                    </p>
+                                    <label th:text='${aprdata.getApproverpersonname()}'></label>
+                                    </p>
+                                    <label th:text='${aprdata.getApprovalstatus()}'></label>
+                                    </p>
+                                    <div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px"> <i class="fa fa-check tick"></i> </div>
+                                    <div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px"> <i class="fa fa-clock-o pending"></i> </div>
+                                    <div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px"> <i class="fa fa-close cancel"></i> </div>
+                                </div>
+                                <svg class="svghor" viewBox="0 10 100 100">
+                                    <line x1="5" x2="100" y1="80" y2="80"></line>
+                                </svg>
+                                <svg class="svgver" viewBox="0 20 100 100 ">
+                                    <line x1="40" x2="40" y1="0" y2="100"></line>
+                                </svg>
+                            </div>
+                            <div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i> </div>
+                        </div>
+                    </section>
+                </div>
+                <!--------------------------------------------view mode end here-------------------------------------------->
+            </div>
+        </form>
+    </div>
+    <div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+    <script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+    <script src="/js/reimbursement/travelExpenseReimbursement/travelExpenseClaim.js"></script>
+</div>

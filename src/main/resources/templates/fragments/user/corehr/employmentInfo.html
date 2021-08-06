@@ -1,0 +1,237 @@
+<div th:fragment="employmentInfo">
+<!-- <div class="w3-bar w3-theme w3-left-align w3-large" style="position:fixed; z-index:100; margin-top:12px;"> -->
+ <!-- <div class="w3-theme" style="z-index:3">	    
+	    <img id="PROFILE_PIC" class="pull-left" alt="" style="width:76px; height:76px; margin-left:10px" src="/icons/face-white-18dp.svg">
+		<h3 id="PAGE_NAME" style="font-weight:bold; margin-left:100px;">Page Name</h3>
+		<h4 id="USER_NAME"  style="margin-left:100px; margin-bottom:5px;">User Name</h4>
+	    	
+	</div> -->
+
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						 style="cursor: pointer;">
+					<i class="fas fa-address-card" style="color:#e0d219"></i> Employment Info
+				</h4>
+			</div>
+		</div>
+
+	<div class="w3-container">
+		<form  method="post" id="EMPLOYMENT_INFO-EDIT" enctype="application/x-www-form-urlencoded" onsubmit="return false;" style="margin-top:10px"> 
+		
+		<div class="w3-row">
+		<div style="margin-top:10px">
+		<h4 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline">Assignment</h4>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<div id="ASSIGN_BLOCK" class="w3-container">
+		
+		<div class=w3-half>
+		<div class="w3-container">
+	
+			<p>
+			<label>Legal Employer</label> 
+			<select id="legalEmployer" class="w3-select w3-border" name="" data-toggle="modal" disabled>
+				<option th:value="${employmentInfo.getLegalentityid()}" th:text="${employmentInfo.getLegalentityname()}" selected hidden></option>
+				<option id="2" value="2"></option>
+				<option value="search" data-toggle="modal" id="btnsearchLegal">Search....</option>
+			</select>
+			</p>	
+			<p>
+			<label>Business Unit</label> 
+			<select id="businessUnit" class="w3-select w3-border" name="" data-toggle="modal" disabled>
+				<option th:value="${employmentInfo.getBussinessunitid()}" th:text="${employmentInfo.getBussinessunitname()}" selected hidden></option>
+				<option id="2" value="2"></option>
+				<option value="search" data-toggle="modal" id="btnsearch2">Search....</option>
+			</select>
+			</p>
+			<p>
+			<label>Job</label> 
+			<select id="JOBS_LOV" class="w3-select w3-border" name="" data-toggle="modal"  disabled>
+				<option th:value="${employmentInfo.getJobid()}" th:text="${employmentInfo.getJobsname()}" selected hidden></option>
+				<option id="2" value="2"></option>
+				<option value="search" data-toggle="modal" id="OPTIONSEARCHJOBSBU">Search....</option>
+			</select>	
+			</p>
+			<p>
+			<label>Department</label> 
+			<select id="DEPT_LOV" class="w3-select w3-border" name="" data-toggle="modal" disabled >
+				<option th:value="${employmentInfo.getDepartmentsid()}" th:text="${employmentInfo.getDepartmentsname()}" selected hidden></option>
+				<option id="2" value="2"></option>
+				<option value="search" data-toggle="modal" id="OPTIONSEARCHDEPTBU">Search....</option>
+			</select>	
+			</p>
+			<p>
+			<label>Base Location</label> 
+			<input th:value="${employmentInfo.getBaselocationname()}"  class="w3-input w3-border" name=""  type="text"  style="height:38px" disabled />
+			</p>
+			
+		
+		</div>
+		</div>
+	
+		<div class=w3-half>
+		<div class="w3-container">
+	
+			
+			<p>
+			<label>Assignment Number</label> 
+			<input th:value="${employmentInfo.getAssignamentnumber()}" class="w3-input w3-border" name="" id="EI_ASSGN_NMBR" type="text" style="height:38px" disabled/>
+			</p>
+			<p>
+			<label>Position</label> 
+			<input th:value="${employmentInfo.getPositionname()}"  class="w3-input w3-border" name=""  type="text"  style="height:38px" disabled />
+			</p>
+			
+			<p>
+			<label>Person Number</label> 
+			<input th:value="${employmentInfo.getPersonnumber()}"  class="w3-input w3-border" name="" id="EI_PERSN_NMBR" type="text" style="height:38px" disabled/>
+			</p>
+			<div>
+			<p>
+			<label>Notice Period</label> 
+			</p>
+			<input th:value="${employmentInfo.getNoticeperiod()}"  class="w3-input w3-border w3-half" name="noticeperiod" id="NOTICE_INPUT" type="text" style="width:50%; height:38px; display:inline;" disabled/>
+			<select id="NOTICEPERIOD_LOV" class="w3-select w3-border" name="noticeperiodtype" style="width:50%" disabled>
+				<option th:value="${employmentInfo.getNoticeperiodtypeid()}" th:text="${employmentInfo.getNoticeperiodtypename()}" selected hidden></option>
+				<option th:each="noticeperiod : ${noticeperiod}" th:value="${noticeperiod.getId()}" th:text="${noticeperiod.getDescription()}"/>
+			</select>
+			</div>
+			
+			<p>
+			<label>Work Location</label> 
+			<input th:value="${employmentInfo.getWorklocationname()}"  class="w3-input w3-border" name=""  type="text"  style="height:38px" disabled />
+			</p>
+			
+		</div>
+		</div>
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div>
+	
+	
+		<div class="w3-row">
+		<div style="margin-top:10px">
+		<h4 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline">Managers</h4>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<div id="MANAGERS_BLOCK" class="w3-container">
+		
+		<div class="w3-row">
+		
+		 <table id="MGR_DET_TBL" class="display compact w3-table"
+						style="width: 100%;">
+						<thead>
+							<th style="text-align: center;">Manager Name</th>
+							<th style="text-align: center">Manager Id</th>
+							<th style="text-align: center;">Type</th>
+
+							<th></th>
+							<th></th>
+						</thead>
+						<tbody>
+
+							 <tr th:each="entry ,stats: ${employmentInfo.getManagerdetails()}"> 
+							
+								<td style="width: 30%">
+								
+									<div >
+										<select id="MGR0" class="w3-select w3-border"
+											name="managerdetails[0].supervisorname" onchange="mgrchange(0)"
+											data-toggle="modal" disabled>
+											<option th:value="${entry.getSupervisoname()}" th:text="${entry.getSupervisoname()}" hidden selected></option>
+										</select>
+									</div>
+
+								</td>
+
+								<td style="width: 30%;"><input class="w3-input w3-border"
+									th:value="${entry.getSupervisorid()}" name="managerdetails[0].supervisorid" type="text" disabled> 
+
+								<td style="width: 30%">
+
+
+								
+									<div >
+										<select id="CR_HR_MGR_TYPE" class="w3-select w3-border"
+											th:name="'managertypes[0].managertype'" disabled>
+											<option th:text="${entry.getManagertypename()}" /> 
+										</select>
+										
+									</div>
+								</td>
+
+
+
+							</tr>
+						</tbody>
+
+					</table>
+					<!-- 
+				 <table id="MGR_DET_TBL" class="display compact w3-table"
+						style="width: 100%;">
+						<thead>
+							<th style="text-align: center;">Manager Name</th>
+							<th style="text-align: center">Manager Id</th>
+							<th style="text-align: center;">Type</th>
+
+							<th></th>
+							<th></th>
+						</thead>
+						<tbody>
+
+							 <tr> 
+							
+								<td style="width: 30%">
+								
+									<div >
+										<select id="MGR0" class="w3-select w3-border"
+											name="managerdetails[0].supervisorname" onchange="mgrchange(0)"
+											data-toggle="modal" disabled>
+											
+											<option id="2" value="2"></option>
+											<option value="search" data-toggle="modal" id="OPTIONSEARCH">Search....</option>
+										</select>
+									</div>
+
+								</td>
+
+								<td style="width: 30%;"><input class="w3-input w3-border"
+									 name="managerdetails[0].supervisorid" type="text" disabled> 
+
+								<td style="width: 30%">
+
+
+								
+									<div >
+										<select id="CR_HR_MGR_TYPE" class="w3-select w3-border"
+											th:name="'managertypes[0].managertype'" disabled>
+											<option /> 
+										</select>
+										
+									</div>
+								</td>
+
+
+							</tr>
+						</tbody>
+
+					</table> -->
+		
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		
+		</div>
+		
+			
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div>
+</form>
+</div>
+		
+<script src="/js/user/corehr/employmentInfo.js"></script>
+</div>
+</div>

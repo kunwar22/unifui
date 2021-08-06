@@ -1,0 +1,138 @@
+<div th:fragment="createbusinessunit">
+<div class="w3-container" style="margin-top:14px;">
+		<h4 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Create Business Unit</h4>
+		</div>
+		<div class="w3-row">
+	<div class=w3-half>
+	<div class="w3-container">
+			<hr class="hrline">
+			<h5 style="font-weight: bold">
+								Business Unit Details
+							</h5>
+			       <input
+						th:value="${BUDetails.getBusinessunitid()}" id="txtBuid" style="display: none"
+						type="text" /> <input
+						th:value="${BUDetails.getActionid()}" id="txtBuActionid" style="display: none"
+						 type="text" /> 
+			<p th:if="${BUDetails.getEffectstartdate()==null}">
+				<label>Effective Start Date</label><span style="color:red"> *</span> 
+			<input th:value="${BUDetails.getEffectstartdate()}" flag="none" th:msg="${BUDetails.getAddtionalatr()}" max="9999-12-31"
+			 class="w3-input w3-border" name="EffectiveStartDate" id="CR_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD"/>
+			 <span id="BU_EFFDT_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${BUDetails.getEffectstartdate()!=null} ">
+				<label>Effective Start Date</label><span style="color:red"> *</span> 
+			<input th:value="${BUDetails.getEffectstartdate()}" flag="none" th:msg="${BUDetails.getAddtionalatr()}" max="9999-12-31"
+			 class="w3-input w3-border" name="EffectiveStartDate" id="CR_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+			 <span id="BU_EFFDT_ERROR" style="color:red"></span>
+			</p>
+			<p>
+				<label>Name</label><span style="color:red"> *</span>
+				<input th:value="${BUDetails.getName()}" class="w3-input w3-border" name="BUname" id="CR_BU_NAME" type="text">
+				<span id="BU_NAME_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${BUDetails.getCode()==null}">
+				<label>Code</label><span style="color:red"> *</span>
+				<input th:value="${BUDetails.getCode()}"  class="w3-input w3-border" name="BUcode" id="CR_BU_CODE" type="text">
+				<span id="BU_CODE_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${BUDetails.getCode()!=null}">
+				<label>Code</label><span style="color:red"> *</span>
+				<input th:value="${BUDetails.getCode()}"  class="w3-input w3-border" name="BUcode" id="CR_BU_CODE" type="text" disabled>
+				<span id="BU_CODE_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${BUDetails.getDataset()!=0}">
+                  <label>Status</label><span style="color:red"> *</span>
+                  <select id="statusList" class="w3-select w3-border" name="status">
+						<option th:value="${BUDetails.getStatusbu()}" th:text="${BUDetails.getStatusbu()}" selected hidden></option>
+						<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+					</select>
+					<span id="BU_STATUS_ERROR" style="color:red"></span>
+				</p>
+				<p th:if="${BUDetails.getDataset()==0}">
+                   <label>Status</label><span style="color:red"> *</span>
+					<select id="statusList" class="w3-select w3-border" name="option">
+						<option th:each="st : ${status}" th:selected="${st == 'Active' }" th:value="${st}" th:text="${st}">
+					</select>
+					<span id="BU_STATUS_ERROR" style="color:red"></span>
+				</p>
+			<p  th:if="${BUDetails.getDataset()==0}">
+					<label>Business Unit Set</label> <span style="color:red"> *</span>
+					<select id="datasetList"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="dl : ${datasetlist}"							
+							th:value="${dl.getDatasetsid()}"
+							th:text="${dl.getName()}"></option>
+					</select>
+					<span id="BU_DATASET_ERROR" style="color:red"></span>
+				</p>
+			<p  th:if="${BUDetails.getDataset()!=0}">
+					<label>Business Unit Set</label> <span style="color:red"> *</span>
+					<select id="datasetList"
+						class="w3-select w3-border" name="option" disabled>
+						<option th:each="dl : ${datasetlist}"
+							th:selected="${dl.getDatasetsid() eq BUDetails.getDataset()}"
+							th:value="${dl.getDatasetsid()}"
+							th:text="${dl.getName()}"></option>
+					</select>
+					<span id="BU_DATASET_ERROR" style="color:red"></span>
+				</p>
+		</div>
+	</div>
+	<div class="w3-container">
+		<p>
+		<button id="BusinessUnitCancel" rm="enterprisesetup/managebusinessunit" tabindex="15" class="w3-button w3-theme w3-grey">Cancel</button>
+		<button id="BU_CREATE" class="w3-button w3-theme w3-grey">Submit</button>
+		</p>
+	</div>
+		<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="enterprisesetup/managebusinessunit">OK</a>
+				</div>
+			</div>
+		</div>
+	</div>
+<div id="idError" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg"><b> Date must be latest!!</b> </label> <a id="btnerrorOK" class="w3-button w3-red" rm="/enterprisesetup/managebusinessunit">OK</a>
+				</div>
+			</div>
+		</div>
+		<script>
+		$('#btnerrorOK').on('click', function(e){
+		var url = $(this).attr("rm");
+		$('#replace_div').load(url);
+		});
+$(document).ready(function(){
+$("#idError").css('display', 'none');
+	var strMsg=$("#CR_EFFDT").attr("msg");
+	if(strMsg=="Error")
+		{
+			$("#idError").css('display', 'block');
+			$("#BU_CREATE").attr('id','btnSUb');
+			$("#CR_EFFDT").attr('flag','update');
+		}
+	else if(strMsg!="Error" || strMsg!="Correct")
+	{
+		if(strMsg=="Correct")
+			{
+				$("#CR_EFFDT").attr('flag','correct');
+			}
+		if(strMsg!="Correct")
+			{
+				$("#CR_EFFDT").val(strMsg);
+				$("#CR_EFFDT").attr('flag','update');
+			}
+	}
+});
+</script> 
+<script src="/js/validation/validation.js"></script>
+<script src="/js/create/businessunit.js"></script>
+</div>

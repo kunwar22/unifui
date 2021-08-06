@@ -1,0 +1,383 @@
+
+<div th:fragment="manageRembType">
+	<form method="post" id="REMB_TYPE_SAVE"
+		enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+
+
+		<div class="w3-row w3-border w3-padding-large"
+			style="margin-top: 50px">
+			<div style="margin-top: 10px">
+				<h4 class="w3-text-theme"
+					style="margin-top: 10px; bottom: 2px; display: inline">Reimbursement
+					Type</h4>
+
+				<input type="button" onclick="ajaxPost();"
+					class="w3-right w3-btn w3-theme" id="REMB_TYPE_Create"
+					value="Submit" style="margin-right: 05px;" />
+
+				<button id="Remb_type_Cancel" rm="reimbursementType/searchRembType"
+					class="w3-right w3-btn w3-theme" style="margin-right: 10px;">Cancel</button>
+
+
+			</div>
+
+			<br>
+			<hr class="hrline">
+<div style="display:none">
+			<input th:value="${rembursementTypeMaster.getActionid()}"
+				id="txtactionid" th:name="actionid" type="text" readonly /> 
+				
+			<input id="txtrembursementtypeid" th:value="${rembursementTypeMaster.getRembursementtype().get(0).getRembursementtypeid()}" th:name="rembursementtypeid" type="text" readonly/>
+
+			<input
+				th:value="${rembursementTypeMaster.getRembursementtype().get(0).getActionid()}"
+				id="txtrembursementtypeid" th:name="'rembursementtype[0].actionid'"
+				type="text" readonly/> 
+				
+				<input
+				th:value="${rembursementTypeMaster.getRembursementceilinglimit().get(0).getActionid()}"
+				id="txtrembursementtypeid"
+				th:name="'rembursementceilinglimit[0].actionid'" type="text" readonly />
+</div>
+
+			<div class="w3-container">
+				<h4 class="w3-text-theme"></h4>
+
+			</div>
+
+			<div class="w3-row">
+
+				<div class=w3-half>
+					<div class="w3-container">
+
+
+						<p>
+							<label>Effective Start Date</label> <input
+								class="w3-input w3-border"
+								th:value="${rembursementTypeMaster.getRembursementtype().get(0).getEffectivestartdate()}"
+								th:name="'rembursementtype[0].effectivestartdate'"
+								id="CR_REMB_TYPE_START_DT" type="date" data-date=""
+								data-date-format="YYYY MM DD" max="9999-12-31" flag="none"
+								th:msg="${rembursementTypeMaster.getRembursementtype().get(0).getAdditionalatr()}" />
+
+						</p>
+
+						<p
+							th:if="${rembursementTypeMaster.getRembursementtype().get(0).getStatus()==''}">
+							<label>Status</label> <select id="CR_REMB_TYPE_STATUS"
+								class="w3-select w3-border"
+								th:name="'rembursementtype[0].status'">
+								<option value="" disabled selected></option>
+								<option th:each="sts : ${status}"
+									th:selected="${sts == 'Active' }" th:value="${sts}"
+									th:text="${sts}">
+							</select>
+
+						</p>
+
+						<p
+							th:if="${rembursementTypeMaster.getRembursementtype().get(0).getStatus()!=''}">
+							<label>Status</label> <select id="CR_REMB_TYPE_STATUS"
+								class="w3-select w3-border"
+								th:name="'rembursementtype[0].status'" tabindex="4">
+								<option value="" disabled selected></option>
+								<option
+									th:value="${rembursementTypeMaster.getRembursementtype().get(0).getStatus()}"
+									th:text="${rembursementTypeMaster.getRembursementtype().get(0).getStatus()}"
+									selected hidden></option>
+								<option th:each="status : ${status}" th:value="${status}"
+									th:text="${status}">
+							</select>
+						</p>
+
+
+					</div>
+				</div>
+
+
+				<div class=w3-half>
+					<div class="w3-container">
+
+
+						<!-- 	<p>
+							<label>Reimbursement Name</label> <input
+						class="w3-input w3-border" 
+						th:value="${rembursementTypeMaster.getRembursementtype().get(0).getRembursementname()}"
+						th:name="'rembursementtype[0].rembursementname'"  id="CR_REMB_TYPE_NAME"
+						type="text" />
+
+						</p> -->
+						<p
+							th:if="${rembursementTypeMaster.getRembursementtype().get(0).getRembursementname()==''}">
+							<label>Reimbursement Name</label> <select id="CR_REMB_TYPE_NAME"
+								class="w3-select w3-border"
+								th:name="'rembursementtype[0].rembursementname'">
+								<option value="" disabled selected></option>
+								<option th:each="rmb : ${RembName}" th:value="${rmb.getDescription()}"
+								th:msg="${rmb.getId()}"
+									th:text="${rmb.getDescription()}"></option>
+							</select>
+						</p>
+
+						<p
+							th:if="${rembursementTypeMaster.getRembursementtype().get(0).getRembursementnameid()!=''}">
+							<label>Reimbursement Name</label> <select id="CR_REMB_TYPE_NAME"
+								class="w3-select w3-border"
+								th:name="'rembursementtype[0].rembursementname'">
+								<option value="" disabled selected></option>
+								<option th:each="rmb : ${RembName}"
+									th:selected="${rmb.getDescription() == rembursementTypeMaster.getRembursementtype().get(0).getRembursementname()}"
+									th:value="${rmb.getDescription()}" th:text="${rmb.getDescription()}" th:msg="${rmb.getId()}"></option>
+							</select>
+						</p>
+
+
+					</div>
+				</div>
+
+
+
+				<!-----------------------------Multiple row manager details start here-------------------------------------------->
+
+				<div class="w3-container">
+					<h5 class="w3-text-theme" style="margin-top: 25px; bottom: 2px;">Manage
+						Ceiling</h5>
+					<div class="w3-padding ">
+						<p>
+							<label>View</label>
+							<button id="VIEW_BTN" class="w3-button w3-white w3-small">^</button>
+
+							<input onclick="addrowmanager();" class="w3-btn  w3-theme"
+								type="button" id="addmgr" value="+" />
+
+						</p>
+
+						<div class="w3-padding-large w3-border ">
+
+
+							<table id="REIMBURSEMENT_TYPE_TBL"
+								class="display compact w3-table" style="width: 100%;">
+								<thead>
+									<th style="text-align: center;">Eligibility</th>
+									<th style="text-align: center">Ceiling Min</th>
+									<th style="text-align: center;">Ceiling Max</th>
+
+
+								</thead>
+								<tbody>
+
+
+
+									<tr
+										th:each="entry ,stats: ${(rembursementTypeMaster.getRembursementceilinglimit())}">
+
+
+										<td style="width: 30%">
+
+											<div th:if="${entry.getEligibilityid()==0}">
+
+												<select id="MGR0"
+													th:name="'rembursementceilinglimit['+${stats.index}+'].eligibilityid'"
+													onchange="mgrchange(0)" class="w3-select w3-border"
+													data-toggle="modal">
+
+													<option id="1" value="0" hidden selected></option>
+	 												<option id="2"  hidden></option>
+													<option value="search" data-toggle="modal"
+														id="btnsearchLegal">Search....</option>
+												</select>
+											</div>
+
+											<div th:if="${entry.getEligibilityid()!=0}">
+
+												<select id="MGR0"
+													th:name="'rembursementceilinglimit['+${stats.index}+'].eligibilityid'"
+													onchange="mgrchange(0)" class="w3-select w3-border"
+													data-toggle="modal">
+													<option id="1" value="0"  hidden></option>
+													<option id="2" hidden  selected	th:value="${entry.getEligibilityid()}" th:text="${entry.getEligibilitydsc()}"></option>
+													<option value="search" data-toggle="modal"	id="btnsearchLegal">Search....</option>
+												</select>
+											</div>
+
+
+										</td>
+
+										<td style="width: 30%;"><input class="w3-input w3-border"
+											th:name="'rembursementceilinglimit['+${stats.index}+'].cielingmin'"
+											th:value="${entry.getCielingmin()}" type="text"></td>
+
+										<td style="width: 30%;"><input class="w3-input w3-border"
+											th:name="'rembursementceilinglimit['+${stats.index}+'].cielingmax'"
+											th:value="${entry.getCielingmax()}" type="text"></td>
+
+
+										<td style="width: 10%"><input th:index="${stats.index}"
+											flg="manager" class="w3-btn w3-theme" id="deletemgr"
+											type="button" value="x"></td>
+									</tr>
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+				</div>
+
+
+				<!-----------------------------Multiple row manager details end here-------------------------------------------->
+
+
+
+
+
+
+			</div>
+
+			<!-- Popup  for BU Search Start here  -->
+			<!-- line modal -->
+			<div id="id0Manager" class="w3-modal">
+				<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+					<div
+						class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+						<div class="modal-header">
+							<button type="button" class="w3-button w3-display-topright"
+								onclick="document.getElementById('id03').style.display='none'">
+								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+							</button>
+							<h3 align="left">Search and Select:Eligibility</h3>
+							<hr class="hrline">
+						</div>
+						<div class="modal-body">
+							<div>
+								<div class=w3-half>
+									<div class="w3-container">
+
+										<div class="w3-row w3-section">
+											<div class="w3-col" style="width: 80px">Name:</div>
+											<div class="w3-rest">
+												<input value="" class="w3-input w3-border"
+													id="REMB_TYPE_ELIG_NAME" type="text">
+											</div>
+										</div>
+
+
+									</div>
+								</div>
+								<div class=w3-half>
+									<div class="w3-container">
+										<div class="w3-row w3-section">
+											<div class="w3-col" style="width: 80px">Code:</div>
+											<div class="w3-rest">
+												<input value="" class="w3-input w3-border"
+													id="REMB_TYPE_ELIG_CODE" type="text">
+											</div>
+										</div>
+
+
+
+									</div>
+								</div>
+								<br>
+								<div class="w3-container">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<div class="pull-right">
+												<button id="REMB_TYPE_SRCH" onclick="lwpsearch()"
+													class="w3-button w3-theme w3-grey">Search</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<BR>
+								<div id="REMB_TYPE_resultSec" class="w3-responsive"
+									style="display: none">
+									<table id="REMB_TYPE_LIST" class="display compact w3-table"
+										style="width: 100%;">
+										<thead>
+											<tr class="w3-theme-d3">
+												<th>ID</th>
+												<th>Name</th>
+												<th>Description</th>
+
+
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div id="noDataREMB_TYPE" class="w3-responsive"
+									style="display: none">
+									<div>
+										<p>No record found...</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="w3-container">
+								<div class="form-group">
+									<div class="pull-right">
+										<button id="REMB_TYPE_POP_OK"
+											class="w3-button w3-theme w3-grey">OK</button>
+										<button id="REMB_TYPE_POP_CANCEL"
+											class="w3-button w3-theme w3-grey">Cancel</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- PopUp End Here -->
+
+			<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+				<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+					style="max-width: 400px;">
+					<div
+						class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+						<label id="lblMsg" style="font-weight: bold"> </label> <a
+							id="btnOK" rm="reimbursementType/searchRembType">OK</a>
+
+					</div>
+
+				</div>
+			</div>
+
+			<script>
+				$('#btnerrorOK').on('click', function(e) {
+					var url = $(this).attr("rm");
+					$('#replace_div').load(url);
+				});
+				$(document)
+						.ready(
+								function() {
+									$("#idError").css('display', 'none');
+									var strMsg = $("#CR_REMB_TYPE_START_DT")
+											.attr("msg");
+
+									if (strMsg == "Error") {
+										$("#idError").css('display', 'block');
+										$("#REMB_TYPE_Create").attr('id',
+												'btnSUb');
+										$("#CR_REMB_TYPE_START_DT").attr(
+												'flag', 'update');
+									} else if (strMsg != "Error"
+											|| strMsg != "Correct") {
+										if (strMsg == "Correct") {
+											$("#CR_REMB_TYPE_START_DT").attr(
+													'flag', 'correct');
+										}
+										if (strMsg != "Correct") {
+											$("#CR_REMB_TYPE_START_DT").val(
+													strMsg);
+											$("#CR_REMB_TYPE_START_DT").attr(
+													'flag', 'update');
+										}
+									}
+								});
+			</script>
+
+			<script src="/js/reimbursement/reimbursementsetup/CreateRembType.js"></script>
+	</form>
+</div>

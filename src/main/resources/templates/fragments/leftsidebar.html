@@ -1,0 +1,120 @@
+
+<div th:fragment="leftsidebar">
+<style>
+::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9c9c9c;
+    -webkit-border-radius: 1ex;
+    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+::-webkit-scrollbar-corner {
+    background: #000;
+}
+</style>	
+    <div class="w3-sidebar w3-bar-block w3-collapse w3-animate-left" style="width:300px; margin-top: 2px; opacity: .95" id="mySidebar">
+        <!-- 	background-image:url(/images/icons/background_colour_blue.png); -->
+        <button style="text-align: right; background-color: #E28964;" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-hide-large"><i class="fa fa-times" style="color: red;"></i></button>
+        <div class="w3-container w3-margin-top w3-margin-bottom" style="border-bottom: 1px solid #eceff1;">
+            <ul class="w3-ul w3-margin-bottom">
+                <li onclick="w3_close(); openpage(this.id);" rm="/user/personalDetails" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="personalDetails"><i class="fas fa-user-alt" style="font-size: 16px; width: 16px; color: #f31590;"></i>&nbsp;&nbsp;&nbsp;Personal Details</li>
+              	<li onclick="w3_close(); openpage(this.id);" rm="/user/employmentInfo" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="employmentInfo"><i class="fas fa-address-card" style="font-size: 16px; width: 16px; color: #e0d219;"></i>&nbsp;&nbsp;&nbsp;Employment Info</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/personManagement/SearchDependent" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="familyDependents"><i class="fas fa-people-arrows" style="font-size: 16px; width: 16px; color: #fd951a;"></i>&nbsp;&nbsp;&nbsp;Family & Dependents</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/user/docrecord" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="documentRecords"><i class="far fa-id-card" style="font-size: 16px; width: 16px; color: #05af05;"></i>&nbsp;&nbsp;&nbsp;Document of Record</li>
+                <li onclick="w3_close(); openpage(this.id);" rm ="/bankAccount/manageBankAccount" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="bankInfo"><i class="fas fa-university" style="font-size: 16px; width: 16px; color: #027b7b;"></i>&nbsp;&nbsp;&nbsp;Bank Info</li>
+				<li th:if="${TAX_DECL==true}" onclick="w3_close(); openpage(this.id);" rm ="/houserent/managehouserent" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="houseRent"><i class="fas fa-file-invoice-dollar" style="font-size: 16px; width: 16px; color: rgb(255, 128, 0);"></i>&nbsp;&nbsp;&nbsp;Tax Declaration</li>
+                <li th:if="${TAX_APPR==true}" onclick="w3_close(); openpage(this.id);" rm ="/approvetaxdeclaration/loadperson" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="managetaxdeclaration"><i class="fas fa-file-invoice-dollar" style="font-size: 16px; width: 16px; color: rgb(255, 128, 0);"></i>&nbsp;&nbsp;&nbsp;Approve Tax Declaration</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/tasks/myWorklist" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="worklist"><i class="fas fa-tasks" style="font-size: 16px; width: 16px; color:green;"></i>&nbsp;&nbsp;&nbsp;My Worklist</li> <!--Done BY Asmita on 26/11/2020 -->
+                <li onclick="w3_close(); openpage(this.id);" rm="/notices/viewnotices" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="Notices"><i class="far fa-newspaper" style="font-size: 16px; width: 16px; color:black;"></i>&nbsp;&nbsp;&nbsp;Office Circulars</li>
+                <li th:if="${VIEW_INVOICE==true}" onclick="w3_close(); openpage(this.id);" rm="/get/invoicestatus" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="abcd"><i class="fas fa-file-invoice" style="font-size: 16px; width: 16px; color: #ff00ff;"></i>&nbsp;&nbsp;&nbsp;Generated Invoice Status</li>
+            	<li th:if="${ROLE_MANAGE_VENDOR==true}" onclick="w3_close(); openpage(this.id);" rm ="/vendordetails/searchVendor" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="vendordetails"><i class="fas fa-industry" style="font-size: 16px; width: 16px; color: #f275;"></i>&nbsp;&nbsp;&nbsp;Vendor Details</li>
+                <li th:if="${ROLE_MANAGE_VENDOR==true}" onclick="w3_close(); openpage(this.id);" rm ="/vendordetails/searchVendorElement" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="vendordetailsa"><i class="fas fa-industry" style="font-size: 16px; width: 16px; color: #f275;"></i>&nbsp;&nbsp;&nbsp;Vendor Element Details</li>
+                <li th:if="${ROLE_MANAGE_VENDOR==true}" onclick="w3_close(); openpage(this.id);" rm ="/vendordetails/searchVendorPerson" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="vendordetailsb"><i class="fas fa-industry" style="font-size: 16px; width: 16px; color: #f275;"></i>&nbsp;&nbsp;&nbsp;Vendor Person Details</li>
+            	<li  onclick="w3_close(); openpage(this.id);" rm ="/person/tax/managetaxReprot" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="vendordetailsb"><i class="fas fa-industry" style="font-size: 16px; width: 16px; color: #f275;"></i>&nbsp;&nbsp;&nbsp;Income Tax Calculation</li>
+            	
+            </ul>
+        </div>
+
+        <!--<div class="w3-container w3-margin-top w3-margin-bottom" style="border-bottom: 1px solid #eceff1;">
+            <ul class="w3-ul w3-margin-bottom">
+                <li><h5 style="margin-top: 0; margin-bottom: 0"><i class="fas fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Leave Management</h5></li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/user/addabsence" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="applyNewLeave"><i class="fas fa-calendar-week" style="font-size: 18px; width: 16px; color: #dc762d;"></i>&nbsp;&nbsp;&nbsp;Apply New Leave</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="viewLeaveHistory"><i class="fas fa-address-card" style="font-size: 16px; width: 16px; color: #e0d219;"></i>&nbsp;&nbsp;&nbsp;View Leave History</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="viewLeaveBalances"><i class="fas fa-balance-scale-right" style="font-size: 16px; width: 16px; color: #e806e8;"></i>&nbsp;&nbsp;&nbsp;View Leave Balances</li>
+            </ul>
+        </div>-->
+
+
+        <div  class="w3-container w3-margin-top w3-margin-bottom" style="border-bottom: 1px solid #eceff1;">
+            <ul class="w3-ul w3-margin-bottom">
+                <li th:if="${MSS == true}" onclick="w3_close(); openpage(this.id);" rm="/mss/manageapprovalactions" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="MSS_Approval_Actions"><i class="fas fa-cubes" style="font-size: 16px; width: 16px; color:blue;"></i>&nbsp;&nbsp;&nbsp;My Approval Actions</li>
+                <li th:if="${MY_TEAM == true}" onclick="w3_close(); openpage(this.id);" rm="/team/manageteam" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="MyTeam"><i class="fas fa-users" style="font-size: 16px; width: 16px; color:red;"></i>&nbsp;&nbsp;&nbsp;My Team</li>
+            </ul>
+        </div>
+        <div class="w3-container w3-margin-top w3-margin-bottom" style="border-bottom: 1px solid #eceff1;">
+            <!--<div class="w3-row w3-center">
+                Reimbursements <i class="fas fa-sort-down"></i>
+            </div>-->
+            <ul class="w3-ul w3-margin-bottom">
+                <!--<li th:if="${REM_TELEPHONE==true}" onclick="w3_close(); openpage(this.id);" rm="/reimbursement/telephoneSearch" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="teleReimbursement"><i class="fas fa-tty" style="font-size: 16px; width: 16px; color: #f31590;"></i>&nbsp;&nbsp;&nbsp;Telephone Reimbursement</li>-->
+                <li th:if="${REM_CHILD==true}" onclick="w3_close(); openpage(this.id);" rm="/reimbursement/child" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="childEducation"><i class="fas fa-user-graduate" style="font-size: 16px; width: 16px; color: #279ef3;"></i>&nbsp;&nbsp;&nbsp;Child Education</li>
+                <!--<li th:if="${REM_TRANSPORT==true}" onclick="w3_close(); openpage(this.id);" rm="/reimbursement/transportManager" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="transportReimbursement"><i class="fas fa-car-side" style="font-size: 16px; width: 16px; color: #fd951a;"></i>&nbsp;&nbsp;&nbsp;Transport Reimbursement</li>-->
+                <!--<li th:if="${REM_ENTERTAIN==true}" onclick="w3_close(); openpage(this.id);" rm="/reimbursement/entertainmentSearch" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="entertainmentReimbursement"><i class="fa fa-music" style="font-size: 16px; width: 16px; color: #027b7b;"></i>&nbsp;&nbsp;&nbsp;Entertainment Reimbursement</li>-->
+                <li th:if="${REM_ELECTRI==true}" onclick="w3_close(); openpage(this.id);" rm="/reimbursement/electricity" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="electricityReimbursement"><i class="fas fa-bolt" style="font-size: 16px; width: 16px; color: #f7d351;"></i>&nbsp;&nbsp;&nbsp;Electricity Reimbursement</li>
+                <!--<li th:if="${REM_TADK==true}" onclick="w3_close(); openpage(this.id);" rm="/reimbursement/tadk" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="tadkReimbursement"><i class="fas fa-headset" style="font-size: 16px; width: 16px; color: #fd451a;"></i>&nbsp;&nbsp;&nbsp;TADK Reimbursement</li>-->
+                <li onclick="w3_close(); openpage(this.id);" rm="/ctgReimbursement/manageCtgReimb" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="ctgReimbursement"><i class="fas fa-suitcase" style="font-size: 16px; width: 16px; color: chocolate;"></i>&nbsp;&nbsp;&nbsp;CTG Reimbursement</li>
+                <!--<li th:if="${REM_CDA==true}" onclick="w3_close(); openpage(this.id);" rm="/cdaVehicle/manageCdaTelephone" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="cdaReimbursement"><i class="fas fa-luggage-cart" style="font-size: 16px; width: 16px; color: rgb(128, 0, 255);"></i>&nbsp;&nbsp;&nbsp;CDA Reimbursement</li>-->
+                <li onclick="w3_close(); openpage(this.id);" rm="/reimbursement/medireimbsearch" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="medicalReimbursement"><i class="fa fa-pills" style="font-size: 16px; width: 16px; color: #f79b7c;"></i>&nbsp;&nbsp;&nbsp;Medical Reimbursement</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/reimbursement/medicalAdvance" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="medicalAdvance"><i class="fas fa-procedures" style="font-size: 16px; width: 16px; color: #000000;"></i>&nbsp;&nbsp;&nbsp;Medical Advance</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/miscelleneous/manageMiscelleneous" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="expenseReimbursement"><i class="fas fa-hand-holding-usd" style="font-size: 16px; width: 16px; color: #dc762d;"></i>&nbsp;&nbsp;&nbsp;Miscellaneous Expense</li>
+            	<li onclick="w3_close(); openpage(this.id);" rm="/reimbursement/adhoclocalSearch" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="adhocLocalSearch"><i class="fas fa-rupee-sign" style="font-size: 16px; width: 16px; color: #ff4d4d;"></i>&nbsp;&nbsp;&nbsp;Contingent</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/reimbursement/travelExpense" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="travelReimbursement"><i class="fas fa-plane-departure" style="color: greenyellow;"></i>&nbsp;&nbsp;&nbsp;Travel Reimbursement</li>
+            </ul>
+        </div>
+
+        <div th:if="${GEN_TMPL==true}" class="w3-container w3-margin-top w3-margin-bottom" style="border-bottom: 1px solid #eceff1;">
+            <ul class="w3-ul w3-margin-bottom">
+                <li onclick="w3_close(); openpage(this.id);" rm="/revisedreimbursements/remtemplate/7"  class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="revcdaReimbursement"><i class="fas fa-luggage-cart" style="font-size: 16px; width: 16px; color: rgb(128, 0, 255);"></i>&nbsp;&nbsp;&nbsp;CDA Reimbursement</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/revisedreimbursements/remtemplate/5"  class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="reventertainmentReimbursement"><i class="fa fa-music" style="font-size: 16px; width: 16px; color: #027b7b;"></i>&nbsp;&nbsp;&nbsp;Entertainment Reimbursement</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/revisedreimbursements/remtemplate/12" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="revtadkReimbursement"><i class="fas fa-headset" style="font-size: 16px; width: 16px; color: #fd451a;"></i>&nbsp;&nbsp;&nbsp;TADK Reimbursement</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/revisedreimbursements/remtemplate/1"  class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="revteleReimbursement"><i class="fas fa-tty" style="font-size: 16px; width: 16px; color: #f31590;"></i>&nbsp;&nbsp;&nbsp;Telephone Reimbursement</li>
+                <li onclick="w3_close(); openpage(this.id);" rm="/revisedreimbursements/remtemplate/2"  class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="revtransportReimbursement"><i class="fas fa-car-side" style="font-size: 16px; width: 16px; color: #fd951a;"></i>&nbsp;&nbsp;&nbsp;Transport Reimbursement</li>
+            	
+            	  
+            </ul>
+        </div>
+        
+        <div th:if="${SUPER_USER==true}" class="w3-container w3-margin-top w3-margin-bottom" style="border-bottom: 1px solid #eceff1;">
+            <ul class="w3-ul w3-margin-bottom">
+				 <li onclick="w3_close(); openpage(this.id);" rm="/manageroleassign/searchrolemapping" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="roleassignment"><i class="fas fa-user-ninja" style="color: olive;"></i>&nbsp;&nbsp;&nbsp;Role Assignment</li> 
+				 <li onclick="w3_close(); openpage(this.id);" rm="/managesynchronization/processSync" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="syncprocesss"><i class="fas fa-sync-alt" style="color: tomato;"></i>&nbsp;&nbsp;&nbsp;Synchronize</li>
+				 <!-- For Report Generation Starts -->
+                	<li onclick="w3_close(); openpage(this.id);" rm="/mod/generateReports" class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="generateReports"><i class="fas fa-sync-alt" style="color: black;"></i>&nbsp;&nbsp;&nbsp;Generate Reports</li>
+                <!-- For Report Generation Ends -->
+			  </ul>
+        </div>
+        
+                
+        	
+			
+				
+        
+        
+        
+
+        <div class="w3-container w3-margin-top w3-margin-bottom" style="border-bottom: 1px solid #eceff1;">
+            <ul class="w3-ul w3-margin-bottom">
+                <li th:if="${GEN_REM_VAL==true}" onclick="w3_close(); openpage(this.id);" rm="/revisedreimbursements/generateReimbValue"  class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="genReimbvalue"><i class="fab fa-superpowers" style="font-size: 16px; width: 16px; color: #ff0048;"></i>&nbsp;&nbsp;&nbsp;Generate Reimbursement Value</li>
+                <li th:if="${GEN_REM_APPR1==true}" onclick="w3_close(); openpage(this.id);" rm="/revisedreimbursements/approveReimbValue/APPR1"  class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="apprReimbvalue1"><i class="fab fa-superpowers" style="font-size: 16px; width: 16px; color: #ff0048;"></i>&nbsp;&nbsp;&nbsp;Approve Reimbursement Value</li>
+                <li th:if="${GEN_REM_APPR2==true}" onclick="w3_close(); openpage(this.id);" rm="/revisedreimbursements/approveReimbValue/APPR2"  class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="apprReimbvalue2"><i class="fab fa-superpowers" style="font-size: 16px; width: 16px; color: #ff0048;"></i>&nbsp;&nbsp;&nbsp;Approve Reimbursement Value</li>
+                <li th:if="${ROLE_PAYROL_INEG==true}" onclick="w3_close(); openpage(this.id);" rm="/pyrlfinintgr/managepyrlintrg"  class="w3-hover-theme my-hover w3-round-xxlarge abcd" id="pyrlintegration"><i class="fas fa-donate" style="font-size: 16px; width: 16px; color: #1ac8fd;"></i>&nbsp;&nbsp;Payroll Integration</li>
+            </ul>
+        </div>
+
+    </div>
+</div>

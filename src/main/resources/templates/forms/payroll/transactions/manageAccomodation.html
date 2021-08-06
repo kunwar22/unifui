@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<style>
+	.buttons-excel {
+		background-color: blue;
+		color: white;
+	}
+	</style>
+</head>
+
+<body>
+	<div th:fragment="freeAccomodtion">
+		<script src="/js/cdn1/jquery-3.5.1.js"></script>
+		<script src="/js/cdn1/jquery.dataTables.min.js"></script>
+		<script src="/js/cdn1/dataTables.buttons.min.js"></script>
+		<script src="/js/cdn1/buttons.flash.min.js"></script>
+		<script src="/js/cdn1/jszip.min.js"></script>
+		<script src="/js/cdn1/pdfmake.min.js"></script>
+		<script src="/js/cdn1/vfs_fonts.js"></script>
+		<script src="/js/cdn1/buttons.html5.min.js"></script>
+		<script src="/js/cdn1/buttons.print.min.js"></script>
+		
+		<div id="REPORTS_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+	    </div>
+		
+		<div class="w3-container" style="margin-top: 26px;">
+			<div class="w3-bar w3-theme-l5">
+				<h4 class="w3-bar-item w3-text-theme" style="padding-top: 0px; padding-bottom: 0px;">
+					<i class="fas fa-tasks"></i>&nbsp;&nbsp;Manage Rent Free Accomodation
+				</h4> </div>
+			<br>
+			<div class="w3-row ">
+				<div class="w3-quarter w3-container">
+					<label>Person No&nbsp;&nbsp;<i id="Person" class="fas fa-cog fa-spin fa-fw" style="color: black; font-size: 18px; display: none;"></i></label>
+					<select id="PersonNumber" name="PersonNumber" class="w3-select w3-border" data-toggle="modal">
+						<option id="1" value="" disabled selected></option>
+						<option id="2" value="2" hidden></option>
+						<option value="search" data-toggle="modal" id="btnsearchperson">Search....</option>
+					</select>
+				</div>
+				<div class="w3-quarter w3-container">
+					<label>RFA Type&nbsp;&nbsp;<i id="Rfa_type" class="fas fa-cog fa-spin fa-fw" style="color: black; font-size: 18px; display: none;"></i></label>
+					<select class="w3-select w3-border" name="rfa_type" id="rfa_type">
+						<option value="" disabled selected></option>
+						<option th:each="actype: ${accmodationType}" th:value="${actype.getId()}" th:text="${actype.getDescription()}">
+					</select>
+				</div>
+				<div class="w3-quarter w3-container">
+					<label>Start Date &nbsp;&nbsp;<i id="Start_Date" class="fas fa-cog fa-spin fa-fw" style="color: black; font-size: 18px; display: none; "></i><span style="color: red">*</span></label>
+					<input type="date" id="Start_Datess" name="start_date" class="w3-input w3-border w3-round" style="height: 38px"> </div>
+				<div class="w3-quarter w3-container" style="margin-top: 20px; ">
+					<div type="button" class="w3-btn w3-green w3-round-large" id="btnSearchaccomodation" onclick="getaccomodationlist();"> <i class="fas fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Search</div>
+					<div type="button" class="w3-btn w3-blue w3-round-large" id="addAccomodation" onclick="loadCreatefunction();"> <i class="fas fa-edit" aria-hidden="true"></i>&nbsp;&nbsp;Add RFA/HRA</div>
+				</div>
+			</div>
+			<div class="w3-row ">
+				<div class="w3-quarter w3-container">
+					<label>Person Name:&nbsp;&nbsp;</label>
+					<label id="pname"></label>
+				</div>
+			</div>
+			<hr class="hrline">
+			<div class="w3-row">
+				<div id="resultSec" class="w3-responsive" style="display: none">
+					<br>
+					<table id="accomodationList" class="display compact w3-table" style="width: 100%;">
+						<thead>
+							<tr class="w3-theme-d3">
+								<th>Person Number</th>
+								<th>Name</th>
+								<th>RFA Type / HRA</th>
+								<th>Start Date</th>
+								<th>End Date.</th>
+								<th>Vendor Amt.</th>
+								<th>Leaser Amt.</th>
+								<th>Quarter Amt.</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div id="noData" class="w3-responsive" style="display: none">
+					<div>
+						<p>No record found...</p>
+					</div>
+				</div>
+				<div id="jsonLoaderPage" class="w3-responsive" style="display: none">
+					<div>
+						<div class='w3-container' style='width: 100%; text-align: center'> <i class='fa fa-cog fa-spin' style='font-size: 30px;'></i>
+							<p style="color: black;">Loading......</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- line modal -->
+			<div id="id02" class="w3-modal">
+				<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+					<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+						<div class="modal-header">
+							<h3 align="left">Search and Select:Person</h3>
+							<hr class="hrline"> </div>
+						<div class="modal-body">
+							<div>
+								<div class="w3-row-padding ">
+									<div class="w3-half">
+										<p>
+											<label style="float: left;">Person Number&nbsp;&nbsp;</label>
+											<input value="" class="w3-input w3-border" name="Leg_Name" id="CR_PER_POP_ID" type="text"> </p>
+									</div>
+									<div class="w3-half">
+										<p>
+											<label style="float: left;">Person Name&nbsp;&nbsp;</label>
+											<input value="" class="w3-input w3-border" name="Leg_Country" id="CR_PER_POP_Name" type="text"> </p>
+									</div>
+								</div>
+								<br>
+								<div class="w3-container">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<div class="w3-right">
+												<button id="CR_PER_POP_SEARCH" class="w3-button w3-theme w3-grey">Search </button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<BR>
+								<div id="resultSecPerson" class="w3-responsive" style="display: none">
+									<table id="PersonAccomodationList" class="display compact w3-table" style="width: 100%;">
+										<thead>
+											<tr class="w3-theme-d3">
+												<th>Person Id</th>
+												<th>Person Number</th>
+												<th>Person Name</th>
+												<th>Nature of Employment</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div id="noDataPerson" class="w3-responsive" style="display: none">
+									<div>
+										<p>No record found...</p>
+									</div>
+								</div>
+								<div id="jsonLoader" class="w3-responsive" style="display: none">
+									<div>
+										<div class='w3-container' style='width: 100%; text-align: center'> <i class='fa fa-cog fa-spin' style='font-size: 30px;'></i>
+											<p style="color: black;">Loading......</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="w3-container">
+								<div class="form-group">
+									<div class="w3-right">
+										<button id="CR_PER_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+										<button id="CR_PER_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<script src="/js/payroll/transection/manageAccomodation.js"></script>
+				</div>
+			</div>
+			<!-- PopUp End Here -->
+		</div>
+		<script src="/js/payroll/transection/manageAccomodation.js"></script>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+<div th:fragment="createJuri">
+<div class="w3-container" style="margin-top:14px;">
+		<h4 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Create Jurisdiction</h4>
+		</div>
+		<div class="w3-row">
+	<div class=w3-half>
+	<div class="w3-container">
+			<hr class="hrline">
+			<h5 style="font-weight: bold">
+								Jurisdiction
+			</h5> 
+			 <input th:value="${createJuri.getLegaljurisdictionid()}" style="display: none" id="txtJuriid"type="text" />
+             <input th:value="${createJuri.getActionid()}" style="display: none" id="txtJuriActionid" type="text" /> 
+			<p th:if="${createJuri.getLegaljurisdictionid()!=0}">
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input  th:value="${createJuri.getEffectstartdate()}" max="9999-12-31" tabindex="1" class="w3-input w3-border" name="judisEffectiveStartDate" id="CR_JUDIS_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+					<span id="JUR_EFFDT_ERROR" style="color:red"></span>
+				</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()==0}">
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input value="" class="w3-input w3-border" max="9999-12-31" tabindex="1" name="judisEffectiveStartDate" id="CR_JUDIS_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD"/>
+					<span id="JUR_EFFDT_ERROR" style="color:red"></span>
+				</p>	
+			<p th:if="${createJuri.getLegaljurisdictionid()==0}">
+			<label>Legislative Entity Registration Code</label><span style="color:red"> *</span>
+				<select id="CR_JUDIS_LEGISLATIVE_CODE" tabindex="3"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="requestLegalEntity : ${requestLegalEntity}"
+							th:value="${requestLegalEntity.getId()}"
+							th:text="${requestLegalEntity.getDescription()}">
+					</select><span id="JUR_ENTITY_REGN_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()!=0}">
+			<label>Legislative Entity Registration Code</label><span style="color:red"> *</span>
+				<select id="CR_JUDIS_LEGISLATIVE_CODE" tabindex="3"
+						class="w3-select w3-border" name="option" disabled>
+						<option value="" disabled selected></option>
+							<option th:each="requestLegalEntity : ${requestLegalEntity}"
+							th:selected="${requestLegalEntity.getId() eq createJuri.getLegalentityregncode()}"
+							th:value="${requestLegalEntity.getId()}"
+							th:text="${requestLegalEntity.getDescription()}"></option>
+					</select><span id="JUR_ENTITY_REGN_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()==0}">
+			<label>Country</label><span style="color:red"> *</span>
+				<select id="CR_JUDIS_COUNTRY" tabindex="5"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="CountryDetails : ${CountryDetails}"
+							th:value="${CountryDetails.getId()}"
+							th:text="${CountryDetails.getDescription()}">
+					</select><span id="JUR_COUNTRY_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()!=0}">
+			<label>Country</label><span style="color:red"> *</span>
+				<select id="CR_JUDIS_COUNTRY" tabindex="5"
+						class="w3-select w3-border" name="option" disabled>
+						<option value="" disabled selected></option>
+						<option th:each="CountryDetails : ${CountryDetails}"
+							th:selected="${CountryDetails.getId() eq createJuri.getCountry()}"
+							th:value="${CountryDetails.getId()}"
+							th:text="${CountryDetails.getDescription()}">
+					</select><span id="JUR_COUNTRY_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()==0}">
+			<label>Status</label><span style="color:red"> *</span>
+				<select id="CR_JUDIS_STATUS" tabindex="7"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="status : ${status}" th:selected="${status =='Active'}" th:value="${status}"
+							th:text="${status}">
+					</select><span id="JUR_STATUS_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()!=0}">
+			<label>Status</label><span style="color:red"> *</span>
+				<select id="CR_JUDIS_STATUS" class="w3-select w3-border" name="status" tabindex="7" disabled>
+						<option th:value="${createJuri.getStatus()}" th:text="${createJuri.getStatus()}" selected hidden></option>
+						<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+					</select><span id="JUR_STATUS_ERROR" style="color:red"></span>
+			</p>
+		</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container" style="margin-top:43px;">
+	            <p  th:if="${createJuri.getLegaljurisdictionid()!=0}">
+					<label>Effective End Date</label> 
+					<input th:value="${createJuri.getEffectenddate()}" max="9999-12-31" tabindex="2" class="w3-input w3-border" name="judisEffectiveEndDate" id="CR_JUDIS_EFFT_ENDDATE" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+				</p>
+				 <p  th:if="${createJuri.getLegaljurisdictionid()==0}">
+					<label>Effective End Date</label> 
+					<input value="" class="w3-input w3-border" tabindex="2" max="9999-12-31" name="judisEffectiveEndDate" id="CR_JUDIS_EFFT_ENDDATE" type="date" data-date="" data-date-format="YYYY MM DD"/>
+				</p>
+				<p th:if="${createJuri.getLegaljurisdictionid()==0}">
+			<label>Legislative Categories</label><span style="color:red"> *</span>
+			<select id="CR_JUDIS_LEG_CATOG" tabindex="4"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="requestLegislative : ${requestLegislative}"
+							th:value="${requestLegislative.getId()}"
+							th:text="${requestLegislative.getDescription()}">
+					</select><span id="JUR_LEGISLATIVE_CAT_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()!=0}">
+					<label>Legislative Categories</label> <span style="color:red"> *</span>
+					<select id="CR_JUDIS_LEG_CATOG" tabindex="4"
+						class="w3-select w3-border" name="option" disabled>
+						<option th:each="lc : ${requestLegislative}"
+							th:selected="${lc.getId() eq createJuri.getLegislativecategories()}"
+							th:value="${lc.getId()}"
+							th:text="${lc.getDescription()}"></option>
+					</select><span id="JUR_LEGISLATIVE_CAT_ERROR" style="color:red"></span>
+				</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()!=0}">
+			<label>Name</label><span style="color:red"> *</span>
+			<input th:value="${createJuri.getName()}"  tabindex="6" class="w3-input w3-border" name="judisName" id="CR_JUDIS_NAME" type="text" disabled>
+			<span id="JUR_NAME_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()==0}">
+			<label>Name</label><span style="color:red"> *</span>
+			<input  tabindex="6" class="w3-input w3-border" name="judisName" id="CR_JUDIS_NAME" type="text" >
+			<span id="JUR_NAME_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()==0}">
+			<label>Identifying</label><span style="color:red"> *</span>
+			<select id="CR_JUDIS_IDENTIFYING" tabindex="8"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="Identifying : ${Identifying}" th:value="${Identifying}"
+							th:text="${Identifying}">
+					</select><span id="JUR_IDENTIFYING_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${createJuri.getLegaljurisdictionid()!=0}">
+                 <label>Identifying</label><span style="color:red"> *</span>
+					<select  id="CR_JUDIS_IDENTIFYING" tabindex="8"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="Identifying : ${Identifying}" th:value="${Identifying}"
+							th:selected="${Identifying.getDescription() eq createJuri.getIdentifying()}"
+							th:text="${Identifying}">
+					</select><span id="JUR_IDENTIFYING_ERROR" style="color:red"></span>
+				</p>
+		</div>
+	</div>
+	<div class="w3-container">
+		<p>
+		<button id="JURI_CANCEL" rm="enterprisesetup/managelegaljurisdiction" tabindex="9" class="w3-button w3-theme w3-grey">Cancel</button>		
+		<button id="JURI_CREATE"  tabindex="10" class="w3-button w3-theme w3-grey">Submit</button>
+		</p>
+	</div>
+	<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="enterprisesetup/managelegaljurisdiction">OK</a>
+				</div>
+			</div>
+		</div>
+	</div>
+<script src="/js/validation/validation.js"></script>
+<script src="/js/create/Jurisdiction.js"></script>
+</div>

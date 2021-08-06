@@ -1,0 +1,312 @@
+<div th:fragment="pmdocRecord">
+	<!-- <div class="w3-bar w3-theme w3-left-align w3-large" style="position:fixed; z-index:100; margin-top:12px;"> -->
+	<!-- <div class="w3-theme" style="z-index:3">
+   <img id="PROFILE_PIC" class="pull-left" alt="" style="width:76px; height:76px; margin-left:10px" src="/icons/face-white-18dp.svg">
+   <h3 id="PAGE_NAME" style="font-weight:bold; margin-left:100px;">Page Name</h3>
+   <h4 id="USER_NAME"  style="margin-left:100px; margin-bottom:5px;">User Name</h4>
+
+</div> -->
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var res = /*[[${res}]]*/;
+		var netPay = /*[[${netPay}]]*/;
+        /*]]>*/
+	</script>
+	
+<div id="REPORTS_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+</div>
+	
+	<div class="w3-main">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;">
+					<i class="far fa-id-card" style="color:#05af05"></i> Document of Record
+				</h4>
+			</div>
+		</div>
+
+
+		<div class="w3-container">
+
+			<div id="DOC_DISPLAY" class="w3-row w3-border" style="margin-top:13px">
+				<div class="w3-bar w3-light-grey">
+					<button  class="w3-bar-item w3-button tablink w3-theme" onclick="openTabs(event,'DOC_TAB');" >Documents</button>
+					<!--<button  class="w3-bar-item w3-button tablink " onclick="openTab(event,'LETTERS_TAB');" >Letters</button>-->
+					<button  class="w3-bar-item w3-button tablink " onclick="openTabs(event,'PAYSLIP_TAB');" >Payslip</button>
+					<button  class="w3-bar-item w3-button tablink " onclick="openTabs(event,'SALARYCARD_TAB');" >Salary Card</button>
+					<button  class="w3-bar-item w3-button tablink " onclick="openTabs(event,'FORM15_TAB');" >Form 16</button>
+					<!--<button class="w3-bar-item w3-button tablink " onclick="openTab(event,'FORMS_TAB');">Forms</button>-->
+				</div>
+
+				<div id="DOC_TAB" class="w3-container legal">
+					<div class="w3-row">
+						<div style="margin-top:10px">
+							<button type="button" id="ADD_DOC_BTN" class="w3-button w3-theme w3-ripple  w3-right"
+								style="margin-right:30px; margin-bottom:10px; border-radius: 2px;">Add
+								Documents</button>
+						</div>
+						<div style="margin-top:60px">
+
+							<!-- ******************************************BLOCK FOR ADD DOCUMENT START********************************************** -->
+							<div id="ADD_DOC_BLOCK" class="w3-row" style="display:none">
+
+								<div style="margin-top:10px">
+									<h4 class="w3-text-theme" style="bottom:2px; display:inline">Add Documents</h4>
+								</div>
+								<hr
+									style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+								<form method="post" id="DOCUMENT" enctype="multipart/form-data">
+
+									<div class="w3-container">
+										<div class=w3-half>
+											<div class="w3-container">
+
+												<input th:value="${loginid}" name="personnumber" id="PRSN_NBR"
+													type="text" hidden />
+												<input id="filepath" name="filepath" type="hidden" />
+
+												<p>
+													<label>Document Name</label>
+													<input class="w3-input w3-border" name="documentname" id=""
+														type="text" />
+												</p>
+												<p>
+													<label>Type</label>
+													<select id="DOC_TYPE" class="w3-select w3-border" name="type">
+														<option selected hidden></option>
+														<option th:each="doccat : ${doccat}"
+															th:value="${doccat.getId()}"
+															th:text="${doccat.getDescription()}" />
+													</select>
+												</p>
+
+
+												<p>
+													<label>File : </label>
+													<input type="file" name="file" id="file" />
+													<!-- <button type="file" id="UPLOAD_BTN" class="w3-button w3-gray w3-small w3-ripple " style="border-radius:3px; display:inline;">Upload File</button> -->
+												</p>
+
+
+											</div>
+										</div>
+
+										<div class=w3-half>
+											<div class="w3-container">
+												<p>
+													<label>Description</label>
+													<textarea class="w3-input w3-border" id="" name="description"
+														style="height:116px" cols="50"></textarea>
+												</p>
+
+
+											</div>
+										</div>
+
+
+									</div>
+
+									<div>
+										<button type="button" id="SUBMIT_BTN_DOC" onclick="saveDocuForm();"
+											class="w3-button w3-theme w3-ripple "
+											style="margin-left:auto; margin-right:auto; margin-top:10px; ">Submit</button>
+										<button type="button" id="CANCEL_BTN" class="w3-button w3-theme w3-ripple "
+											style="margin-left:auto; margin-right:auto; margin-top:10px; ">Cancel</button>
+									</div>
+								</form>
+
+								<hr
+									style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+							</div>
+
+
+
+							<!-- ******************************************BLOCK FOR ADD DOCUMENT END********************************************** -->
+
+							<div class="w3-row-padding">
+								<div th:each="docs : ${docs}" class="w3-col" style="width:20%">
+									<div class="w3-panel w3-card">
+										<h4 th:text="${docs.getDocumentname()}"></h4>
+										<div class="w3-container w3-white" style="margin-bottom:15px">
+											<a id="DOWNLOAD_LINK"
+												th:href="'/getContent?location='+${docs.getFilepath()}" target="_blank"
+												download><i class="fa fa-download" aria-hidden="true"></i></a>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+				<!--<div id="LETTERS_TAB" class="w3-container w3-border legal" style="display:none" >
+                <div class="w3-row">
+
+                <div class=w3-half>
+                <div class="w3-container"   >
+
+
+                </div>
+                </div>
+
+
+                <div class=w3-half>
+                <div class="w3-container" >
+
+
+                </div>
+                </div>
+
+                </div>
+                </div>-->
+
+				<div id="PAYSLIP_TAB" class="w3-container w3-border legal" style="display:none">
+					
+                      <div class="w3-row">
+                  <div class="w3-container w3-quarter" style="margin-top: 5px;">
+                     <label style="color: grey;">Calendar</label>
+                     <!-- <select id="PAY_CALENDAR" class="w3-border w3-left w3-select"
+                        onchange="loaddPayslipp();" > -->
+                        <select id="PAY_CALENDAR" class="w3-border w3-left w3-select">
+                        <option value="" disabled selected></option>
+                        <option th:each="calc : ${calcode}" th:value="${calc.getCalendarid()}"
+                              th:text="${calc.getCalendarcode()}"></option>
+                     </select>
+                  </div>
+                  <div class="w3-container w3-quarter" style="margin-top: 5px;">
+                     <label style="color: grey;">&nbsp;</label>
+                     <!-- <input id="downloadpdf" value="Download Pdf" class="w3-btn w3-theme  w3-round-large"  type="button" style="display:none;"
+                        onclick="payslipPdf()" ></input> -->
+                        
+                        <a id="DOWNLOAD_LINKPY" target="_blank" download
+								onclick="downloadpdf();" class="w3-btn w3-theme  w3-round-large"
+								style="margin-top: 20px;">Download PDF</a>
+                  </div>
+                  <div class="w3-container w3-quarter" style="margin-top: 5px;">
+                     <label style="color: grey;">&nbsp;</label>
+                  </div>
+                  <div class="w3-container w3-quarter" style="margin-top: 5px;">
+                     <label style="color: grey;">&nbsp;</label>
+                  </div>
+               </div>
+           
+            <hr style="display: block; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+            <div id="div_payslip" class="w3-row">
+            </div>
+         </div>
+ </div>
+				
+				
+				<div id="SALARYCARD_TAB" class="w3-container w3-border legal" style="display:none">
+               <div class="w3-row">
+				  <div class="w3-container w3-quarter" style="margin-top: 5px;">
+                     <label style="color: grey;">Calendar From</label>
+                     <!--<select id="SAL_CALENDAR_FROM" class="w3-border w3-left w3-select"
+                        onchange="loadSalarycard();" >-->
+						<select id="SAL_CALENDAR_FROM" class="w3-border w3-left w3-select">
+                        <option value="" disabled selected></option>
+                        <option th:each="calc : ${calcode}" th:text="${calc.getCalendarcode()}"></option>
+                     </select>
+                  </div>
+                  <div class="w3-container w3-quarter" style="margin-top: 5px;">
+                     <label style="color: grey;">Calendar To</label>
+                     <select id="SAL_CALENDAR_TO" class="w3-border w3-left w3-select"
+                       >
+                        <option value="" disabled selected></option>
+                        <option th:each="calc : ${calcode}" th:text="${calc.getCalendarcode()}"></option>
+                     </select>
+                  </div>
+                  <div class="w3-container w3-quarter" style="margin-top: 5px;">
+                     <label style="color: grey;">&nbsp;</label>
+                     <!--<input id="downloadpdfsal" value="Download" class="w3-btn w3-theme  w3-round-large"  type="button" style="display:block;"
+                        onclick="SalarycardPdf();" ></input>-->
+						<input id="downloadpdfsal" value="Download" class="w3-btn w3-theme  w3-round-large"  type="button" style="display:block;"
+                        onclick="loadSalaryycardd();" ></input>
+                  </div>
+                  <div class="w3-container w3-quarter" style="margin-top: 5px;">
+                     <label style="color: grey;">&nbsp;</label>
+                  </div>
+                  <div class="w3-container w3-quarter" style="margin-top: 5px;">
+                     <label style="color: grey;">&nbsp;</label>
+                  </div>
+               </div>
+           
+            <hr style="display: block; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+            <div id="div_salarycard" class="w3-row">
+            </div>
+         </div>
+
+				
+
+				<div id="FORM15_TAB" class="w3-container w3-border legal" style="display:none">
+					<div class="w3-row">
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+							</div>
+						</div>
+
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<!--<div id="FORMS_TAB" class="w3-container w3-border legal" style="display:none">
+					<div class="w3-row">
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+							</div>
+						</div>
+
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+							</div>
+						</div>
+
+					</div>
+				</div>-->
+
+			</div>
+<script src="/js/pmdocrecord.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+
+		</div>
+
+		<div id="id01" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg"><b> Successfully Saved. Click OK to
+							continue.</b></label> <a id="btnOK" class="w3-button w3-green" rm="user/resignation">OK</a>
+
+				</div>
+			</div>
+		</div>
+
+	<div id="PAYSLIP_LOADERR" class="w3-modal" style="display: none">
+		<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+	</div>
+
+	<!-- 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+
+
+
+	</div>
+</div>

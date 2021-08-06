@@ -1,0 +1,127 @@
+<div th:fragment="ctgSearch">
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400;">
+                        <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;">
+                        <i class="fas fa-suitcase" style="color: chocolate;"></i>
+                        &nbsp;CTG Reimbursement
+                    </h4>
+                </div>
+            </div>
+
+        <!-- Ctg Search by Rajat Rawat start-->
+        <div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+        <div>
+	        <!-- <div class="w3-container w3-row" style="padding-top:2%">
+	        	<div class="w3-container w3-threequarter">
+		        	<h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">
+						Find Existing Elements
+					</h5>				
+				</div>					
+				<div class="w3-container w3-quarter">
+					<a id="CTGCreate" rm="/ctgReimbursement/CreateCTGRemb" class="w3-button w3-theme w3-right">+</a>
+							
+				</div>
+	        </div> -->
+	        <!-- <hr class="hrline"> -->	
+	       	<!-- <div class="w3-container w3-row" >
+	       		<div class="w3-padding">
+					<div class="w3-row">
+						<div class="w3-quarter w3-padding" style="margin-right:7%">
+							<div class="w3-container">
+							<img src="/images/avatar.png" width="150px" height="150px">
+							</div>
+						</div>
+<div class="w3-rest w3-padding">
+							<div class="w3-half">
+								<div class="w3-container">
+									<p>
+										<strong><label>Employee Number: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getPersonnumber()}"></label>
+									</p>
+									<p>
+										<strong><label>Employee Name: &nbsp;&nbsp;</label></strong>
+										<label  th:text="${personInfo.getPersonname()}"></label>
+									</p>
+									<p>
+										<strong><label>Date of Birth: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getDateofbirth()}"></label>
+									</p>
+									<p>
+										<strong><label>Email ID: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getEmailaid()}"></label>
+									</p>
+									<p>
+										<strong><label>Phone Number: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getPhonenumber()}"></label>
+									</p>			
+									<p>
+										<strong><label>Employee Type: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getEmployeetype()}"></label>
+									</p>					
+								</div>
+							</div>
+							<div class="w3-half">
+								<div class="w3-container">
+									<p>
+										<strong><label>Designation: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getDesignation()}"></label>
+									</p>					
+									<p>
+										<strong><label>Base Location: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getBaselocation()}"></label>
+									</p>			
+									<p>
+										<strong><label>Work Location: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getWorklocation()}"></label>
+									</p>
+									<p>
+										<strong><label>Joining Date: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getJoiningdate()}"></label>
+									</p>
+									<p>
+										<strong><label>Vehicle Used: &nbsp;&nbsp;</label></strong>
+										<label th:text="${personInfo.getVehicleused()}"></label>
+									</p>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+	       	</div> -->
+	       	
+	       	<div class="w3-bar w3-theme-l3">
+				<h5 class="w3-bar-item">Previous Claims</h5>
+				<div id="CTGCreate" rm="/ctgReimbursement/CreateCTGRemb" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" style="margin-top:8px;"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Raise New Request</div>
+			</div>
+	       			
+	       	<div class="w3-full w3-container w3-row" style="margin-top:10px">
+	       		<div id="resultCtg" class="w3-responsive">
+		        	<table class="w3-table-all" id="searchCtgtable" style="text-align: center;"> 
+		        		 <thead>	
+		        		    <th style="text-align: center;">Claim Id</th>	        		
+							<th style="text-align: center;">From City</th>
+							<th style="text-align: center;">To City</th>
+							<th style="text-align: center;">Transfer Date</th>
+							<th style="text-align: center;">Journey Date</th>							
+							<th style="text-align: center;">Amount Claimed</th>
+							<th style="text-align: center;">Amount Approved</th>
+							<th style="text-align: center;">Status</th>		        			        			
+							<th style="text-align: center;">View</th>
+							<th></th>	
+		        		</thead>        		
+		        	</table>
+		        </div>
+	        	<div id="noCtgData" style="display:none">
+	        		<p>No Results Found...</p>
+	        	</div>	        	    	  
+			</div>
+		</div>
+        <!-- Ctg Reimbursement Search Page Rajat  Rawat end-->
+
+	</div>
+	<script src="/js/reimbursement/ctgReimbursement/ctgSearch.js"></script>
+</div>        

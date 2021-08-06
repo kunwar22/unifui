@@ -1,0 +1,230 @@
+<div th:fragment="createLoc">
+	<div class="w3-container" style="margin-top: 14px;">
+		<h4 class="w3-text-theme" style="margin-top: 2px; bottom: 2px;">Location
+			Information</h4>
+	</div>
+	<div class="w3-row">
+		<div class=w3-half>
+			<div class="w3-container">
+				<hr class="hrline" />
+				<h5 style="font-weight: bold">Location Details</h5>				
+				<p th:if="${locationDetails.getEffectstartdate()==null}">
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input style="height:38px" max="9999-12-31" th:value="${locationDetails.getEffectstartdate()}" flag="none" th:msg="${locationDetails.getAddtionalatr()}" class="w3-input w3-border" name="EffectiveStartDate" id="CR_EFFDT" type="date" data-date="" data-date-format='YYYY MM DD' tabindex="1"/>
+					<span id="EFFDT_ERROR" style="color:red"></span>
+				</p>
+				<p th:if="${locationDetails.getEffectstartdate()!=null}">
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input style="height:38px" max="9999-12-31" th:value="${locationDetails.getEffectstartdate()}" flag="none" th:msg="${locationDetails.getAddtionalatr()}" class="w3-input w3-border" name="EffectiveStartDate" id="CR_EFFDT" type="date" data-date="" data-date-format='YYYY MM DD' tabindex="1" disabled/>
+					<span id="EFFDT_ERROR" style="color:red"></span>
+				</p>
+				<p>
+					<label>Name</label><span style="color:red"> *</span>
+					<input style="height:38px" th:value="${locationDetails.getName()}" required class="w3-input w3-border" name="LocationName" id="CR_LOC_NAME" type="text" tabindex="3"> 
+					<span id="NAME_ERROR" style="color:red"></span>
+					<input th:value="${locationDetails.getLocationid()}" id="txtLocid" style="display: none" type="text" /> 
+					<input th:value="${locationDetails.getActionid()}" id="txtActionid" style="display: none" type="text" />
+					</p>
+			</div>
+		</div>
+		<div class=w3-half>
+			<div class="w3-container" style="margin-top: 45px;">
+				<p th:if="${locationDetails.getCode()==null}">
+					<label>Code</label><span style="color:red"> *</span>
+					<input style="height:38px"  class="w3-input w3-border" name="LocationCode" id="CR_LOC_CODE" type="text" tabindex="2">
+					<span id="CODE_ERROR" style="color:red"></span>
+				</p>
+				<p th:if="${locationDetails.getCode()!=null}">
+					<label>Code</label><span style="color:red"> *</span>
+					<input style="height:38px" th:value="${locationDetails.getCode()}" class="w3-input w3-border" name="LocationCode" id="CR_LOC_CODE" type="text" tabindex="2" disabled>
+					<span id="CODE_ERROR" style="color:red"></span>
+				</p>
+				<p th:if="${locationDetails.getStatus()!=''}">
+                 <label>Status</label><span style="color:red"> *</span>
+                 <select id="CR_STATUS" class="w3-select w3-border" name="status" tabindex="4" required>
+						<option th:value="${locationDetails.getStatus()}" th:text="${locationDetails.getStatus()}" selected hidden></option>
+						<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+				</select>
+				</p>
+				<p th:if="${locationDetails.getStatus()==''}">
+                  <label>Status</label><span style="color:red"> *</span>
+					<select id="CR_STATUS" class="w3-select w3-border" tabindex="4" name="option" required>
+						<option th:each="st : ${status}" th:selected="${st == 'Active' }" th:value="${st}" th:text="${st}">
+					</select>
+				</p>
+					<span id="STATUS_ERROR" style="color:red"></span>
+			</div>
+		</div>
+	</div>
+	<!-- -----------------------  section End ---------------------------- -->
+	<!-- -----------------------  section Start ---------------------------- -->
+	<div class="w3-container">
+		<h5 style="font-weight: bold">Main Address</h5>
+	</div>
+	<div class="w3-row">
+		<div class=w3-half>
+			<div class="w3-container">
+				<p th:if="${locationDetails.getCountry()!=''}">
+					<label>Country</label><span style="color:red"> *</span>
+					 <select id="countryList" class="w3-select w3-border" tabindex="5" name="option" required>
+						<option value="" disabled selected></option>
+						<option th:each="CountryDetails : ${CountryDetails}"
+							th:selected="${CountryDetails.getId() eq locationDetails.getCountry()}"
+							th:value="${CountryDetails.getId()}"
+							th:text="${CountryDetails.getDescription()}">
+					</select>
+					<span id="COUNTRY_ERROR" style="color:red"></span>
+				</p>
+				<div id="Divtimezone">
+					<p th:if="${locationDetails.getTimezone()!=0}">
+					<label>Time Zone </label>
+						<select id="timezone" class="w3-select w3-border" tabindex="7" name="option">
+							<option value="" disabled selected></option>
+							<option th:each="timezoneDetails : ${timezoneDetails}"
+								th:value="${timezoneDetails.getId()}"
+								th:text="${timezoneDetails.getDescription()}"
+								th:selected="${timezoneDetails.getId() eq locationDetails.getTimezone()}">
+						</select>
+					</p>
+				</div>
+				<p th:if="${locationDetails.getTimezone()==0}">
+					<label>Time Zone </label>
+					<select id="timezone" tabindex="7" class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="timezoneDetails : ${timezoneDetails}"
+							th:value="${timezoneDetails.getId()}"
+							th:text="${timezoneDetails.getDescription()}">
+					</select>
+				</p>
+				<p>
+					<label>Email</label> <input tabindex="9" style="height:38px"
+						th:value="${locationDetails.getEmailid()}"
+						class="w3-input w3-border" name="Email" id="CR_EMAIL" type="email">
+						<span id="CR_MAIL_ERROR" style="color:red"></span>
+				</p>
+				<p>
+					<label>Address Line 1</label> <span style="color:red"> *</span>
+					<input tabindex="11" style="height:38px" th:value="${locationDetails.getAddressline1()}"
+						class="w3-input w3-border" name="Address1" id="CR_ADDRESS1"
+						type="text">
+						<span id="ADDR_ERROR" style="color:red"></span>
+				</p>
+				<p>
+					<label>Address Line 3</label>
+					 <input tabindex="13" style="height:38px"	th:value="${locationDetails.getAddressline3()}"
+						class="w3-input w3-border" name="Address3" id="CR_ADDRESS3"
+						type="text">
+				</p>
+				<p th:if="${locationDetails.getPincode()==0}">
+				<label>Pin Code</label><span style="color:red"> *</span> 
+				  <input value="" class="w3-input w3-border" name="pincode" id="CR_PIN" type="number" tabindex="15">
+				<span id="CR_PIN_ERROR" style="color:red"></span> 
+				</p>
+				<p th:if="${locationDetails.getPincode()!=0}">
+				<label>Pin Code</label><span style="color:red"> *</span> 
+				  <input th:value="${locationDetails.getPincode()}" class="w3-input w3-border" name="pincode" id="CR_PIN" type="number" tabindex="15">
+				<span id="CR_PIN_ERROR" style="color:red"></span> 
+				</p>
+				<p>
+					<button id="locationCancel" rm="enterprisesetup/managelocation" tabindex="16" class="w3-button w3-theme w3-grey">Cancel</button>
+					<button id="locationCreate" tabindex="17" class="w3-button w3-theme w3-grey">Submit</button>
+				</p>
+			</div>
+		</div>
+		<div class=w3-half>
+			<div class="w3-container">
+				<p th:if="${locationDetails.getState()!=''}">
+				<div id="divState">
+					<p>
+						<label>State</label> <select tabindex="6" id="stateList"
+							class="w3-select w3-border" name="option">
+							<option value="" disabled selected></option>
+							<option th:each="StateDetails : ${StateDetails}"
+								th:value="${StateDetails.getId()}"
+								th:text="${StateDetails.getDescription()}"
+								th:selected="${StateDetails.getId() eq locationDetails.getState()}">
+						</select>
+					</p>
+				</div>
+				</p>
+				<p th:if="${locationDetails.getAddresstype()!=null}">
+					<label>Address Type<label> <select tabindex="8" id="addressType"
+							class="w3-select w3-border" name="option">
+								<option value="" disabled selected></option>
+								<option th:each="AddressType : ${address}"
+									th:value="${AddressType.getId()}"
+									th:text="${AddressType.getDescription()}"
+									th:selected="${AddressType.getId() == locationDetails.getAddresstype()}">
+						</select>
+				</p>
+				<p th:if="${locationDetails.getAddresstype()==null}">
+					<label>Address Type<label> <select tabindex="8" id="addressType"
+							class="w3-select w3-border" name="option">
+								<option value="" disabled selected></option>
+								<option th:each="AddressType : ${address}"
+									th:value="${AddressType.getId()}"
+									th:text="${AddressType.getDescription()}">
+						</select>
+				</p>
+				<p>
+					<label>Telephone</label> <input tabindex="10" style="height:38px"
+						th:value="${locationDetails.getPhoneno()}" 
+						class="w3-input w3-border" name="LocationCode" id="CR_TELEPHONE"
+						type="number">
+						<span id="TELE_ERROR" style="color:red"></span>
+				</p>
+				<p>
+					<label>Address Line 2</label> <input tabindex="12" style="height:38px" th:value="${locationDetails.getAddressline2()}" class="w3-input w3-border"
+						name="Address2" id="CR_ADDRESS2" type="text">
+				</p>
+				<p>
+					<label>City</label> <input tabindex="14" style="height:38px"
+						th:value="${locationDetails.getCitytown()}"
+						class="w3-input w3-border" name="City" id="CR_CITY" type="text">
+						<span id="CR_CITY_ERROR" style="color:red"></span>
+				</p>
+				<p>
+					<input style="display: none" 
+						th:value="${locationDetails.getLocationid()}"
+						class="w3-input w3-border" name="Locationid" id="CR_LOCATIONID">
+				</p>
+			</div>
+		</div>
+		<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="enterprisesetup/managelocation">OK</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- -----------------------  section End ---------------------------- -->
+<script>
+$(document).ready(function(){
+$("#idError").css('display', 'none');
+	var strMsg=$("#CR_EFFDT").attr("msg");
+	if(strMsg=="Error")
+		{
+			$("#idError").css('display', 'block');
+			$("#locationCreate").attr('id','btnSUb');
+			$("#CR_EFFDT").attr('flag','update');
+		}
+	else if(strMsg!="Error" || strMsg!="Correct")
+	{
+		if(strMsg=="Correct")
+			{
+				$("#CR_EFFDT").attr('flag','correct');
+			}
+		if(strMsg!="Correct")
+			{
+				$("#CR_EFFDT").val(strMsg);
+				$("#CR_EFFDT").attr('flag','update');
+			}
+	}
+});
+</script>
+	<script src="/js/validation/validation.js"></script>
+	<script src="/js/search/locationsearch.js"></script>
+</div>

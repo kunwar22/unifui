@@ -1,0 +1,85 @@
+<div th:fragment="termination">
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var response= /*[[${result}]]*/;
+		/*]]>*/
+	</script>
+	<div class="w3-row">
+		<h4 class="w3-text-theme">
+			<div class="w3-container"><i class="fas fa-door-open" style="color:#f79b7c"></i> Termination</div>
+		</h4>
+	</div>
+	<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+	<div class="w3-row">
+	<form  method="post" id="TERMINATION_FORM" enctype="application/x-www-form-urlencoded">
+		<div class="w3-row-padding">
+			<input type="hidden" name="actionid" th:value="${term.getActionid()}">
+			<input type="hidden" name="jobdatatid" th:value="${term.getJobdatatid()}">
+			<input type="hidden" name="personnumber" th:value="${term.getPersonnumber()}">
+			<input type="hidden" name="lmrcactionid" th:value="${term.getLmrcactionid()}">
+			<div class="w3-half">
+				<p>
+					<label>Action</label><span style="color: red"> *</span>
+					<select id="TER_ACTION" class="w3-select w3-border" name="hireaction" onchange="actionchange();">
+						<option id="1" value="0" th:text="${term.getHireactiondsc()}" selected hidden></option>
+						<option th:each="ac : ${action}" th:value="${ac.getId()}" th:text="${ac.getDescription()}" th:selected="${term.getHireaction() eq ac.getId()}" ></option>
+					</select>
+					<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("hireaction")!=null}'  th:text='${bindingResult.getFieldError("hireaction").getDefaultMessage()}'></span>
+				</p>
+			</div>
+			<div class="w3-half">
+				<p>
+					<label>Reason</label><span style="color: red"> *</span>
+					<select id="TER_REASON" class="w3-select w3-border" name="hirereason">
+						<option id="1" th:value="${term.getHirereason()}" th:text="${term.getHirereasondsc()}" hidden selected></option>
+					</select>
+					<input type="hidden" id="hirereasondsc" name="hirereasondsc">
+					<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("hirereason")!=null}'  th:text='${bindingResult.getFieldError("hirereason").getDefaultMessage()}'></span>
+				</p>
+				<!--<p th:if="${(term.getHirereason()!=0) and (term.getHirereason()!=null)}">
+					<label>Reason</label><span style="color: red"> *</span>
+					<select id="TER_REASON" class="w3-select w3-border" name="hirereason">
+						<option id="1" th:value="${term.getHirereason()}" th:text="${term.getHirereasondsc()}" hidden selected></option>
+					</select>
+					<input type="hidden" id="hirereasondsc" name="hirereasondsc">
+					<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("hirereason")!=null}'  th:text='${bindingResult.getFieldError("hirereason").getDefaultMessage()}'></span>
+				</p>
+				<p th:if="${(term.getHirereason()==0) or (term.getHirereason()==null)}">
+					<label>Reason</label><span style="color: red"> *</span>
+					<select id="TER_REASON" class="w3-select w3-border" name="hirereason">
+						<option id="1" value="0" selected></option>
+					</select>
+					<input type="hidden" id="hirereasondsc" name="hirereasondsc">
+					<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("hirereason")!=null}'  th:text='${bindingResult.getFieldError("hirereason").getDefaultMessage()}'></span>
+				</p>-->
+			</div>
+		</div>
+		<div class="w3-row-padding">
+			<div class="w3-half">
+				<p>
+					<label>Notification Date</label><span style="color: red"> *</span>
+					<input th:value="${term.getNotifydate()}" class="w3-input w3-border" id="TERMNOTIDATE"  name="notifydate" type="date" data-date="" data-date-format="YYYY MM DD"/>
+					<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("notifydate")!=null}'  th:text='${bindingResult.getFieldError("notifydate").getDefaultMessage()}'></span>
+				</p>
+			</div>
+			<div class="w3-half">
+				<p>
+					<label>Actual Termination Date</label><span style="color: red"> *</span>
+					<input th:value="${term.getActtarminationdate()}" class="w3-input w3-border" id="TERMACTDATE"  name="acttarminationdate" type="date" data-date="" data-date-format="YYYY MM DD"/>
+					<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("acttarminationdate")!=null}'  th:text='${bindingResult.getFieldError("acttarminationdate").getDefaultMessage()}'></span>
+				</p>
+			</div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+			<button type="button" id="TER_CANCEL_BTN" onclick="cancelResignation();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px;">Cancel</button>
+			<button th:if="${term.getHireaction()!=18} and ${term.getHireaction()!=15} and ${term.getHireaction()!=30}" type="button" id="TER_SUBMIT_BTN" onclick="saveResignation();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px;">Submit</button>
+		</div>
+	</form>
+	</div>
+
+
+
+<script src="/js/termination/termination.js"></script>
+</div>
+	

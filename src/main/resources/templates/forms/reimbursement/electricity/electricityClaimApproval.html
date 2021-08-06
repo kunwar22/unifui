@@ -1,0 +1,337 @@
+<div th:fragment="electricityClaimapproval">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<script th:inline="javascript">
+/*<![CDATA[*/
+    var resultfinal = /*[[${result}]]*/;
+/*]]>*/
+</script>
+
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"><i class="fas fa-bolt" style="color: #f7d351"></i>
+					&nbsp;Approval for Electricity Reimbursement
+				</h4>
+			</div>
+		</div>
+
+		<!-- Employee Data display starts here -->
+		
+		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item" >Approval Details</h5>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${status eq 'Unread'}" >
+				<div type="button" class="w3-btn w3-blue w3-round-large " id="btnBack" rm="/tasks/myWorklist"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</div>
+				<div type="button" class="w3-btn w3-red w3-round-large" id="btnSubmit"  onclick="approvalSubmit('Rejected')" ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;&nbsp;Reject</div>
+				<div type="button" class="w3-btn w3-green w3-round-large" id="btnSave" onclick="approvalSubmit('Approved')"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;Approve</div>
+			</div>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${status eq 'Read'}" >					
+					<div type="button" class="w3-btn w3-blue w3-round-large " id="btnBack" rm="/tasks/myWorklist"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</div>
+			</div>
+		</div>
+
+		<!-- Employee Data display ends here -->
+
+
+		<!--Form Content Goes here-->
+
+		<div class="w3-row w3-padding-large w3-margin-top">
+			<p>
+				<label style="font-weight: bold; color: black;">Entitlement:&nbsp;&nbsp;</label> <label style="color:blue"
+					th:text="${ceilingamt}"></label>&nbsp;&nbsp;<label style="font-weight: bold; color: black;">Units Per
+					Month</label>
+			</p>
+			<!-- <h5 class="w3-text-theme" style="font-weight: bold;">Claim
+				Details</h5> -->
+
+			<form method="post" enctype="multipart/form-data" id="ELEC_SAVE" onsubmit="return false;">
+				<div class="w3-row">
+					<div style="display: block;">
+						<input id="statusid" value="" type="hidden" name="statusid" /> <input
+							type="hidden" id="elec_rembid" th:name="reimburseid" value="4" />
+
+						<!-- <input type="text" id="elec_personnumber"
+							th:name="personnumber" th:value="${personInfo.getPersonnumber()}" /> -->
+
+						<input id="elec_personnumber" th:name="personnumber"
+							value="" type="hidden" />
+
+						<!-- <input type="text" id="elec_personid" th:name="personid"
+							th:value="${personInfo.getPersonnumber()}" />
+							 -->
+						<input id="elec_claimid"
+							th:name="electricityid"
+							th:value="${electricitymodel.getElectricityid()}" type="hidden"/>
+
+						<!-- <input
+							type="text" id="designation" name="person_designation" value="MD" /> -->
+						<input type="text" id="EL_JOB" name="person_designation"
+							th:value="${personInfo.getJob()}" hidden/>
+							
+						<!--<input id="designation" name="person_designation"
+							th:value="${personInfo.getDesignation()}" type="hidden"/>-->
+					</div>
+				</div>
+				<div class="w3-row">&nbsp;</div>
+				<div class="w3-row">
+					<div class="w3-twothird w3-container">
+						<div class="w3-row">
+							<!-- OM/PROJECT STARTS -->
+							<div class="w3-half w3-container w3-padding">
+
+
+								<p
+									th:if="${electricitymodel.getElectricityid()!=0} and ${display_mode == 'view'}">
+									<label style="color: black;">OM/Project</label><span style="color: red;">*</span> <select
+										disabled th:name="omproject"
+										class="w3-select w3-border w3-round">
+										<option value="" disabled selected>--Select Option--</option>
+										<option th:each="omp : ${omproject}" th:value="${omp.getId()}"
+											th:text="${omp.getDescription()}"
+											th:selected="${electricitymodel.getOmproject() == omp.getId()}"></option>
+									</select>
+								</p>
+							</div>
+							<!-- OM/PROJECT ENDS -->
+							<!-- VEHICLE USED STARTS -->
+							<div class="w3-half w3-container w3-padding">
+
+
+								<p th:if="${electricitymodel.getElectricityid()!=0} and ${display_mode == 'view'}">
+									<label style="color: black;">Vehicle Used</label><span style="color: red;">*</span> <select
+										disabled th:name="vehicleused"
+										class="w3-select w3-border w3-round"><option
+											disabled selected>Select</option>
+										<option th:each="veh : ${vehicles}" th:value="${veh.getId()}"
+											th:text="${veh.getDescription()}"
+											th:selected="${electricitymodel.getVehicleused() == veh.getId()}"></option>
+									</select>
+								</p>
+							</div>
+							<!-- VEHICLE USED ENDS -->
+						</div>
+						<div class="w3-row">
+							<!-- FROM DATE STARTS -->
+							<div class="w3-half w3-container w3-padding">
+
+
+								<p
+									th:if="${electricitymodel.getElectricityid()!=0} and ${display_mode == 'view'}">
+									<label style="color: black;">From Date</label><span style="color: red;">*</span> <input
+										readonly type="date" th:name="fromdate" id="from_date"
+										th:value="${electricitymodel.getFromdate()}"
+										class="w3-input w3-border w3-round" />
+								</p>
+							</div>
+							<!-- FROM DATE ENDS -->
+							<!-- TO DATE STARTS -->
+							<div class="w3-half w3-container w3-padding">
+
+
+								<p
+									th:if="${electricitymodel.getElectricityid()!=0} and ${display_mode == 'view'}">
+									<label style="color: black;">To Date</label><span style="color: red;">*</span> <input
+										readonly type="date" th:name="todate" id="to_date"
+										th:value="${electricitymodel.getTodate()}"
+										class="w3-input w3-border w3-round" />&nbsp;&nbsp;
+								</p>
+							</div>
+							<!-- TO DATE ENDS -->
+						</div>
+						<div class="w3-row">
+							<!-- BILLED UNIT STARTS -->
+							<div class="w3-half w3-container w3-padding">
+
+
+								<p
+									th:if="${electricitymodel.getElectricityid()!=0} and ${display_mode == 'view'}">
+									<label style="color: black;">Billed Units</label><span style="color: red;">*</span> <input
+										type="text" th:name="billedunits" id="billed_units"
+										th:value="${electricitymodel.getBilledunits()}" readonly
+										class="w3-input w3-border w3-round" />
+								</p>
+							</div>
+							<!-- BILLED UNITS ENDS -->
+							<!-- BILLED AMOUNT STARTS -->
+							<div class="w3-half w3-container w3-padding">
+
+
+								<p
+									th:if="${electricitymodel.getElectricityid()!=0} and ${display_mode == 'view'}">
+									<label style="color: black;">Billed Amount</label><span style="color: red;">*</span>
+									<input readonly type="text" th:name="billedamt" id="billed_amt"
+										th:value="${electricitymodel.getBilledamt()}"
+										class="w3-input w3-border w3-round" />
+								</p>
+							</div>
+							<!-- BILLED AMOUNT ENDS -->
+						</div>
+						<div class="w3-row">
+							<!-- CLAIMED UNIT STARTS -->
+							<div class="w3-half w3-container w3-padding">
+
+
+								<p
+									th:if="${electricitymodel.getElectricityid()!=0} and ${display_mode == 'view'}">
+									<label style="color: black;">Claimed Units</label><span style="color: red;">*</span>
+									<input type="text" th:name="claimedunit" id="claimed_units"
+										th:value="${electricitymodel.getClaimedunit()}"
+										class="w3-input w3-border w3-round" readonly />
+								</p>
+							</div>
+							<!-- CLAIMED UNITS ENDS -->
+							<!-- CLAIMED AMOUNT STARTS -->
+							<div class="w3-half w3-container w3-padding">
+
+
+								<p
+									th:if="${electricitymodel.getElectricityid()!=0} and ${display_mode == 'view'}">
+									<label style="color: black;">Claimed Amount</label><span style="color: red;">*</span>
+									<input type="text" th:name="claimedamt" id="claimed_amt"
+										readonly th:value="${electricitymodel.getClaimedamt()}"
+										class="w3-input w3-border w3-round" />
+								</p>
+							</div>
+							<!-- CLAIMED AMOUNT ENDS -->
+						</div>
+						<div class="w3-row">
+							<!-- ATTACHMENT STARTS -->
+							<div class="w3-half w3-container w3-padding">
+								<input id="attachments" name="attachments" type="hidden" />
+
+								<p
+									th:if="${electricitymodel.getElectricityid()!=0} and ${display_mode == 'view'}">
+									<a id="DOWNLOAD_LINK" th:href="${electricitymodel.getAttachments()}" target="_blank" download>Download Attachment</a>
+
+								</p>
+							</div>
+							<!-- ATTACHMENT ENDS -->
+
+						</div>
+
+					</div>
+					<div class="w3-third w3-container w3-border w3-border-black">
+						<div class="w3-row">
+							<p>
+								<label style="color: black;">Ceiling Limit (in units)</label><input type="text"
+									th:name="ceiling_units" id="ceiling_units" th:value="${ceilingamt}" readonly
+									class="w3-input w3-border w3-round" />
+							</p>
+							<p>
+								<label style="color: black;">Bill Duration(in Days)</label><input type="text"
+									id="bill_duration" name="bill_duration" readonly
+									class="w3-input w3-border w3-round" />
+							</p>
+							<p style="display:none;">
+								<label style="color: black;">60% of claimed units</label><input type="text"
+									th:name="billed_units_perc" id="billed_units_perc"
+									class="w3-input w3-border w3-round" readonly />
+							</p>
+							<p style="display:none;">
+								<label style="color: black;">Total eligible units</label><input type="hidden"
+									th:name="units_eligible" id="units_eligible"
+									class="w3-input w3-border w3-round" readonly />
+							</p>
+							<p>
+								<label style="color: black;">Approved Units</label><input type="text" th:name="eligible_units"
+									id="eligible_units" class="w3-input w3-border w3-round"
+									readonly /> 
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="w3-row">&nbsp;</div>
+
+				<h6 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">
+					To-Do Task
+				</h6>
+				<div class="w3-row">
+					<div class="w3-third w3-container">
+						<p>
+							<strong><label>Approved Amount: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+							<input id="txtAmount" th:value="${APPRAMT}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" 
+								type="text" name="approvedamt" class="w3-input w3-border w3-round"/>
+						</p>
+						<label id="amterror"></label>
+					</div>
+					<div class="w3-third w3-container">
+						<p>
+							<strong><label>Comments: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+							<textarea id="txtComment" name="msg" class="w3-input w3-border w3-round"></textarea>
+						</p>
+						<label id="msgerror"></label>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+					<!-- <label id="lblMsg" style="font-weight: bold"> </label> <a
+						id="btnOK">OK</a> -->
+
+					<label id="lblMsg" style="font-weight: bold"> </label> <a
+						id="btnOK" rm="reimbursement/electricity">OK</a>
+
+				</div>
+
+			</div>
+		</div>
+		<!-- ----------------------------------------------------Approval Section Start Here------------------ -->
+		<h5> Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${electricitymodel.getElectricityid()}" aria-hidden="true" th:onclick='getapprovalhistory(4,this.id);'></i></h5>
+		<section class="container" th:style="${display_mode == 'view'}?'display:block':'display:none'">
+
+			<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+			<div class="container__sources">
+
+				<div style="box-shadow: none;background: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+					<div class="sources--cms" style="width: 160px">
+						<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+						<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+						<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+
+						<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-check tick"></i>
+
+						</div>
+						<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+							<i class="fa fa-clock-o pending"></i>
+						</div>
+						<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+							<i class="fa fa-close cancel"></i>
+
+						</div>
+
+					</div>
+					<svg class="svghor" viewBox="0 10 100 100">
+						<line  x1="5" x2="100" y1="80" y2="80"></line>
+					</svg>
+					<svg class="svgver" viewBox="0 20 100 100 ">
+						<line  x1="40" x2="40" y1="0" y2="100"></line>
+					</svg>
+				</div>
+				<div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+			</div>
+
+			<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+
+
+		</section>
+		<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+		<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+		<script type="text/javascript"
+			src="/js/reimbursement/electricity/electricity.js"></script>
+	</div>
+</div>

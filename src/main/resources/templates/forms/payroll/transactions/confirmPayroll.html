@@ -1,0 +1,61 @@
+<div th:fragment="confirmPayroll">
+
+    <div class="w3-container" style="margin-top: -42px;">
+        <div class="w3-row">
+            <h5>Confirm Payroll</h5>
+            <hr class="hrline">
+        </div>
+        <div class="w3-row">
+            <div class="w3-container">
+                <div  id="lockpayrollbtn"  onclick="lockPayroll();"  style="background-color: #ff8507; color: white; cursor: pointer;" class="w3-btn w3-round-large" type="button"><i class="fa fa-lock" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Lock Payroll</div>
+            </div>
+        </div>
+        <br>
+        <div class="w3-row">
+            <a id="downloadLink" href="">Click to Download Payroll Register (Draft) for HR</a><br>
+            <a id="downloadLink1" href="">Click to Download Payroll Register (Draft) for Finance</a>
+            <h5>Calculated Salary</h5>
+            <div class="w3-responsive"	style="max-height: 300px; overflow-y: scroll;">
+                <table id="calculatedSalary" class="w3-table-all">
+                    <thead>
+                        <tr class="w3-theme-d1">
+                            <th>Calendar Code</th>
+                            <th>Person Number</th>
+                            <th>Name</th>
+                            <th>Amount (INR)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="viewSalaryBrakeup" class="w3-modal" style="padding-top: 60px !important; display: none">
+            <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 40%;">
+                <header class="w3-container w3-theme-d1">
+                    <h4> <i class="fas fa-tasks"></i>&nbsp;&nbsp;Element-wise Salary Brakeup <br><span id="employee" style="font-size: 15px; float: right; color: paleturquoise;"></span></h4>
+                </header>
+                <div class="w3-container">
+                    <table class="w3-table w3-striped">
+                        <thead>
+                            <tr>
+                                <th>Element Name</th>
+                                <th style="text-align: right;">Amount (INR)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="elementvalueblock">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="w3-container w3-light-grey w3-padding">
+                    <button class="w3-button w3-right w3-white w3-border" onclick="document.getElementById('viewSalaryBrakeup').style.display='none'">Close</button>
+                </div>
+            </div>
+        </div>
+        <script src="/js/payroll/transection/confirmpayroll.js"></script>
+    </div>
+</div>

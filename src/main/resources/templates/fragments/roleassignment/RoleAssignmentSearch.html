@@ -1,0 +1,77 @@
+<div th:fragment="RoleAssignmentSearch">
+    <style type="text/css">
+        .thstyle {
+            width: 50%;
+        }
+    </style>
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom">
+                <h4 style="font-weight: 400; display: inline-block;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;" /> <i class="fas fa-user-ninja" style="color: olive;"></i>&nbsp;&nbsp;&nbsp;Role Assignment
+                </h4>
+                <!--<input style="display:inline-block; th:if="" margin-top:10px;" value="Save" type="button" id="savebtn" onClick="saveEmailConfig();" class="w3-btn w3-theme w3-right w3-round-large"/>-->
+            </div>
+        </div>
+        <hr class="hrline" />
+		
+		<input type="hidden" id="status" th:value="${roleassignresult}" />
+
+        <div class="w3-bar w3-theme-l3">
+            <h5 class="w3-bar-item">Search Role Mapping</h5>
+
+            <div class="w3-bar-item w3-right" style="margin-top: 1px;">
+                <div type="button" class="w3-btn w3-blue w3-round-large" id="createmapping" onclick="newMapping()"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Create Role Mapping</div>
+            </div>
+            <!--<div class="w3-bar-item w3-right" style="margin-top: 1px;">
+                <div type="button" class="w3-btn w3-blue w3-round-large" id="assignRole" onclick="assignRole()">&nbsp;&nbsp;Assign Role</div>
+            </div>-->
+        </div>
+        <div class="w3-card w3-margin w3-padding-large">
+            <form method="post" id="SEARCH_ROLE_MAPPING" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+                <div class="w3-row">
+                    <div class="w3-quarter w3-container">
+                        <p>
+                            <label class="w3-text-black">Mapping Name</label>
+                            <input type="text" id="mappingname" name="mappingname" class="w3-input w3-border w3-round" />
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("mappingname")!=null}' th:text="${bindingResult.getFieldError('mappingname').getDefaultMessage()}"></span>
+                        </p>
+                    </div>
+                    <div class="w3-quarter w3-container">
+						<p>
+							<div type="button" class="w3-btn w3-blue w3-round-large" id="searchmapping" style="margin-top: 5px;" onclick="loadRoleMappingData();"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;Search</div>
+						</p>
+					</div>
+                </div>
+			</form>
+			<div class="w3-row">
+				<div class="w3-full w3-container">&nbsp;</div>
+			</div>
+            <!-- code for data table starts here -->
+			<div class="w3-row" style="margin-top:10px">
+				<div class="w3-full w3-container">
+						<div id="search_result" class="w3-responsive" style="display:none;">
+							<table id="rolemappingdt" class="w3-table-all" style="width:100%;">
+								<thead>
+									<tr>
+										<th style="width:20%;">Mapping ID</th>										
+										<th style="width:20%;">Mapping Name</th>
+										<th style="width:20%;">Status</th>
+										<th style="width:20%;">View</th>
+										<th style="width:20%;">Edit</th>																				
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noData" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+				</div>
+			</div>
+			<!-- code for data table ends here -->
+        </div>
+		<script src="/js/roleassignment/roleassign.js"></script>
+    </div>
+</div>

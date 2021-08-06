@@ -1,0 +1,285 @@
+<div th:fragment="adhocLocalClaimApproval">
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	    var resultfinal = [[${result}]];
+	    var clid = [[${adhocdata.getClaimid()}]];
+	    var modee = [[${mode}]];
+	/*]]>*/
+	</script>
+   <div th:fragment="adhocLocalSearch">
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h3 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;">
+                        <i class="fas fa-rupee-sign" style="color: #ff4d4d;"></i>
+                        &nbsp;Contingent
+                    </h3>
+                </div>
+            </div>
+
+<!-- ------------- adhocLocal Reimbursement snigdhaa vaish start -------------- -->
+
+      <div id="submitblock" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight: bold"> </label> 
+					<a id="okbtn" rm="/reimbursement/adhoclocalSearch">OK</a>	
+				</div>	
+			</div>
+		</div>        
+<!-- ------------------------ HEADER STARTS HERE ---------------------------- -->
+       	<div class="w3-row-padding">
+       		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>	
+       		<!-- -------- BUTTONS FOR SAVE SUBMIT------------- -->
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item" >Approval Details</h5>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${status eq 'Unread'}" >
+				<div type="button" class="w3-btn w3-blue w3-round-large " id="btnBack" rm="/tasks/myWorklist"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</div>
+				<div type="button" class="w3-btn w3-red w3-round-large" id="btnSubmit"  onclick="approvalSubmit('Rejected');" ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;&nbsp;Reject</div>
+				<div type="button" class="w3-btn w3-green w3-round-large" id="btnSave" onclick="approvalSubmit('Approved');"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;Approve</div>
+			</div>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${status eq 'Read'}" >					
+					<div type="button" class="w3-btn w3-blue w3-round-large " id="btnBack" rm="/tasks/myWorklist"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</div>
+			</div>
+		</div>
+
+			<div class="w3-half w3-container" style="margin:10px">
+				<!-- <p>
+					<label>Entitlement:&nbsp;</label>
+					<label th:text="${empent}" class="w3-text-blue">990</label>&nbsp;<label>INR Per Month</label>
+				</p> -->
+			</div>	
+			<br><br>
+
+			<input type="text" id="checkmode" name="reimburseid" th:value=${mode} style="display:none">
+		</div>	
+		
+<!-- -------------------------- FORM STARTS HERE --------------------------------- -->		
+		<div class="w3-row">
+			<form id="saveformadhoc" onsubmit="return(false)" enctype="multipart/form-data">
+				<div style="display:none" class="w3-row w3-container">
+					<input id="statusid" value="" type="hidden" name="statusid"/>					
+					<input type="text" id="rid" class="reimbid" name="reimburseid" th:value="${adhocdata.getReimburseid()}">
+					<input type="text" id="rname" class="reimbname" name="reimbursename" th:value="${adhocdata.getReimbursename()}">
+					<input type="text" id="pnum" class="pernum" name="personnumber" th:value="${personInfo.getPersonnumber()}">
+					<input type="text" id="pid" class="perid" name="personid" th:value="${personInfo.getPersonid()}">
+					<input type="text" id="sts" class="status" name="status" th:value="${adhocdata.getStatus()}">																						
+				</div>
+				<div th:if="${adhocdata.getClaimid() != 0}">
+					<div class="w3-container w3-quarter">
+						<label>Claim ID:</label>
+						<input type="text" id="acid" class="w3-input w3-border w3-round adhocclaim" name="claimid" th:value=${adhocdata.getClaimid()} readonly>
+					</div>
+				</div>
+				<div id="adhocrows">
+
+<!-- ------- FOR EXISTING VALUE -------------------- -->						
+						<div th:if="${adhocdata.getClaimid() != 0 or stat == 'Save'}">
+							<div th:each="em, stats: ${adhocdata.getTravelbillclaimdetails()}">
+								<div class="adhocaddrow">	
+									<input type="text" class="adhocid" name="travelbillclaimdetails[i].travelclaimdetailsid"
+										th:value="${em.getTravelclaimdetailsid()}" style="display:none">
+									
+									<div class="w3-row w3-container" style="margin-top:5px">
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">								
+											<label>Date:&nbsp;</label><span style="color:red">*</span>						
+											<input type="date" name="travelbillclaimdetails[i].date" class="w3-input w3-border w3-round date" 
+												 th:value="${em.getDate()}" readonly>																	
+										</div>
+										
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<label>From Location:&nbsp;</label><span style="color:red">*</span>						
+											<input type="text" name="travelbillclaimdetails[i].fromlocation" class="w3-input w3-border w3-round fromloc" 
+												th:value="${em.getFromlocation()}" readonly>										
+										</div>
+										
+									
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<label>To Location:&nbsp;</label><span style="color:red">*</span>						
+											<input type="text" name="travelbillclaimdetails[i].tolocation" class="w3-input w3-border w3-round toloc" 
+												th:value="${em.getTolocation()}"readonly>										
+										</div>
+										
+										
+									</div>								
+									<div class="w3-row w3-container" style="margin-top:5px">
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<label>Transport Mode:&nbsp;</label><span style="color:red">*</span>						
+											<select name="travelbillclaimdetails[i].transportmodeid" class="w3-input w3-border w3-round transport" disabled>
+												<option value="0">Select</option>
+												<option th:each="i:${trans}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+													th:selected="${i.getId() == em.getTransportmodeid()}"></option>										
+											</select>
+										</div>
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<label>From Nearest Station:&nbsp;</label>						
+											<select name="travelbillclaimdetails[i].fromneareststationid" class="w3-input w3-border w3-round station" disabled>
+												<option value="0">Select</option>
+												<option th:each="i:${station}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+													th:selected="(${i.getId()} == *{em.getFromneareststationid()})"></option>
+											</select>																				
+										</div>
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<label>To Nearest Station:&nbsp;</label>					
+											<select name="travelbillclaimdetails[i].toneareststationid" class="w3-input w3-border w3-round station" disabled>
+												<option value="0">Select</option>
+												<option th:each="i:${station}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+													th:selected="(${i.getId()} == *{em.getToneareststationid()})"></option>
+											</select>																				
+										</div>
+										
+															
+									</div>				
+									
+									<div class="w3-row w3-container" style="margin-bottom:25px;margin-top:5px">
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<label>Claim Amount:&nbsp;</label><span style="color:red">*</span>						
+											<input type="number" name="travelbillclaimdetails[i].claimamt" class="w3-input w3-border w3-round requestedamt" 
+												th:value="${em.getClaimamt()}" readonly>																				
+										</div>
+										
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<label>Travel Purpose:&nbsp;</label><span style="color:red">*</span>						
+											<input type="text" name="travelbillclaimdetails[i].travelpurpose" class="w3-input w3-border w3-round travel" 
+												th:value="${em.getTravelpurpose()}" readonly>																			
+										</div>	
+									
+									
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<label>Vehicle Used:&nbsp;</label><span style="color:red">*</span>						
+											<select name="travelbillclaimdetails[i].vehicleused" class="w3-input w3-border w3-round vehicle" disabled>
+												<option value="0">Select</option>
+												<option th:each="i:${lovvehicle}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+													th:selected="${i.getId() == em.getVehicleusedid()}"></option>
+											</select>																				
+										</div>
+																			
+										
+									</div>
+									
+									<div class="w3-row w3-container" style="margin-bottom:25px;margin-top:5px">
+									<div class="w3-quarter w3-container" id="adhocfiles">
+											<a th:if="${adhocdata.getClaimid() != 0 && em.getAttachments()!=null && em.getAttachments()!=''}"
+											class="DOWNLOAD_LINK" th:href="${em.getAttachments()}" target="_blank"
+											download>Download Attachment</a>
+											<p th:if="${mode == 'edit'}">
+												<label>File : </label>
+												<input type="file" name="file" class="file w3-input w3-round" />										
+												<input class="attachments" name="travelbillclaimdetails[i].attachments" type="hidden"/>
+												<input type="hidden" name="travelbillclaimdetails[i].filepres" class="filepres">
+												<input type="hidden" name="attachhidden" class="atthi" th:value="${em.getAttachhidden()}">
+											</p>																												
+										</div>
+									</div>	
+								</div>
+							</div>
+								<div class="w3-container w3-row" value="Y" id="declaratio" checked>
+									<input type="checkbox" id="declaration" style="zoom: 1.2;"
+										th:checked="${mode=='view'}" th:disabled="${mode=='view'}">&nbsp;I hereby declare that, above travel is taken for LMRC business operations.</input>
+								</div>
+						</div>
+						
+					</div>	
+					
+					
+					
+				
+				
+				
+				<h6 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">
+						To-Do Task
+					</h6>
+					<div class="w3-row">
+						<div class="w3-third w3-container">
+							<p>
+								<strong><label>Approved Amount: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+								<input th:value="${APPRAMT}"
+								 id="txtAmount" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+									type="text" name="approvedamt" class="w3-input w3-border w3-round"/>
+							</p>
+							<label id="amterror"></label>
+						</div>
+						<div class="w3-third w3-container">
+							<p>
+								<strong><label>Comments: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+								<textarea id="txtComment" name="msg" class="w3-input w3-border w3-round"></textarea>
+							</p>
+							<label id="msgerror"></label>
+						</div>
+					</div>
+				
+				
+				</form>
+					
+									
+				</div>
+				
+			
+			
+			
+			
+			<h5 > Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${adhocdata.getClaimid()}" aria-hidden="true" th:onclick='getapprovalhistory(6,this.id);'></i></h5>				
+					<section class="container" >
+
+						<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+						<div class="container__sources">
+
+							<div style="box-shadow: none;background: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+								<div class="sources--cms" style="width: 160px">
+									<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+									<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+									<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+
+									<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+										<i class="fa fa-check tick"></i>
+
+									</div>
+									<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+										<i class="fa fa-clock-o pending"></i>
+									</div>
+									<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+										<i class="fa fa-close cancel"></i>
+
+									</div>
+
+								</div>
+								<svg class="svghor" viewBox="0 10 100 100">
+									<line  x1="5" x2="100" y1="80" y2="80"></line>
+								</svg>
+								<svg class="svgver" viewBox="0 20 100 100 ">
+									<line  x1="40" x2="40" y1="0" y2="100"></line>
+								</svg>
+							</div>
+	<div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+
+						</div>
+
+						<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+
+
+					</section>
+<!-- ----------------------------------------------------Approval Section End Here------------------ -->
+			
+				
+		</div>
+<!-- ------------------------------------ FORM ENDS HERE ---------------------------------- -->
+
+      <!-- adhocLocal Reimbursement snigdhaa vaish end-->
+<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>  
+   </div>
+   <script src="/js/reimbursement/contingent/adhocLocal.js"></script>
+</div>

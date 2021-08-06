@@ -1,0 +1,88 @@
+<div th:fragment="executePayroll">
+
+    <style>
+
+        #svg circle {
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 1s linear;
+            stroke: #666;
+            stroke-width: 1em;
+        }
+        #svg #bar {
+            stroke: #FF9F1E;
+        }
+        #cont {
+            display: block;
+            height: 200px;
+            width: 200px;
+            margin: 2em auto;
+            box-shadow: 0 0 1em black;
+            border-radius: 100%;
+            position: relative;
+        }
+        #cont:after {
+            position: absolute;
+            display: block;
+            height: 160px;
+            width: 160px;
+            left: 50%;
+            top: 50%;
+            box-shadow: inset 0 0 1em black;
+            content: attr(data-pct);
+            margin-top: -80px;
+            margin-left: -80px;
+            border-radius: 100%;
+            line-height: 160px;
+            font-size: 2em;
+            text-shadow: 0 0 0.5em black;
+        }
+
+
+
+        /* Make things perty */
+        /*html {  height: 100%;}
+        body { font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;  background-color: #0d0d0d; color: #fff; height: 100%; padding-top: 2em; text-align: center;}
+        h1, h2{ margin: 0; text-transform: uppercase;text-shadow: 0 0 0.5em black;}
+        h2 { font-weight: 300}
+        input { border: 1px solid #666; background: #333; color: #fff; padding: 0.5em; box-shadow: none; outline: none !important; margin: 1em  auto; text-align: center;}
+        */
+    </style>
+
+    <div class="w3-container" style="margin-top: -42px;">
+        <div class="w3-row">
+            <h5>Payroll Execution</h5>
+            <hr class="hrline">
+        </div>
+        <div class="w3-row">
+            <div class="w3-container">
+                <div id="runpayrollbtn" onclick="runPayroll();" style="background-color: #ff8507; color: white; cursor: pointer;" class="w3-btn w3-round-large" type="button"><i class="fas fa-users-cog" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Run Payroll</div>
+            </div>
+        </div>
+
+        <div id="PYRL_LOADER" class="w3-row w3-center" style="display: none;">
+            <i class="fas fa-cog fa-spin" aria-hidden="true" style="font-size: 20px;"></i> Processing...
+        </div>
+        <div id="runcontrolblock" class="w3-row" style="display: none;">
+            <div class="w3-container">
+                <!--<div class="w3-center">
+                    <div onclick="getStatus();" style="cursor: pointer;" class="w3-blue w3-btn w3-round-large" type="button"><i id="getstatusbtn" class="fas fa-cog" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Get Run Status</div>
+                </div>-->
+                <div class="w3-center">
+                    <div id="cont" data-pct="0/0">
+                        <svg id="svg" width="200" height="200" viewPort="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <circle r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+                            <circle id="bar" r="90" cx="100" cy="100" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+                        </svg>
+                    </div>
+                </div>
+                <div class="w3-center" style="margin-top: 30px; margin-bottom: 15px;">
+                    <label>Run Control ID: </label>&nbsp;&nbsp;<label id="processid" style="color: chocolate;"></label>&nbsp;&nbsp;&nbsp;&nbsp;<label id="runstatus">Running</label>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script src="/js/payroll/transection/payrollexecution.js"></script>
+    </div>
+</div>

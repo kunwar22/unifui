@@ -1,0 +1,26 @@
+<div th:fragment="addPayrollGroup">
+    <div class="w3-container" style="margin-top:14px;">
+        <h4 class="w3-text-theme">Add Payroll Group</h4>
+
+        <form id="createpaygroupform"  enctype="application/x-www-form-urlencoded" onsubmit="return false;" method="POST">
+            <div class="w3-row w3-padding-24">
+                <div class="w3-container w3-half">
+                    <input type="hidden" name="createdby" value="admin">
+                    <p>
+                        <label>Payroll Group Name</label>
+                        <input name="name" class="w3-input w3-border" type="text" id="name">
+                    </p>
+                    <p>
+                        <label>Details</label>
+                        <textarea name="descr" class="w3-input w3-border" style="resize: none" maxlength="100" rows="5"></textarea>
+                    </p>
+                    <div class="w3-bar">
+                        <div id="payrollGroupAdd" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" type="button"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Save</div>
+                        <div id="cancilAddPayrollGroup" class="w3-bar-item w3-btn w3-grey w3-round-large w3-right buttonbarmargin" type="button"><i class="fa fa-times" aria-hidden="true" style="color: red"></i>&nbsp;&nbsp;Cancel</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="/js/payroll/setup/addPayrollGroup.js"></script>
+</div>

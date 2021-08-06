@@ -1,0 +1,76 @@
+<div th:fragment="manageOtp">
+    <div class="w3-container" style="margin-top: -42px;">
+        <div class="w3-row">
+            <h5>Manage OTP</h5>
+            <hr class="hrline">
+        </div>
+    </div>
+    <div class="w3-container">
+        <div class="w3-row-padding w3-margin">
+            <div class="w3-quarter">
+                <div  onclick="pushData()" class="w3-bar-item w3-btn w3-green" type="button" style="width:100%"><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Push Data</div>
+                <div class="w3-row">
+                    <input type="hidden" id="elementselected">
+                    <ul id="elementSelect" class="w3-ul w3-border w3-hoverable">
+                        <!--<li onclick="otpEmployeeSelect(42)" class="my-li-border" style="cursor: pointer" id="personalDetails">
+                            <div class="w3-row">
+                                <div class="w3-col w3-right" style="width: 50px"><p class="my-p-margin" style="text-align: right;">&#x2705;</p></div>
+                                <div class="w3-rest"><p class="my-p-margin">Family & Dependents</p></div>
+                            </div>
+                        </li>-->
+                    </ul>
+                </div>
+            </div>
+            <form id="employeeOTPData">
+                <div class="w3-threequarter">
+                	<div class="w3-row">
+                        <div class="w3-left"><h4 id="OTPNAME"></h4></div>
+                		<div  onclick="openUploadOTPModal()" class="w3-right w3-btn w3-green" type="button"><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Upload Employee OTP Element Values</div>
+                	</div>
+                    <table class="w3-table-all">
+                        <thead>
+                            <tr class="w3-theme-d1">
+                                <th>Person Number</th>
+                                <th>Name</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="otpAmount">
+
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <div id="uploadOTPDataModal" class="w3-modal">
+            <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                <header class="w3-container w3-blue">
+                    <h4><i class="far fa-keyboard"></i>&nbsp;&nbsp;Manage OTP Values</h4>
+                </header>
+                <div class="w3-container w3-padding-32">
+                    <i style="color: #ab4903;">OTP stands for One Time Positive Input. OTP elements in payroll are elements that are not calculated through formulas and the default
+                        value for each OTP element is 0. You can override the default value by passing values against each employee for the desired element, through this interface.</i>
+                    <br><br>
+                    <p>Steps to Upload OTP Values:</p>
+                    <ul>
+                        <li>Download OTP upload template from <a id="downloadotplink" style="color: blue;" href="">here</a></li>
+                        <li>Fill the template.</li>
+                        <li>Upload the file on the server from billow link.</li>
+                    </ul>
+                    <hr class="hrline">
+                    <br>
+                    <div class="w3-row">
+                        <form id="uploadOTPForm" method="POST" enctype="multipart/form-data">
+                            <input type="file" id="myFile" name="filename">
+                            <div class="w3-btn" onclick="uploadOTPClick()"><i class="fa fa-upload"></i></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="w3-container w3-light-grey w3-padding">
+                    <button class="w3-button w3-right w3-white w3-border" onclick="document.getElementById('uploadOTPDataModal').style.display='none'">Close</button>
+                </div>
+            </div>
+        </div>
+        <script src="/js/payroll/transection/manageOtp.js"></script>
+    </div>
+</div>

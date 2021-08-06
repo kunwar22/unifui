@@ -1,0 +1,265 @@
+<div th:fragment="createSalaryBasis">
+<form  method="post" id="SALARY_BASIS" enctype="application/x-www-form-urlencoded" onsubmit="return false;">   
+<div class="w3-container" style="margin-top:14px;">
+		<h4 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Create Salary Basis</h4>
+		</div>
+			 <input th:value="${salaryBases.getSalarybasesid()}" style="display: none"  id="txtSalaryid" name="salarybasesid" type="text" />
+             <input th:value="${salaryBases.getActionid()}"  style="display: none" id="txtSalaryActionid" name="actionid" type="text" /> 
+		<div class="w3-row">
+	<div class=w3-half>
+	<div class="w3-container">
+	<hr class="hrline">
+			<h5 class="w3-text-theme" >Salary Basis</h5>
+			<p>
+			<label>Name</label><span style="color:red"> *</span>
+			<input th:value="${salaryBases.getName()}" class="w3-input w3-border" name="name" id="CR_SALARY_NAME" type="text">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("name") != null}' th:text='${bindingResult.getFieldError("name").getDefaultMessage()}'></span>
+			</p>
+			<p>
+			<label>Code</label><span style="color:red"> *</span>
+			<input  th:value="${salaryBases.getCode()}" class="w3-input w3-border" name="code" id="CR_SALARY_CODE" type="text">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("code") != null}' th:text='${bindingResult.getFieldError("code").getDefaultMessage()}'></span>
+			</p>
+		</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container" style="margin-top:43px;">
+				<p th:if="${salaryBases.getSalarybasesid()==0}">
+			<label>Status</label><span style="color:red"> *</span>
+				<select id="CR_COMP_BASE_PAY" tabindex="7"
+						class="w3-select w3-border" name="status">
+						<option th:each="status : ${status}" th:selected="${status =='Active'}" th:value="${status}"
+							th:text="${status}">
+					</select>
+			</p>
+			<p th:if="${salaryBases.getSalarybasesid()!=0}">
+			<label>Status</label><span style="color:red"> *</span>
+				<select id="CR_COMP_BASE_PAY" class="w3-select w3-border" name="status" tabindex="7">
+						<option th:each="status : ${status}" th:selected="${salaryBases.getStatus() eq status}" th:value="${status}" th:text="${status}">
+					</select>
+			</p>
+		</div>
+	</div>
+	<div class="w3-row">
+	<div class=w3-half>
+	<div class="w3-container">
+	<h5 class="w3-text-theme">Salary Basis Properties</h5>
+				<p th:if="${salaryBases.getSalarybasesid()==0} and ${salaryBases.getFrequency()==0}">
+			<label>Frequency</label> <span style="color:red"> *</span>			
+				<select id="CR_COMP_FTE" tabindex="3"
+						class="w3-select w3-border" name="frequency">
+						<option value="" disabled selected></option>
+						<option id="2" hidden ></option>
+						<option th:each="frequency : ${frequency}"
+							th:value="${frequency.getId()}"
+							th:text="${frequency.getDescription()}">
+					</select><span id="SAl_FEQ_ERROR" style="color:red"></span>					
+			</p>
+			<p th:if="${salaryBases.getSalarybasesid()!=0} or ${salaryBases.getFrequency()!=0}">
+			<label>Frequency</label> <span style="color:red"> *</span>			
+				<select id="CR_COMP_FTE" tabindex="3"
+						class="w3-select w3-border" name="frequency">
+						<option value="" disabled selected></option>
+						<option id="2"  hidden></option>						
+							<option th:each="frequency : ${frequency}"
+							th:selected="${frequency.getId() eq salaryBases.getFrequency()}"
+							th:value="${frequency.getId()}"
+							th:text="${frequency.getDescription()}"></option>							
+					</select><span id="SAl_FEQ_ERROR" style="color:red"></span>
+			</p>
+			<p>
+			<label>Annualization Factor</label><span style="color:red"> *</span>
+			<input th:value="${salaryBases.getAnnualizationfactor()}" class="w3-input w3-border" name="annualizationfactor" id="CR_ANNUAL_FACTOR" type="text">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("annualizationfactor") != null}' th:text='${bindingResult.getFieldError("annualizationfactor").getDefaultMessage()}'></span>
+			</p>
+		</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container" style="margin-top:38px;">
+			<p>
+			<label>Salary Range Scale</label><span style="color:red"> *</span>
+			<input th:value="${salaryBases.getRangescale()}" class="w3-input w3-border" name="rangescale" id="CR_COMPENSATION" type="text">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("rangescale") != null}' th:text='${bindingResult.getFieldError("annualizationfactor").getDefaultMessage()}'></span>			
+			</p>
+		</div>	
+	</div>
+	</div>
+	<div class="w3-row">
+	<div class=w3-half>
+	<div class="w3-container">
+	<h5 class="w3-text-theme">Element</h5>
+			<p>
+			<label>Payroll Element</label><span style="color:red"> *</span>
+			<input th:value="${salaryBases.getElementid()}" class="w3-input w3-border" name="elementid" id="CR_COMPENSATION" type="text">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("elementid") != null}' th:text='${bindingResult.getFieldError("elementid").getDefaultMessage()}'></span>
+			</p>
+	        <p th:if="${salaryBases.getSalarybasesid()!=0} and ${salaryBases.getGraderatename()==0}">
+					<label>Grade Rate</label>  <span style="color:red"> *</span>	
+					<select id="GradeRateSearch" class="w3-select w3-border" name="graderateid" data-toggle="modal">
+						<option id="1" value="1" disabled selected></option>
+						<option id="2" value="2"></option>
+						<option value="search" data-toggle="modal" class="btnsearch2" id="btnsearch2">Search....</option>
+					</select>
+					<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("graderateid") != null}' th:text='${bindingResult.getFieldError("graderateid").getDefaultMessage()}'></span>
+			  </p>	
+			<p th:if="${salaryBases.getSalarybasesid()!=0} or ${salaryBases.getGraderatename()!=0}">
+					<label>Grade Rate</label>  <span style="color:red"> *</span>	
+					<select id="GradeRateSearch" class="w3-select w3-border" name="graderateid" data-toggle="modal">
+					<option id="1" value="1" disabled selected></option>
+                    <option id="2"  selected th:value="${salaryBases.getGraderateid()}" th:text="${salaryBases.getGraderatename()}">
+                    </option>
+                      <option value="search" data-toggle="modal" id="btnsearch"  >Search</option>	 				
+	 				</select>
+	 				<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("graderateid") != null}' th:text='${bindingResult.getFieldError("graderateid").getDefaultMessage()}'></span>
+			</p>	  
+		</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container" >
+	<h5 class="w3-text-theme">Input Value</h5>
+			<p th:if="${salaryBases.getSalarybasesid()==0} and ${salaryBases.getSalarytype()==0}">
+			<label>Salary Basis</label> <span style="color:red"> **</span>			
+				<select id="CR_SALARY_BASIS"
+						class="w3-select w3-border" name="salarytype">
+						<option value="" disabled selected></option>
+						<option th:each="salrytype : ${salrytype}"
+							th:value="${salrytype.getId()}"
+							th:text="${salrytype.getDescription()}">
+					</select><span id="SAl_SAL_ERROR" style="color:red"></span>					
+			</p>
+			<p th:if="${salaryBases.getSalarybasesid()!=0} or ${salaryBases.getSalarytype()!=0}">
+			<label>Salary Basis</label> <span style="color:red"> *</span>			
+				<select id="CR_SALARY_BASIS" 
+						class="w3-select w3-border" name="salarytype">
+						<option value="" disabled selected></option>						
+							<option th:each="salrytype : ${salrytype}"
+							th:selected="${salrytype.getId() eq salaryBases.getSalarytype()}"
+							th:value="${salrytype.getId()}"
+							th:text="${salrytype.getDescription()}"></option>							
+					</select><span id="SAl_SAL_ERROR" style="color:red"></span>
+			</p>
+			<p>
+			<label>Input Value</label><span style="color:red"> *</span>
+			<input th:value="${salaryBases.getInputvalueid()}" class="w3-input w3-border" name="inputvalueid" id="CR_COMPENSATION" type="text">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("inputvalueid") != null}' th:text='${bindingResult.getFieldError("inputvalueid").getDefaultMessage()}'></span>
+			</p>
+		</div>	
+	</div>
+	</div>
+	<div class="w3-container">
+		<p>
+		<button onclick="ajaxPost(); return false;" class="w3-button w3-theme w3-grey">Submit</button>
+		<button id="SalCancel" rm="enterprisesetup/searchSalaryBasis"  class="w3-button w3-theme w3-grey">Cancel</button>
+		</p>
+	</div>
+	<div id="OKBTNDIV" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:400px;">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			<label ><b>
+			Successfully Saved. Click OK to continue.</b>
+			</label>
+			<a id="btnOK" class="w3-button w3-green" rm="enterprisesetup/managejob">OK</a>
+			</div>
+		</div>
+	</div>
+<!-- /***************************POPUP GRADERATE SEARCH **********************************/ -->
+<div id="id01" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+		<div class="modal-header">
+			<h3 align="left">Search and Select:Grade Rate</h3>
+				<hr class="hrline">
+		</div>
+		<div class="modal-body">
+		<div>
+		<div class=w3-half>
+	    <div class="w3-container">
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border"
+						name="LocationName" id="SRCH_NAME1" type="text"/>
+	             </div>
+	             </div>
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Rate Type</div>
+	             <div class="w3-rest">
+	            <select id="SRCH_RATETYPE" class="w3-select w3-border" name="ratetype">
+						<option value="" disabled selected></option>
+						<option th:each="ratetype : ${ratetype}" th:value="${ratetype.getDescription()}" th:text="${ratetype.getDescription()}">
+					</select>
+	             </div>
+	             </div>
+	</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container">
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Status:</div>
+	             <div class="w3-rest">
+				<select id="statusListGRADERATE" class="w3-select w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+				</select>
+	             </div>
+	             </div>
+	</div>
+	</div>
+			<br>
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="GRADERATE_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+                </div>
+               </div>
+               </div>               
+			</div>
+			<BR>
+			<div id="graderateresultSec" class="w3-responsive" style="display: none">
+				<table id="GRADERATE_LIST" class="display compact w3-table" style="width: 100%;">
+					<thead>
+					<tr class="w3-theme-d3">
+						<th>Name</th>
+						<th>EFFDT</th>
+						<th>Rate Type</th>
+						<th>Frequency</th>
+						<th>Currency</th>
+						<th>Status</th>
+						<th>Grade Rate ID</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataGradeRate" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                <div class="w3-right">
+               <button id="BU_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="BU_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id01').style.display='none'">Cancel</button>
+                </div>
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<!-- PopUp End Here -->
+	</div>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var message = /*[[${response.getMessage()}]]*/;
+    console.log(message);
+/*]]>*/
+</script>
+<script src="/js/search/searchSalaryBasis.js"></script>
+</form>		
+</div>

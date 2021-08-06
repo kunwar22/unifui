@@ -1,0 +1,54 @@
+<div th:fragment="createdataset">
+<div class="w3-container" style="margin-top:14px;">
+		<h4 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Create Dataset</h4>
+		</div>
+		<div class="w3-row">
+	<div class=w3-half>
+	<div class="w3-container">
+			<hr class="hrline">
+			<h5 style="font-weight: bold">
+				Dataset Details
+			</h5>
+			<input
+						th:value="${DataList.getDatasetsid()}" id="txtDatasetid" type="text" style="display:none"/>
+						 <input	th:value="${DataList.getActionid()}" id="txtDatasetActionid" style="display:none" type="text" />
+			<p th:if="${DataList.getCode() == null}">
+			<label>Code</label><span style="color:red"> *</span>
+			<input th:value="${DataList.getCode()}" class="w3-input w3-border" name="datasetcode" id="CR_DS_CODE" type="text">
+			<span id="CODE_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${DataList.getCode() != null}">
+			<label>Code</label><span style="color:red"> *</span>
+			<input th:value="${DataList.getCode()}" class="w3-input w3-border" name="datasetcode" id="CR_DS_CODE" type="text" disabled>
+			<span id="CODE_ERROR" style="color:red"></span>
+			</p>
+			<p>
+			<label>Name</label><span style="color:red"> *</span>
+			<input th:value="${DataList.getName()}" class="w3-input w3-border" name="datasetName" id="CR_DS_NAME" type="text">
+			<span id="NAME_ERROR" style="color:red"></span>
+			</p>
+			<p>
+			<label>Description</label>
+			<input th:value="${DataList.getDescription()}" class="w3-input w3-border" name="description" id="CR_DS_DESCR" type="text">
+			</p>
+		</div>
+	</div>
+	<div class="w3-container">
+		<p>
+		<button id="DatasetCancel" rm="enterprisesetup/managedataset" tabindex="15" class="w3-button w3-theme w3-grey">Cancel</button>
+		<button id="DS_CREATE" class="w3-button w3-theme w3-grey">Submit</button>
+		</p>
+	</div>
+	<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="enterprisesetup/managedataset">OK</a>
+				</div>
+			</div>
+		</div>
+	</div>
+<script src="/js/create/dataset.js"></script>
+<script src="/js/validation/validation.js"></script>
+</div>

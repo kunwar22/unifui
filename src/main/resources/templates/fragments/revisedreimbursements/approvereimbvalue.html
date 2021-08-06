@@ -1,0 +1,29 @@
+<div th:fragment="approvereimbvalue">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var apprlvl = /*[[${apprlvl}]]*/;
+        console.log(apprlvl);
+        /*]]>*/
+    </script>
+    <div class="w3-main" style="margin-left: 300px;">
+        <div style="position: relative;">
+            <div class="w3-container">
+                <h4 style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;"><i class="fab fa-superpowers" style="color: #ff0048;"></i>&nbsp;Approve Reimbursement Value
+                </h4>
+            </div>
+        </div>
+
+        <hr class="w3-margin hrline">
+
+        <div class="w3-row">
+            <div id="div_approve"></div>
+        </div>
+
+        <script>
+            var url = '/revisedreimbursements/managegeneratetab/APPR';
+            $('#div_approve').load(url);
+        </script>
+
+    </div>
+</div>

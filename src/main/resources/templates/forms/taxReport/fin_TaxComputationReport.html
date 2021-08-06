@@ -1,0 +1,251 @@
+<div th:fragment="fin_tax_report">
+<style>
+	.hider{
+		display:none;
+	}
+div.scrollmenu {  
+  overflow: auto;
+  white-space: nowrap;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+.blue {
+  color: blue;
+  text-decoration : underline;
+}
+	
+</style>
+	<div class="w3-main" style=" margin-top: 14px; margin-bottom: 16px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400; display: inline-block;">
+					<img onclick="w3_open()" class="w3-hide-large"
+						src="/images/hide-grader-panel.png" style="cursor: pointer;">
+					<i class="fas fa-file-invoice-dollar"
+						style="color: rgb(255, 128, 0);"></i>&nbsp;Tax Report
+				</h4> </div>
+			<div>
+				<hr class="hrline"> </div>
+		</div>
+		<div id="REPORTS_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+		</div>
+		<div >
+			<div class="w3-quarter w3-container" style="margin-bottom: 16px;">
+				<label>Select Person</label>
+				<select id="PersonNumber" name="PersonNumber" class="w3-select w3-border" data-toggle="modal">
+					<option id="1" value="" disabled selected></option>
+					<option id="2" value="2" hidden></option>
+					<option value="search" data-toggle="modal" id="btnsearchperson">Search....</option>
+				</select>
+			</div>
+			<div class="w3-quarter w3-container" style="margin-bottom: 16px;">
+				<label>Select Financial Year</label>
+				<select class="w3-select w3-border" name="Financial_year" id="Financial_year">
+					<option value="" disabled selected></option>
+					<!--<option th:each="finYear: ${calperiod}" th:value="${finYear.getCalendarcode()}" th:text="${finYear.getCalendarcode()}"/>-->
+					<option value="2021-2022">2021-2022</option>
+				</select>
+			</div>
+			
+			<div class="w3-quarter w3-container" style="margin-top: 20px; ">
+				<div type="button" class="w3-btn w3-green w3-round-large" id="btnSearchtax" onclick="load_TotalCal_tax_report();"> <i class="fas fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Search</div>
+				
+			</div>
+		</div>
+		
+		<br>
+		<br>
+		<br>
+		<!---------------------------------------------------------------------------------------------------------------------->
+		<div id="fin_tax_tab" class="w3-margin w3-border" style="display:none">
+
+			<div class="w3-bar w3-blue-gray" style="border-bottom: 1px solid #cccccc" >
+				<button name="Tax_Computation" class="w3-bar-item w3-button w3-light-grey tablink " onclick="openTab('Tax_Computation');" >Tax Computation</button>
+				<button name="Salary_Deduction" class="w3-bar-item w3-button tablink " onclick="openTab('Salary_Deduction');" >Salary Deduction</button>
+				<button name="Deduction_Declaration" class="w3-bar-item w3-button tablink " onclick="openTab('Deduction_Declaration');" >Deduction Declaration</button>
+				
+			</div>
+
+			<div id="Tax_Computation" class="w3-container legal">
+				<div class="w3-row">
+				
+						<div id="TotalTaxCal">	
+						</div>
+				</div>
+			</div>
+			<div id="Salary_Deduction" class="w3-container legal" style="display:none">
+				<div class="w3-row">
+				<br>
+				    <div id="Salary_Details">	
+					</div>
+				</div>
+				<br>
+			</div>
+			<div id="Deduction_Declaration" class="w3-container legal" style="display:none">
+				<div class="w3-row">
+					<br>
+				     <div id="Declaration_Details">	
+					 </div>
+					 <div id="Declaration_Details_lease">	
+					 </div>
+					 <div id="Declaration_Details_quarter">	
+					 </div>
+					 <div id="Declaration_Details_car">	
+					 </div>					 
+					 <div id="Declaration_Details2">	
+					 </div>
+					 <br>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		<!-- <div class="w3-row">
+			
+			<div class="w3-container ">
+				<div class="w3-container w3-border">
+					<h4>Tax Calculation</h4>
+					<div id="TotalTaxCal">
+
+					</div>
+				</div>
+			</div>
+		</div> -->
+	</div>
+	
+	
+	
+			<!--popup added by rajat start here-->
+		<div id="TaxDetailsPopup" class="w3-modal" >
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 90%">
+				<header class="w3-container w3-theme-d1">
+					<span onclick="document.getElementById('TaxDetailsPopup').style.display='none';"	class="w3-button w3-display-topright">&times;</span>
+					<h4>
+						<i class="fas fa-tasks"></i>&nbsp;&nbsp; Tax Details
+					</h4>
+				</header>
+				<br>
+				<div class="w3-container">
+					<div class="w3-row-padding" style="font-size: 12px;">
+						<h4 id="headdingid" style="margin-bottom: 0px;"></h4>
+					</div>
+					<hr class="hrline">
+					
+						<div class="w3-row">
+						<div id="resultSec_Tax" class="w3-responsive" >
+							<div id="Tax_REPORT" style="width: 100%;">
+								
+							</div>
+						</div>
+						
+					   </div>
+					   
+					   
+						<div class="w3-bar">
+							<div class="buttonbarpadding w3-bar-item w3-right"	style="margin-top: 3px;">
+								
+								<div onclick="document.getElementById('TaxDetailsPopup').style.display='none';"	class="w3-bar-item w3-btn w3-blue w3-round-large buttonbarmargin" type="button">&nbsp;&nbsp;OK</div>
+							</div>
+						</div>
+					
+				</div>
+			</div>
+		</div>
+		<!--popup added by rajat end here  -->
+		
+		<!-- line modal -->
+			<div id="id02" class="w3-modal">
+				<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+					<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+						<div class="modal-header">
+							<h3 align="left">Search and Select:Person</h3>
+							<hr class="hrline"> </div>
+						<div class="modal-body">
+							<div>
+								<div class="w3-row-padding ">
+									<div class="w3-half">
+										<p>
+											<label style="float: left;">Person Number&nbsp;&nbsp;</label>
+											<input value="" class="w3-input w3-border" name="Leg_Name" id="CR_PER_POP_ID" type="text"> </p>
+									</div>
+									<div class="w3-half">
+										<p>
+											<label style="float: left;">Person Name&nbsp;&nbsp;</label>
+											<input value="" class="w3-input w3-border" name="Leg_Country" id="CR_PER_POP_Name" type="text"> </p>
+									</div>
+								</div>
+								<br>
+								<div class="w3-container">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<div class="w3-right">
+												<button id="CR_PER_POP_SEARCH" class="w3-button w3-theme w3-grey">Search </button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<BR>
+								<div id="resultSecPerson" class="w3-responsive" style="display: none">
+									<table id="PersonAccomodationList" class="display compact w3-table" style="width: 100%;">
+										<thead>
+											<tr class="w3-theme-d3">
+												<!-- <th>Person Id</th> -->
+												<th>Person Number</th>
+												<th>Person Name</th>
+												<th>Nature of Employment</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div id="noDataPerson" class="w3-responsive" style="display: none">
+									<div>
+										<p>No record found...</p>
+									</div>
+								</div>
+								<div id="jsonLoader" class="w3-responsive" style="display: none">
+									<div>
+										<div class='w3-container' style='width: 100%; text-align: center'> <i class='fa fa-cog fa-spin' style='font-size: 30px;'></i>
+											<p style="color: black;">Loading......</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="w3-container">
+								<div class="form-group">
+									<div class="w3-right">
+										<button id="CR_PER_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+										<button id="CR_PER_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+			<!-- PopUp End Here -->
+	
+	
+	<script src="/js/tax_report/fin_taxcamputaion.js"></script>
+	<script src="/js/table2excel.js"></script>
+	<script>
+		function myFunction(id) {
+		  var x = document.getElementById(id);
+		  if (x.className.indexOf("w3-show") == -1) {
+			x.className += " w3-show";
+		  } else {
+			x.className = x.className.replace(" w3-show", "");
+		  }
+		  var y = document.getElementById(id+"arr");
+		  y.classList.toggle("fa-angle-double-down");
+		  y.classList.toggle("fa-angle-double-right");
+		}
+	</script>
+</div>

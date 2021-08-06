@@ -1,0 +1,130 @@
+<div th:fragment="remteplate">
+
+    <div class="w3-main" style="margin-left: 300px;">
+        <div style="position: relative;">
+            <div class="w3-container">
+                <h4 th:if="${remid=='2'}" style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;"><i class="fas fa-car-side" style="color: #fd951a;"></i>&nbsp;Transport Reimbursement
+                </h4>
+                <h4 th:if="${remid=='1'}" style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;"><i class="fas fa-tty" style="color: #f31590;"></i>&nbsp;Telephone Reimbursement
+                </h4>
+                <h4 th:if="${remid=='12'}" style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;"><i class="fas fa-headset" style="color: #fd451a;"></i>&nbsp;TADK Reimbursement
+                </h4>
+                <h4 th:if="${remid=='5'}" style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;"><i class="fa fa-music" style="color: #027b7b;"></i>&nbsp;Entertainment Reimbursement
+                </h4>
+                <h4 th:if="${remid=='7'}" style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;"><i class="fas fa-luggage-cart" style="color: rgb(128, 0, 255);"></i>&nbsp;CDA/VA Reimbursement
+                </h4>
+            </div>
+        </div>
+
+        <div class="w3-container"><hr class="hrline" style="margin-top: -10px; margin-bottom: -10px;"></div>
+        <input type="hidden" id="REMID" th:value="${remid}">
+        <div class="w3-bar">
+            <div class="w3-bar-item w3-quarter">
+                <label>Business Unit</label><span style="color: red"> *</span>
+                <select id="BULOV" class="w3-select w3-border w3-margin-bottom">
+                    <option value="0" disabled selected></option>
+                    <option th:each="bures : ${bures}"
+                            th:value="${bures.getBusinessunitid()}"
+                            th:text="${bures.getName()}" />
+                </select>
+            </div>
+            <div class="w3-bar-item w3-quarter">
+                <label>Financial Year</label><span style="color: red"> *</span>
+                <select id="FYEARLOV" class="w3-select w3-border w3-margin-bottom">
+                    <option value="0" disabled selected></option>
+                    <option th:each="fy : ${fyearr}"
+                            th:value="${fy.getId()}"
+                            th:text="${fy.getYears()}" />
+                </select>
+            </div>
+
+            <div class="w3-bar-item" style="margin-top: 6px;">
+                <div style="display:inline-block; margin-inline: -20px;" type="button" id="REMTMPL_SEARCH_BTN" onClick="searchremtemplempl();" class="w3-btn w3-theme w3-round-large w3-margin-top"><i class="fas fa-search"></i></div>
+            </div>
+            <div class="w3-bar-item w3-quarter w3-right" style="margin-top: 6px;" >
+                <div style="display:none;" type="button" id="REM_TMPL_SAVE_BTN" onClick="saveremtemplate();" class="w3-btn w3-blue w3-round-large w3-margin-top"><i class="fas fa-save"></i></div>
+            </div>
+        </div>
+        <form  method="post" id="REM_TEMPL_FORM" enctype="application/x-www-form-urlencoded">
+        <div id="resultDiv" class="w3-row w3-margin-top" style="display:none;" >
+            <!--<div class="w3-bar w3-container" style="background-color: #becbd2">
+                <div class="w3-third" style="margin-top: 5px;">
+                    <label>Month</label><span style="color: red"> *</span>
+                    <select id="MONTHLOV" class="w3-select w3-border w3-margin-bottom">
+                        <option value="" disabled selected></option>
+                        <option value="January">January</option>
+                       <option value="February">February</option>
+                       <option value="March">March</option>
+                       <option value="April">April</option>
+                       <option value="May">May</option>
+                       <option value="June">June</option>
+                       <option value="July">July</option>
+                       <option value="August">August</option>
+                       <option value="September">September</option>
+                       <option value="October">October</option>
+                       <option value="November">November</option>
+                       <option value="December">December</option>
+                    </select>
+                </div>
+
+                <div class="w3-bar-item w3-quarter w3-right">
+                    <input style="display:inline-block;" value="Save" type="button" id="REM_TMPL_SAVE_BTN" onClick="saveremtemplate();" class="w3-btn w3-theme w3-round-large w3-margin-top"/>
+                </div>
+                <div class="w3-bar-item w3-quarter w3-right">
+                    <input style="display:inline-block;" value="Send" type="button" id="REM_TMPL_RDRCT_BTN" onClick="" class="w3-btn w3-theme w3-round-large w3-margin-top"/>
+                </div>
+            </div>-->
+
+            <table th:if="${remid!='7'}" id="REM_TEMPL_TBL" class="w3-striped w3-table w3-margin-top">
+                <thead>
+                <th>Person Number</th>
+                <th>Name</th>
+                <th>Hire Date</th>
+                <th>Designation</th>
+                <th>HR Status</th>
+                <th>Payroll Status</th>
+                <th>Amount</th>
+                </thead>
+            </table>
+
+            <table th:if="${remid=='7'}" id="REM_TEMPL_TBL" class="w3-striped w3-table w3-margin-top">
+                <thead>
+                <th>Person Number</th>
+                <th>Name</th>
+                <th>Hire Date</th>
+                <th>Designation</th>
+                <th>HR Status</th>
+                <th>Payroll Status</th>
+                <th>Amount</th>
+                <th>VA</th>
+               <!--  <th >VA Arrear</th> -->
+                </thead>
+            </table>
+
+
+        </div>
+        </form>
+
+
+        <div id="noData" class="w3-container w3-responsive" style="display: none">
+            <div>
+                <p>No record found...</p>
+            </div>
+        </div>
+
+        <hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+
+        <div id="REMTEMP_LOADER" class="w3-modal" style="display: none">
+            <div class='w3-container' style='margin-top:11%; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+            <!--<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>-->
+        </div>
+
+        <script src="/js/revisedreimbursements/remtemplate.js"></script>
+
+    </div>
+</div>

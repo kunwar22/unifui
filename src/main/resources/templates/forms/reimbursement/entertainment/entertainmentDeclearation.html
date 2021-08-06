@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet">
+<meta charset="ISO-8859-1">
+<title>Entertainment Reimbursement Print</title>
+<style>
+.heading {
+	text-align: center;
+	text-decoration: underline;
+	size: 12px;
+}
+
+body {
+	margin-left: 50px;
+	margin-right: 50px;
+	
+}
+</style>
+
+</head>
+<body>
+	<div>
+		<p class="heading">Uttar Pradesh Rail Corporation Limited</p>
+		<br>
+		<p class="heading" style="text-decoration: none;">Quarterly Claim
+			for Reimbursement of Entertainment of Expenses</p>
+		<br> <br> <br>
+		<p style="text-align:left; align-content: justify;">
+			This is certify that I have spent an amount of Rupees &nbsp;<strong><i><label th:text="${entertainmenttmodel.getAmount()}">Only</label></i></strong>&nbsp;during 
+			the period from &nbsp;<strong><i><label th:text="${entertainmenttmodel.getPeriodfrom()}"></label></i></strong> to &nbsp;<strong><i><label th:text="${entertainmenttmodel.getPeriodto()}"></label></i></strong>
+			in the year &nbsp;&nbsp;<strong><i><label th:text="${entertainmenttmodel.getPeriodfrom().substring(0,4)}"></label></i></strong> &nbsp;as per following
+			details.
+		</p>
+		<br> <br>
+		<table border="1"
+			style="border: 1 px solid black; border-collapse: collapse; width: 100%; height: 100%;">
+			<thead>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Expenses incurred on account of entertainment to Guests at
+						Office</td>
+					<td align="center">Amount/Rs.</td>
+				</tr>
+				<tr>
+					<td align="right"><b>Total</b></td>
+					<td align="right" style="font-weight: bold;"><strong><i><label th:text="${entertainmenttmodel.getAmount()}"></label></i></strong></td>
+				</tr>
+			</tbody>
+		</table>
+		<br> <br>
+		<p align="left">I have maintained the relevant papers,bills etc.</p>
+		<br> <br>
+		<p align="left">The amount claimed has not been claimed before and
+			wil not be claimed here after.</p>
+		<p align="left">The admissible amount may be reimbursed to me</p>
+		<br>
+
+		<p align="left">* Strike out which is not applicable</p>
+		<div>
+			<div style="float:right;">
+				<p >
+					Signature:&nbsp;<input style="border: none; border-bottom: 1px solid;">
+				</p>
+				<p >
+					Name:&nbsp;<strong><i><label th:text="${empdetails.getPersonname()}"></label></i></strong>
+				</p>
+				<p >
+					Designation:&nbsp;<strong><i><label th:text="${empdetails.getDesignation()}"></label></i></strong>
+				</p>
+				<p >
+					Employee No:&nbsp;<strong><i><label th:text="${empdetails.getPersonnumber()}"></label></i></strong>
+				</p>
+			</div>
+			<div   style="float:left;">
+				<p>
+					Date:<input style="border: none; border-bottom: 1px solid;">
+				</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

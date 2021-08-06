@@ -1,0 +1,249 @@
+<div th:fragment="vendorElementMapping">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var elemlovs = /*[[${elementList}]]*/;
+        var venderlov = /*[[${vendorDetails}]]*/;
+        var result = /*[[${result}]]*/;
+
+        /*]]>*/
+    </script>
+
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px;">
+		
+		 <div style="position: relative;">
+            <div class="w3-container">
+                <h4 style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+                         style="cursor: pointer;">
+                    <i class="fas fa-industry" style="color: #f275;"></i>
+
+                    &nbsp;Vendor Element Mapping
+                </h4>
+            </div>
+        </div>
+
+
+		<div class="w3-main" style="margin-top: 10px; margin-bottom: 16px;">
+			<div style="position: relative;">
+				<div class="w3-container w3-margin-bottom">
+					<form method="post" id="VENDORMapping"
+						enctype="application/x-www-form-urlencoded"
+						onsubmit="return false;">
+						<div class="w3-container w3-border">
+							<div class="w3-row">
+								<div class="w3-container w3-third" style="margin-top: 5px;">
+									<label style="color: black;">Vendor Name</label> <!-- <input
+										id="vendorid" name="vendorid" class="w3-input w3-border"
+										type="text" /> -->
+										<select id="vendorid" 
+                                          class="w3-select w3-border" name="vendorid"  >
+                   						   <option value=""  selected></option>
+						                    <option th:each="vender : ${vendor}"
+						                            th:value="${vender.getVendorid()}"
+						                            th:text="${vender.getVendorname()}">
+						                </select>
+								</div>
+
+								<!--<div class="w3-container w3-third" style="margin-top: 5px;">
+									<label style="color: black;">&nbsp;</label>
+								</div>-->
+
+								<div class="w3-container w3-third" style="margin-top: 28px;">
+									<label>&nbsp;</label>
+									<div id="createbtn"
+										class="w3-btn w3-theme w3-round-large" value="Submit"
+										type="button" onclick="vendorElemMapping();">&nbsp;&nbsp;Search
+										</div>
+								</div>
+							</div>
+							<br>
+							<div class="w3-container">
+								<h5 class="w3-text-theme" style="margin-top: 2px; bottom: 2px;">Search
+									Results</h5>
+								<div  id="vendorDiv"  style="display: none;" class="w3-padding">
+
+									<div>
+										 <input
+											style="marging-left: 5px" id="ADDROW_BTN" class="w3-left w3-btn w3-theme w3-round-large"
+											type="button" value="+" onclick="addRowVENDOR();" />												
+									</div>
+
+									<div id="vendorDiv2"  >
+										<table id="VENDOR_TBL" class="display compact w3-table"
+											style="width: 100%;">
+											<thead>
+												<th style="width: 20%">Vendor Details</th>
+												<th style="width: 20%">Element Name</th>
+												<th style="width: 10%">Is Active</th>											
+												<th></th>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+									<div id="noData" class="w3-responsive" style="display: none">
+										<div>
+											<p>No record found...</p>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<br>
+							<div class="w3-container" id="saveblock" style="display: none;">
+								<p>
+									<button onclick="saveVendorElem(this);" id="SUBMIT_BTN"
+										class="w3-button w3-theme " style="margin-left: 5px;">Submit</button>
+								</p>
+							</div>
+						</div>
+					</form>
+
+
+
+					<!-- <form method="post" id="VENDOR_SAVE"
+						enctype="application/x-www-form-urlencoded"
+						onsubmit="return false;">
+
+						<div class="w3-container" style="margin-top: 43px; display: none;">
+
+							<p>
+								<label>Element Id:</label> <input class="w3-input w3-border"
+									id="elementmappidsssssss" name="elementmappidssssssssss" type="text" />
+							</p>
+							<p>
+								<label>Vendor Details:</label> <input class="w3-input w3-border"
+									id="vendordetails" name="vendordetails" type="text" />
+							</p>
+
+							<p>
+								<label>Element:</label> <input class="w3-input w3-border"
+									id="element" name="element" type="text" />
+							</p>
+							<p>
+								<label>Element Name:</label> <input class="w3-input w3-border"
+									id="elementname" name="elementname" type="text" />
+							</p>
+							<p>
+								<label>Created By:</label> <input class="w3-input w3-border"
+									id="createdby" name="createdby" type="text" />
+							</p>
+							<p>
+								<label>Modified By:</label> <input class="w3-input w3-border"
+									id="modifiedby" name="modifiedby" type="text" />
+							</p>
+							<p>
+								<label>Created Date:</label> <input class="w3-input w3-border"
+									id="createddate" name="createddate" type="text" />
+							</p>
+							<p>
+								<label>Last Updated Date:</label> <input
+									class="w3-input w3-border" id="lastupdateddate"
+									name="lastupdateddate" type="text" />
+							</p>
+							<p>
+								<label>Is Active:</label> <input class="w3-input w3-border"
+									id="isactive" name="isactive" type="text" />
+							</p>
+
+						</div>
+					</form> -->
+
+					<!-- <div id="EDIT_POPUP" class="w3-modal" style="display: none;">
+						<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+							<div
+								class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+								<div class="modal-header">
+									<button type="button" class="w3-button w3-display-topright"
+										onclick="document.getElementById('EDIT_POPUP').style.display='none'">
+										<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+									</button>
+									<h3 id="POP_HEAD" align="left"></h3>
+									<hr class="hrline">
+								</div>
+								<div class="modal-body">
+									<div>
+										<form method="post" id="POPUP_EDIT_FORM"
+											enctype="application/x-www-form-urlencoded">
+											<input id="POP_ID" type="text" name="id" hidden>
+											<div class=w3-half>
+												<div class="w3-container">
+													<div class="w3-row w3-section">
+														<div class="w3-col" style="width: 80px">Element Id:</div>
+														<div class="w3-rest">
+															<input class="w3-input w3-border" name="elementmappidssss"
+																id="POP_elementmappid" type="text">
+														</div>
+													</div>
+													<div class="w3-row w3-section">
+														<div class="w3-col" style="width: 80px">Vendor
+															Details:</div>
+														<div class="w3-rest">
+															<input class="w3-input w3-border" name="vendordetails"
+																id="POP_vendordetails" type="text">
+														</div>
+													</div>
+													<div class="w3-row w3-section">
+														<div class="w3-col" style="width: 80px">Element:</div>
+														<div class="w3-rest">
+															<input class="w3-input w3-border" name="element"
+																id="POP_element" type="text">
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class=w3-half>
+												<div class="w3-container">
+													<div class="w3-row w3-section">
+														<div class="w3-col" style="width: 80px">Element
+															Name:</div>
+														<div class="w3-rest">
+															<input class="w3-input w3-border" name="elementname"
+																id="POP_elementname" type="text" />
+														</div>
+													</div>
+													<div class="w3-row w3-section">
+														<div class="w3-col" style="width: 80px">Created
+															Date:</div>
+														<div class="w3-rest">
+															<input class="w3-input w3-border" name="createddate"
+																id="POP_createddate" type="text" />
+														</div>
+													</div>
+													<div class="w3-row w3-section">
+														<div class="w3-col" style="width: 80px">Last Updated
+															Date:</div>
+														<div class="w3-rest">
+															<input class="w3-input w3-border" name="lastupdateddate"
+																id="POP_lastupdateddate" type="text">
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<div class="w3-container">
+										<div class="form-group">
+											<div class="w3-right">
+												<button id="POP_LOOKUP_CANCEL"
+													class="w3-button w3-theme w3-grey">Cancel</button>
+												<button type="button" onclick="editLookup()"
+													id="POP_LOOKUP_CORRECT" class="w3-button w3-theme w3-grey">Correct</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div> -->
+				</div>
+			</div>
+		</div>
+
+		<script src="/js/vendordetails/vendorelemmapping.js"></script>
+	</div>
+</div>

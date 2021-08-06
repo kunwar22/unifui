@@ -1,0 +1,139 @@
+<div th:fragment="createeligibility">
+    <form  method="post" id="frmEligible" enctype="application/x-www-form-urlencoded" onsubmit="return false;">   
+      <input type="hidden" value="" id="cmd" name="cmd">
+	<div class="w3-row w3-padding-large w3-margin-top">
+ 	
+    <h5 class="w3-text-theme" style="font-weight: bold">Eligibility Details</h5>
+    
+    <hr class="hrline">
+        
+                <div class="w3-container" >
+                    <div th:value="${eligible.getEligibilityid()}" >
+                        
+                        <input type="hidden" id="cmdElig" th:value="${eligible.getEligibilityid()}" name="eligibilityid"/>
+                    </div>
+
+                  <div id="Eligibility" class="w3-container city" >
+                  
+                      <div class=w3-half>
+                        <div class="w3-container">
+                          <p>
+                            <label>Name</label> <span style="color:red"> *</span>
+                            <input value="" th:value="${eligible.getEligibilityname()}" class="w3-input w3-border" name="eligibilityname"
+											id="CR_ELIG_NAME" type="text">
+											 <span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("eligibilityname") != null}' th:text='${bindingResult.getFieldError("eligibilityname").getDefaultMessage()}'></span>
+                          </p>
+                            <p>
+                                <label>Code</label><span style="color:red"> *</span>
+                                <input th:value="${eligible.getEligibilitycode()}" value="" class="w3-input w3-border" name="eligibilitycode"
+                                       id="CR_ELIG_CODE" type="text">
+                                       <span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("eligibilitycode") != null}' th:text='${bindingResult.getFieldError("eligibilitycode").getDefaultMessage()}'></span>
+                            </p>
+                          <p>
+                            <label>Description</label>
+                            <input value="" th:value="${eligible.getEligibilitydescription()}" class="w3-input w3-border" name="eligibilitydescription"
+											id="CR_ELIG_DSCR" type="text">
+                          </p>
+                          
+                     </div>
+                      </div>
+                      
+                      
+                      <div class=w3-half>
+                      <div class="w3-container" style="margin-top:15px">
+                        
+                      <label>Criteria</label><span style="color:red"> *</span>
+                   	  <select id="CR_ELIG_CRI" class="w3-select w3-border" onchange="bindCriteria()">
+                      <option value="" disabled selected>--Select--</option>
+                      <option value="Gender" >Gender</option>
+                      <option value="Job" >Job</option>
+                      <option value="Position">Position</option>
+                      <option value="BusinessUnit" >Business Unit</option>
+                      <option value="NatureOfEmployement" >Nature of Employment</option>
+                  	  <option value="MaritialStstus" >Marital Status</option>
+					  <option value="WorkLocation" >Work Location</option>
+					  <option value="BaseLocation" >Base Location</option>	
+                      </select>
+                      <span style="color:red" id="CRITERIA_ERROR"></span>
+                        <div id="CRITERIA_BLOCK" style="display:none">
+                        <p><label>Type</label></p>
+                         
+                        <div id="divcriteria" style="display: none;padding:9px; border:2px solid #ccc; width:300px; height:222px;overflow-y:scroll">
+   
+                        </div>
+                        <button class="w3-btn w3-theme w3-margin-top" id="btnAdd" >Add</button>  
+                        </div>                      
+                            <div class="w3-container" style="margin-top:35px">
+                             
+                              <table th:if="${eligible.getEligibilitycriteria().get(0).getEligibilitycriteriaid()==0}" id="mytable" style="display:none" class="w3-table-all w3-small">
+                                   <thead>
+                                    <th>Criteria</th>
+                                    <th>Type</th>
+                                    <th></th>
+                                    <th></th>
+                                   </thead>
+                                  <tbody >
+                                  </tbody>
+                              </table>
+                              
+                              <table th:if="${eligible.getEligibilitycriteria().get(0).getEligibilitycriteriaid()!=0}" id="mytable"  class="w3-table-all w3-small">
+                                   <thead>
+                                    <th>Criteria</th>
+                                    <th>Type</th>
+                                    <th></th>
+                                    <th></th>
+                                   </thead>
+                                <tbody >
+                                <tr th:each="ct ,stats: ${(eligible.getEligibilitycriteria())}">
+                                    <td><input type='text' readonly='true' th:value="${ct.getEligibilitycriterianame()}"  th:name="'eligibilitycriteria['+${stats.index}+'].eligibilitycriterianame'" class='lblCriteria'/></td>
+                                    <td><input type='text' readonly='true' th:value="${ct.getCriteriavaluename()}"  th:name="'eligibilitycriteria['+${stats.index}+'].criteriavaluename'" class='lblCriteria'/></td>
+                                    <td>
+                                    <input type='hidden' th:name="'eligibilitycriteria['+${stats.index}+'].criteriavalueid'" th:value="${ct.getCriteriavalueid()}"/><input type='button' value='Delete' id='btnDell' class='btnDelete' th:name="${stats.index+1}"/></td>
+                                </tr>
+                                </tbody>
+                 
+                              </table>
+                            </div>
+                            
+                        </div>
+                      </div>
+                   
+                  </div>
+               
+                
+                 
+                </div>
+                <hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+<button type="button" rm="/eligibility/manageEligibility" id="CANCEL_BTN_ELIG" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; ">Cancel</button>
+<button type="button" id="SAVE_BTN_ELIG" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; ">Submit</button>       
+               
+            </div>
+        <div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+            <div class="w3-modal-content w3-card-4 w3-animate-zoom"
+                 style="max-width: 400px;">
+                <div
+                        class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+                    <label id="lblMsg" style="font-weight: bold"> </label> <a
+                        id="btnOK" rm="eligibility/manageEligibility">OK</a>
+
+                </div>
+
+            </div>
+        </div>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var res = /*[[${response}]]*/;
+    console.log(message);   
+/*]]>*/
+</script>
+            <script src="/js/create/eligibility.js"></script>
+    </form>
+        </div>
+            
+
+
+
+    
+

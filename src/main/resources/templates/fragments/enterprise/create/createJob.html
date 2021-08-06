@@ -1,0 +1,159 @@
+<div th:fragment="createJob">
+<div class="w3-container" style="margin-top:14px;">
+		<h4 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Create Job</h4>
+		</div>
+		<div class="w3-row">
+	<div class=w3-half>
+	<div class="w3-container">
+			<hr class="hrline">
+			<h5 style="font-weight: bold">
+			Job Resource
+			</h5>
+			           <input
+						th:value="${CreateJob.getJobsid()}" id="txtJbid" style="display: none"
+						type="text" /> <input
+						th:value="${CreateJob.getActionid()}" id="txtJbActionid" style="display: none"
+						 type="text" /> 
+				<!-- or ${CreateJob.getAddtionalatr()!='Correct'} -->
+				<p th:if="${CreateJob.getEffectstartdate()==null} ">
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input th:value="${CreateJob.getEffectstartdate()}" max="9999-12-31" flag="none" th:msg="${CreateJob.getAddtionalatr()}" class="w3-input w3-border" name="JobEffectiveStartDate" id="CR_JOB_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD" tabindex="6"/>
+					<span id="JOB_EFFDT_ERROR" style="color:red"></span>
+				</p>
+				<!-- and ${CreateJob.getAddtionalatr()=='Correct'} -->
+				<p th:if="${CreateJob.getEffectstartdate()!=null} ">
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input th:value="${CreateJob.getEffectstartdate()}" max="9999-12-31" flag="none" th:msg="${CreateJob.getAddtionalatr()}" class="w3-input w3-border" name="JobEffectiveStartDate" id="CR_JOB_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD" tabindex="6" disabled/>
+					<span id="JOB_EFFDT_ERROR" style="color:red"></span>
+				</p>
+			<p th:if="${CreateJob.getCode()==null}">
+			<label>Code</label><span style="color:red"> *</span>
+			<input th:value="${CreateJob.getCode()}"class="w3-input w3-border" name="jobCode" id="CR_JOB_CODE" type="text" tabindex="3">
+			<span id="JOB_CODE_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${CreateJob.getCode()!=null}">
+			<label>Code</label><span style="color:red"> *</span>
+			<input th:value="${CreateJob.getCode()}"class="w3-input w3-border" name="jobCode" id="CR_JOB_CODE" type="text" tabindex="3" disabled>
+			<span id="JOB_CODE_ERROR" style="color:red"></span>
+			</p>
+			<p  th:if="${CreateJob.getJobsid()==0}">
+			<label>Job Set</label> <span style="color:red"> *</span>
+					<select id="CR_JOB_DATASET"
+						class="w3-select w3-border" name="option" tabindex="5">
+						<option value="" disabled selected></option>
+						<option th:each="dl : ${datasetlist}"							
+							th:value="${dl.getDatasetsid()}"
+							th:text="${dl.getName()}"></option>
+					</select><span id="JOB_BU_ERROR" style="color:red"></span>
+				</p>
+			<p  th:if="${CreateJob.getJobsid()!=0}">
+			<label>Job Set</label> <span style="color:red"> *</span>
+					<select id="CR_JOB_DATASET"
+						class="w3-select w3-border" name="option" tabindex="5" disabled>
+						<option th:each="dl : ${datasetlist}"
+							th:selected="${dl.getDatasetsid() eq CreateJob.getDataset()}"
+							th:value="${dl.getDatasetsid()}"
+							th:text="${dl.getName()}"></option>
+					</select><span id="JOB_BU_ERROR" style="color:red"></span>
+				</p> 
+		</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container" style="margin-top:43px;">
+			<p>
+			<label>Name</label><span style="color:red"> *</span>
+			<input th:value="${CreateJob.getName()}" class="w3-input w3-border" name="jobName" id="CR_JOB_NAME" type="text" tabindex="2">
+			<span id="JOB_NAME_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${CreateJob.getJobsid()!=0}">
+                  <label>Status</label><span style="color:red"> *</span>
+                  <select id="statusList" class="w3-select w3-border" name="status" tabindex="4">
+						<option th:value="${CreateJob.getStatus()}" th:text="${CreateJob.getStatus()}" selected hidden></option>
+						<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+					</select><span id="JOB_STATUS_ERROR" style="color:red"></span>
+				</p>
+				<p th:if="${CreateJob.getJobsid()==0}">
+                     <label>Status</label><span style="color:red"> *</span>
+					<select id="statusList" class="w3-select w3-border" name="option" tabindex="4">
+						<option th:each="st : ${status}" th:selected="${st == 'Active' }" th:value="${st}" th:text="${st}">
+					</select><span id="JOB_STATUS_ERROR" style="color:red"></span>
+				</p>
+			<p  th:if="${CreateJob.getJobsid()!=0}">
+			<label>Job Function</label> <span style="color:red"> *</span>
+			<select id="CR_JOBID" class="w3-select w3-border" name="option" tabindex="1">
+						<option value="" disabled selected></option>
+							<option th:each="jobfunction : ${jobfunction}"
+							th:selected="${jobfunction.getId() eq CreateJob.getJobfunction()}"
+							th:value="${jobfunction.getId()}"
+							th:text="${jobfunction.getDescription()}"></option>
+					</select><span id="JOB_FUNCTION_ERROR" style="color:red"></span>
+				</p>
+				<p  th:if="${CreateJob.getJobsid()==0}">
+			<label>Job Function</label> <span style="color:red"> *</span>
+			<select id="CR_JOBID" class="w3-select w3-border" name="option" tabindex="1">
+						<option value="" disabled selected></option>
+	<option th:each="jobfunction : ${jobfunction}" th:value="${jobfunction.getId()}" th:text="${jobfunction.getDescription()}">
+					</select><span id="JOB_FUNCTION_ERROR" style="color:red"></span>
+				</p>
+				
+		</div>
+	</div>
+	<div class="w3-container">
+		<p>
+		<button id="JobCancel" rm="enterprisesetup/managejob"  class="w3-button w3-theme w3-grey">Cancel</button>
+		<button id="JOB_CREATE" class="w3-button w3-theme w3-grey"  tabindex="7">Submit</button>
+		</p>
+	</div>
+		<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="enterprisesetup/managejob">OK</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--***Start:Error Msg** -->
+<div id="idError" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg"><b> Date must be latest!!</b> </label> <a id="btnerrorOK" class="w3-button w3-red"
+						rm="enterprisesetup/managejob">OK</a>
+				</div>
+			</div>
+		</div>
+<script src="/js/validation/validation.js"></script>
+<script src="/js/create/job.js"></script>
+<script>
+$('#btnerrorOK').on('click', function(e){
+	var url = $(this).attr("rm");
+	$('#replace_div').load(url);
+	});
+$(document).ready(function(){
+$("#idError").css('display', 'none');
+	var strMsg=$("#CR_JOB_EFFDT").attr("msg");
+	
+	if(strMsg=="Error")
+		{
+			$("#idError").css('display', 'block');
+			$("#JOB_CREATE").attr('id','btnSUb');
+			$("#CR_JOB_EFFDT").attr('flag','update');
+		}
+	else if(strMsg!="Error" || strMsg!="Correct")
+	{
+		if(strMsg=="Correct")
+			{
+				$("#CR_JOB_EFFDT").attr('flag','correct');
+			}
+		if(strMsg!="Correct")
+			{
+				$("#CR_JOB_EFFDT").val(strMsg);
+				$("#CR_JOB_EFFDT").attr('flag','update');
+			}
+	}
+});
+</script>
+</div>

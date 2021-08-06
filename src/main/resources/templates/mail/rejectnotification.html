@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Unif Erp</title>
+		
+		<style>
+			.bodyDiv{
+				background-image: url(https://image.freepik.com/free-vector/background-white-elegant-texture_23-2148438404.jpg);
+				background-position: center;
+				background-size: cover;
+				height: auto;
+				border: 2px solid;
+				border-color: rgb(192, 192, 192);
+				width: 500px;
+				padding: 20px 20px;
+				position:relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="bodyDiv">
+			<div>
+		        <div style="float:left"><img src="https://lmrcl.com/front-end/img/UPMRCL.png" width="300" /></div>
+		      
+		    </div>
+		    <br />
+		    <br />
+		    <br />
+		    <br />
+		    <p style="color:#506890;"><b>Hello,&nbsp;&nbsp;<span th:text="${name}"></span></b></p>
+		    <p style="color: #506890;">
+		        Your claimed request ID <span th:text="${claimid}"></span> for <span th:text="${reimbname}"></span> has been rejected.<br>
+Click <a style="color:blue;" th:href="${link}">here</a> to login and check status.
+		    </p>
+		    <br>
+	       	<p style="color: #506890;font-size:14px!important;">
+		        In case of any queries feel free to contact us at: <span style="color:#ff0000;">feedback@lmrcl.com</span><br />
+		        To read more about UNIF visit our website <span style="color:#ff0000;">https://lmrcl.com/</span>
+		    </p>
+		</div>
+	</body>
+</html>

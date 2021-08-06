@@ -1,0 +1,48 @@
+<div th:fragment="contactInfo" style="margin-left:15%">
+<!-- <div class="w3-bar w3-theme w3-left-align w3-large" style="position:fixed; z-index:100; margin-top:12px;">
+ --> <div class="w3-theme" style="z-index:3">	    
+	    <img id="PROFILE_PIC" class="pull-left" alt="" style="width:76px; height:76px; margin-left:10px" src="/icons/face-white-18dp.svg">
+		<h3 id="PAGE_NAME" style="font-weight:bold; margin-left:100px;">Page Name</h3>
+		<h4 id="USER_NAME"  style="margin-left:100px; margin-bottom:5px;">User Name</h4>
+	    	
+	</div>
+	<div class="w3-container">
+		<form  method="post" id="RESIGNATION" enctype="application/x-www-form-urlencoded" onsubmit="return false;" style="margin-top:10px"> 
+		
+		<div class="w3-row w3-border w3-padding-large">
+		<div style="margin-top:10px">
+		<h4 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline">Communication</h4>
+		<!-- <select id="COMM_ADD_BTN" class="w3-right" style="margin-right:10px; width:70px;">
+			<option hidden selected> + Add</option>
+			<option>Email Details</option>
+			<option>Phone Details</option>
+		</select> -->
+		<div class="w3-right" style="margin-right:10px; width:70px;">
+  		<button id="COMM_ADD_BTN" onclick="myFunction()"> + Add </button>
+  		<div id="myDropdown" style="display:none; background-color: #f1f1f1; min-width: 80px; overflow: auto; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1;">
+    		 <a id="LOAD_CREATE_EMAIL_DIV">Email</a>
+   			 <a id="LOAD_CREATE_EMAIL_DIV">Phone</a>
+ 		</div>
+		</div>
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<div id="COMMUNICATION_BLOCK" class="w3-container" style="margin-top:35px">
+		<div class="w3-container">
+			<div id="CREATE_EMAIL_DIV" class="w3-container" style="display:none">
+			
+			
+			
+			</div>
+		
+		</div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div>
+	
+</form>
+</div>
+		
+<script src="/js/user/corehr/contactInfo.js"></script>
+</div>
+	

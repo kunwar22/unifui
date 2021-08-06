@@ -1,0 +1,2364 @@
+<div th:fragment="personEdit">
+
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var tabname = /*[[${opentab}]]*/;
+    var pnum = /*[[${pno}]]*/;
+    var response= /*[[${responsemsg}]]*/;
+    //alert(tabname+"::"+pnum);
+/*]]>*/
+</script>
+
+        <div id="REPORTS_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+		</div>
+		<div class="w3-container w3-margin-top">
+		
+		<input value="" name="personid"  type="text" hidden/>
+		<input value=""  type="text" hidden/>
+		 
+		 
+		<div id="PERSON_DISPLAY" class="w3-row w3-border" style="margin-top:13px">
+		<div class="w3-bar w3-light-grey" >
+		<button name="NAME_TAB" class="w3-bar-item w3-button tablink " onclick="openTab('NAME_TAB');" >Name Details</button>
+		<button name="ADDR_TAB" class="w3-bar-item w3-button tablink " onclick="openTab('ADDR_TAB');" >Address Details</button>
+		<button name="PHONE_TAB" class="w3-bar-item w3-button tablink " onclick="openTab('PHONE_TAB');" >Phone Details</button>
+		<button name="EMAIL_TAB" class="w3-bar-item w3-button tablink " onclick="openTab('EMAIL_TAB');" >Email Details</button>
+		<button name="MARITAL_TAB" class="w3-bar-item w3-button tablink " onclick="openTab('MARITAL_TAB');" >Marital Status</button>
+		<button name="NAT_TAB" class="w3-bar-item w3-button tablink " onclick="openTab('NAT_TAB');" >National Identifier</button>
+		<button name="BIOGRAPHICAL_TAB" class="w3-bar-item w3-button tablink " onclick="openTab('BIOGRAPHICAL_TAB');" >Biographical Info</button>
+		</div>
+		
+		<div id="NAME_TAB" class="w3-container legal" style="display:none">
+		<form  method="post" id="NAME_DETAILS" enctype="application/x-www-form-urlencoded" onsubmit="return false;"> 
+		<div class="w3-row">
+		
+		<div style="margin-top:10px; margin-bottom:15px;">
+		<h4 class="w3-text-theme w3-margin-top" style=" display:inline">Name Details</h4>
+		<input value="NAME_TAB" name="tab"  id="tab" type="hidden" />
+		<select id="EDIT_NAME_TAB" class="w3-border w3-right" name="mode" style="margin-right:30px; height:30px; border-radius: 5px;">
+			<option value="Save" selected hidden>Edit</option>
+			<option value="Correct">Correct</option>
+			<option value="Update">Update</option></select>
+		</div>
+		<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		
+		<div class="w3-row">
+			<p class="w3-half w3-container">
+			<label>Effective Start Date</label> 
+			<input th:value="${personallrecords.getPersonalrecord().getEffectivestartdate()}" class="w3-input w3-border" id="PD_START_DATE" name="effectivestartdate" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+			<span id="DATE_ERROR" style="color:red; display:none">Please select Effective Start Date</span>
+			</p>
+		</div> 
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div  class="w3-row">
+			<div class=w3-half>
+			<div class="w3-container">
+			
+			<input th:value="${personallrecords.getPersonalrecord().getActionid()}" name="actionid"  id="actionid" type="hidden" />
+			<input th:value="${personallrecords.getPersonalrecord().getPersonid()}" name="personid" id="personid"  type="hidden" />
+			<input th:value="${personallrecords.getPersonalrecord().getPersonnumber()}" name="personnumber" id="personnumber" type="hidden" />
+			<p>
+			<label>Title</label>
+			<select id="" class="w3-select w3-border" name="title" disabled>
+				<option disabled selected></option>
+				<option th:each="title : ${title}"
+					th:selected="${personallrecords.getPersonalrecord().getTitle() eq title.getId()}"
+					th:value="${title.getId()}"
+					th:text="${title.getDescription()}" />
+			</select> 
+			</p>
+			<p>        
+			<label>First Name</label> 
+			<input th:value="${personallrecords.getPersonalrecord().getFirstname()}" class="w3-input w3-border" name="firstname" id="PD_FIRST_NAME" type="text" disabled/>
+			</p>
+			
+			
+			
+			<p>
+			<label>Last Name</label> 
+			<input th:value="${personallrecords.getPersonalrecord().getLastname()}" class="w3-input w3-border" name="lastname" id="PD_LAST_NAME" type="text" disabled/>
+			</p>
+			
+			
+			
+			
+			
+		</div>
+		</div>
+	
+		<div class=w3-half>
+		<div class="w3-container">
+			
+			<p>
+			<label>Gender</label>
+			<select id="" class="w3-select w3-border" name="gender" disabled>
+				<option disabled selected></option>
+				<option th:each="gender : ${gender}"
+					th:selected="${personallrecords.getPersonalrecord().getGender() eq gender.getId()}"
+					th:value="${gender.getId()}"
+					th:text="${gender.getDescription()}" />
+			</select> 
+			</p>
+			<p>
+			<label>Middle Name</label> 
+			<input th:value="${personallrecords.getPersonalrecord().getMiddilname()}" class="w3-input w3-border" name="middilname" id="PD_MIDDLE_NAME" type="text" disabled/>
+			</p>
+			
+			
+		</div>
+		</div>
+		
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<h4 class="w3-text-theme w3-margin-top" style=" display:inline">Emergency Details</h4>
+		<div  class="w3-row">
+		<div class=w3-half>
+		<div class="w3-container">
+		<p>        
+			<label>Father Name</label> 
+			<input th:value="${personallrecords.getPersonalrecord().getFathername()}"  class="w3-input w3-border" name="fathername" id="PD_FIRST_NAME" type="text" disabled/>
+		</p>
+		</div>
+		</div>
+		</div>
+			
+		
+		
+		
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		
+		
+		<div style="margin-bottom:15px">
+		<button type="button" id="NAME_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none;">Cancel</button>
+		<button type="button" id="NAME_TAB_SUBMIT_BTN" onclick="correctupdateNameTab();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Submit</button>
+		</div>
+		
+		
+		</div>
+		</form>
+		</div>
+		
+		
+		
+		<div id="ADDR_TAB" class="w3-container w3-border legal" style="display:none" >
+		<form  method="post" id="ADDR_TAB" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+		<div class="w3-row">
+		<div style="margin-top:10px; margin-bottom:15px;">
+		<h4 class="w3-text-theme w3-margin-top" style=" display:inline">Address Details</h4>
+		<input value="ADDR_TAB" name="tab"  id="tab" type="hidden" />
+		
+		</div>
+		<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		 
+		 
+			
+		<div class="w3-row" th:each="entry ,stats: ${personallrecords.getAddressdetails()}" th:id="'ADDR_DYNAMIC'+${stats.index}">
+		<div class="w3-row">
+			<p class="w3-half w3-container">
+			<label>Effective Start Date</label> 
+			<input th:value="${entry.getEffectivestartdate()}" class="w3-input w3-border" id="" name="effectivestartdate" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+			</p>
+			<p class="w3-half">
+			<select th:id="'EDITADDRTAB_'+${entry.getActionid()}" name="mode"  onchange="editfunction(this.id,this.name);" class="w3-border w3-right" style="margin-right:30px; height:30px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option><option value="Update">Update</option></select>
+			</p>
+		</div> 
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		 
+			<input th:value="${entry.getActionid()}" name="actionid"  id="actionid" type="hidden" />
+			<input th:value="${entry.getPersonid()}" name="personid" id="personid"  type="hidden" />
+			<input th:value="${entry.getPersonnumber()}" name="personnumber" id="personnumber" type="hidden" />
+			<input th:value="${entry.getAddressid()}" name="addressid" id="addressid" type="hidden" />
+			
+			<div class=w3-half>
+			<div class="w3-container">
+			
+			<p>
+			<label>Country</label> 
+			<select th:id="'PE_COUNTRY'+${stats.index}" th:name="${stats.index}" class="w3-select w3-border" disabled>
+				<option disabled selected></option>
+				<option th:each="country : ${country}"
+					th:selected="${entry.getCountry() eq country.getId()}"
+					th:value="${country.getId()}"
+					th:text="${country.getDescription()}" />
+			</select>
+			</p>
+			<p>
+			<label>Address Type</label> 
+			<option disabled selected></option>
+			<select th:id="'PE_ADDR'+${stats.index}" th:name="${stats.index}" class="w3-select w3-border" disabled>
+				<option th:each="addr : ${addresstype}"
+					th:selected="${entry.getAddresstype() eq addr.getId()}"
+					th:value="${addr.getId()}"
+					th:text="${addr.getDescription()}" />
+			</select>
+			</p>
+			<p>        
+			<label>Address Line 1</label> 
+			<input th:id="'PE_ADDR1'+${stats.index}" th:name="${stats.index}" th:value="${entry.getAddressline1()}"  class="w3-input w3-border"  type="text" disabled/>
+			</p>
+			<p>        
+			<label>Address Line 2</label> 
+			<input th:id="'PE_ADDR2'+${stats.index}" th:name="${stats.index}" th:value="${entry.getAddressline2()}"  class="w3-input w3-border"  type="text" disabled/>
+			</p>
+			
+			
+			
+			
+		</div>
+		</div>
+	
+		<div class=w3-half>
+		<div class="w3-container">
+		
+			<p>
+			<label>State</label>
+			<option disabled selected></option> 
+			<select th:id="'PE_STATE'+${stats.index}" th:name="${stats.index}" class="w3-select w3-border"  disabled>
+				<option th:each="state : ${state}"
+					th:selected="${entry.getState() eq state.getId()}"
+					th:value="${state.getId()}"
+					th:text="${state.getDescription()}" />
+			</select>
+			</p>
+			
+			
+			<p>
+			<label>City or Town</label> 
+			<input th:id="'PE_CITYTOWN'+${stats.index}" th:name="${stats.index}" th:value="${entry.getCitytown()}" class="w3-input w3-border"  type="text" disabled/>
+			</p>
+			
+			<p>
+			<label>Pin Code</label> 
+			<input th:id="'PE_PIN'+${stats.index}" th:name="${stats.index}" th:value="${entry.getPinCode()}" class="w3-input w3-border"  type="text" disabled/>
+			</p>
+			
+			
+			
+			
+		</div>
+		</div>
+		
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="ADDR_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none;">Cancel</button>
+		<button type="button" id="SUBMIT_ADDR_TAB_BTN" onclick="saveDocForm();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none;">Submit</button>
+		</div>
+		
+		
+		</div>
+		</form>
+		</div>
+		
+		<div id="PHONE_TAB" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+		<div style="margin-top:10px; margin-bottom:25px;">
+		<h4 class="w3-text-theme " style="margin-top:100px; display:inline">Phone Details</h4>
+		
+		<select id="EDIT_PHONE_TAB" class="w3-border w3-right" style="margin-right:30px; height:40px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option></select>
+		<input onclick="addrowcontact();" class="w3-btn w3-right w3-theme" type="button" id="ADD_ROW_PHONE" value="+" style="height:40px; border-radius: 5px; margin-right:10px; display:none;" />
+		</div>
+		<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<form  method="post" id="PHONE_DETAILS" enctype="application/x-www-form-urlencoded" onsubmit="return false;"> 
+		<input value="PHONE_TAB" name="tab"  id="tab" type="hidden" />
+		<table id="PHONE_DETAIL_TBL" class="display compact w3-table" style="width: 100%;">
+							<thead>
+								<th style="text-align: center; width: 5%;">Primary</th>
+								<th style="text-align: center; width: 10%;">Type</th>
+								<th style="text-align: center; width: 7%;">Country Code</th>
+								<th style="text-align: center; width: 50%;">Contact Number</th>
+								<th style="width: 5%"></th>
+							</thead>
+							<tbody>
+
+								<tr th:each="ct ,stats: ${personallrecords.getContactdetails()}">
+									
+									<td style="width: 10%">
+											<input th:value="${ct.getActionid()}" th:name="'contactdetails['+${stats.index}+'].actionid'"  id="actionid" type="hidden" />
+											<input th:value="${ct.getPersonid()}" th:name="'contactdetails['+${stats.index}+'].personid'" id="personid"  type="hidden" />
+											<input th:value="${ct.getPersonnumber()}" th:name="'contactdetails['+${stats.index}+'].personnumber'" id="personnumber" type="hidden" />
+											<input th:value="${ct.getContactid()}" th:name="'contactdetails['+${stats.index}+'].contactid'" id="contactid" type="hidden" />
+											<input th:value="${ct.getEffectivestartdate()}" th:name="'contactdetails['+${stats.index}+'].effectivestartdate'" id="effectivestartdate" type="hidden" />
+			
+											<div th:if="${ct.getPrimary()=='No'}">
+											<input style="zoom: 1.5;"
+												class="w3-input w3-border phoneCheck"
+												onclick="uncheckAllPhone(this.name)"
+												th:name="'contactdetails['+${stats.index}+'].primary'"
+												id="CHECKBOX_PRIMARY0" type="checkbox" value="Yes" disabled>
+											</div>
+											<div th:if="${ct.getPrimary()=='Yes'}">
+											<input style="zoom: 1.5;"
+												class="w3-input w3-border phoneCheck"
+												onclick="uncheckAllPhone(this.name)"
+												th:name="'contactdetails['+${stats.index}+'].primary'"
+												id="CHECKBOX_PRIMARY0" type="checkbox" value="Yes" checked disabled>
+											</div>
+									</td>
+
+									<td>
+										
+											<select id="CR_HR_CONTACTTYPE" class="w3-select w3-border"
+												th:name="'contactdetails['+${stats.index}+'].contacttype'" disabled>
+												<option value="" disabled selected></option>
+												<option th:each="cont : ${phonetype}"
+													th:selected="${ct.getContacttype() eq cont.getId()}"
+													th:value="${cont.getId()}"
+													th:text="${cont.getDescription()}" />
+											</select>
+										
+
+										
+									</td>
+
+									<td>
+										
+											<select id="CR_HR_COUNTRYCODE" class="w3-select w3-border"
+												th:name="'contactdetails['+${stats.index}+'].countrycode'" disabled>
+												<option value="" disabled selected></option>
+												<option th:each="countrycode : ${countrycode}"
+													th:selected="${ct.getCountrycode() eq countrycode.getId()}"
+													th:value="${countrycode.getId()}"
+													th:text="${countrycode.getDescription()}" />
+											</select>
+										
+										
+									</td>
+
+									<td><input th:value="${ct.getContactnumber()}"
+										class="w3-input w3-border"
+										th:name="'contactdetails['+${stats.index}+'].contactnumber'"
+										type="text" disabled></td>
+
+
+
+									<script th:inline="javascript">
+										/*<![CDATA[*/
+										window.globalCounter = parseInt(/*[[${stats.index+1}]]*/);
+
+										/*]]>*/
+									</script>
+
+
+
+									<td th:if="${stats.index!=0}" style="width: 5%"><input
+										class="w3-btn w3-theme" id="deletephone" type="button"
+										value="x" th:index="${stats.index}" flg="phone" disabled></td>
+
+								</tr>
+							</tbody>
+
+						</table>
+		
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="PHONE_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none;">Cancel</button>
+		<button type="button" id="PHONE_SUBMIT_BTN" onclick="phonecorrect();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Submit</button>
+		</div>
+		</form>
+		</div>
+		</div>
+		
+		
+		<div id="EMAIL_TAB" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+			
+		<div style="margin-top:10px; margin-bottom:25px;">
+		<h4 class="w3-text-theme " style="margin-top:100px; display:inline">Email Details</h4>
+		
+		<select id="EDIT_EMAIL_TAB" class="w3-border w3-right" style="margin-right:30px; height:40px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option></select>
+		<input onclick="addrowemail();" class="w3-btn w3-right w3-theme" type="button" id="ADD_ROW_EMAIL" value="+" style="height:40px; border-radius: 5px; margin-right:10px; display:none;" />
+		</div>
+		
+		<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<form  method="post" id="EMAIL_DETAILS" enctype="application/x-www-form-urlencoded" onsubmit="return false;"> 
+		<input value="EMAIL_TAB" name="tab"  id="tab" type="hidden" />
+		<!-----------------------------Multiple row phone details start here-------------------------------------------->
+		<div class="w3-row">
+			<div class="w3-container">
+			
+				
+				<div class="w3-padding">
+					
+					<div class=" w3-padding-large">
+					<table id="EMAIL_DETAIL_TBL" class="display compact w3-table"
+							style="width: 100%;">
+							<thead>
+								<th style="text-align: center; width: 5%;">Primary</th>
+								<th style="text-align: center; width: 10%;">Type</th>
+								<th style="text-align: center; width: 55%;">Email</th>
+								<th style="width: 5%"></th>
+							</thead>
+							<tbody>
+
+								<tr th:each="em ,stats: ${personallrecords.getEmaildetails()}">
+									<td style="width: 10%">
+											<input th:value="${em.getActionid()}" th:name="'emailDetails['+${stats.index}+'].actionid'"  id="actionid" type="hidden" />
+											<input th:value="${em.getPersonid()}" th:name="'emailDetails['+${stats.index}+'].personid'" id="personid"  type="hidden" />
+											<input th:value="${em.getPersonnumber()}" th:name="'emailDetails['+${stats.index}+'].personnumber'" id="personnumber" type="hidden" />
+											<input th:value="${em.getEmaildetailsid()}" th:name="'emailDetails['+${stats.index}+'].emaildetailsid'" id="emaildetailsid" type="hidden" />
+											<input th:value="${em.getEffectivestartdate()}" th:name="'emailDetails['+${stats.index}+'].effectivestartdate'" id="effectivestartdate" type="hidden" />
+											
+										<div th:if="${em.getPrimary()=='Yes'}">
+											<input style="zoom: 1.5;"
+												class="w3-input w3-border emailCheck"
+												onclick="uncheckAllMail(this.name)"
+												th:name="'emailDetails['+${stats.index}+'].primary'"
+												id="CHECKBOX_PRIMARY_EMAIL0" type="checkbox" value="Yes" checked disabled>
+										</div>
+										<div th:if="${em.getPrimary()=='No'}">
+											<input style="zoom: 1.5;"
+												class="w3-input w3-border emailCheck"
+												onclick="uncheckAllMail(this.name)"
+												th:name="'emailDetails['+${stats.index}+'].primary'"
+												id="CHECKBOX_PRIMARY_EMAIL0" type="checkbox" value="Yes" disabled>
+										</div>
+									</td>
+
+									<td>
+										
+											<select id="CR_HR_EMAILTYPE" class="w3-select w3-border"
+												th:name="'emailDetails['+${stats.index}+'].emailtype'" disabled>
+												<option disabled selected></option>
+												<option th:each="eml : ${emailtype}"
+													th:selected="${em.getEmailtype() eq eml.getId()}"
+													th:value="${eml.getId()}" th:text="${eml.getDescription()}" />
+											</select>
+										
+
+									</td>
+
+
+
+									<td><input th:value="${em.getEmailaddress()}"
+										class="w3-input w3-border"
+										th:name="'emailDetails['+${stats.index}+'].emailaddress'"
+										type="text" disabled> 
+									</td>
+
+									<script th:inline="javascript">
+										/*<![CDATA[*/
+										window.globalCounter = parseInt(/*[[${stats.index+1}]]*/);
+
+										/*]]>*/
+									</script>
+
+									<td th:if="${stats.index!=0}" style="width: 5%"><input
+										flg="email" class="w3-btn w3-theme" id="deleteemail"
+										type="button" value="x" disabled></td>
+
+								</tr>
+							</tbody>
+						</table>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+
+
+		<!-----------------------------Multiple row phone details end here-------------------------------------------->
+			
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="EMAIL_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Cancel</button>
+		<button type="button" id="EMAIL_SUBMIT_BTN" onclick="emailcorrect()" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Submit</button>
+		</div>
+		</div>
+		</div>
+		
+		<div id="MARITAL_TAB" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+		<div style="margin-top:10px; margin-bottom:15px;">
+		<h4 class="w3-text-theme w3-margin-top" style=" display:inline">Marital Details</h4>
+		<select id="EDIT_MARITAL_DETAILS" class="w3-border w3-right" style="margin-right:30px; height:30px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option></select>
+		</div>
+		<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<form  method="post" id="MARITAL_DETAILS" enctype="application/x-www-form-urlencoded" onsubmit="return false;"> 
+		 <input value="MARITAL_TAB" name="tab"  id="tab" type="hidden" />
+		<div  class="w3-row">
+			<div class=w3-half>
+			<div class="w3-container">
+			
+			<input th:value="${personallrecords.getMaritaldetails().getActionid()}" name="actionid"  id="actionid" type="hidden" />
+			<input th:value="${personallrecords.getMaritaldetails().getPersonid()}" name="personid" id="personid"  type="hidden" />
+			<input th:value="${personallrecords.getMaritaldetails().getPersonnumber()}" name="personnumber" id="personnumber" type="hidden" />
+			<input th:value="${personallrecords.getMaritaldetails().getMaritalid()}" name="maritalid" id="maritalid" type="hidden" />
+			<input th:value="${personallrecords.getMaritaldetails().getEffectivestartdate()}" name="effectivestartdate" id="effectivestartdate" type="hidden" />
+											
+			
+			<p>
+			<label>Marriage Status</label> 
+			<select class="w3-select w3-border" name="maritalstatus" disabled>
+				<option disabled selected></option>
+				<option th:each="maritalstatus : ${maritalstatus}" th:value="${maritalstatus.getId()}" th:selected="${personallrecords.getMaritaldetails().getMaritalstatus() eq maritalstatus.getId()}" th:text="${maritalstatus.getDescription()}"/>
+			</select>
+			</p>
+			
+			
+		</div>
+		</div>
+	
+		<div class=w3-half>
+		<div class="w3-container">
+		
+			<p>
+			<label>Marriage Date</label> 
+			<input name="marriagedate" th:value="${personallrecords.getMaritaldetails().getMarriagedate()}" class="w3-input w3-border" id="PD_START_DATE" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+			</p>
+			
+		</div>
+		</div>
+		
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="MARITAL_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Cancel</button>
+		<button type="button" id="MARITAL_SUBMIT_BTN" onclick="maritalcorrect();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Submit</button>
+		</div>
+		</form>
+		
+		
+	
+		</div>
+		</div>
+		
+		<div id="NAT_TAB" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+		<div style="margin-top:10px; margin-bottom:25px;">
+		<h4 class="w3-text-theme " style="margin-top:100px; display:inline">National Details</h4>
+		<select id="EDIT_NAT_TAB" class="w3-border w3-right" style="margin-right:30px; height:40px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option></select>
+		<input onclick="addrow();" class="w3-btn w3-right w3-theme" type="button" id="ADD_ROW_NAT" value="+" style="height:40px; border-radius: 5px; margin-right:10px; display:none;" />
+		</div>
+		<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<form  method="post" id="NAT_DETAILS" enctype="application/x-www-form-urlencoded" onsubmit="return false;"> 
+		 <input value="NAT_TAB" name="tab"  id="tab" type="hidden" />
+		<!-----------------------------Multiple row start here-------------------------------------------->
+
+		<div class="w3-container">
+			
+
+			<div class="w3-padding ">
+			
+				<div class="w3-padding-large">
+
+					<table id="NAT_ID_TBL" class="display compact w3-table"
+						style="width: 100%;">
+						<thead>
+							<th style="text-align: center;">Primary</th>
+							<th style="text-align: center;">Country</th>
+							<th style="text-align: center;">National ID Type</th>
+							<th style="text-align: center;">National ID</th>
+							<th></th>
+						</thead>
+						<tbody>
+
+							<tr th:each="entry , stats: ${personallrecords.getNationaldetails()}">
+								<td style="width: 10%">
+											<input th:value="${entry.getActionid()}" th:name="'natdetails['+${stats.index}+'].actionid'"  id="actionid" type="hidden" />
+											<input th:value="${entry.getPersonid()}" th:name="'natdetails['+${stats.index}+'].personid'" id="personid"  type="hidden" />
+											<input th:value="${entry.getPersonnumber()}" th:name="'natdetails['+${stats.index}+'].personnumber'" id="personnumber" type="hidden" />
+											<input th:value="${entry.getNationaldetailsid()}" th:name="'natdetails['+${stats.index}+'].nationaldetailsid'" id="nationaldetailsid" type="hidden" />
+											<input th:value="${entry.getEffectivestartdate()}" th:name="'natdetails['+${stats.index}+'].effectivestartdate'" id="effectivestartdate" type="hidden" />
+									<div th:if="${entry.getPrimary()=='Yes'}">
+										<input style="zoom: 1.5;" class="w3-input w3-border natCheck"
+											checked="checked" onclick="uncheckAll(this.name)"
+											id="CHECKBOX_NATIDENTIFIER0"
+											th:name="'natdetails['+${stats.index}+'].primary'"
+											type="checkbox" value="Yes"  disabled>
+									</div>
+
+									<div th:if="${entry.getPrimary()=='No'}">
+										<input style="zoom: 1.5;" class="w3-input w3-border natCheck"
+											onclick="uncheckAll(this.name)" id="CHECKBOX_NATIDENTIFIER0"
+											th:name="'natdetails['+${stats.index}+'].primary'"
+											type="checkbox" value="Yes" disabled>
+									</div>
+
+								</td>
+								<td style="width: 25%">
+
+
+										<select id="CR_HR_COUNTRY" class="w3-select w3-border"
+											th:name="'natdetails['+${stats.index}+'].countryid'" disabled>
+											<option value="" disabled selected></option>
+											<option th:each="country : ${country}"
+												th:selected="${entry.getCountryid() eq country.getId()}"
+												th:value="${country.getId()}"
+												th:text="${country.getDescription()}" />
+										</select>
+									
+								</td>
+
+								<td style="width: 25%">
+									
+										<select id="nationType" class="w3-select w3-border"
+											th:name="'natdetails['+${stats.index}+'].nationaltype'" disabled>
+											<option value="" disabled selected></option>
+											<option th:each="nattype : ${nattype}"
+												th:selected="${entry.getNationaltype() eq nattype.getId()}"
+												th:value="${nattype.getId()}"
+												th:text="${nattype.getDescription()}" />
+										</select> 
+
+								</td>
+
+								<td style="width: 30%">
+								<input
+									th:value="${entry.getNationalid()}" class="w3-input w3-border"
+									style="height: 38px"
+									th:name="'natdetails['+${stats.index}+'].nationalid'"
+									type="text" disabled>
+								</td>
+
+								<td th:if="${stats.index!=0}" style="width: 5%"><input
+									th:index="${stats.index}" flg="national"
+									class="w3-btn w3-theme" id="delete" type="button" value="x" disabled>
+								</td>
+								
+							</tr>
+						</tbody>
+
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-----------------------------Multiple row end here-------------------------------------------->
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="NAT_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none;">Cancel</button>
+		<button type="button" id="NAT_SUBMIT_BTN" onclick="natcorrect();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Submit</button>
+		</div>
+		</form>
+		
+		
+		</div>
+		</div>
+		
+		<div id="BIOGRAPHICAL_TAB" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+		<div style="margin-top:10px; margin-bottom:15px;">
+		<h4 class="w3-text-theme w3-margin-top" style=" display:inline">Biographical Info</h4>
+		<select id="EDIT_BIO_DETAILS" class="w3-border w3-right" style="margin-right:30px; height:30px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option></select>
+		</div>
+		<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<form  method="post" id="BIO_DETAILS" enctype="application/x-www-form-urlencoded" onsubmit="return false;"> 
+		<div class="w3-row">
+		<div class=w3-half>
+		<div class="w3-container"   >
+		 <input value="BIOGRAPHICAL_TAB" name="tab"  id="tab" type="hidden" />
+			<input th:value="${personallrecords.getBiographicalinfo().getActionid()}" name="actionid"  id="actionid" type="hidden" />
+			<input th:value="${personallrecords.getBiographicalinfo().getPersonid()}" name="personid" id="personid"  type="hidden" />
+			<input th:value="${personallrecords.getBiographicalinfo().getPersonnumber()}" name="personnumber" id="personnumber" type="hidden" />
+			<input th:value="${personallrecords.getBiographicalinfo().getBiographicalinfoid()}" name="biographicalinfoid" id="maritalid" type="hidden" />
+			<input th:value="${personallrecords.getBiographicalinfo().getEffectivestartdate()}" name="effectivestartdate" id="effectivestartdate" type="hidden" />
+				
+			<p>
+			<label>Date of Birth</label> 
+			<input name="dateofbirth" th:value="${personallrecords.getBiographicalinfo().getDateofbirth()}" class="w3-input w3-border" id="PD_START_DATE" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+			</p>
+			
+			<p>
+			<label>Country of Birth</label>
+			<select
+				id="" class="w3-select w3-border"
+				name="birthcountry" disabled>
+				<option disabled selected></option>
+				<option th:each="country : ${country}"
+				th:selected="${personallrecords.getBiographicalinfo().getBirthcountry() eq country.getId()}"
+				th:value="${country.getId()}"
+				th:text="${country.getDescription()}" />
+			</select>
+			</p>
+			<p>        
+			<label>Region of Birth</label> 
+			<input th:value="${personallrecords.getBiographicalinfo().getBirthregion()}" class="w3-input w3-border" name="birthregion" id="" type="text" disabled/>
+			</p>
+			
+			<p>
+			<label>Town of Birth</label> 
+			<input th:value="${personallrecords.getBiographicalinfo().getBirthtown()}" class="w3-input w3-border" name="birthtown" id="" type="text" disabled/>
+			</p>
+		</div>
+		</div>
+	
+	
+		<div class=w3-half>
+		<div class="w3-container" >
+			<!--<p>
+			<label>Date of Death</label> 
+			<input  class="w3-input w3-border" id="" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+			</p>-->
+			<p>        
+			<label>Correspondence Language</label> 
+			<input th:value="${personallrecords.getBiographicalinfo().getCorrespondncelanguage()}" class="w3-input w3-border" name="correspondncelanguage" id="" type="text" disabled/>
+			</p>
+			
+			<p>
+			<label>Blood Type</label>
+			<select id="" class="w3-select w3-border" name="bloodtype" disabled>
+			<option disabled selected></option>
+			<option th:each="bloodtype : ${bloodtype}"
+				th:selected="${personallrecords.getBiographicalinfo().getBloodtype() eq bloodtype.getId()}"
+				th:value="${bloodtype.getId()}"
+				th:text="${bloodtype.getDescription()}" />
+			</select>
+			</p>
+			 <!-- <p>
+			  <label>Photo</label>
+			  <img  src="/images/avatar.png" id="UPLOAD_IMAGE" alt="Avatar" style="margin-left:5px; border-radius: 50%; width:100px; height:100px; vertical-align:middle;" >
+			 </p> -->
+		</div>	
+		</div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="BIO_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Cancel</button>
+		<button type="button" id="BIO_SUBMIT_BTN" onclick="biocorrect();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Submit</button>
+		</div>
+		</form>
+		</div>
+		</div>
+	
+	
+		
+
+</div>
+</div>
+<div id="addrpopup" class="w3-modal" style="display:none">
+<form  method="post" id="ADDR_POP_FORM" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+    <div class="w3-modal-content">
+      <header class="w3-container w3-theme"> 
+        <span onclick="document.getElementById('addrpopup').style.display='none'" 
+        class="w3-button w3-display-topright">&times;</span>
+        <h4>Address Details Edit</h4>
+      </header>
+      
+      <div class="w3-container w3-margin">
+        	<input  name="actionid"  id="POP_ACTIONID" type="hidden" />
+			<input  name="personid" id="POP_PERSONID"  type="hidden" />
+			<input  name="personnumber" id="POP_PERSONNBR" type="hidden" />
+			<input  name="addressid" id="POP_ADDRID" type="hidden" />
+			<input  name="tabaddr" id="tabaddr" value="ADDR_TAB" type="hidden" />
+			<input  name="mode" id="mode" type="hidden" />
+		
+		<div class="w3-row">
+			<p class="w3-half w3-container">
+			<label>Effective Start Date</label> 
+			<input class="w3-input w3-border" name="effectivestartdate" id="POP_DATE"  type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+			</p>
+		</div> 	
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+        <div class="w3-row-padding">
+        <div class="w3-half">
+        <p>
+			<label>Country</label> 
+			<select id="POP_COUNTRY" name="country" class="w3-select w3-border" >
+				<option id="1"></option>
+				<option th:each="country : ${country}"
+					th:value="${country.getId()}"
+					th:text="${country.getDescription()}" />
+			</select>
+			</p>
+        </div>
+        <div class="w3-half">
+        	<p>
+			<label>State</label> 
+			<select id="POP_STATE" name="state" class="w3-select w3-border"  >
+				<option id="1"></option>
+				<option th:each="state : ${state}"
+					th:value="${state.getId()}"
+					th:text="${state.getDescription()}" />
+			</select>
+			</p>
+			
+		</div>		
+		</div>
+		
+		<div class="w3-row-padding">
+        <div class="w3-half">
+        	<p>        
+			<label>Address Line 1</label> 
+			<input id="POP_ADDR1" class="w3-input w3-border" name="addressline1"  type="text" />
+			</p>
+        </div>
+        <div class="w3-half">
+			<p>        
+			<label>Address Line 2</label> 
+			<input id="POP_ADDR2" class="w3-input w3-border" name="addressline2" type="text" />
+			</p>
+		</div>		
+		</div>
+		
+		<div class="w3-row-padding">
+        <div class="w3-half">
+        	<p>
+			<label>Address Type</label> 
+			<select id="POP_ADDR_TYPE" name="addresstype" class="w3-select w3-border" >
+				<option id="1"></option>
+				<option th:each="addr : ${addresstype}"
+					th:value="${addr.getId()}"
+					th:text="${addr.getDescription()}" />
+			</select>
+			</p>
+        </div>
+        <div  class="w3-half">
+			<p>
+			<label>City or Town</label> 
+			<input id="POP_CITY" class="w3-input w3-border" name="citytown"  type="text" />
+			</p>
+		</div>		
+		</div>
+		
+		<div class="w3-row-padding">
+        <div class="w3-half">
+        	<p>
+			<label>Pin Code</label> 
+			<input id="POP_PIN" class="w3-input w3-border" name="pinCode"  type="text" />
+			</p>
+			<button type="button" id="POP_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; ">Cancel</button>
+			<button type="button" id="POP_SUBMIT_BTN" onclick="correctupdateAddr()" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none;">OK</button>
+        </div>
+        	
+		</div>
+        </div>
+        
+      <footer class="w3-container w3-grey">
+        
+      </footer>
+    </div>
+    <script src="/js/personEdit.js"></script>
+    </form>
+</div>
+
+
+</div>
+
+<!-- 
+		<div class="w3-row w3-margin-top">
+		<input th:value="${personalDetails.getPersonaltblactionid()}" name="personaltblactionid" id="PD_HIGHEST_ED" type="text" hidden/>
+		<input th:value="${personalDetails.getPersonid()}" name="personid" id="PD_HIGHEST_ED" type="text" hidden/>
+		<input th:value="${personalDetails.getPersonnumber()}" name="personnumber" id="PD_HIGHEST_ED" type="text" hidden/>
+		<div class="w3-padding-large" style="margin-top:10px">
+		<h4 class="w3-text-theme" style="display:inline">Name and Addresses</h4>
+		<img class="w3-right" id="VIEW_NAME_BLOCK" style="margin-right:10px" alt="" src="/icons/keyboard_arrow_down-black-18dp.svg">
+		<button id="NAME_EDIT_BTN" class="w3-button w3-theme w3-right" style="margin-right:16px;" >Edit</button>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		
+		<img id="EDIT_NAM_BLOCK" class="w3-right" alt="" style="width:17px; height:17px; margin-right:10px" src="/icons/icons8-edit.svg">
+		<div id="NAME_BLOCK" class="w3-container">
+		
+		<div class=w3-half>
+		<div class="w3-container">
+			<p>
+			<label>Title</label> 
+			<select id="PD_TITLE" class="w3-select w3-border" name="titleid" disabled>
+				<option  selected hidden></option>
+				<option th:each="title : ${title}" th:value="${title.getId()}" th:text="${title.getDescription()}"/>
+			</select>
+			</p>
+			<p>
+			<label>Start Date</label> 
+			<input value="" class="w3-input w3-border" id="PD_START_DATE" type="date" data-date="" data-date-format="YYYY MM DD"/>
+			</p>
+			
+		</div>
+		</div>
+	
+		<div class=w3-half>
+		<div class="w3-container">
+			<p>        
+			<label>First Name</label> 
+			<input  class="w3-input w3-border" name="firstname" id="PD_FIRST_NAME" type="text" disabled/>
+			</p>
+			
+			<p>
+			<label>Middle Name</label> 
+			<input  class="w3-input w3-border" name="middilname" id="PD_MIDDLE_NAME" type="text" disabled/>
+			</p>
+			
+			<p>
+			<label>Last Name</label> 
+			<input  class="w3-input w3-border" name="lastname" id="PD_LAST_NAME" type="text" disabled/>
+			</p>
+			
+			
+	
+		</div>
+		</div>
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div>
+		
+		
+		<div class="w3-row">
+		
+				
+		
+		<div class="w3-half w3-margin-top">	
+		
+			  <h3 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Name and Addresses</h3>
+			  <hr class="hrline">  
+			  <h5 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Name</h5>
+			  <button id="NAME_EDIT_BTN" style="float:right; margin-right:16px;" >Edit</button>
+			  
+			  <div class="w3-container" >
+			  <p>
+			  <label style="font-weight: bold;">Title</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">Mr.</label>
+			  </p>
+				
+					
+			  <p>
+			  <label style="font-weight: bold;">First Name</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_FIRST_NAME" type="text">ABC</label>
+			  </p>
+				
+			  <p>
+			  <label style="font-weight: bold;">Middle Name</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_MID_NAME" type="text">MNO</label>
+			  </p>
+				
+			  <p>
+			  <label style="font-weight: bold;">Last Name</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_LAST_NAME" type="text">XYZ</label>
+			  </p>
+			
+		</div>
+		<div class="w3-container">
+		
+			  <h5 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Address</h5>
+			  <button id="ADD_ADDR_BTN" class="w3-button w3-white"> + </button>
+			
+			  <p>
+			  <label style="font-weight: bold; padding:100px;">Home Address</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_" type="text"></label>
+			  <button id="ADDR_1_EDIT_BTN" style="float:right;" >Edit</button>
+			  </p>
+				
+				
+			  <p>
+			  <label style="font-weight: bold; padding:100px;">Primary Mailing</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_" type="text"></label>
+			  <button id="ADDR_2_EDIT_BTN" style="float:right;" >Edit</button>
+			  </p>
+			
+		</div>
+		
+		<h3 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block; ">Communication Methods</h3>
+		<button id="COMM_METHOD_EDIT_BTN" style="float:right;  margin-right:16px; " >Edit</button>
+		
+			  <div class="w3-container">
+		
+			  <h5 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Phones</h5>
+			  <button id="ADD_ADDR_BTN" class="w3-button w3-white">+</button>
+			
+			  <p>
+			  <label style="font-weight: bold; padding:100px;">Home Phone</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_" type="text">91-7894561230</label>
+			  <button id="ADDR_1_EDIT_BTN" style="float:right;" >Edit</button>
+			  </p>
+			  
+			  </div>
+				
+		      <div class="w3-container">
+			  <h5 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Email Details</h5>
+			  <p>
+			  <label style="font-weight: bold; padding:100px;">Work Email</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_" type="text">abc@xyz.com</label>				
+			  </p>
+			  </div>
+			  
+			  
+		      <div class="w3-container">
+			  <h5 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Other Communication Accounts</h5>
+			 
+			  </div>
+			   
+		      <div class="w3-container">
+			  <h5 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Order of Preference</h5>
+			 
+			  </div>
+		
+		</div>
+		
+	
+	
+	
+		<div class=w3-half>
+			<h3 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">National Identifiers</h3>
+			<button id="NAT_IDENTIFIER_EDIT_BTN" style="float:right;  margin-right:16px; margin-top:10px; " >Edit</button>
+			<div class="w3-container" >
+	
+				
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">India</label>
+			  <label style="font-weight: bold; margin-left:15px;">Adhaar Number:</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">32XXXXXXXX96</label>
+			  </p>
+			
+					
+			</div>
+			<h3 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Biographical Info</h3>
+			<button id="BIOGRAPHICAL_INFO_EDIT_BTN" style="float:right;  margin-right:16px; " >Edit</button>
+			<div class="w3-container" >
+	
+				
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Date Of Birth</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">01/01/2000</label>
+			  </p>
+			
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Date Of Death</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">01/01/2000</label>
+			  </p>
+			
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Country Of Birth</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">India</label>
+			  </p>
+			
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Region Of Birth</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">Lucknow</label>
+			  </p>
+			
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Town Of Birth</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">Lucknow</label>
+			  </p>
+			
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Correspondence Language</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">Hindi</label>
+			  </p>
+			
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Blood Type</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">O+</label>
+			  </p>
+			
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Display Photo</label>
+			  <img  src="/images/logo.png" id="UPLOAD_IMAGE" alt="Avatar" style="margin-left:5px; border-radius: 50%; width:100px; height:100px; vertical-align:middle;">
+			  </p>
+					
+			</div>
+			
+			
+			<h3 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Legislative Information</h3>
+			<button id="LEGISLATIVE_COUNTRY_ADD_BTN" style="float:right;  margin-right:16px; " >Add Country</button>
+			
+			<div class="w3-container" >
+			<img  src="/" id="UPLOAD_IMAGE" alt="Country_Flag_Logo" style="width:10px; height:10px; vertical-align:middle;">
+			<label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_TITLE" type="text">India</label>
+			</div>
+			
+			  <div class="w3-container">
+		
+			  <h5 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline-block">Gender and Marital Status</h5>
+			  <button id="GENDR_MARITAL_STATUS_EDIT_BTN" style="float:right;" >Edit</button>
+			 
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Gender</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_" type="text">Male</label>
+			  </p>
+			  
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Marital Status</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_" type="text">Unmarried</label>
+			  </p>
+			  
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Marital Status Change Date</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_" type="text">01/01/2000</label>
+			  </p>
+			  
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Highest Education Level</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_" type="text">Graduation</label>
+			  </p>
+			  
+			  </div>
+			  
+			   <div class="w3-container">
+		
+			  <h5 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline-block">Religion</h5>
+			  <button id="GENDR_MARITAL_STATUS_EDIT_BTN" style="float:right;" >Edit</button>
+			 
+			  <p>
+			  <label style="font-weight: bold; margin-left:300px;">Religion</label>
+			  <label style="margin-left:5px;" value="" name="Title" id="EDIT_PRSN_" type="text">Hinduism</label>
+			  </p>
+			  </div>
+			  
+		</div>
+		
+		
+
+*******************************************EDIT POPUPS START HERE************************************ 
+
+*******************************************EDIT NAME POPUP START HERE************************************ 
+
+
+
+<div id="id01" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id01').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Correct Name</h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		<div>
+		
+		
+		
+		<div class=w3-half>
+	    <div class="w3-container">
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Effective Start Date</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value="01/01/2000" name="Title" id="EDIT_PRSN_TITLE" type="text" disabled>
+	             
+               
+	             </div>
+	             </div>
+	             
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Name Style</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value="India" name="Title" id="EDIT_PRSN_TITLE" type="text" disabled>
+	            
+	             </div>
+	             </div>
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Global-Name Language</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value="American English" name="Title" id="EDIT_PRSN_TITLE" type="text" disabled>
+	            
+	             </div>
+	             </div>
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Enter Local Name</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value="" name="Title" id="EDIT_PRSN_TITLE" type="checkbox" >
+	             </div>
+	             </div>
+	              
+	            
+	</div>
+	</div>
+	
+	
+	
+	<div class=w3-half>
+	<div class="w3-container">
+	           
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">*Title</div>
+	             <div class="w3-rest">
+	             <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+              
+	             </div>
+	             </div>
+	             
+	             
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">*First Name</div>
+	             <div class="w3-rest">
+	              <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_ENT_POP_STATUS" type="text">
+              
+	             </div>
+	             </div>
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Middle Name</div>
+	             <div class="w3-rest">
+	              <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_ENT_POP_STATUS" type="text">
+              
+	             </div>
+	             </div>
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">*Last Name</div>
+	             <div class="w3-rest">
+	              <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_ENT_POP_STATUS" type="text">
+              
+	             </div>
+	             </div>
+	</div>
+	</div>
+	
+			<br>
+	
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="CR_ENT_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="CR_ENT_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id01').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+
+
+*******************************************POPUP END HERE************************************ 
+
+
+
+*******************************************EDIT ADDRESS POPUP START HERE************************************ 
+
+
+
+<div id="id02" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id02').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Correct Address</h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		<div>
+		
+		
+		
+		<div class=w3-half>
+	    <div class="w3-container">
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Type</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value="Home Addresss" name="Title" id="EDIT_PRSN_TITLE" type="text" disabled>
+	             
+               
+	             </div>
+	             </div>
+	             
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Country</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value="India" name="Title" id="EDIT_PRSN_TITLE" type="text" disabled>
+	            
+	             </div>
+	             </div>
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">*Address Line 1</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value=" " name="Title" id="EDIT_PRSN_TITLE" type="text" >
+	            
+	             </div>
+	             </div>
+	             
+	               <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Address Line 2</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value=" " name="Title" id="EDIT_PRSN_TITLE" type="text" >
+	            
+	             </div>
+	             </div>
+	             
+	              
+	            
+	</div>
+	</div>
+	
+	
+	
+	<div class=w3-half>
+	<div class="w3-container">
+	           
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">City or Town</div>
+	             <div class="w3-rest">
+	             <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+              
+	             </div>
+	             </div>
+	             
+	              
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Pincode</div>
+	             <div class="w3-rest">
+	             <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+              
+	             </div>
+	             </div>
+	             
+	              
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">State</div>
+	             <div class="w3-rest">
+	             <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+              
+	             </div>
+	             </div>
+	             
+	             
+	             
+	</div>
+	</div>
+	
+			<br>
+	
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="CR_ENT_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="CR_ENT_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id02').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+
+
+*******************************************POPUP END HERE************************************ 
+
+
+*******************************************EDIT GENDER AND MARITAL INFO POPUP START HERE************************************ 
+
+
+
+<div id="id03" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id03').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Correct Gender and Marital Status</h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		<div>
+		
+		
+
+	
+	
+	<div class=w3-half>
+	<div class="w3-container">
+	           
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Gender</div>
+	             <div class="w3-rest">
+	             <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+              
+	             </div>
+	             </div>
+	             
+	              
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Marital Status</div>
+	             <div class="w3-rest">
+	             <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+              
+	             </div>
+	             </div>
+	             
+	              
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Highest Education Level </div>
+	             <div class="w3-rest">
+	             <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+              
+	             </div>
+	             </div>
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-rest">
+	             <a href="#" style="margin-left:120px;">View more details</a>
+	             </div>
+	             </div>
+	             
+	             
+	             
+	</div>
+	</div>
+	
+			<br>
+	
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="CR_ENT_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="CR_ENT_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id03').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+
+
+*******************************************POPUP END HERE************************************ 
+
+
+
+*******************************************EDIT BIOGRAPHICAL INFO POPUP START HERE************************************ 
+
+
+
+<div id="id04" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id04').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Correct Biographical Information</h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		<div>
+		
+		
+		
+		<div class=w3-half>
+	    <div class="w3-container">
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Date Of Birth</div>
+	             <div class="w3-rest">
+	              <input value="" class="w3-input w3-border" name="EffectiveStartDate" id="JOB_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD"/>	
+	             </div>
+	             </div>
+	             
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Date Of Death</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="EffectiveStartDate" id="JOB_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD"/>	
+	             </div>
+	             </div>
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Country Of Birth</div>
+	             <div class="w3-rest">
+	            <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+	            
+	             </div>
+	             </div>
+	             
+	               <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Region Of Birth</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value=" " name="Title" id="EDIT_PRSN_TITLE" type="text" >
+	            
+	             </div>
+	             </div>
+	             
+	              
+	            
+	</div>
+	</div>
+	
+	
+	
+	<div class=w3-half>
+	<div class="w3-container">
+	           
+	           
+	           
+	               <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Region Of Birth</div>
+	             <div class="w3-rest">
+	             <input class="w3-input w3-border" value=" " name="Title" id="EDIT_PRSN_TITLE" type="text" >
+	            
+	             </div>
+	             </div>
+	             
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Correspondence Language</div>
+	             <div class="w3-rest">
+	             <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+              
+	             </div>
+	             </div>
+	             
+	              
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:120px">Blood Type</div>
+	             <div class="w3-rest">
+	             <select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			  </select>
+              
+	             </div>
+	             </div>
+	         
+	             
+	             
+	</div>
+	</div>
+	
+			<br>
+	
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="CR_ENT_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="CR_ENT_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id04').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+
+
+*******************************************POPUP END HERE************************************ 
+
+
+
+*******************************************EDIT EMAIL POPUP START HERE************************************ 
+
+
+
+<div id="id05" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id05').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Edit Email Addresses</h3>
+				<hr class="hrline">
+			
+		</div>
+		
+		
+		<p>
+				
+				<button id="view" class="w3-button w3-light-grey">View </button> 
+				<button id="Format" class="w3-button w3-light-grey">Format </button> 
+				<button id="AddRowEmail" class="w3-button w3-light-grey">+</button>
+
+				</p>
+				<table id="EmailHeadder" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<tr>
+							<th style="width:10%">Primary</th>
+							<th style="width:20%">*Type</th>
+							<th style="width:32%">*Email</th>					
+							<th style="width:19%">From Date</th>
+							<th style="width:19%">To Date</th>
+													
+							
+						</tr>
+					</thead>
+					</table>
+
+<div  >
+				<table id="EmailId" class="display compact w3-table" style="width: 100%;">
+				
+					<tbody >
+					<td style="width:10%"><input style="zoom:1.5;" class="w3-input w3-border" name="Payroll" id="CR_LE_PAYROLL" type="checkbox" value="YES"></td>
+					<td style="width:20%">
+					<select id="statusList" class="w3-input w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+					</select>
+					</td>
+					<td style="width:40%"><input class="w3-input w3-border" value=" " name="Title" id="EDIT_PRSN_TITLE" type="text" ></td>
+					<td style="width:15%"><input value="" class="w3-input w3-border" name="EffectiveStartDate" id="JOB_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD"/></td>
+					<td style="width:15%"><input value="" class="w3-input w3-border" name="EffectiveStartDate" id="JOB_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD"/></td>
+					
+					</tbody>
+				</table>
+			</div>
+		
+		
+		
+		
+	
+	
+			<br>
+	
+		
+		
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="CR_ENT_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="CR_ENT_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id05').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+
+
+*******************************************POPUP END HERE************************************ 
+
+
+
+
+
+		
+		</div>
+ <script src="/js/personEdit.js"></script>
+</div>
+
+
+
+
+
+		 
+*******************************************SEARCH POPUPS START HERE************************************ 
+
+	Popup  for Location Search Start here 
+
+
+line modal
+<div id="id01" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id01').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Search and Select:Location</h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		<div>
+		
+		
+		
+		<div class=w3-half>
+	    <div class="w3-container">
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_ENT_POP_NAME" type="text">
+               
+	             </div>
+	             </div>
+	             
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_ENT_POP_CODE" type="text">
+               
+	             </div>
+	             </div>
+	</div>
+	</div>
+	
+	
+	
+	<div class=w3-half>
+	<div class="w3-container">
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Country:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_ENT_POP_CNTRY" type="text">
+              
+	             </div>
+	             </div>
+	             
+	             
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Status:</div>
+	             <div class="w3-rest">
+	              <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_ENT_POP_STATUS" type="text">
+              
+	             </div>
+	             </div>
+	</div>
+	</div>
+	
+	
+	
+		
+		
+		 
+			
+			<br>
+			
+			
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="CR_ENT_POP_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+               <button id="CR_ENT_POP_Reset" class="w3-button w3-theme w3-grey">Reset</button>
+               
+                </div>
+               </div>
+               </div>               
+			</div>
+			
+			<BR>
+			
+			<div id="resultSec" class="w3-responsive" style="display: none">
+				<table id="EnterpriseList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<tr class="w3-theme-d3">
+							<th>Name</th>
+							<th>Code</th>
+							<th>Country</th>
+							<th>State</th>
+							<th>Status</th>
+							<th></th>
+							<th></th>
+							
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataLOcation" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+			
+			
+			
+			
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="CR_ENT_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="CR_ENT_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id01').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+PopUp End Here
+
+Popup  for Department Search Start here 
+
+
+line modal
+<div id="id02" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id02').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Search and Select:Department</h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		<div>
+		
+		
+		
+		<div class=w3-half>
+	    <div class="w3-container">
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="DEPT_NAME" type="text">
+               
+	             </div>
+	             </div>
+	             
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="DEPT_CODE" type="text">
+               
+	             </div>
+	             </div>
+	</div>
+	</div>
+	
+	
+	
+	<div class=w3-half>
+	<div class="w3-container">
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Dataset:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="DEPT_DATASET" type="text">
+              
+	             </div>
+	             </div>
+	             
+	             
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Status:</div>
+	             <div class="w3-rest">
+	              <input value="" class="w3-input w3-border" name="Ent_Name" id="DEPT_STATUS" type="text">
+              
+	             </div>
+	             </div>
+	</div>
+	</div>
+	
+	
+	
+		
+		
+		 
+			
+			<br>
+			
+			
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="DEPT_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+               <button id="CR_ENT_POP_Reset" class="w3-button w3-theme w3-grey">Reset</button>
+               
+                </div>
+               </div>
+               </div>               
+			</div>
+			
+			<BR>
+			
+			<div id="deptresultSec" class="w3-responsive" style="display: none">
+				<table id="DepartmentList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+					<tr class="w3-theme-d3">
+							<th>Name</th>
+							<th>Code</th>
+							<th>Data sets</th>
+							<th>status</th>
+							<th>Eff.Start date</th>
+							<th></th>
+							<th></th>
+							
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataDEPT" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+			
+			
+			
+			
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="CR_DEP_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="CR_ENT_DEP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id02').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+PopUp End Here
+
+Popup  for BU Search Start here 
+
+
+line modal
+<div id="id03" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id03').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Search and Select:Business Unit</h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		<div>
+		
+		<div class=w3-half>
+	    <div class="w3-container">
+	    
+	      <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Business Unit:</div>
+	             <div class="w3-rest">
+			<select id="datasetList" class="w3-select w3-border" name="option" >
+	 		<option value="" disabled selected></option>
+			<option th:each="datasetlist : ${datasetlist}" th:value="${datasetlist.getDataSetsId()}" th:text="${datasetlist.getName()}">
+			
+			</select>
+	             </div>
+	             </div>
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="SRCH_NAME" type="text">
+               
+	             </div>
+	             </div>
+	             
+	             
+	</div>
+	</div>
+		
+	
+	<div class=w3-half>
+	<div class="w3-container">
+	<div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="SRCH_CODE" type="text">
+               
+	             </div>
+	             </div>
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Status:</div>
+	             <div class="w3-rest">
+			<select id="statusList" class="w3-select w3-border" name="option" >
+	 				<option value="" disabled selected></option>
+					<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+				</select>
+	             </div>
+	             </div>
+	     
+	</div>
+	</div>
+
+
+			<br>
+			
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="BU_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+              
+                </div>
+               </div>
+               </div>               
+			</div>
+			
+			<BR>
+			
+			<div id="buresultSec" class="w3-responsive" style="display: none">
+				<table id="BU_LIST" class="display compact w3-table" style="width: 100%;">
+					<thead>
+					<tr class="w3-theme-d3">
+						<th>Name</th>
+						<th>Code</th>
+						<th>BU Set</th>
+						<th>Status</th>
+						<th></th>
+						<th></th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataBU" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+			
+			
+			
+			
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="BU_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="BU_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id03').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+			
+		PopUp End Here
+
+
+
+Popup  for JOB Search Start here 
+
+
+line modal
+<div id="id04" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id04').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Search and Select:Job Code</h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		<div>
+
+		<div class=w3-half>
+	    <div class="w3-container">
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="JOB_NAME" type="text">
+               
+	             </div>
+	             </div>
+	             
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="JOB_CODE" type="text">
+               
+	             </div>
+	             </div>
+	             
+               <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Dataset:</div>
+	             <div class="w3-rest">
+	             	<select id="JOB_DATASET"
+							class="w3-select w3-border" name="option">
+								<option value="" disabled selected></option>
+								<option th:each="datasets: ${datasets}"	th:value="${datasets.getDescription()}"
+									th:text="${datasets.getDescription()}">
+						</select>
+	             </div>
+	             </div>
+        
+         
+	</div>
+	</div>
+	
+	
+	
+	<div class=w3-half>
+	<div class="w3-container">
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Effective Start Date:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="EffectiveStartDate" id="JOB_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD"/>
+	             </div>
+	             </div>
+	             
+	             
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Status:</div>
+	             <div class="w3-rest">
+	              <select id="JOB_STATUS"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="status : ${status}" th:value="${status}"
+							th:text="${status}">
+					</select>
+	             </div>
+	             </div>
+	</div>
+	</div>
+	
+	
+
+			<br>
+			
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="JOB_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+              
+                </div>
+               </div>
+               </div>               
+			</div>
+			
+			<BR>
+			
+			<div id="jobresultSec" class="w3-responsive" style="display: none">
+				<table id="JobList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+					<tr class="w3-theme-d3">
+						<tr class="w3-theme-d3">
+							<th>Name</th>
+							<th>Code</th>
+							<th>Dataset</th>
+							<th>Eff.Start date</th>
+							<th>status</th>
+						
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataJOB" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+			
+			
+			
+			
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="JOB_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="JOB_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id04').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+			
+		PopUp End Here
+
+
+Popup  for LEGAL EMPLOYER Search Start here 
+
+
+line modal
+<div id="id05" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('id05').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left">Search and Select:Legal Employer</h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		<div>
+
+		<div class=w3-half>
+	    <div class="w3-container">
+	             
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="LEGAL_NAME" type="text">
+               
+	             </div>
+	             </div>
+	             
+	             
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Country:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="LEGAL_COUNTRY" type="text">
+               
+	             </div>
+	             </div>
+	            
+        
+         
+	</div>
+	</div>
+	
+	
+	
+	<div class=w3-half>
+	<div class="w3-container">
+	
+	
+	 <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Legal Entity Identifier:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="LEGAL_ENTITY_IDENTIFIER" type="text">
+               
+	             </div>
+	             </div>
+	           
+	</div>
+	</div>
+	
+	
+
+			<br>
+			
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="LEGAL_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+              
+                </div>
+               </div>
+               </div>               
+			</div>
+			
+			<BR>
+			
+			<div id="legresultSec" class="w3-responsive" style="display: none">
+				<table id="LegalList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+					<tr class="w3-theme-d3">
+						<tr class="w3-theme-d3">
+							<th>Name</th>
+							<th>Country</th>
+							<th>Legal Entity Identifier</th>
+		 					<th>Eff. Start Date</th>
+		 					<th>Regn Place</th>
+		 					<th>Regn Number</th>
+						   <th>Legal Entity Id</th>
+						
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataLEG" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+			
+			
+			
+			
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                 
+                <div class="w3-right">
+               <button id="LEG_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="LEG_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id05').style.display='none'">Cancel</button>
+               
+                </div>
+               
+               </div>               
+			</div>
+		</div>
+		</div>
+			
+		PopUp End Here
+
+
+
+
+
+	</div>
+	 <script src="/js/enterprisesearch.js"></script>
+	<script src="/js/hireEmployee.js"></script>
+	<script src="/js/positionSearch.js"></script>
+	
+
+</div>
+ -->

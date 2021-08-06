@@ -1,0 +1,2051 @@
+<div th:fragment="EditEmployement">
+
+	<script th:inline="javascript">
+/*<![CDATA[*/
+    var tabname_ = /*[[${opentab_}]]*/;
+    var pnum = /*[[${pnum}]]*/;
+	var response= /*[[${response}]]*/;
+/*]]>*/
+</script>
+
+	<style>
+.accordion {
+	background-color: #eee;
+	color: #444;
+	cursor: pointer;
+	padding: 10px;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 15px;
+	transition: 0.4s;
+}
+
+.active, .accordion:hover {
+	background-color: #ccc;
+}
+
+.panel {
+	padding: 0 18px;
+	
+	background-color: white;
+	overflow: hidden;
+}
+</style>
+
+	<div class="w3-container w3-margin-top">
+
+			 <button
+				class="w3-btn w3-block w3-theme-l3 w3-left-align accordion  w3-border">History</button>
+			<div class="panel w3-border">
+				<div id="vhresultSec" class="w3-responsive" style="display: none">
+					<table id="VHList" class="display compact w3-table"
+						style="width: 100%;">
+						<thead>
+							<tr class="w3-theme-d3">
+								<th>Effective Start Date</th>
+								<th>Effective End Date</th>
+								<th>Action</th>
+								<!-- <th>Reason</th> -->
+								<th>ROP</th>
+								<th>Department</th>
+								<th>Designation</th>
+								<th>NOE</th>
+								
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div id="noDataVH" class="w3-responsive" style="display: none">
+					<div>
+						<p>No record found...</p>
+					</div>
+				</div>
+			</div> 
+
+		
+
+		<div id="EMPL_DISPLAY" class="w3-row w3-border"
+			style="margin-top: 13px;">
+			
+	
+			
+			<div class="w3-bar w3-light-grey">
+				<button name="EMP_DTL_TAB" class="w3-bar-item w3-button tablink "
+					onclick="openTab('EMP_DTL_TAB');">Employment Details</button>
+				<button name="MNGR_DTL_TAB" class="w3-bar-item w3-button tablink "
+					onclick="openTab('MNGR_DTL_TAB');">Manager Details</button>
+				<!--<button name="ADDITIONAL_DTL_TAB" class="w3-bar-item w3-button tablink " onclick="openTab('ADDITIONAL_DTL_TAB');" >Additional Details</button>-->
+				<button name="BANK_DTL_TAB" class="w3-bar-item w3-button tablink "
+					onclick="openTab('BANK_DTL_TAB');">Bank Details</button>
+			</div>
+			<div id="EMP_DTL_TAB" class="w3-container legal"
+				style="display: none;">
+				<form method="post" id="EMPLOYEE_DETAILS"
+					enctype="application/x-www-form-urlencoded"
+					onsubmit="return false;">
+					<div class="w3-row">
+						<div style="margin-top: 10px; margin-bottom: 15px;">
+							<h4 class="w3-text-theme w3-margin-top" style="display: inline">Employee
+								Details</h4>
+							<input value="EMP_DTL_TAB" name="tab" id="tab" type="hidden" />
+							<!--th:if="${empl.getJobdata().getHireaction()!=18} and ${empl.getJobdata().getHireaction()!=15} and ${empl.getJobdata().getHireaction()!=30}"-->
+							<select id="EDIT_EMPL_TAB" class="w3-border w3-right" name="mode"
+								style="margin-right: 30px; height: 35px; border-radius: 5px;">
+								<option value="Save" id="edit" selected hidden>Edit</option>
+								<option value="Correct">Correct</option>
+								<option value="Update" id="2">Update</option>
+							</select>
+							 <!-- <button name="view_history_btn" class="w3-theme w3-right w3-btn"
+								style="margin-right: 15px; height: 35px; border-radius: 5px;"
+								onclick="viewHistory();">View History</button>  -->
+						</div>
+						<hr
+							style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+						<div class="w3-row">
+							<h5 class="w3-text-theme w3-margin"
+								style="margin-top: 2px; bottom: 2px;">Work Relationship</h5>
+							<input th:value="${empl.getJobdata().getActionid()}"
+								name="actionid" id="actionid" type="hidden" /> <input
+								th:value="${empl.getJobdata().getPersonid()}" name="personid"
+								id="personid" type="hidden" /> <input
+								th:value="${empl.getJobdata().getPersonnumber()}"
+								name="personnumber" id="personnumber" type="hidden" /> <input
+								th:value="${empl.getJobdata().getJobdatatid()}"
+								name="jobdatatid" id="jobdatatid" type="hidden" />
+							<div class="w3-row">
+								<p class="w3-half w3-container">
+									<label>Hire Date</label> <input class="w3-input w3-border"
+										th:value="${empl.getJobdata().getHiredate()}" id="HIRE_DATE"
+										name="hiredate" type="date" data-date=""
+										data-date-format="YYYY MM DD" disabled />
+								</p>
+							</div>
+							<hr
+								style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+							<div class="w3-half">
+								<div class="w3-container">
+									<p>
+										<label>Legal Employer</label> <select id="legalEmployer"
+											name="legalentity" class="w3-select w3-border"
+											data-toggle="modal" onchange="legempl()" disabled>
+											<option id="2"
+												th:value="${empl.getJobdata().getLegalentity()}"
+												th:text="${empl.getJobdata().getLegalentitydsc()}" selected></option>
+											<option value="search" data-toggle="modal"
+												id="btnsearchLegal">Search....</option>
+										</select>
+									</p>
+									<p>
+										<label>Worker Type</label> <select class="w3-select w3-border"
+											name="worktype" disabled>
+											<option disabled selected></option>
+											<option th:each="workertype : ${workertype}"
+												th:selected="${empl.getJobdata().getWorktype() eq workertype.getId()}"
+												th:value="${workertype.getId()}"
+												th:text="${workertype.getDescription()}" />
+										</select>
+									</p>
+									<p>
+									<div>
+										<label>Action</label> <select id="HIRE_ACTION"
+											class="w3-select w3-border" name="hireaction" disabled>
+											<option id="1" value="0" selected></option>
+											<option th:each="hireaction : ${hireaction}"
+												th:selected="${empl.getJobdata().getHireaction() eq hireaction.getId()}"
+												th:value="${hireaction.getId()}"
+												th:text="${hireaction.getDescription()}" />
+										</select>
+									</div>
+									</p>
+									<p>
+										<label>Action Reason</label> <select id="ACTION_REASON"
+											class="w3-select w3-border" name="hirereason" disabled>
+											<option id="1"></option>
+											<option th:value="${empl.getJobdata().getHirereason()}"
+												th:text="${empl.getJobdata().getHirereasondsc()}" hidden
+												selected></option>
+										</select>
+									</p>
+								</div>
+							</div>
+							<div class=w3-half>
+								<div class="w3-container">
+									<p>
+										<label>Effective Start Date</label> <input
+											class="w3-input w3-border"
+											th:value="${empl.getJobdata().getEffectivestartdate()}"
+											id="EMP_EDIT_EFFDT" name="effectivestartdate" type="date"
+											data-date="" data-date-format="YYYY MM DD" disabled />
+									</p>
+									<p>
+										<label>Effective End Date</label> <input
+											class="w3-input w3-border" id="EMP_END_DATE"
+											th:value="${empl.getJobdata().getEffectiveenddate()}"
+											name="effectiveenddate" type="date" data-date=""
+											data-date-format="YYYY MM DD" disabled />
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="w3-row">
+							<h5 class="w3-text-theme w3-margin"
+								style="margin-top: 2px; bottom: 2px;">Assignment Details</h5>
+							<div class="w3-half">
+								<div class="w3-container">
+									<p>
+										<label>Assignment Number</label> <input id="ASSGN_NUM"
+											style="height: 38px" class="w3-input w3-border"
+											th:value="${empl.getJobdata().getAssignamentnumber()}"
+											name="assignamentnumber" type="text" disabled>
+									</p>
+									<!--<p>
+						<label>Assignment Category</label> <select id="ASSIGN_CAT"
+							class="w3-select w3-border" name="assignmentcategory" disabled>
+							<option id="2" ></option>
+							<option
+								th:each="assigncat : ${assignCat}"
+								th:selected="${empl.getJobdata().getAssignmentcategory() eq assigncat.getId()}"
+								th:value="${assigncat.getId()}"
+								th:text="${assigncat.getDescription()}" />
+						</select>
+					</p>-->
+									<p>
+									<div>
+										<label>Business Unit</label><span style="color: red"> *</span>
+										<select id="businessUnit" class="w3-select w3-border"
+											name="bussinessunit" data-toggle="modal"
+											onchange="buchange()" disabled>
+											<option th:value="${empl.getJobdata().getBussinessunit()}"
+												th:text="${empl.getJobdata().getBussinessunitdsc()}" hidden
+												selected></option>
+											<option id="2" value="2"></option>
+											<option value="search" data-toggle="modal" id="btnsearch2">Search....</option>
+										</select>
+									</div>
+									<input id="BU_SET_ID_"
+										th:value="${empl.getJobdata().getBusetid()}" type="text"
+										hidden />
+									</p>
+								</div>
+							</div>
+							<div class=w3-half>
+								<div class="w3-container">
+									<div>
+										<label>HR Status</label> <select id=""
+											class="w3-select w3-border" name="hrstatus" disabled>
+											<option disabled selected></option>
+											<option th:each="hrstatus : ${hrstatus}"
+												th:value="${hrstatus.getId()}"
+												th:selected="${empl.getJobdata().getHrstatus() eq hrstatus.getId()}"
+												th:text="${hrstatus.getDescription()}" />
+										</select>
+									</div>
+									<p class="w3-margin-top">
+										<label>Payroll Status</label> <span style="color: red">
+											*</span> <select id="" class="w3-select w3-border"
+											name="payrollstatus" disabled>
+											<option th:value="${empl.getJobdata().getPayrollstatus()}"
+												th:text="${empl.getJobdata().getPayrollstatus()}" selected
+												hidden>
+											<option th:each="status : ${status}" th:value="${status}"
+												th:text="${status}">
+										</select>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="w3-row">
+							<h5 class="w3-text-theme w3-margin"
+								style="margin-top: 2px; bottom: 2px;">Job Details</h5>
+							<div class="w3-half">
+								<div class="w3-container">
+									<p>
+									<div>
+										<label>Department</label> <select id="DEPT_LOV"
+											class="w3-select w3-border" name="departments"
+											data-toggle="modal" disabled>
+											<option th:value="${empl.getJobdata().getDepartments()}"
+												th:text="${empl.getJobdata().getDepartmentsdsc()}" hidden
+												selected></option>
+											<option id="1" value="0" hidden></option>
+											<option id="2" value="0"></option>
+											<option value="search" data-toggle="modal" id="OPTIONSEARCH">Search....</option>
+										</select>
+									</div>
+									</p>
+									<div>
+										<label>Position</label><span style="color: red"> *</span> <select
+											id="POS_LOV" class="w3-select w3-border"
+											name="positionnumber" data-toggle="modal" disabled>
+											<option th:value="${empl.getJobdata().getPositionnumber()}"
+												th:text="${empl.getJobdata().getPositionnumberdsc()}" hidden
+												selected></option>
+											<option id="1" value="0" hidden></option>
+											<option id="2" value="0"></option>
+											<option value="search" data-toggle="modal" id="OPTIONSEARCH">Search....</option>
+										</select>
+									</div>
+									</p>
+									<div>
+										<label>Job Code</label><span style="color: red"> *</span> <select
+											id="JOBS_LOV" class="w3-select w3-border" name="jobcode"
+											data-toggle="modal" disabled>
+											<option th:value="${empl.getJobdata().getJobcode()}"
+												th:text="${empl.getJobdata().getJobcodedsc()}" hidden
+												selected></option>
+											<option id="1" value="0" hidden></option>
+											<option id="2" value="0"></option>
+											<option value="search" data-toggle="modal" id="OPTIONSEARCH"
+												disabled hidden>Search....</option>
+										</select>
+									</div>
+									</p>
+									<p>
+									<div>
+										<label>Base Location</label> <select id=""
+											class="w3-select w3-border" name="baselocation"
+											data-toggle="modal" disabled>
+											<option disabled selected></option>
+											<option th:each="location : ${location}"
+												th:selected="${empl.getJobdata().getBaselocation() eq location.getLocationid()}"
+												th:value="${location.getLocationid()}"
+												th:text="${location.getName()}" />
+										</select>
+									</div>
+									</p>
+									<p>
+									<div>
+										<label>Work Location</label><span style="color: red"> *</span>
+										<select id="CR_ENT_LOC_CODE" class="w3-select w3-border"
+											name="worklocation" data-toggle="modal" disabled>
+											<option disabled selected></option>
+											<option th:each="location : ${location}"
+												th:selected="${empl.getJobdata().getWorklocation() eq location.getLocationid()}"
+												th:value="${location.getLocationid()}"
+												th:text="${location.getName()}" />
+										</select>
+									</div>
+									</p>
+									<p>
+									<div>
+										<label>Pay Group</label><span style="color: red"> *</span> <select
+											id="PAYGRP_LOV" class="w3-select w3-border"
+											name="payrollgroupid" disabled>
+											<option disabled selected></option>
+											<option th:each="paygroup : ${paygroup}"
+												th:selected="${empl.getJobdata().getPayrollgroupid() eq paygroup.getPaygroupid()}"
+												th:value="${paygroup.getPaygroupid()}"
+												th:text="${paygroup.getName()}" />
+										</select>
+									</div>
+									<input type="hidden" id="paygroup" name="payrollgroupdsc"
+										th:value="${empl.getJobdata().getPayrollgroupdsc()}" />
+									</p>
+									<p>
+										<label>Grade Pay</label> <input
+											th:value="${empl.getJobdata().getGradpay()}"
+											style="height: 38px" class="w3-input w3-border"
+											name="gradpay" id="CR_HR_GRADE_PAY" type="text" disabled>
+									</p>
+								</div>
+							</div>
+							<div class=w3-half>
+								<div class="w3-container">
+									<!--<p>
+				
+					<div>
+						<label>Worker Category</label> <select id="CR_HR_WORKER_CAT"
+							class="w3-select w3-border" name="workcategory" disabled>
+							<option th:each="workercat : ${workercat}"
+								th:selected="${empl.getJobdata().getWorkcategory() eq workercat.getId()}"
+								th:value="${workercat.getId()}"
+								th:text="${workercat.getDescription()}" />
+						</select>
+					</div>
+					</p>-->
+									<p>
+									<div>
+										<label>Regular or Temporary</label> <select id="REGorTEMP_LOV"
+											class="w3-select w3-border" name="regulartemporary" disabled>
+											<option id="2"></option>
+											<option th:each="regortemp : ${regortemp}"
+												th:selected="${empl.getJobdata().getRegulartemporary() eq regortemp.getId()}"
+												th:value="${regortemp.getId()}"
+												th:text="${regortemp.getDescription()}" />
+										</select>
+									</div>
+									</p>
+									<p>
+									<div>
+										<label>Full Time or Part Time</label> <select
+											id="FULL_PART_TIME_LOV" class="w3-select w3-border"
+											name="fulltimeparttime" disabled>
+											<option id="2"></option>
+											<option th:each="fullorpart : ${fullorpart}"
+												th:selected="${empl.getJobdata().getFulltimeparttime() eq fullorpart.getId()}"
+												th:value="${fullorpart.getId()}"
+												th:text="${fullorpart.getDescription()}" />
+										</select>
+									</div>
+									</p>
+									<p>
+									<div>
+										<label>Working as a Manager</label> <select
+											id="CR_HE_WRK_AS_MNGR" class="w3-select w3-border"
+											name="workingasamanager" disabled>
+											<option disabled selected></option>
+											<option th:each="manager : ${manager}"
+												th:value="${manager.getDescription()}"
+												th:selected="${manager.getDescription() eq empl.getJobdata().getWorkingasamanager()}"
+												th:text="${manager.getDescription()}" />
+										</select>
+									</div>
+									</p>
+									<p>
+										<label>FTE</label> <input name="fte" style="height: 38px"
+											class="w3-input w3-border" id="FTE_INPUT"
+											th:value="${empl.getJobdata().getFte()}" type="text" disabled />
+									</p>
+									<p>
+										<label>Head Count</label> <input style="height: 38px"
+											name="headcount" class="w3-input w3-border"
+											th:value="${empl.getJobdata().getHeadcount()}"
+											id="HEAD_CNT_INPUT" type="text" disabled />
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="w3-row">
+							<h5 class="w3-text-theme w3-margin"
+								style="margin-top: 2px; bottom: 2px;">Compensation Details</h5>
+							<div class="w3-half">
+								<div class="w3-container">
+									<p>
+										<label>Effective Start Date</label> <input id="COMP_EFFDT"
+											class="w3-input w3-border"
+											th:value="${empl.getJobdata().getEffectivestartdate()}"
+											name="" type="date" data-date=""
+											data-date-format="YYYY MM DD" disabled />
+									</p>
+									<p>
+									<div>
+										<label>Grade</label><span style="color: red"> *</span> <select
+											id="gradesLOV" class="w3-select w3-border" name="grade"
+											data-toggle="modal" onchange="gradechange()" disabled>
+											<option th:value="${empl.getSalarybasis().getGrade()}"
+												th:text="${empl.getSalarybasis().getGradedsc()}" hidden
+												selected></option>
+											<option id="1" value="0"></option>
+											<option id="2" value="2"></option>
+											<option value="search" data-toggle="modal" id="btnsearch2">Search....</option>
+										</select>
+									</div>
+									</p>
+									<p>
+										<label>Grade Step</label>
+									<div>
+										<select id="COMP_GRADE_STEP" class="w3-select w3-border"
+											name="gradesteps" disabled>
+											<option th:value="${empl.getSalarybasis().getGradesteps()}"
+												th:text="${empl.getSalarybasis().getGradestepsdsc()}" hidden
+												selected></option>
+										</select>
+									</div>
+									</p>
+									<!-- 	<div id="GRADE_STEP_BLOCK">
+						<label>Grade Step</label>
+						<div th:if="${newperson.getSalarybasis().getGradesteps()==0 and newperson.getNaturename()=='IDA'}">
+							<select id="COMP_GRADE_STEP" class="w3-select w3-border"
+								name="salarybasis.gradesteps" disabled>
+								<option disabled>Select Grade</option>
+							</select>
+						</div>
+						<div th:if="${newperson.getSalarybasis().getGradesteps()==0 and newperson.getNaturename()!='IDA'}">
+							<select id="COMP_GRADE_STEP" class="w3-select w3-border"
+								name="salarybasis.gradesteps" >
+								<option disabled>Select Grade</option>
+							</select>
+						</div>
+						<div th:if="${newperson.getSalarybasis().getGradesteps()!=0 and newperson.getNaturename()=='IDA'}">
+
+							<select id="COMP_GRADE_STEP" class="w3-select w3-border"
+								name="salarybasis.gradesteps" disabled>
+								<option value="" disabled selected></option>
+								<option th:each="gradestep : ${lovbinding.getGradesteplov()}"
+									th:selected="${newperson.getSalarybasis().getGradesteps() eq gradestep.getGradestepid()}"
+									th:value="${gradestep.getGradestepid()}"
+									th:text="${gradestep.getStepname()}" 
+									th:amt="${gradestep.getStepamount()}"/>
+							</select> <span style="color: red"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hirereason")!=null}'
+								th:text='${bindingResult.getFieldError("hirereason").getDefaultMessage()}'></span>
+						</div>
+						<div th:if="${newperson.getSalarybasis().getGradesteps()!=0 and newperson.getNaturename()!='IDA'}">
+
+							<select id="COMP_GRADE_STEP" class="w3-select w3-border"
+								name="salarybasis.gradesteps">
+								<option value="" disabled selected></option>
+								<option th:each="gradestep : ${lovbinding.getGradesteplov()}"
+									th:selected="${newperson.getSalarybasis().getGradesteps() eq gradestep.getGradestepid()}"
+									th:value="${gradestep.getGradestepid()}"
+									th:text="${gradestep.getStepname()}" 
+									th:amt="${gradestep.getStepamount()}"/>
+							</select> <span style="color: red"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hirereason")!=null}'
+								th:text='${bindingResult.getFieldError("hirereason").getDefaultMessage()}'></span>
+						</div>
+					</div> -->
+								</div>
+							</div>
+							<div class=w3-half>
+								<div class="w3-container">
+									<p>
+									<div>
+										<label>Type</label> <select id="COMP_TYPE"
+											class="w3-select w3-border" name="salarytype" disabled>
+											<option disabled selected></option>
+											<option th:each="type : ${type}"
+												th:selected="${type.getId() eq empl.getSalarybasis().getSalarytype()}"
+												th:value="${type.getId()}"
+												th:text="${type.getDescription() }" />
+										</select>
+									</div>
+									</p>
+									<p>
+										<label>Frequency</label> <select id="COMP_FREQ"
+											class="w3-select w3-border" name="frequency" disabled>
+											<option disabled selected></option>
+											<option th:each="freq : ${freq}" th:value="${freq.getId()}"
+												th:selected="${freq.getId() eq empl.getSalarybasis().getFrequency()}"
+												th:text="${freq.getDescription()}" />
+										</select>
+									</p>
+									<p>
+									<div>
+										<label>Salary Amount</label> <input style="height: 38px"
+											name="rateofpay" class="w3-input w3-border"
+											th:value="${empl.getJobdata().getRateofpay()}"
+											id="COMP_SALARY_AMT" type="text" disabled /> <input
+											type="hidden" th:value="${empl.getJobdata().getRateofpay()}"
+											name="oldrateofpay" />
+									</div>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="w3-row">
+							<div class=w3-half>
+								<div class="w3-container">
+									<h5 class="w3-text-theme">Notice and Probation Details</h5>
+									<p>
+										<label>Probation Period</label>
+									</p>
+									<input class="w3-input w3-border w3-half" name="probationuom"
+										id="PROB_INPUT" type="text"
+										th:value="${empl.getJobdata().getProbationuom()}"
+										style="width: 50%; display: inline-block;" disabled />
+									<div>
+										<select id="PROBPERIOD_LOV" class="w3-select w3-border"
+											name="probationperiod" style="width: 50%" disabled>
+											<option id="2" value="0"></option>
+											<option th:each="probperiod : ${probperiod}"
+												th:selected="${empl.getJobdata().getProbationperiod() eq probperiod.getId()}"
+												th:value="${probperiod.getId()}"
+												th:text="${probperiod.getDescription()}" />
+										</select>
+									</div>
+									<p>
+										<label>Probation End Date</label> <input
+											class="w3-input w3-border" name="probationenddate"
+											id="COMP_PROB_END_DATE" type="date" data-date=""
+											th:value="${empl.getJobdata().getProbationenddate()}"
+											data-date-format="YYYY MM DD" disabled />
+									</p>
+								</div>
+							</div>
+							<div class=w3-half>
+								<div class="w3-container" style="margin-top: 36px">
+									<p>
+										<label>Notice Period</label>
+									</p>
+									<input name="noticeperiod" class="w3-input w3-border w3-half"
+										id="NOTICE_INPUT" type="text"
+										th:value="${empl.getJobdata().getNoticeperiod()}"
+										style="width: 50%; display: inline-block;" disabled />
+									<div>
+										<select id="NOTICEPERIOD_LOV" class="w3-select w3-border"
+											name="noticeperiodtype" style="width: 50%" disabled>
+											<option id="2" value="0"></option>
+											<option th:each="noticeperiod : ${noticeperiod}"
+												th:selected="${empl.getJobdata().getNoticeperiodtype() eq noticeperiod.getId()}"
+												th:value="${noticeperiod.getId()}"
+												th:text="${noticeperiod.getDescription()}" />
+										</select>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="w3-container">
+				<p>
+					<input type="button" class="w3-button w3-theme w3-grey"
+						onclick="sendHireData('personaldetail')" value="Previous">
+					<input type="button" class="w3-button w3-theme w3-grey"
+						onclick="sendHireData('compensation')" value="Next">
+
+				</p>
+			</div> -->
+						</div>
+						<div class="w3-row">
+							<h5 class="w3-text-theme w3-margin-left">Additional Details</h5>
+							<div class=w3-half>
+								<div class="w3-container">
+									<input th:value="${empl.getUpmrcaddon().getActionid()}"
+										name="lmrcactionid" id="lmrcactionid" type="hidden" /> <input
+										th:value="${empl.getUpmrcaddon().getLmrcbasicdetailsid()}"
+										name="lmrcbasicdetailsid" id="lmrcbasicdetailsid"
+										type="hidden" />
+									<p>
+									<div>
+										<label>Nature of Employment</label> <select id="NAT_OF_EMPL"
+											class="w3-select w3-border" name="natureofemployement"
+											disabled>
+											<option disabled selected></option>
+											<option th:each="natofempl : ${nature_of_employement}"
+												th:selected="${empl.getUpmrcaddon().getNatureofemployement() eq natofempl.getId()}"
+												th:value="${natofempl.getId()}"
+												th:text="${natofempl.getDescription()}" />
+										</select>
+									</div>
+									</p>
+									<p>
+										<label>PF Start Date</label> <input
+											th:value="${empl.getUpmrcaddon().getPfeffectivestartdate()}"
+											class="w3-input w3-border" name="pfeffectivestartdate"
+											type="date" data-date="" data-date-format="YYYY MM DD"
+											disabled />
+									</p>
+									<p>
+										<label>Provident Fund Number</label> <input
+											th:value="${empl.getUpmrcaddon().getPfnumber()}"
+											style="height: 38px" class="w3-input w3-border"
+											name="pfnumber" type="text" disabled>
+									</p>
+									<p>
+										<label>PRAN</label> <input
+											th:value="${empl.getUpmrcaddon().getPrannumber()}"
+											style="height: 38px" class="w3-input w3-border"
+											name="prannumber" type="text" disabled>
+									</p>
+									<p>
+										<label>ESI Number</label> <input
+											th:value="${empl.getUpmrcaddon().getEsinumber()}"
+											style="height: 38px" class="w3-input w3-border"
+											name="esinumber" type="text" disabled>
+									</p>
+									<p>
+										<label>UAN</label> <input
+											th:value="${empl.getUpmrcaddon().getUannumber()}"
+											style="height: 38px" class="w3-input w3-border"
+											name="uannumber" type="text" disabled>
+									</p>
+									<p>
+										<label>Month of Increment</label> <select
+											class="w3-select w3-border" name="monthofincrement" disabled>
+											<option
+												th:value="${empl.getUpmrcaddon().getMonthofincrement()}"
+												th:text="${empl.getUpmrcaddon().getMonthofincrement()}"
+												hidden selected></option>
+											<option value="January">January</option>
+											<option value="February">February</option>
+											<option value="March">March</option>
+											<option value="April">April</option>
+											<option value="May">May</option>
+											<option value="June">June</option>
+											<option value="July">July</option>
+											<option value="August">August</option>
+											<option value="September">September</option>
+											<option value="October">October</option>
+											<option value="November">November</option>
+											<option value="December">December</option>
+										</select>
+									</p>
+								</div>
+							</div>
+							<div class=w3-half>
+								<div class="w3-container">
+									<p>
+									<div>
+										<label>Employee Category</label> <select
+											class="w3-select w3-border" name="employeecategory" disabled>
+											<option disabled selected></option>
+											<option th:each="empcat : ${employee_category}"
+												th:selected="${empl.getUpmrcaddon().getEmployeecategory() eq empcat.getId()}"
+												th:value="${empcat.getId()}"
+												th:text="${empcat.getDescription()}" />
+										</select> <span id="TYPE_ERROR" style="color: red"></span>
+									</div>
+									</p>
+									<p>
+									<div>
+										<label>Staff</label> <select class="w3-select w3-border"
+											name="staff" disabled>
+											<option value="" disabled selected></option>
+											<option th:each="staff : ${staff}"
+												th:selected="${empl.getUpmrcaddon().getStaff() eq staff.getId()}"
+												th:value="${staff.getId()}"
+												th:text="${staff.getDescription()}" />
+										</select>
+									</div>
+									</p>
+									<p>
+									<div>
+										<label>Project OM</label> <select class="w3-select w3-border"
+											name="projectom" disabled>
+											<option disabled selected></option>
+											<option th:each="projectom : ${projectom}"
+												th:selected="${empl.getUpmrcaddon().getProjectom() eq projectom.getId()}"
+												th:value="${projectom.getId()}"
+												th:text="${projectom.getDescription()}" />
+										</select> </span>
+									</div>
+									</p>
+									<p>
+										<label>Previous Organization Basic Salary (Per Month)</label>
+										<input
+											th:value="${empl.getUpmrcaddon().getPrevorgbasicsalary()}"
+											style="height: 38px" class="w3-input w3-border"
+											name="prevorgbasicsalary" type="text" disabled>
+									</p>
+									<p>
+										<label>Previous Organization Location</label> <input
+											th:value="${empl.getUpmrcaddon().getPrevorglocation()}"
+											style="height: 38px" class="w3-input w3-border"
+											name="prevorglocation" type="text" disabled>
+									</p>
+									<p>
+										<label>Previous Organization Name</label> <input
+											th:value="${empl.getUpmrcaddon().getPrevorgcompanyname()}"
+											style="height: 38px" class="w3-input w3-border"
+											name="prevorgcompanyname" type="text" disabled>
+									</p>
+								</div>
+							</div>
+							<div class="w3-row-padding">
+								<div class="w3-col" style="width: 30%">
+									<div th:if='${empl.getUpmrcaddon().getAttribute2()==null}'>
+										<label>Is Deputation?</label> <br> <input type="radio"
+											id="d" name="attribute2" value="Yes" disabled> <label
+											for="d">Yes</label> <br> <input type="radio" id="e"
+											name="attribute2" value="No" checked disabled> <label
+											for="e">No</label> <br>
+									</div>
+									<div th:if='${empl.getUpmrcaddon().getAttribute2()=="Yes"}'>
+										<label>Is Deputation?</label> <br> <input type="radio"
+											id="d" name="attribute2" value="Yes" checked disabled>
+										<label for="d">Yes</label> <br> <input type="radio"
+											id="e" name="attribute2" value="No" disabled> <label
+											for="e">No</label> <br>
+									</div>
+									<div th:if='${empl.getUpmrcaddon().getAttribute2()=="No"}'>
+										<label>Is Deputation?</label> <br> <input type="radio"
+											id="d" name="attribute2" value="Yes" disabled> <label
+											for="d">Yes</label> <br> <input type="radio" id="e"
+											name="attribute2" value="No" checked disabled> <label
+											for="e">No</label> <br>
+									</div>
+								</div>
+								<div class="w3-col" style="width: 30%">
+									<div th:if='${empl.getUpmrcaddon().getAttribute4()==null}'>
+										<label>Is Deputation Location Same?</label> <br> <input
+											type="radio" id="h" name="attribute4" value="Yes" disabled>
+										<label for="h">Yes</label> <br> <input type="radio"
+											id="i" name="attribute4" value="No" checked disabled>
+										<label for="i">No</label> <br>
+									</div>
+									<div th:if='${empl.getUpmrcaddon().getAttribute4()=="Yes"}'>
+										<label>Is Deputation Location Same?</label> <br> <input
+											type="radio" id="h" name="attribute4" value="Yes" checked
+											disabled> <label for="h">Yes</label> <br> <input
+											type="radio" id="i" name="attribute4" value="No" disabled>
+										<label for="i">No</label> <br>
+									</div>
+									<div th:if='${empl.getUpmrcaddon().getAttribute4()=="No"}'>
+										<label>Is Deputation Location Same?</label> <br> <input
+											type="radio" id="h" name="attribute4" value="Yes" disabled>
+										<label for="h">Yes</label> <br> <input type="radio"
+											id="i" name="attribute4" value="No" checked disabled>
+										<label for="i">No</label> <br>
+									</div>
+								</div>
+								<div class="w3-col" style="width: 30%">
+									<div th:if='${empl.getUpmrcaddon().getAttribute3()==null}'>
+										<label>Is in PRC2?</label> <br> <input type="radio"
+											id="f" name="attribute3" value="Yes" disabled> <label
+											for="f">Yes</label> <br> <input type="radio" id="g"
+											name="attribute3" value="No" checked disabled> <label
+											for="g">No</label> <br>
+									</div>
+									<div th:if='${empl.getUpmrcaddon().getAttribute3()=="Yes"}'>
+										<label>Is in PRC2?</label> <br> <input type="radio"
+											id="f" name="attribute3" value="Yes" checked disabled>
+										<label for="f">Yes</label> <br> <input type="radio"
+											id="g" name="attribute3" value="No" disabled> <label
+											for="g">No</label> <br>
+									</div>
+									<div th:if='${empl.getUpmrcaddon().getAttribute3()=="No"}'>
+										<label>Is in PRC2?</label> <br> <input type="radio"
+											id="f" name="attribute3" value="Yes" disabled> <label
+											for="f">Yes</label> <br> <input type="radio" id="g"
+											name="attribute3" value="No" checked disabled> <label
+											for="g">No</label> <br>
+									</div>
+								</div>
+							</div>
+						</div>
+						<hr
+							style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+						<div style="margin-bottom: 15px">
+							<button type="button" id="EMPL_TAB_CANCEL_BTN"
+								class="w3-button w3-theme w3-ripple "
+								style="margin-left: auto; margin-right: auto; margin-top: 10px; display: none;">Cancel</button>
+							<button type="button" id="EMPL_TAB_SUBMIT_BTN"
+								onclick="correctupdateEMPL();"
+								class="w3-button w3-theme w3-ripple "
+								style="margin-left: auto; margin-right: auto; margin-top: 10px; display: none;">Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div id="MNGR_DTL_TAB" class="w3-container w3-border legal"
+				style="display: none">
+				<form method="post" id="MNGR_TAB_FORM"
+					enctype="application/x-www-form-urlencoded"
+					onsubmit="return false;">
+					<div class="w3-row">
+						<div style="margin-top: 10px; margin-bottom: 25px;">
+							<h4 class="w3-text-theme "
+								style="margin-top: 100px; display: inline">Manager Details</h4>
+							<input value="MNGR_DTL_TAB" name="tab" id="tab" type="hidden" />
+							<!--			th:if="${empl.getJobdata().getHireaction()!=18} and ${empl.getJobdata().getHireaction()!=15} and ${empl.getJobdata().getHireaction()!=30}"-->
+							<select id="EDIT_MNGR_TAB" class="w3-border w3-right"
+								style="margin-right: 30px; height: 40px; border-radius: 5px;">
+								<option value="Save" selected hidden>Edit</option>
+								<option value="Correct">Correct</option>
+							</select> <input onclick="addrowmanager();"
+								class="w3-btn w3-right w3-theme" type="button" id="ADD_ROW_MNGR"
+								value="+"
+								style="height: 40px; border-radius: 5px; margin-right: 10px; display: none;" />
+						</div>
+						<!-- <div style="margin-top:10px; margin-bottom:15px;">
+		<h4 class="w3-text-theme w3-margin-top" style=" display:inline">Manager Details</h4>
+		<input value="MNGR_TAB" name="tab"  id="tab" type="hidden" />
+		<div style="margin-top:10px; margin-bottom:25px;">
+		<select id="EDIT_MNGR_TAB" class="w3-border w3-right" style="margin-right:30px; height:40px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option></select>
+		<input onclick="addrowmanager();" class="w3-btn w3-right w3-theme" type="button" id="ADD_ROW_MNGR" value="+" style="height:40px; border-radius: 5px; margin-right:10px; display:none;" />
+		</div>
+		</div> -->
+						<hr
+							style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+						<table id="MGR_DET_TBL" class="display compact w3-table"
+							style="width: 100%;">
+							<thead>
+								<th style="text-align: center;">Manager Name</th>
+								<th style="text-align: center">Manager Id</th>
+								<th style="text-align: center;">Type</th>
+								<th></th>
+								<th></th>
+							</thead>
+							<tbody>
+								<tr th:each="entry ,stats: ${empl.getManagerdetails()}">
+									<td style="width: 30%"><input
+										th:value="${entry.getActionid()}"
+										th:name="'managerdetails['+${stats.index}+'].actionid'"
+										id="actionid" type="hidden" /> <input
+										th:value="${entry.getPersonid()}"
+										th:name="'managerdetails['+${stats.index}+'].personid'"
+										id="personid" type="hidden" /> <input
+										th:value="${entry.getPersonnumber()}"
+										th:name="'managerdetails['+${stats.index}+'].personnumber'"
+										id="personnumber" type="hidden" /> <input
+										th:value="${entry.getManagertypeid()}"
+										th:name="'managerdetails['+${stats.index}+'].managertypeid'"
+										id="managertypeid" type="hidden" /> <input
+										th:value="${entry.getEffectivestartdate()}"
+										th:name="'managerdetails['+${stats.index}+'].effectivestartdate'"
+										id="effectivestartdate" type="hidden" />
+										<div>
+											<select id="MGR0" class="w3-select w3-border"
+												th:name="'managerdetails['+${stats.index}+'].supervisorname'"
+												onchange="mgrchange(0)" data-toggle="modal" disabled>
+												<option id="1" th:value="${entry.getSupervisorname()}"
+													th:text="${entry.getSupervisorname()}" hidden selected></option>
+												<option id="2" value="2"></option>
+												<option value="search" data-toggle="modal" id="OPTIONSEARCH">Search....</option>
+											</select>
+										</div></td>
+									<td style="width: 30%;"><input class="w3-input w3-border"
+										th:id="'MNGR_ID'+${stats.index}"
+										th:value="${entry.getSupervisorid()}"
+										th:name="'managerdetails['+${stats.index}+'].supervisorid'"
+										type="text" disabled>
+									<td style="width: 30%">
+										<div>
+											<select id="CR_HR_MGR_TYPE" class="w3-select w3-border"
+												th:name="'managerdetails['+${stats.index}+'].managertype'"
+												disabled>
+												<option disabled selected></option>
+												<option th:each="managertype : ${managertype}"
+													th:selected="${managertype.getId() eq entry.getManagertype()}"
+													th:value="${managertype.getId()}"
+													th:text="${managertype.getDescription()}" />
+											</select>
+										</div>
+									</td>
+									<td th:if="${stats.index!=0}" style="width: 10%"><input
+										flg="manager" class="w3-btn w3-theme" id="deletemgr"
+										type="button" value="x">
+								</tr>
+							</tbody>
+						</table>
+						<hr
+							style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+						<div style="margin-bottom: 15px">
+							<button type="button" id="MGR_CANCEL_BTN"
+								class="w3-button w3-theme w3-ripple "
+								style="margin-left: auto; margin-right: auto; margin-top: 10px; display: none;">Cancel</button>
+							<button type="button" id="SUBMIT_MNGR_TAB_BTN"
+								onclick="managercorrect();"
+								class="w3-button w3-theme w3-ripple "
+								style="margin-left: auto; margin-right: auto; margin-top: 10px; display: none;">Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<!--<div id="ADDITIONAL_DTL_TAB" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+		<form  method="post" id="ADDITIONAL_DTL_FORM" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+		<div style="margin-top:10px; margin-bottom:25px;">
+		<h4 class="w3-text-theme " style="margin-top:100px; display:inline">Additional Details</h4>
+		
+		<input value="ADDITIONAL_DTL_TAB" name="tab"  id="tab" type="hidden" />
+		<select id="EDIT_ADDITIONAL_TAB" name="mode" class="w3-border w3-right" style="margin-right:30px; height:40px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option>&lt;!&ndash;<option value="Update">Update</option>&ndash;&gt;</select>
+		&lt;!&ndash;<input onclick="addrowcontact();" class="w3-btn w3-right w3-theme" type="button" id="ADD_ROW_PHONE" value="+" style="height:40px; border-radius: 5px; margin-right:10px; display:none;" />&ndash;&gt;
+		</div>
+		<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		 
+		<div class="w3-row">
+		<div class=w3-half>
+		<div class="w3-container">
+			<input th:value="${empl.getUpmrcaddon().getActionid()}" name="actionid"  id="actionid" type="hidden" />
+			<input th:value="${empl.getUpmrcaddon().getPersonid()}" name="personid" id="personid"  type="hidden" />
+			<input th:value="${empl.getUpmrcaddon().getPersonnumber()}" name="personnumber" id="personnumber" type="hidden" />
+			<input th:value="${empl.getUpmrcaddon().getLmrcbasicdetailsid()}" name="lmrcbasicdetailsid" id="managertypeid" type="hidden" />
+			<input th:value="${empl.getUpmrcaddon().getEffectivestartdate()}" name="effectivestartdate" id="effectivestartdate" type="hidden" />
+
+					<p>
+					<div>
+						<label>Nature of Employment</label> <select id="NAT_OF_EMPL"
+							class="w3-select w3-border" name="natureofemployement" disabled>
+						<option disabled selected></option>
+						<option
+								th:each="natofempl : ${nature_of_employement}"
+								th:selected="${empl.getUpmrcaddon().getNatureofemployement() eq natofempl.getId()}"
+								th:value="${natofempl.getId()}"
+								th:text="${natofempl.getDescription()}" />
+						</select>
+
+					</div>
+					</p>
+					<p>
+						<label>PF Start Date</label>
+						<input th:value="${empl.getUpmrcaddon().getPfeffectivestartdate()}" class="w3-input w3-border" name="pfeffectivestartdate" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+					</p>
+					<p>
+						<label>Provident Fund Number</label>
+						<input th:value="${empl.getUpmrcaddon().getPfnumber()}" style="height: 38px" class="w3-input w3-border" name="pfnumber"  type="text" disabled>
+					</p>
+					<p>
+						<label>PRAN</label>
+						<input th:value="${empl.getUpmrcaddon().getPrannumber()}" style="height: 38px" class="w3-input w3-border" name="prannumber"  type="text" disabled>
+					</p>
+					<p>
+						<label>ESI Number</label>
+						<input th:value="${empl.getUpmrcaddon().getEsinumber()}" style="height: 38px" class="w3-input w3-border" name="esinumber"  type="text" disabled>
+					</p>
+					<p>
+						<label>UAN</label>
+						<input th:value="${empl.getUpmrcaddon().getUannumber()}" style="height: 38px" class="w3-input w3-border" name="uannumber"  type="text" disabled>
+					</p>
+
+		</div>
+		</div>
+		
+		<div class=w3-half>
+		<div class="w3-container">
+		
+		<p>
+					
+					<div >
+						<label>Employee Category</label> <select id=""
+							class="w3-select w3-border" name="employeecategory" disabled>
+						<option disabled selected></option>	 
+						<option
+								th:each="empcat : ${employee_category}"
+								th:selected="${empl.getUpmrcaddon().getEmployeecategory() eq empcat.getId()}"
+								th:value="${empcat.getId()}"
+								th:text="${empcat.getDescription()}" />
+						</select> <span id="TYPE_ERROR" style="color: red"></span>
+
+					</div>
+					</p>
+
+					<p>
+					
+					<div >
+						<label>Staff</label> <select id="" class="w3-select w3-border"
+							name="staff" disabled>
+							<option value="" disabled selected></option>
+							<option
+								th:each="staff : ${staff}"
+								th:selected="${empl.getUpmrcaddon().getStaff() eq staff.getId()}"
+								th:value="${staff.getId()}"
+								th:text="${staff.getDescription()}" />
+						</select> </span>
+
+					</div>
+					</p>
+			
+				
+			<p>
+					<div >
+						<label>Project OM</label> <select id=""
+							class="w3-select w3-border" name="projectom" disabled>
+							<option disabled selected></option>
+							<option
+								th:each="projectom : ${projectom}"
+								th:selected="${empl.getUpmrcaddon().getProjectom() eq projectom.getId()}"
+								th:value="${projectom.getId()}"
+								th:text="${projectom.getDescription()}" />
+						</select> </span>
+
+					</div>
+					</p>
+
+					<p>
+						<label>Previous Organization Basic Salary (Per Month)</label> <input
+							th:value="${empl.getUpmrcaddon().getPrevorgbasicsalary()}"
+							style="height: 38px" class="w3-input w3-border"
+							name="prevorgbasicsalary" id="" type="text" disabled>
+
+
+					</p>
+					<p>
+						<label>Previous Organization Location</label>  <input
+							th:value="${empl.getUpmrcaddon().getPrevorglocation()}"
+							style="height: 38px" class="w3-input w3-border"
+							name="prevorglocation" id="" type="text" disabled>
+
+
+					</p>
+					<p>
+						<label>Previous Organization Name</label>  <input
+							th:value="${empl.getUpmrcaddon().getPrevorgcompanyname()}"
+							style="height: 38px" class="w3-input w3-border"
+							name="prevorgcompanyname" id="" type="text" disabled>
+
+
+					</p>
+
+					&lt;!&ndash;  <p>
+					<div th:if='${empl.getUpmrcaddon().getHouseonleave()==null}'>
+						<label>House on Lease?</label><br> <input type="radio" id="d"
+							name="houseonleave" value="Yes" disabled> <label
+							for="d">Yes</label><br> <input type="radio" id="e"
+							name="houseonleave" value="No" checked disabled> <label
+							for="e">No</label><br>
+					</div>
+					<div th:if='${empl.getUpmrcaddon().getHouseonleave()=="Yes"}'>
+						<label>House on Leave?</label><br> <input type="radio" id="d"
+							name="houseonleave" value="Yes" checked disabled> <label
+							for="d">Yes</label><br> <input type="radio" id="e"
+							name="houseonleave" value="No" disabled> <label for="e">No</label><br>
+					</div>
+					<div th:if='${empl.getUpmrcaddon().getHouseonleave()=="No"}'>
+						<label>House on Leave?</label><br> <input type="radio" id="d"
+							name="houseonleave" value="Yes" disabled> <label
+							for="d">Yes</label><br> <input type="radio" id="e"
+							name="houseonleave" value="No" checked disabled> <label
+							for="e">No</label><br>
+					</div>
+
+					</p> &ndash;&gt;
+
+					
+					 
+		</div>
+		</div>
+			<div class="w3-row-padding">
+				<div class="w3-col" style="width:30%">
+					<div th:if='${empl.getUpmrcaddon().getAttribute2()==null}'>
+						<label>Is Deputation?</label><br> <input type="radio" id="d"
+																 name="attribute2" value="Yes" disabled> <label
+							for="d">Yes</label><br> <input type="radio" id="e"
+														   name="attribute2" value="No" checked disabled> <label
+							for="e">No</label><br>
+					</div>
+					<div th:if='${empl.getUpmrcaddon().getAttribute2()=="Yes"}'>
+						<label>Is Deputation?</label><br> <input type="radio" id="d"
+																 name="attribute2" value="Yes" checked disabled> <label
+							for="d">Yes</label><br> <input type="radio" id="e"
+														   name="attribute2" value="No" disabled> <label for="e">No</label><br>
+					</div>
+					<div th:if='${empl.getUpmrcaddon().getAttribute2()=="No"}'>
+						<label>Is Deputation?</label><br> <input type="radio" id="d"
+																 name="attribute2" value="Yes" disabled> <label
+							for="d">Yes</label><br> <input type="radio" id="e"
+														   name="attribute2" value="No" checked disabled> <label
+							for="e">No</label><br>
+					</div>
+				</div>
+
+				<div class="w3-col" style="width:30%">
+					<div th:if='${empl.getUpmrcaddon().getAttribute4()==null}'>
+						<label>Is Deputation Location Same?</label><br> <input type="radio" id="h"
+																			   name="attribute4" value="Yes" disabled> <label
+							for="h">Yes</label><br> <input type="radio" id="i"
+														   name="attribute4" value="No" checked disabled> <label
+							for="i">No</label><br>
+					</div>
+					<div th:if='${empl.getUpmrcaddon().getAttribute4()=="Yes"}'>
+						<label>Is Deputation Location Same?</label><br> <input type="radio" id="h"
+																			   name="attribute4" value="Yes" checked disabled> <label
+							for="h">Yes</label><br> <input type="radio" id="i"
+														   name="attribute4" value="No" disabled> <label for="i">No</label><br>
+					</div>
+					<div th:if='${empl.getUpmrcaddon().getAttribute4()=="No"}'>
+						<label>Is Deputation Location Same?</label><br> <input type="radio" id="h"
+																			   name="attribute4" value="Yes" disabled> <label
+							for="h">Yes</label><br> <input type="radio" id="i"
+														   name="attribute4" value="No" checked disabled> <label
+							for="i">No</label><br>
+					</div>
+				</div>
+
+				<div class="w3-col" style="width:30%">
+					<div th:if='${empl.getUpmrcaddon().getAttribute3()==null}'>
+						<label>Is in PRC2?</label><br> <input type="radio" id="f"
+															  name="attribute3" value="Yes" disabled> <label
+							for="f">Yes</label><br> <input type="radio" id="g"
+														   name="attribute3" value="No" checked disabled> <label
+							for="g">No</label><br>
+					</div>
+					<div th:if='${empl.getUpmrcaddon().getAttribute3()=="Yes"}'>
+						<label>Is in PRC2?</label><br> <input type="radio" id="f"
+															  name="attribute3" value="Yes" checked disabled> <label
+							for="f">Yes</label><br> <input type="radio" id="g"
+														   name="attribute3" value="No" disabled> <label for="g">No</label><br>
+					</div>
+					<div th:if='${empl.getUpmrcaddon().getAttribute3()=="No"}'>
+						<label>Is in PRC2?</label><br> <input type="radio" id="f"
+															  name="attribute3" value="Yes" disabled> <label
+							for="f">Yes</label><br> <input type="radio" id="g"
+														   name="attribute3" value="No" checked disabled> <label
+							for="g">No</label><br>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="ADDITIONAL_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none;">Cancel</button>
+		<button type="button" id="ADDITIONAL_SUBMIT_BTN" onclick="additionalcorrectupdate();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; display:none; ">Submit</button>
+		</div>
+		</form>
+		</div>
+		</div>
+-->
+			<div id="BANK_DTL_TAB" class="w3-container w3-border legal"
+				style="display: none">
+				<div class="w3-row">
+					<div style="margin-top: 10px; margin-bottom: 25px;">
+						<h4 class="w3-text-theme "
+							style="margin-top: 100px; display: inline">Bank Details</h4>
+						<!--<select id="EDIT_BANK_TAB" name="mode" class="w3-border w3-right" style="margin-right:30px; height:40px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option>&lt;!&ndash;<option value="Update">Update</option>&ndash;&gt;</select>-->
+					</div>
+					<div class="w3-row" th:each="bnk ,stats: ${empl.getBankdetails()}"
+						th:id="'BANK_DYNAMIC'+${stats.index}">
+						<hr
+							style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+						<form method="post" th:id="'BANK_DTL_FORM_'+${stats.index}"
+							enctype="application/x-www-form-urlencoded"
+							onsubmit="return false;">
+							<input value="BANK_DTL_TAB" name="tab" id="tab" type="hidden" />
+							<p class="w3-row">
+								<!--								th:if="${empl.getJobdata().getHireaction()!=18} and ${empl.getJobdata().getHireaction()!=15} and ${empl.getJobdata().getHireaction()!=30}"-->
+								<!-- <select  th:id="'EDITBANKTAB_'+${stats.index}" name="mode"  th:onchange="'editbank('+${stats.index}+',this.name);'" class="w3-border w3-right" style="margin-right:30px; height:30px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option></select> -->
+								<select th:if='${bnk.getStatus()=="Active"}'
+									th:id="'EDITBANKTAB_'+${stats.index}" name="mode"
+									th:onchange="'editbank('+${stats.index}+',this.name);'"
+									class="w3-border w3-right"
+									style="margin-right: 30px; height: 30px; border-radius: 5px;">
+									<option value="Save" selected hidden>Edit</option>
+									<option value="Correct">Correct</option>
+									<option value="Update">Update</option>
+								</select>
+							</p>
+							<div class="w3-row-padding">
+								<input th:value="${bnk.getBankaccountsid()}"
+									name="bankaccountsid" id="bankaccountsids" type="hidden" /> <input
+									th:value="${bnk.getPersonnumber()}" name="personnumber"
+									type="hidden" />
+								<div class="w3-half">
+									<p>
+										<label>Bank Name</label> <input class="w3-input w3-border"
+											oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+											name="bankname" type="text" th:value="${bnk.getBankname()}"
+											disabled>
+									</p>
+								</div>
+								<div class="w3-half">
+									<p>
+										<label>Bank Address</label> <input class="w3-input w3-border"
+											name="bankaddress" type="text"
+											th:value="${bnk.getBankaddress()}" disabled>
+									</p>
+								</div>
+							</div>
+							<div class="w3-row-padding">
+								<div class="w3-half">
+									<p>
+										<label>Account Holder Name</label> <input
+											class="w3-input w3-border" name="accountholdername"
+											oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+											type="text" th:value="${bnk.getAccountholdername()}" disabled>
+									</p>
+								</div>
+								<div class="w3-half">
+									<p>
+										<label>IFSC</label> <input class="w3-input w3-border"
+											oninput="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/(\..*)\./g,'$1');"
+											name="branchifsccode" type="text"
+											th:value="${bnk.getBranchifsccode()}" disabled>
+									</p>
+								</div>
+							</div>
+							<div class="w3-row-padding">
+								<div class="w3-half">
+									<p>
+										<label>Account Number</label> <input
+											class="w3-input w3-border"
+											oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+											name="bankaccountnumber" type="text"
+											th:value="${bnk.getBankaccountnumber()}" disabled>
+									</p>
+								</div>
+								<div class="w3-half">
+									<p>
+										<label>Account Type</label> <select
+											class="w3-select w3-border" name="accounttype" disabled>
+											<option th:value="${bnk.getAccounttype()}"
+												th:text="${bnk.getAccounttype()}" selected hidden></option>
+											<option th:each="acctype : ${acctype}"
+												th:value="${acctype.getDescription()}"
+												th:text="${acctype.getDescription()}"></option>
+										</select>
+									</p>
+									<input name="status" th:value="${bnk.getStatus()}"
+										type="hidden">
+								</div>
+							</div>
+							<hr
+								style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+							<div style="margin-bottom: 15px">
+								<button type="button" th:id="'BANK_CANCEL_BTN'+${stats.index}"
+									th:onclick="'bankcancel('+${stats.index}+');'"
+									class="w3-button w3-theme w3-ripple "
+									style="margin-left: auto; margin-right: auto; margin-top: 10px; display: none;">Cancel</button>
+								<button type="button" th:id="'BANK_SUBMIT_BTN'+${stats.index}"
+									th:onclick="'bankcorrectupdate('+${stats.index}+');'"
+									class="w3-button w3-theme w3-ripple "
+									style="margin-left: auto; margin-right: auto; margin-top: 10px; display: none;">Submit</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+		</div>
+	</div>
+	
+	
+	
+	<div id="UPDATE_POPUP" class="w3-modal" style="display: none">
+		<div class="w3-modal-content" style="margin-top:300px;">
+			<header class="w3-container w3-theme">
+				<span id="POP_CANCEL" class="w3-button w3-display-topright">&times;</span>
+				<h4>Update Details</h4>
+			</header>
+			<div class="w3-container w3-margin">
+				<div class="w3-row">
+					<p class="w3-half w3-container">
+						<label>Effective Start Date</label> <input
+							class="w3-input w3-border" name="" id="POP_DATE" type="date"
+							data-date="" data-date-format="YYYY MM DD" />
+					</p>
+				</div>
+				<hr
+					style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+				<div class="w3-row-padding">
+					<div class="w3-half">
+						<p>
+							<label>Action</label> <select id="POP_HIRE_ACTION"
+								class="w3-select w3-border" name="">
+								<option value=""></option>
+								<option th:each="hireaction : ${hireaction}"
+									th:selected="${empl.getJobdata().getHireaction() eq hireaction.getId()}"
+									th:value="${hireaction.getId()}"
+									th:text="${hireaction.getDescription()}" />
+							</select>
+						</p>
+					</div>
+					<div class="w3-half">
+						<p>
+							<label>Action Reason</label> <select id="POP_ACTION_REASON"
+								class="w3-select w3-border" name="">
+								<option th:value="${empl.getJobdata().getHirereason()}"
+									th:text="${empl.getJobdata().getHirereasondsc()}" hidden
+									selected></option>
+							</select>
+						</p>
+					</div>
+				</div>
+				<div class="w3-row-padding">
+					<div class="w3-half">
+						<!--<button type="button" id="POP_CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; ">Cancel</button>-->
+						<button type="button" id="POP_SUBMIT_BTN"
+							onclick="setupdatedetails()"
+							class="w3-button w3-theme w3-ripple "
+							style="margin-left: auto; margin-right: auto; margin-top: 10px; display: none">OK</button>
+					</div>
+				</div>
+			</div>
+			<footer class="w3-container w3-grey"> </footer>
+		</div>
+	</div>
+	<!--  <div id="VIEW_HISTORY_POPUP" class="w3-modal" style="display:none">
+		<div class="w3-modal-content">
+			<header class="w3-container w3-theme"> <span id="VH_POP_CANCEL" class="w3-button w3-display-topright">&times;</span>
+				<h4>History</h4> </header>
+			<div class="w3-container w3-margin">
+				<div class="w3-row-padding">
+					<div id="vhresultSec" class="w3-responsive" style="display: none">
+						<table id="VHList" class="display compact w3-table" style="width: 100%;">
+							<thead>
+								<tr class="w3-theme-d3">
+									<th>Effective Start Date</th>
+									<th>Effective End Date</th>
+									<th>Action</th>
+									<th>Reason</th>
+									<th>Salary</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div id="noDataVH" class="w3-responsive" style="display: none">
+						<div>
+							<p>No record found...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="w3-container w3-grey"> </footer>
+		</div>
+	</div>  -->
+	<!-- line modal -->
+	<div id="id05" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+						onclick="document.getElementById('id05').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Search and Select:Legal Employer</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="LEGAL_NAME" type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Country:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="LEGAL_COUNTRY" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Legal Entity
+										Identifier:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="LEGAL_ENTITY_IDENTIFIER" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="LEGAL_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="legresultSec" class="w3-responsive" style="display: none">
+							<table id="LegalList" class="display compact w3-table"
+								style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>Name</th>
+										<th>Country</th>
+										<th>Legal Entity Identifier</th>
+										<th>Effective Start Date</th>
+										<th>Registration Place</th>
+										<th>Registration Number</th>
+										<th>Legal Entity Id</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataLEG" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="LEG_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="LEG_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ----POPUP END HERE---- -->
+	<!-- POPUPS START HERE -->
+	<div id="id03" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<h3 align="left">Search and Select:Business Unit</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="SRCH_NAME" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="SRCH_CODE" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="BU_SEARCH" onclick="Busearch()"
+											class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="buresultSec" class="w3-responsive" style="display: none">
+							<table id="BU_LIST" class="display compact w3-table"
+								style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>Name</th>
+										<th>Code</th>
+										<th>BU Set</th>
+										<th>Status</th>
+										<th>Business Unit Id</th>
+										<th>Dataset Id</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataBU" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="BU_POP_OK" class="w3-button w3-theme w3-grey"
+									style="display: none">OK</button>
+								<button id="BU_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!------------------------- POPUP END HERE ------------------------->
+	<!-- line modal -->
+	<div id="id02" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<h3 align="left">Search and Select:Department</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="DEPT_NAME" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="DEPT_CODE" type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section" style="display: none">
+									<div class="w3-col" style="width: 80px;">Dataset:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="DEPT_DATASET" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="DEPT_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="deptresultSec" class="w3-responsive"
+							style="display: none">
+							<table id="DEPTBU_LIST" class="display compact w3-table"
+								style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>Name</th>
+										<th>Code</th>
+										<th>Effective Start Date</th>
+										<th>Dataset</th>
+										<th>Status</th>
+										<th>Department Id</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataDEPT" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="CR_DEP_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="CR_ENT_DEP_CANCEL"
+									class="w3-button w3-theme w3-grey"
+									onclick="document.getElementById('id02').style.display='none'">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- PopUp End Here -->
+	<!-- LINE MODAL -->
+	<div id="id07" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+						onclick="document.getElementById('id07').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Select:Position</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="POS_SRCH_NAME" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="POS_SRCH_CODE" type="text">
+									</div>
+								</div>
+								<!-- <div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Status:</div>
+									<div class="w3-rest">
+										<select id="SRCH_STATUS" class="w3-select w3-border"
+												name="option">
+											<option value="" disabled selected></option>
+											<option th:each="status : ${status}" th:value="${status}"
+													th:text="${status}">
+										</select>
+									</div>
+								</div> -->
+							</div>
+						</div>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="POS_SEARCH"
+											class="w3-button w3-theme w3-grey w3-padding-4">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="posresultSec1" class="w3-responsive"
+							style="display: none">
+							<table id="POS_LIST1" class="display compact w3-table"
+								style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>Name</th>
+										<th>Code</th>
+										<th>Department</th>
+										<th>Job</th>
+										<th>Status</th>
+										<th>Start Date</th>
+										<th>Position Id</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataPOS1" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right" style="margin-top: 5px">
+								<button id="POS_POP_OK1" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="POS_POP_CANCEL1" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="id09" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+						onclick="document.getElementById('id09').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Select: Job</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div id="jobsburesultSec" class="w3-responsive"
+							style="display: none">
+							<table id="JOBSBU_LIST" class="display compact w3-table"
+								style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>Name</th>
+										<th>Code</th>
+										<th>Effective Start Date</th>
+										<th>Dataset</th>
+										<th>Status</th>
+										<th>Job Id</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataJOBSBU" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="JOBSBU_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="JOBSBU_POP_CANCEL"
+									class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- line modal -->
+	<div id="id06" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+						onclick="document.getElementById('id06').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Search and Select:Grade</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" id="SRCH_CODE"
+											type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" id="SRCH_NAME"
+											type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Status:</div>
+									<div class="w3-rest">
+										<select id="statusList" class="w3-select w3-border"
+											name="option">
+											<option value="" disabled selected></option>
+											<option th:each="status : ${status}" th:value="${status}"
+												th:text="${status}">
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="GRADE_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="graderesultSec" class="w3-responsive"
+							style="display: none">
+							<table id="GRADE_LIST" class="display compact w3-table"
+								style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>Name</th>
+										<th>Code</th>
+										<th>Status</th>
+										<th>Data Set</th>
+										<th>Grades ID</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataGrade" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="GRADE_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="GRADE_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- PopUp End Here -->
+	<!-- PopUp End Here -->
+	<div id="id0Manager" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+						onclick="document.getElementById('id03').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Search and Select:Manager</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">First Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" id="MGR_SRCH_NAME"
+											type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Person Number:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" id="MGR_SRCH_CODE"
+											type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="MGR_SRCH" onclick="mgrsearch()"
+											class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="mgrresultSec" class="w3-responsive" style="display: none">
+							<table id="MGR_LIST" class="display compact w3-table"
+								style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>Name</th>
+										<th>Person Number</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataMGR" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="MGR_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="MGR_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="addrpopup" class="w3-modal" style="display: none">
+		<form method="post" id="BANK_POP_FORM"
+			enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+			<div class="w3-modal-content">
+				<header class="w3-container w3-theme">
+					<span
+						onclick="document.getElementById('addrpopup').style.display='none'"
+						class="w3-button w3-display-topright">&times;</span>
+					<h4>Bank Details Edit</h4>
+				</header>
+				<input type="hidden" name="personnumber" id="personnumber_popBank"
+					value="" /> <input type="hidden" name="personid"
+					id="personid_popBank" value="" /> <input type="hidden"
+					name="bankaccountsid" id="bankaccountsid_popBank" value="" /> <input
+					type="hidden" name="status" id="status_popBank" value="" />
+				<div class="w3-container w3-margin">
+					<div class="w3-row">
+						<p class="w3-half w3-container">
+							<label>Effective Start Date</label> <input
+								class="w3-input w3-border" name="effectivestartdate"
+								id="POP_EFF_DATE" type="date" data-date=""
+								data-date-format="YYYY MM DD" />
+						</p>
+					</div>
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+					<div class="w3-row-padding">
+						<div class="w3-half">
+							<p>
+								<label>Account Type </label> <select class="w3-select w3-border"
+									name="accounttype" id="pop_Actype">
+									<!-- 	<option th:each="acctype : ${acctype}" th:value="${acctype}" th:text="${acctype}"></option> -->
+									<option th:each="acctype : ${acctype}"
+										th:value="${acctype.getDescription()}"
+										th:text="${acctype.getDescription()}"></option>
+								</select>
+							</p>
+						</div>
+						<div class="w3-half">
+							<p>
+								<label>Bank Name</label> <input class="w3-input w3-border"
+									oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+									name="bankname" type="text">
+							</p>
+						</div>
+					</div>
+					<div class="w3-row-padding">
+						<div class="w3-half">
+							<p>
+								<label>Account Holder Name</label> <input
+									class="w3-input w3-border" name="accountholdername"
+									oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+									type="text">
+							</p>
+						</div>
+						<div class="w3-half">
+							<p>
+								<label>IFSC</label> <input class="w3-input w3-border"
+									oninput="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/(\..*)\./g,'$1');"
+									name="branchifsccode" type="text">
+							</p>
+						</div>
+					</div>
+					<div class="w3-row-padding">
+						<div class="w3-half">
+							<p>
+								<label>Account Number</label> <input class="w3-input w3-border"
+									oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+									name="bankaccountnumber" type="text">
+							</p>
+						</div>
+						<div class="w3-half">
+							<p>
+								<label>Bank Address</label> <input class="w3-input w3-border"
+									name="bankaddress" type="text">
+							</p>
+						</div>
+					</div>
+					<div class="w3-row-padding">
+						<div class="w3-half">
+							<button type="button" id="POP_CANCEL_BANK"
+								class="w3-button w3-theme w3-ripple "
+								style="margin-left: auto; margin-right: auto; margin-top: 10px;">Cancel</button>
+							<button type="button" id="POP_SUBMIT"
+								onclick="correctupdateBankDetails()"
+								class="w3-button w3-theme w3-ripple "
+								style="margin-left: auto; margin-right: auto; margin-top: 10px; display: none;">OK</button>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-grey"> </footer>
+			</div>
+			<!--  <script src="/js/employmentedit.js"></script> -->
+		</form>
+	</div>
+	<script src="/js/employmentedit.js"></script>
+</div>

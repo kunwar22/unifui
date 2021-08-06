@@ -1,0 +1,72 @@
+<div th:fragment="NavbarSearch">
+
+
+	<div class="w3-container" style="margin-top:14px;">
+		<h4 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Search Navbar</h4>
+		<p style="margin-top:0px;">
+			Enter any information you have and click search.
+		</p>
+	</div>
+
+
+	<form  method="post" id="frmNavbarMap" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+
+
+
+		<div class="w3-row">
+			<div class=w3-third style="border-right:2px solid black">
+				<div class="w3-container">
+					<div class="divTable">
+						<div class="divTr">
+							<div class="d1">
+								<h5 style="font-weight: bold">
+									Find an existing value
+								</h5>
+							</div>
+							<div class="d2">
+								<a id="navbarCreate" class="w3-button w3-circle w3-theme w3-large">+</a>
+							</div>
+						</div>
+					</div>
+					<hr class="hrline">
+					<h6>Search Criteria</h6>
+
+					</p>
+					<p>
+						<label>Navbar Name <span style="color: red"> *</span></label>
+						<input  class="w3-input w3-border" name="roleName" id="SRCH_Navbar_NAME" type="text" >
+					</p>
+
+					<p>
+						<button id="NavbarSearch" class="w3-button w3-theme w3-large">Search</button>
+					</p>
+				</div>
+			</div>
+			<div class="w3-twothird w3-container">
+				<h5 style="margin-bottom:0px;font-weight:bold">Search Results</h5>
+				<div id="resultNavbar" class="w3-responsive" style="display: none">
+					<table id="NAVBAR_LIST" class="display compact w3-table" style="width: 100%;">
+						<thead>
+						<tr class="w3-theme-d3">
+							<th>Navbar Id</th>
+							<th>Navbar Name</th>
+							<th>Status</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+				<div id="noDataNavbar" class="w3-responsive" style="display: none">
+					<div>
+						<p>No record found...</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<script src="/js/navBar.js"></script>
+
+	</form>
+</div>
+

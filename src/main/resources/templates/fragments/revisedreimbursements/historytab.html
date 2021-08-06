@@ -1,0 +1,76 @@
+<div th:fragment="historytab">
+<style>
+	.hider{
+		display:none;
+	}
+div.scrollmenu {  
+  overflow: auto;
+  white-space: nowrap;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+</style>
+        <div class="w3-bar">
+            <div class="w3-bar-item" style="padding:6px 0px 0px 16px; width: 25%;">
+                <label>Business Unit</label><span style="color: red"> *</span>
+                <select id="HSTRY_BULOV" style="height: 42px;" class="w3-select w3-border w3-margin-bottom">
+                    <option value="0" disabled selected></option>
+                    <option th:each="bures : ${bures}"
+                            th:value="${bures.getBusinessunitid()}"
+                            th:text="${bures.getName()}" />
+                </select>
+            </div>
+
+            <div class="w3-bar-item" style="padding: 6px 0px 0px 4px; width: 15%;">
+                <label>Start Date</label><span style="color: red"> *</span>
+                <input type="date" id="HSTRY_STRT_DT" class="w3-input w3-border">
+            </div>
+
+            <div class="w3-bar-item" style="padding: 6px 0px 0px 4px; width: 15%;">
+                <label>End Date</label><span style="color: red"> *</span>
+                <input type="date" id="HSTRY_END_DT" class="w3-input w3-border">
+            </div>
+
+            <div class="w3-bar-item" style="padding: 6px 0px 0px 4px; width: 25%;">
+                <label>Reimbursement Type</label><span style="color: red"> *</span>
+                <select id="HSTRY_REMTYPELOV" style="height: 42px;" class="w3-select w3-border w3-margin-bottom">
+                    <option value="0" disabled selected></option>
+                    <option value="1">Telephone Reimbursement</option>
+                    <option value="2">Transport Reimbursement</option>
+                    <option value="5">Entertainment Reimbursement</option>
+                    <option value="7">CDA and Vehicle Reimbursement</option>
+                    <option value="12">TADK Reimbursement</option>
+                </select>
+            </div>
+
+            <div class="w3-bar-item" style="margin-top: 6px;width: 5%;">
+                <div style="display:inline-block; margin-inline: -10px;" type="button" id="HSTRY_SEARCH_BTN" onClick="searchgnrthstry();" class="w3-btn w3-theme w3-round-large w3-margin-top"><i class="fas fa-search"></i></div>
+            </div>
+            <div class="w3-bar-item w3-right" style="padding: 16px 16px 0px 2px; width: 15%;">
+                <div id="XCLXPRTBTN_1" class="w3-btn w3-blue w3-round-large w3-margin-top" style="display:none; transform: scale(1);" onclick="exportTableToExcel('HSTRY_REM_VAL_TBL','Generated_Reimbursement_Value_History_Data');"><i class="fas fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</div>
+            </div>
+        </div>
+        <form  method="post" id="HSTRY_TEMPL_FORM" enctype="application/x-www-form-urlencoded">
+        <div id="resultDiv" class="w3-row w3-margin-top scrollmenu" style="display:none;" >
+
+
+        </div>
+        </form>
+
+
+        <div id="noData" class="w3-container w3-responsive" style="display: none">
+            <div>
+                <p>No record found...</p>
+            </div>
+        </div>
+
+        <hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+
+        <div id="HSTRY_LOADER" class="w3-modal" style="display: none">
+            <div class='w3-container' style='margin-top:11%; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+            <!--<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>-->
+        </div>
+        <script src="/js/table2excel.js"></script>
+        <script src="/js/revisedreimbursements/historytab.js"></script>
+
+</div>

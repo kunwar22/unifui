@@ -1,0 +1,116 @@
+<div th:fragment="saveautoincr">
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var responseresult = /*[[${result}]]*/;
+		/*]]>*/
+	</script>
+
+    <div class="w3-main w3-margin-top">
+	<div style="position: relative;">
+		<div class="w3-container w3-margin-bottom">
+			<h4 style="font-weight: 400; display:inline-block;">
+				<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+					style="cursor: pointer;"> Employee Auto Increment
+			</h4>
+		</div>
+	</div>
+	<div class="w3-container"><hr class="hrline" style="margin-top: -10px; margin-bottom: -10px;"></div>
+		<div class="w3-bar">
+			<div class="w3-bar-item w3-left" style="padding: 0px 0px 0px 2px">
+				<div type="button" id="AUTOINCR_BACK_BTN" onClick="backAutoIncr();" class="w3-btn w3-red w3-round-large w3-margin-top"><i class="fas fa-backward"></i> Back</div>
+			</div>
+			<div class="w3-bar-item w3-right" style="padding: 0px 0px 0px 2px">
+				<div type="button" id="AUTOINCR_SAVE_BTN" onClick="saveAutoIncrfinal();" class="w3-btn w3-blue w3-round-large w3-margin-top"><i class="fas fa-save"></i> Save</div>
+			</div>
+		</div>
+
+		<form id="autoincrformfinal">
+		<div id="resultDivv" class="w3-margin-top">
+			<table id="SAVE_AUTO_INCR_TBL" class="w3-table-all">
+				<thead>
+				<th>Person Number</th>
+				<th>Name</th>
+				<th>Department</th>
+				<th>Designation</th>
+				<th>Last Increment Date</th>
+				<th>Effective Date</th>
+				<th>Grade</th>
+				<th>Current ROP</th>
+				<th>Proposed ROP</th>
+				</thead>
+
+				<tbody style="overflow: scroll; overflow: auto">
+				<tr th:each="incrdata,stats:${incrdata}">
+
+					<td style="width: 11%;">
+						<label th:text="${incrdata.getPersonnumber()}"></label>
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].jobdataactionid'" th:value="${incrdata.getJobdataactionid()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].personnumber'" th:value="${incrdata.getPersonnumber()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].natureofemployement'" th:value="${incrdata.getNatureofemployement()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].gradeid'" th:value="${incrdata.getGradeid()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].gradestepsamount'" th:value="${incrdata.getGradestepsamount()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].gradestepsid'" th:value="${incrdata.getGradestepsid()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].nextstepid'" th:value="${incrdata.getNextstepid()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].nextstepamount'" th:value="${incrdata.getNextstepamount()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].lmrcactionid'" th:value="${incrdata.getLmrcactionid()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].rop'" th:value="${incrdata.getRop()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].effectiveenddate'" th:value="${incrdata.getEffectiveenddate()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].flag'" th:value="${incrdata.getFlag()}">
+						<input type="hidden" th:name="'employeeAutoIncrements['+${stats.index}+'].nextrop'" th:value="${incrdata.getNextrop()}">
+					</td>
+					<td style="width: 11%;">
+						<label th:text="${incrdata.getPersonname()}"></label>
+					</td>
+
+					<td style="width: 11%;">
+						<label th:text="${incrdata.getDepartments()}"></label>
+					</td>
+
+					<td style="width: 11%">
+						<label th:text="${incrdata.getDesignation()}"></label>
+					</td>
+
+					<td style="width: 11%">
+						<label th:text="${incrdata.getLastincrementeffectivedate()}"></label>
+					</td>
+
+					<td style="width: 11%;">
+						<input type="date" th:name="'employeeAutoIncrements['+${stats.index}+'].effectivestartdate'" th:value="${incrdata.getEffectivestartdate()}"/>
+					</td>
+
+					<td style="width: 11%;">
+						<label th:text="${incrdata.getGradename()}"></label>
+					</td>
+
+					<td style="width: 11%">
+						<label th:text="${incrdata.getRop()}"></label>
+					</td>
+
+					<td style="width: 11%;">
+						<label th:text="${incrdata.getNextrop()}"></label>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		</form>
+	
+	
+		<div id="noDataa" class="w3-container w3-responsive" style="display: none">
+			<div>
+				<p>No record found...</p>
+			</div>
+		</div>
+
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+
+		<div id="AUTO_INCR_LOADERR" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:11%; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+			<!--<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>-->
+		</div>
+
+<script src="/js/scheduleprocess/saveautoincr.js"></script>
+	
+</div>
+</div>

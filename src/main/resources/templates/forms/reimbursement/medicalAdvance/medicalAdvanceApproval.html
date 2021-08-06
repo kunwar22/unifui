@@ -1,0 +1,208 @@
+<div th:fragment="medicalAdvanceApproval">
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		    var resultfinal = [[${result}]];
+		    //alert(resultfinal);
+		/*]]>*/
+	</script>
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"> <i class="fas fa-procedures" style="color: #fd451a;"></i>&nbsp;Medical Advance
+				</h4>
+			</div>
+		</div>
+		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item" >Approval Details</h5>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${status eq 'Unread'}">
+				<div type="button" class="w3-btn w3-blue w3-round-large " id="btnBack" rm="/tasks/myWorklist"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</div> 
+				<div type="button" class="w3-btn w3-red w3-round-large" id="btnSubmit"  onclick="approvalSubmit('Rejected');" ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;&nbsp;Reject</div>
+				<div type="button" class="w3-btn w3-green w3-round-large" id="btnSave" onclick="approvalSubmit('Approved');"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;Approve</div>
+			</div>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${status eq 'Read'}" >					
+					<div type="button" class="w3-btn w3-blue w3-round-large " id="btnBack" rm="/tasks/myWorklist"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</div>
+			</div>
+		</div>
+		<!--Form Content Goes here-->
+		<div class="w3-row w3-padding-large w3-margin-top">
+			<!-- <p>
+				<label>Entitlement: &nbsp;&nbsp;</label> <label style="color: blue;"
+					th:text="${empent}" >990</label>&nbsp;<label>INR Per
+					Month</label>				
+				</p> -->
+			<!-- <h5 class="w3-text-theme" style="font-weight: bold;">Advance
+				Request Details</h5> -->
+			<form method="post" id="ADV_SAVE">
+				<!-- MAIN FORM START HERE -->
+				<div class="w3-row w3-container w3-quarter" >
+					<label style="color: black;">Claim id</label>
+					<input type="text" class="w3-border w3-input w3-round" 
+						th:value="${mediadvmodel.getClaimid()}" name="claimid" readonly>
+				</div>
+				<div class="w3-row">	
+					<div class="w3-half w3-container">		
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Claim for</label> <span
+								style="color: red;">*</span> 
+							<select th:name="selfordependent"
+								id="selfordependent" class="w3-select w3-border w3-round" disabled>
+								<option value="0" disabled selected>Select</option>
+								<option value="Self" th:selected="${mediadvmodel.getSelfordependent() eq 'Self'}">Self</option>
+								<option value="Dependent" th:selected="${mediadvmodel.getSelfordependent() eq 'Dependent'}">Dependent</option> 
+							</select>							
+						</p>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<label style="color: black;">Hospital Type</label> <span
+							style="color: red;">*</span> 
+						<input type="text" class="w3-input w3-round w3-border" 
+							th:value="${mediadvmodel.getHospitaltypename()}" readonly/>
+					</div>
+					<div class="w3-half w3-container">
+						<label style="color: black;">Hospital Name</label> <span
+							style="color: red;">*</span> 
+						<input type="text" class="w3-input w3-round w3-border" 
+							th:value="${mediadvmodel.getHospitalname()}" readonly/>
+					</div>
+				</div>
+				<br>				
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<label style="color: black;">Treatment Starting From</label> <span
+							style="color: red;">*</span> 
+						<input type="date" readonly
+							id="treatmentStartDate" th:value="${mediadvmodel.getTreatmentfrom()}"
+							class="w3-input w3-border w3-round" />								
+					</div>
+					<div class="w3-half w3-container">
+						<label style="color: black;">Treatment Ending On</label> <span
+							style="color: red;">*</span> <input type="date"
+							id="treatmentEndDate" th:value="${mediadvmodel.getTreatmentto()}"
+							class="w3-input w3-border w3-round" readonly />														
+					</div>
+				</div>
+				<br>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<label style="color: black;">Approx. Hospitalizaton Days</label>
+						<span style="color: red;">*</span> <input type="text" id="duration"
+							class="w3-input w3-border w3-round" th:value="${mediadvmodel.getHospitalizationdays()}" readonly />						
+					</div>
+					<div class="w3-half w3-container">
+						<label style="color: black;">Illness Description</label> <span
+							style="color: red;">*</span> 
+						<input type="text" id="duration" class="w3-input w3-border w3-round" 
+							th:value="${mediadvmodel.getIllnessdescription()}" readonly />
+					</div>
+				</div>
+				<br>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<label style="color: black;">Approx. Hospitalizaton
+						Expenses</label> <span style="color: red;">*</span> <input type="text"
+							th:value="${mediadvmodel.getClaimamt()}" readonly
+							class="w3-input w3-border w3-round" />								
+					</div>
+					<div class="w3-half w3-container">
+						<label style="color: black;">Pay Advance To</label> <span
+							style="color: red;">*</span> 
+						<input type="text" th:value="${mediadvmodel.getPayadvanceto()}" readonly
+							class="w3-input w3-border w3-round" />						
+					</div>
+				</div>
+				<br>
+				<div class="w3-row" th:style="${mediadvmodel.getSelfordependent() eq 'Dependent' ? 'display:block':'display:none'}">
+					<div class="w3-half w3-container">
+						<label style="color: black;">Patient Name</label> <span
+							style="color: red;">*</span> 
+						<input type="text" class="w3-input w3-round w3-border" 
+							th:value="${mediadvmodel.getPatientname()}" readonly/>
+					</div>
+					<div class="w3-half w3-container">
+						<label style="color: black;">Relationship</label> <span
+							style="color: red;">*</span> 
+						<input type="text" th:value="${mediadvmodel.getRelationship()}"
+							id="DEP_RELATION" class="w3-input w3-border w3-round" readonly />								
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<a id="DOWNLOAD_LINK" 
+							th:if="${mediadvmodel.getClaimid() != 0 && mediadvmodel.getAttachments()!='' && mediadvmodel.getAttachments()!=null}"
+							th:href="${mediadvmodel.getAttachments()}" 
+							target="_blank" download>Download Attachment</a>
+						<input type="hidden"  id="DOWNLOAD_LINKsp" th:value="${mediadvmodel.getAttachments()}"/>							
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-container">
+						<input style="zoom: 1.2;" type="checkbox"checked disabled
+							id="chkdec" class="w3-check"/>&nbsp;&nbsp;I
+						hereby declare that, the above claim has not been made from any
+						other source
+					</div>
+				</div>
+				<div class="w3-row">&nbsp;</div>
+				<h6 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">
+					To-Do Task
+				</h6>
+				<div class="w3-row">
+					<div class="w3-third w3-container">
+						<p>
+							<label>Approved Amount: &nbsp;&nbsp;</label><span style="color:red">*</span>
+							<input  id="txtAmount" th:value="${APPRAMT}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" 
+								type="text" name="approvedamt" class="w3-input w3-border w3-round"/>
+						</p>
+						<label id="amterror"></label>
+					</div>
+					<div class="w3-third w3-container">
+						<p>
+							<label>Comments: &nbsp;&nbsp;</label><span style="color:red">*</span>
+							<textarea id="txtComment" name="msg" class="w3-input w3-border w3-round"></textarea>
+						</p>
+						<label id="msgerror"></label>
+					</div>
+				</div>
+			</form>
+		</div>
+		<h5 > Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${mediadvmodel.getClaimid()}" aria-hidden="true" th:onclick='getapprovalhistory(9,this.id);'></i></h5>
+		<section class="container" th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}" >
+			<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+			<div class="container__sources">
+				<div style="box-shadow: none;background-color: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+					<div class="sources--cms" style="width: 160px">
+						<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+						<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+						<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+						<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-check tick"></i>
+						</div>
+						<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-clock-o pending"></i>
+						</div>
+						<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-close cancel"></i>
+						</div>
+					</div>
+					<svg class="svghor" viewBox="0 10 100 100">
+						<line  x1="5" x2="100" y1="80" y2="80"></line>
+					</svg>
+					<svg class="svgver" viewBox="0 20 100 100 ">
+						<line  x1="40" x2="40" y1="0" y2="100"></line>
+					</svg>
+				</div>
+				<div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+			</div>
+			<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+		</section>
+		<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+		<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+		<script type="text/javascript"
+			src="/js/reimbursement/medicalAdvance/mediAdvance.js"></script>
+	</div>
+</div>

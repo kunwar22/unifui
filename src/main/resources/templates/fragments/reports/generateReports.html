@@ -1,0 +1,86 @@
+<div th:fragment="generateReports">
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom">
+                <h4 style="font-weight: 400; display: inline-block;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;" />
+                    <i class="fas fa-sync-alt" style="color: black;"></i>&nbsp;&nbsp;&nbsp;Generate Reports
+                </h4>                
+            </div>
+        </div>
+        <hr class="hrline" />
+
+        <div class="w3-row">
+            <div class="w3-quarter w3-container" style="width:200px;padding: 0.01em 10px;">
+                <p>
+                    <label>Select Report<span style="color: red;">*</span></label>
+                    <select class="w3-select w3-border w3-round" name="reporttype" id="reporttype" onchange="enableComponent();">
+                        <option selected disabled></option>
+                        <option value="1">Employee PaySlips</option>
+                        <option value="2">Consolidated PaySlips</option>
+                        <option value="3">Salary Bill Summary</option>
+                    </select>
+                    <span id="rterr" style="color: red; display: none;">Select Report</span>
+                </p>
+            </div>
+            <div class="w3-quarter w3-container" style="width:200px;padding: 0.01em 10px;">
+                <p id="busunitblock">
+                    <label>Business Unit<span style="color: red;">*</span></label>
+                    <select class="w3-select w3-border w3-round" name="busunitid" id="busunitid" onchange="removepaygroup();">
+                        <option selected disabled></option>
+                        <option th:each="bu : ${busunit}" th:value="${bu.getBusinessunitid()}" th:text="${bu.getName()}"></option>
+                    </select>
+                    <span id="buerr" style="color: red; display: none;">Mandatory</span>
+                </p>
+            </div>
+            <div class="w3-quarter w3-container" style="width:200px;padding: 0.01em 10px;">
+                <p id="paygrpblock">
+                    <label>Pay Group<span style="color: red;">*</span></label>
+                    <select class="w3-select w3-border w3-round" name="paygroup" id="paygroup" onchange="loadCalendars(event,this.value)">
+                        <option disabled selected></option>
+                        <option th:each="pg,stats : ${pgrp}" th:value="${pg.getPaygroupid()}" th:text="${pg.getName()}"> </option>
+                    </select>
+                    <span id="pgerr" style="color: red; display: none;">Mandatory</span>
+                </p>
+            </div>
+
+            <div class="w3-quarter w3-container" style="width:200px;padding: 0.01em 10px;">
+                <p>
+                    <label>From Calendar Code<span style="color: red;">*</span></label>
+                    <select class="w3-select w3-border w3-round" name="calendarcode" id="calendarcode" style="display: block; width: 150px;"> </select>
+                    <span id="frmcalcodeerr" style="color: red; display: none;">Mandatory</span>
+                    <br />
+                    <!--  <input type="text" name="frmcalcode" id="frmcalcode" style="display: none;" class="w3-input w3-border w3-round" /> -->
+                </p>
+            </div>
+            <div class="w3-quarter w3-container" style="margin-left: -28px;width:200px;padding: 0.01em 10px;">
+                <p>
+                    <label>Nature of Employment<span id="natstar" style="color: red;">*</span></label>
+                    <select class="w3-select w3-border w3-round" name="natureofemployment" id="natureofemployment" style="display: block;">
+                        <option selected="" disabled=""></option>
+                        <option value="0">All</option>
+                        <option th:each="natemp:${natemp}" th:value="${natemp.getId()}" th:text="${natemp.getDescription()}"></option>
+                    </select>
+                    <span id="noeerr" style="color: red; display: none;">Mandatory</span>
+                </p>
+            </div>
+        </div>
+        <div class="w3-row">            
+            <div class="w3-quarter w3-container" id="personnodiv" style="width:200px;padding: 0.01em 10px;">
+                <p>
+                    <label>Employee Number<span id="pnostar" style="color: red; display: none;">*</span></label>
+                    <input type="text" name="personno" id="personno" class="w3-input w3-border w3-round" style="display: block; width: 178px;" />
+                    <span id="pernoerr" style="color: red; display: none;">Mandatory</span>
+                </p>
+            </div>
+            <div class="w3-quarter w3-container" style="width:200px;padding: 0.01em 10px;">             
+            	<!-- <div id="btngenerate" class="w3-btn w3-blue w3-round" style="margin-top: 20px; transform: scale(1);" onclick="generateReport()">Generate Report</div> -->
+            	
+            	<a id="btngenerate" class="w3-btn w3-blue w3-round" target="_blank" download onclick="generateReport();" style="margin-top: 20px; transform: scale(1);">
+            		Generate Report
+                </a>
+            </div>
+        </div>        
+    </div>
+    <script src="/js/reports/genhrreports.js"></script>
+</div>

@@ -1,0 +1,332 @@
+<!-- <div th:fragment="createWeekly"> -->
+<div th:fragment="createWeekly">
+	<form method="post" id="WEEKLY_SAVE"
+		enctype="application/x-www-form-urlencoded" onsubmit="return false">
+
+		<style>
+			.lblTxt{
+				border:none;
+				text-align: center;
+				background-color: #ffffff00;
+			}
+		</style>
+		<div class="w3-row">
+			<hr class="hrline">
+			<h5 style="font-weight: bold">Basic Details</h5>
+
+			<div class=w3-half>
+				<div class="w3-container">
+					 <input id="weeklyholidayid"  type="text" hidden/>
+					  <input id="weeklyyear"  type="text" hidden/>
+
+
+					<!--      <p>
+				<label>Day</label><span style="color:red"> *</span>
+				<input  class="w3-input w3-border" name="day" id="CR_WKLY_DAY" type="text">
+						
+			</p>
+			
+			
+			<p>
+				<label>Week</label><span style="color:red"> *</span>
+				<input  class="w3-input w3-border" name="weeks" id="CR_WKLY_WEEK" type="text">
+				
+			
+			</p> -->
+				<p>
+			<label>Repeating Period</label><span style="color:red"> *</span> 
+			<select id="CR_WKLY_PRD" class="w3-select w3-border" name="repeatingperiodid" data-toggle="modal">
+	                 <option id="1" value="0"  selected></option>
+	                   <option id="2" value="0"></option>
+				<option  value="search" data-toggle="modal" id="btnsearch" >Search....</option>
+				</select><span id="REP_PRD_ERROR" style="color:red"></span>
+			</p>
+			
+			      <p>
+						<label>Select Days</label><span style="color: red"> *</span>
+					  <select
+							id="DayList" class="w3-select w3-border" name="Day">
+							<option value="0" selected hidden></option>
+							<option th:each="dy : ${Days}" 
+								th:value="${dy}" th:text="${dy}">
+						</select> <span id="REP_DAYS_ERROR" style="color:red"></span>
+					</p>
+
+					<p>
+						<input class="w3-check" id="CR_WKLY_1_WK" type="checkbox"
+							name="week" value="1"> <label>1st Week</label>
+					</p>
+					<p>
+						<input class="w3-check" id="CR_WKLY_2_WK" type="checkbox"
+							name="week" value="2"> <label>2nd Week</label>
+					</p>
+					<p>
+						<input class="w3-check" id="CR_WKLY_3_WK" type="checkbox"
+							name="week" value="3"> <label>3rd Week</label>
+					</p>
+					<p>
+						<input class="w3-check" id="CR_WKLY_4_WK" type="checkbox"
+							name="week" value="4"> <label>4th Week</label>
+					</p>
+					<p>
+						<input class="w3-check" id="CR_WKLY_5_WK" type="checkbox"
+							name="week" value="5"> <label>5th Week</label>
+					</p>
+
+
+					<p>
+						<input class="w3-check" id="CR_WKLY_HF_DY" type="checkbox"
+							name="halfday" > <label>Half-Day</label>
+					</p>
+
+
+					<!-- <input style="marging-left: 5px" class="w3-button w3-theme w3-grey"
+						 type="button" value="Add"	onclick="addRowNowGRADE();" />
+						 -->
+						 
+						 <input  class="w3-btn  w3-theme" type="button"
+						id="btnAdd" value="Add row" onclick="addrow()" />
+						
+						
+						 <br>
+
+				</div>
+
+
+			</div>
+			<div class=w3-half>
+				<div class="w3-container">
+					<!--      <p>
+			<label>Repeating Period</label> 
+			<select id="CR_WKLY_PRD" class="w3-select w3-border" name="repeatingperiodid" data-toggle="modal">
+	                 <option id="1" value="1"  selected></option>
+	                   <option id="2" value="2"></option>
+				<option  value="search" data-toggle="modal" id="btnsearch" >Search....</option>
+				</select>
+			</p>
+			
+			
+			 <p>
+				<label>Year</label><span style="color:red"> *</span>
+				<input  style="height:38px"   class="w3-input w3-border" name="year" id="CR_WKLY_YEAR" type="text">
+				
+			
+			</p> -->
+
+					
+
+				</div>
+
+			</div>
+
+
+
+
+
+			<!-- Popup Start here  -->
+
+
+			<!-- line modal -->
+			<div id="id01" class="w3-modal">
+				<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+					<div
+						class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+						<div class="modal-header">
+							
+							<h3 align="left">Search and Select:Repeating Period</h3>
+							<hr class="hrline">
+
+						</div>
+						<div class="modal-body">
+							<div>
+
+
+
+
+
+
+								<div class=w3-half>
+									<div class="w3-container">
+										<div class="w3-row w3-section">
+											<div class="w3-col" style="width: 80px">Name:</div>
+											<div class="w3-rest">
+												<input value="" class="w3-input w3-border" name="WKLY_NAME"
+													id="CR_WLKY_POP_NAME" type="text">
+
+											</div>
+										</div>
+										
+										<div class="w3-row w3-section">
+											<div class="w3-col" style="width: 80px">Status:</div>
+											<div class="w3-rest">
+											<select id="CR_WKLY_POP_STAT" style="height:43px"
+											class="w3-select w3-border"  tabindex="5">
+											<option th:each="status : ${status}" th:selected="${status == 'Active'}" th:value="${status}"
+												th:text="${status}">
+											</select>
+											</div>
+										</div>
+
+
+									</div>
+								</div>
+
+
+
+								<div class=w3-half>
+									<div class="w3-container">
+
+										<div class="w3-row w3-section">
+											<div class="w3-col" style="width: 80px">Code:</div>
+											<div class="w3-rest">
+												<input value="" class="w3-input w3-border" name="WKLY_DESC"
+													id="CR_WKLY_POP_CODE" type="text">
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+								<br>
+
+
+								<div class="w3-container">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<div class="w3-right">
+												<button id="CR_WKLY_POP_SRCH"
+													class="w3-button w3-theme w3-grey">Search</button>
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<BR>
+
+								<div id="resultSec" class="w3-responsive" style="display: none">
+									<table id="WeeklySearchList" class="display compact w3-table"
+										style="width: 100%;">
+										<thead>
+											<tr class="w3-theme-d3">
+												<th>ID</th>
+												<th>Name</th>
+												<th>Description</th>
+												<th>Period type name</th>
+												<th>Period length name</th>
+												<th>Preview date</th>
+												<th>Preview End date</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div id="noData" class="w3-responsive" style="display: none">
+									<div>
+										<p>No record found...</p>
+									</div>
+								</div>
+
+
+
+
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="w3-container">
+								<div class="form-group">
+
+									<div class="w3-right">
+										<button id="CR_WKL_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+										<button id="CR_WKL_POP_CANCEL"
+											class="w3-button w3-theme w3-grey">Cancel</button>
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- PopUp End Here -->
+			<br>
+
+					<div id="Accrual" class="w3-row city">
+					<div class="w3-container">
+					<br>
+
+						<div class="w3-container" id="text" >
+							
+							<div class="w3-padding w3-border">
+								<p>
+								
+								</p>
+
+
+								<div class="w3-border">
+									<table id="mytable"	class="w3-table-all w3-centered" style="width: 100%;">
+										<thead>
+
+											<th>Day</th>
+											<th>Week</th>
+											<th>Half Day</th>
+											<th>Year</th>
+											<th></th>
+
+										</thead>
+										<tbody></tbody>
+
+									</table>
+
+								</div>
+							</div>
+						</div>
+
+
+
+					<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+						<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+							style="max-width: 400px;">
+							<div
+								class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+								<label id="lblMsg" style="font-weight: bold"> </label> <a
+									id="btnOK" rm="weekly/manageWeekly">OK</a>
+
+							</div>
+
+						</div>
+					</div>
+
+
+
+
+				</div>
+					
+					<br>
+<button id="WEEKLY_CANCEL" tabindex="15" class="w3-button w3-theme w3-grey"><a href="/home" style="text-decoration:none">Cancel</a></button>
+						 <input type="button" onclick="ajaxPost();"
+						class="w3-button w3-theme w3-grey" id="WeeklyCreate"
+						value="Submit" /> <!--<input type="button"
+						class="w3-button w3-theme w3-grey" id="WeeklyCancel"
+						value="Cancel" /> -->
+
+					<hr	style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+				</div>
+
+
+
+<!----------------------------------------------------------------------------------------------->
+
+<!----------------------------------------------------------------------------------------------->
+
+
+		</div>
+			<script src="/js/create/createWeekly.js"></script>
+
+	</form>
+</div>

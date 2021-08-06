@@ -1,0 +1,75 @@
+<div th:fragment="runPayroll">
+
+    <div th:fragment="runPayrollHeadder">
+        <div class="w3-container" style="margin-top:26px;">
+            <div class="w3-bar w3-theme-l5">
+                <h4 class="w3-bar-item w3-text-theme" style="padding-top: 0px; padding-bottom: 0px;"><i class="fas fa-cogs"></i>&nbsp;&nbsp;Run Payroll</h4>
+            </div>
+        </div>
+       <div class="w3-container">
+            <div class="w3-row">
+                <div class="w3-col" style="width: 16.66%; text-align: center;">
+                    <span id="btnWht1" class="w3-xxxlarge" style="color: #037f8c; display: none;">&#10112;</span>
+                    <span id="btnGry1" class="w3-xxxlarge" style="color: #28a745; display: none;">&#10122;</span>
+                    <span id="btnGrn1" class="w3-xxxlarge" style="color: #ff8507;">&#10122;</span>
+                    <br>
+                    <label>Select Pay-group</label>
+                </div>
+                <div class="w3-col" style="width: 16.66%; text-align: center;">
+                    <span id="btnWht2" class="w3-xxxlarge" style="color: #037f8c;">&#10113;</span>
+                    <span id="btnGry2" class="w3-xxxlarge" style="color: #28a745; display: none;">&#10123;</span>
+                    <span id="btnGrn2" class="w3-xxxlarge" style="color: #ff8507; display: none;">&#10123;</span>
+                    <br>
+                    <label>Identify Employee</label>
+                </div>
+                <div class="w3-col" style="width: 16.66%; text-align: center;">
+                    <span id="btnWht3" class="w3-xxxlarge" style="color: #037f8c;">&#10114;</span>
+                    <span id="btnGry3" class="w3-xxxlarge" style="color: #28a745; display: none;">&#10124;</span>
+                    <span id="btnGrn3" class="w3-xxxlarge" style="color: #ff8507; display: none;">&#10124;</span>
+                    <br>
+                    <label>Manage OTP</label>
+                </div>
+                <div class="w3-col" style="width: 16.66%; text-align: center;">
+                    <span id="btnWht4" class="w3-xxxlarge" style="color: #037f8c;">&#10115;</span>
+                    <span id="btnGry4" class="w3-xxxlarge" style="color: #28a745; display: none;">&#10125;</span>
+                    <span id="btnGrn4" class="w3-xxxlarge" style="color: #ff8507; display: none;">&#10125;</span>
+                    <br>
+                    <label>Payroll Execution</label>
+                </div>
+                <div class="w3-col" style="width: 16.66%; text-align: center;">
+                    <span id="btnWht5" class="w3-xxxlarge" style="color: #037f8c;">&#10116;</span>
+                    <span id="btnGry5" class="w3-xxxlarge" style="color: #28a745; display: none;">&#10126;</span>
+                    <span id="btnGrn5" class="w3-xxxlarge" style="color: #ff8507; display: none;">&#10126;</span>
+                    <br>
+                    <label>Confirm Payroll</label>
+                </div>
+                <div class="w3-col" style="width: 16.67%; text-align: center;">
+                    <span id="btnWht6" class="w3-xxxlarge" style="color: #037f8c;">&#10117;</span>
+                    <span id="btnGry6" class="w3-xxxlarge" style="color: #28a745; display: none;">&#10127;</span>
+                    <span id="btnGrn6" class="w3-xxxlarge" style="color: #ff8507; display: none;">&#10127;</span>
+                    <br>
+                    <label>Finalize Payroll</label>
+                </div>
+            </div>
+           <div class="w3-bar">
+               <div class="buttonbarpadding w3-bar-item w3-right"	style="margin-top: 3px;">
+                   <div onclick="backClk($(this).attr('id'))" id="bk" class="w3-bar-item w3-btn w3-blue w3-round-large buttonbarmargin" type="button"><i class="fas fa-arrow-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</div>
+                   <div onclick="nextClk($(this).attr('id'))" id="nx" class="w3-bar-item w3-btn w3-blue w3-round-large buttonbarmargin" type="button">Next&nbsp;&nbsp;<i class="fas fa-arrow-circle-right" aria-hidden="true"></i></div>
+               </div>
+           </div>
+       </div>
+        <input type="hidden" id="selectedpaygroup" value=""/>
+        <input type="hidden" id="selectedpaygroupcode" value=""/>
+        <input type="hidden" id="selectedcalendar" value=""/>
+        <input type="hidden" id="selectedcalendarcode">
+        <input type="hidden" id="nextbackflag" value="1"/>
+    </div>
+    <div id="runPayrollBody">
+
+    </div>
+    <div id="PAYROLL_LOADER" class="w3-modal" style="display: none">
+        <div class='w3-container' style='margin-top:11%; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+        <!--<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>-->
+    </div>
+    <script src="/js/payroll/transection/runPayroll.js"></script>
+</div>

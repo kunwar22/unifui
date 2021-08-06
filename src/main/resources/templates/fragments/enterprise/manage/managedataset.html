@@ -1,0 +1,92 @@
+
+		<div th:fragment="searchdataset">
+		<div class="w3-container" style="margin-top:14px;">
+		<h4 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Search Reference Dataset</h4>
+		<p style="margin-top:0px;">
+		Enter any information you have and click search.
+		</p>
+		</div>
+		
+		<div class="w3-row">
+	<div class=w3-third style="border-right:2px solid black">
+		
+		<div class="w3-container">
+			<div class="divTable">
+				<div class="divTr">
+		
+					<div class="d1">
+							<h5 style="font-weight: bold">
+								Find an existing value
+							</h5>
+					</div>
+					<div class="d2">
+					<a id="datasetCreate" rm="/enterprisesetup/createdataset"  class="w3-button w3-circle w3-theme w3-large">+</a>
+		
+					</div>
+				</div>
+		
+			</div>
+			
+			<hr class="hrline">
+			<h6>Search Criteria</h6>
+			
+			
+			<p>
+			<label>Code</label>
+			<input value="" class="w3-input w3-border" name="datasetcode" id="SRCH_CODE" type="text">
+			
+			
+			</p>
+			<p>
+			<label>Name</label>
+			<input value="" class="w3-input w3-border" name="datasetname" id="SRCH_NAME" type="text">
+			
+			</p>
+			<p>
+		<button id="dsSearch" class="w3-button w3-theme w3-large">Search</button>
+			
+		</p>
+		</div>
+		
+		
+	</div>	
+		
+		<div class="w3-twothird w3-container">
+		
+		<h5 style="margin-bottom:0px;font-weight:bold">Search Results</h5>
+		
+		<div id="resultDataset" class="w3-responsive" style="display: none">
+			<table id="DATASET_LIST" class="display compact w3-table" style="width: 100%;">
+				<thead>
+					<tr class="w3-theme-d3">
+						<th>Name</th>
+						<th>Code</th>
+						<th>Description</th>
+						
+						<th></th>
+					</tr>
+
+					
+
+				</thead>
+			</table>
+		</div>
+		
+		<div  id="noData" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		
+		
+	</div>
+		
+</div>
+
+
+
+		
+		
+	
+			<script src="/js/search/datasetsearch.js"></script>
+		</div>

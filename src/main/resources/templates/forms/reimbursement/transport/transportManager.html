@@ -1,0 +1,156 @@
+<div th:fragment="transportManager">
+	<div class="w3-main"
+		style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"> <i class="fas fa-car-side"
+						style="color: #fd951a;"></i>&nbsp;Transport Reimbursement
+				</h4>
+			</div>
+		</div>
+
+		<div id="fragmaent_container"
+			th:include="forms/reimbursement/header :: header"></div>
+
+
+		<!--Form Content Goes here-->
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item">Previous Claims</h5>
+			<div onclick="addClaim();"
+				class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin"
+				style="margin-top: 8px;">
+				<i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Raise New Request
+			</div>
+		</div>
+		<div class="w3-container w3-margin-top">
+
+			<!--Transport Reimbursement Form Content Goes here By @Suraj Start-->
+
+
+			<!-- 
+	
+		<div class="w3-container" style="margin-top: 10px;">
+			
+ 			<div class="w3-container w3-row" style="padding-top:2%">
+	        	<div class="w3-container w3-threequarter">
+		        	<h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">
+						Find Existing Elements
+					</h5>				
+				</div>					
+				<div class="w3-container w3-quarter">
+					<button class="w3-button w3-theme w3-right" id="addbtn" onclick="addClaim();">
+						<i class="fas fa-plus"></i>
+					</button>
+					<!-- <button class="w3-button w3-theme w3-right" id="searchbtn">Search</button>
+				</div>
+	        </div>
+	        <hr class="hrline">
+	        
+			<div class="w3-row">
+				<div class="w3-col m4 ">
+					<div class=" w3-center" style="height: 200px;">
+						<img th:src="@{/images/avatar.png}" alt="Person"
+							style="height: 150px; width: 150px">
+					</div>
+
+				</div>
+				 <div class="w3-col m4">
+
+
+					<p>
+						<label><strong>Employee Id:</strong></label>&nbsp;<label  th:text="${hdata.getPersonid()}">SRLKEM0296</label>
+					</p>
+
+					<p>
+						<label><strong>Employee Name:</strong></label >&nbsp;<label  th:text="${hdata.getPersonname()}">Suraj
+							Yadav</label>
+					</p>
+
+
+					<p>
+						<label><strong>Date of Birth:</strong></label>&nbsp;<label  th:text="${hdata.getDateofbirth()}">16-Nov-1999</label>
+					</p>
+
+					<p>
+						<label><strong>Nature of Employment:</strong></label>&nbsp;<label  th:text="${hdata.getEmployeetype()}">Software
+							Development Trainee</label>
+					</p>
+
+					<p>
+						<label><strong>Designation:</strong></label>&nbsp;<label  th:text="${hdata.getDesignation()}">Web
+							Developer</label>
+					</p>
+				</div>
+				<div class="w3-col m4 ">
+
+
+					<p>
+						<label><strong>Enterprises Hire Date:</strong></label>&nbsp;<label  th:text="${hdata.getJoiningdate()}">10-Sep-2020</label>
+					</p>
+
+					<p>
+						<label><strong>Vehicle User:</strong></label>&nbsp;<label  th:text="${hdata.getVehicleused()}">AWE12</label>
+					</p>
+
+					<p>
+						<label><strong>Phone Number:</strong></label>&nbsp;<label  th:text="${hdata.getPhonenumber()}">+91-7007667165</label>
+					</p>
+
+					<p>
+						<label><strong>Email Id:</strong></label>&nbsp;<label  th:text="${hdata.getEmailaid()}">suraj.srdt@gmail.com</label>
+					</p>
+
+				</div>
+			</div>
+			<hr class="hrline">
+
+		</div> -->
+
+			<div class="w3-row">
+				<div class="w3-full">
+					<div class="w3-container">
+						<div id="search_result" class="w3-responsive">
+							<table id="Transport_Claim_History" class="w3-table-all"
+								style="text-align: center;">
+								<thead>
+									<tr>
+										<th>Claim Id</th>
+										<th>Date</th>
+										<th>Claim Amount</th>
+										<th>Approved Amount</th>
+										<th>Request Status</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div id="noDataTransport">
+					<span>No record found...</span>
+				</div>
+			</div>
+
+
+
+
+
+
+
+
+			<!-- --------------------------------Form End---------------------- -->
+
+
+
+			<!--Transport Reimbursement Form Content Goes here By @Suraj End-->
+
+			<script src="/js/reimbursement/transport/transportSearch.js"></script>
+
+
+
+
+		</div>
+	</div>

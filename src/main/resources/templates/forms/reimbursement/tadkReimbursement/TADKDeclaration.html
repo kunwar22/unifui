@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Declaration Regarding TADK</title>
+<style type="text/css">
+.heading {
+margin-top:70px;
+	text-align: center;
+}
+
+.main_declaration {
+	margin-left: 70px;
+	margin-right: 70px;
+	line-height: 1.5em;
+	text-align:justify;
+	font-size: 20px;
+}
+
+.points {
+	margin-left: 70px;
+	margin-right: 70px;
+	font-size: 20px;
+	text-align: justify;
+	text-align-last: left;
+}
+
+.points>ol>li {
+	padding-left: 1em;
+	line-height: 1.5em;
+}
+
+.footer {
+	text-align: justify;
+	text-align-last: left;
+}
+
+.footer>.sign {
+	font-size: 20px;
+	margin-right: 100px;
+	margin-left: 500px;
+}
+
+.footer>.table {
+	font-size: 20px;
+	width: 85%;
+	margin-right: 75px;
+	margin-left: 75px;	
+}
+.boldtext
+{
+font-weight: bold;
+font-style: italic;
+}
+</style>
+</head>
+<body>
+	<div class="heading">
+		<h3>U.P. Metro Rail Corporation Ltd.</h3>
+		<h2>DECLARATION REGARDING TADK</h2>
+	</div>
+	<div class="main_declaration">
+		<p>I, <label class="boldtext" th:text="${personInfo.getPersonname()}"></label> working as <label class="boldtext" th:text="${personInfo.getDesignation()}"></label> in UPMRC
+			and in receipt of help reimbursement of Rs. 8,000/- per month hereby
+			confirm and declare that:</p>
+	</div>
+	<!-- <br/> -->
+	<div class="points">
+		<ol type="1">
+			<li>I have employed <label class="boldtext" th:text="${tadkmodel.getTadkname()}"></label> as helper for
+				performance of duties as specified by the company and that she/he
+				has not been employed on any other work or duties</li>
+			<li>The above helper will continue to be employed by me for the
+				period ending on last working day for the month of <label class="boldtext" th:text="${tadkmodel.getMonth()}"></label> of 
+				<script type="text/javascript">var dttoday = new Date();var year = dttoday.getFullYear();document.write("<b><i>"+year+"</i></b>");</script>.
+			</li>
+			<li>I will be paying an amount of Rs. <label class="boldtext" th:text="${tadkmodel.getClaimamt()}"></label>/- per month to the
+				above named helper for performance of above duties during the above
+				period.</li>
+			<li>A receipt from the Helper evidencing payment of Rs. <label class="boldtext" th:text="${tadkmodel.getClaimamt()}"></label>/-
+				per month to him/her for the above period will be maintained by me
+				and can be produced for verification, when required.</li>
+			<li>Any change or disengagement of the above helper during the
+				above period will be notified by me to the company.
+			<li>It is further certified that I will actually spend the
+				amount not less than Rs. 8000/- per month on the above account during the
+				period.</li>
+		</ol>
+
+		<p>*Strike out whichever is not applicable.</p>
+	</div>
+	<div class="footer">
+		<p class="sign">Signature</p>
+		<br />
+		<table class="table">
+			<tr>
+				<td></td>				
+				<td style="width:35%;">Name: <label class="boldtext" th:text="${personInfo.getPersonname()}"></label></td>
+			</tr>
+			<tr>
+				<td style="width:40%;">Place: </td>				
+				<td style="width:25%;">Designation: <label class="boldtext" th:text="${personInfo.getDesignation()}"></label></td>
+			</tr>
+			<tr>
+				<td style="width:40%;">Date: </td>				
+				<td style="width:25%;">Employee No.: <label class="boldtext" th:text="${personInfo.getPersonnumber()}"></label> </td>
+				
+			</tr>
+		</table>
+	</div>
+
+
+
+</body>
+</html>

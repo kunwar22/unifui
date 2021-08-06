@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="searchSalaryComponent">
+    <div class="w3-container" style="margin-top:14px;">
+        <h4 class="w3-text-theme">Salary Component</h4>
+        <p style="margin-top: 0px;">Enter any information you have and click search. Leave fields blank for a list of all values.</p>
+    </div>
+
+    <div class="w3-row">
+        <div class="w3-third" style="border-right: 2px solid black">
+            <form class="w3-container">
+                <div class="divTable">
+                    <div class="divTr">
+                        <div class="d1"><h5 style="margin-bottom: 0px; margin-bottom: 0px; font-weight: bold;">Find an existing value</h5></div>
+                        <div class="d2">
+                            <span class="w3-button w3-circle w3-theme w3-large" onclick="openAddComponent()">+</span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="hrline">
+                <h6 style="margin-bottom: 18px; color: chocolate">Search Criteria</h6>
+                <p>
+                    <label>Component Name</label>
+                    <input class="w3-input w3-border" name="componentName" id="componentName" type="text">
+                </p>
+                <p>
+                    <label>Component Type</label><br>
+                    <select class="componentTypeSelect w3-select" id="componentTypeSelect" name="componentTypeSelect">
+                        <option></option>
+                    </select>
+                </p>
+                <p>
+                <div id="componentSearch" class="w3-btn w3-blue w3-round-large" type="button"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;Search</div>
+                </p>
+            </form>
+        </div>
+
+
+
+        <div class="w3-twothird w3-container">
+            <h5 style="margin-bottom: 0px; margin-bottom: 0px; font-weight: bold;">Search Results</h5>
+            <div id="resultSec" class="w3-responsive" style="display: none">
+                <table id="salaryComponentList" class="display compact w3-table" style="width: 100%;">
+                    <thead>
+                    <tr class="w3-theme-d3">
+                        <th>Component ID</th>
+                        <th>Component Name</th>
+                        <th>Component Type</th>
+                        <th>Detail</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div  id="noData" class="w3-responsive" style="display: none">
+                <div>
+                    <p>No record found...</p>
+                </div>
+            </div>
+            <div  id="jsonLoader" class="w3-responsive" style="display: none">
+                <div>
+                    <div class='w3-container' style='width: 100%; text-align: center'>
+                        <i class='fa fa-cog fa-spin' style='font-size: 30px; color: black;'></i>
+                        <p style="color: white;">Loading......</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/payroll/setup/searchSalaryComponent.js"></script>
+</div>
+</body>
+</html>

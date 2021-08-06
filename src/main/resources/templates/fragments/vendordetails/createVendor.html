@@ -1,0 +1,83 @@
+<div th:fragment="createVendor">
+	<script th:inline="javascript">
+        /*<![CDATA[*/
+        var result = /*[[${result}]]*/;
+        /*]]>*/
+    </script>
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large"
+						src="/images/hide-grader-panel.png" style="cursor: pointer;">
+					<i class="fas fa-industry" style="color: #f275;"></i> &nbsp;Vendor
+					Details
+				</h4> </div>
+		</div>
+		<div class="w3-bar w3-theme-l3">
+			<div id="saveData" class="w3-bar-item w3-right" style="margin-top: 1px;">
+				<div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"> <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search </div>
+				<div type="button" class="w3-btn w3-blue w3-round-large" id="addsave" onclick="createVendor();"> <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Submit </div>
+			</div>
+		</div>
+		<br>
+		<div class="w3-main" style="margin-top: 10px; margin-bottom: 16px;">			
+			<form method="post" id="CREATEVENDOR" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+			<input id="id" name="id" class="w3-input w3-border" type="hidden" th:value="${vendorDetails.getId()}" /> </p>
+				<div class="w3-row">
+					<div class=w3-half>
+						<div class="w3-container">
+							<p th:if="${vendorDetails.getId()!=0}">
+								<label style="color: black;">Vendor Id<span style="color: red">*</span></label>
+								<input  id="venId" name="vendorid" class="w3-input w3-border" type="text" th:value="${vendorDetails.getVendorid()}" /> </p>
+						
+							<P th:if="${vendorDetails.getId()!=0}">
+								<label style="color: black;">Vendor No<span style="color: red">*</span></label>
+								<input  id="venNo" name="vendorno" class="w3-input w3-border" type="text" th:value="${vendorDetails.getVendorno()}" /> </p>
+							<p th:if="${vendorDetails.getId()!=0}">
+								<label style="color: black;">Vendor Code<span style="color: red">*</span></label>
+								<input  id="venCode" name="vendorcode" class="w3-input w3-border" type="text" th:value="${vendorDetails.getVendorcode()}" /> </p>
+						
+						    <p th:if="${vendorDetails.getId()==0}">
+								<label style="color: black;">Vendor Id<span style="color: red">*</span></label>
+								<input  id="venId" name="vendorid" class="w3-input w3-border" type="text" th:value="${vendorDetails.getVendorid()}" /> </p>
+						
+							<P th:if="${vendorDetails.getId()==0}">
+								<label style="color: black;">Vendor No<span style="color: red">*</span></label>
+								<input  id="venNo" name="vendorno" class="w3-input w3-border" type="text" th:value="${vendorDetails.getVendorno()}" /> </p>
+							<p th:if="${vendorDetails.getId()==0}">
+								<label style="color: black;">Vendor Code<span style="color: red">*</span></label>
+								<input  id="venCode" name="vendorcode" class="w3-input w3-border" type="text" th:value="${vendorDetails.getVendorcode()}" /> </p>
+						
+						
+						</div>
+					</div>
+					<div class=w3-half>
+						<div class="w3-container">
+							<p>
+								<label style="color: black;">Vendor Name<span style="color: red">*</span></label>
+								<input id="venName" name="vendorname" class="w3-input w3-border" type="text" th:value="${vendorDetails.getVendorname()}" /> </p>
+							<p>
+								<label style="color: black;">Vendor Address<span style="color: red">*</span></label>
+								<input id="venAdd" name="vendoraddress" class="w3-input w3-border" type="text" th:value="${vendorDetails.getVendoraddress()}" /> </p>
+							<p th:if="${vendorDetails.getId()==0}">
+								<label style="color: black;">Status<span style="color: red">*</span></label>
+								<select id="venStatus" class="w3-select w3-border" name="status" required>
+									<option th:each="st : ${status}" th:selected="${st == 'Active' }" th:value="${st}" th:text="${st}">
+								</select>
+							</p>
+							<p th:if="${vendorDetails.getId()!=0}">
+								<label style="color: black;">Status<span style="color: red">*</span></label>
+								<select id="venStatus" class="w3-select w3-border" name="status">
+									<option th:value="${vendorDetails.getStatus()}" th:text="${vendorDetails.getStatus()}" selected hidden></option>
+									<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+								</select>
+							</p>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script src="/js/vendordetails/vendordetails.js"></script>
+</div>

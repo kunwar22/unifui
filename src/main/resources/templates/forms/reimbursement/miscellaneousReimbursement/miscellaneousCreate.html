@@ -1,0 +1,525 @@
+<div th:fragment="createMiscellaneous">
+<script th:inline="javascript">
+   /*<![CDATA[*/
+   var resultfinal = /*[[${result}]]*/;
+   
+   /*]]>*/
+</script>
+<form method="post" id="MIS_SAVE" enctype="multipart/form-data"
+   onsubmit="return false;">
+   <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+   <input	id="attachment" name="attachment" type="hidden" />		
+   <input id="misstatusid" value="" type="hidden"  name="statusid"/> 
+   <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+      <div style="position: relative;">
+         <div class="w3-container w3-margin-bottom">
+            <h4 style="font-weight: 400;">
+               <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"> <i class="fas fa-hand-holding-usd" style="color: #fd451a;"></i>&nbsp;Miscellaneous Reimbursement
+            </h4>
+         </div>
+      </div>
+      <div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+      <div class="w3-bar w3-theme-l3">
+         <h5 class="w3-bar-item" >Claim Details</h5>
+         <!-- <div onclick="loadCreateTADKClaim();" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" style="margin-top:8px;"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Raise New Request</div> -->
+         <div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${MiscReimb.getClaimid()==0}">
+            <div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+            <div type="button" class="w3-btn w3-blue w3-round-large" id="btnSave" onclick="loadSaveMisc('save','MIS_SAVE',this);"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Claim</div>
+             <div type="button" class="w3-btn w3-green w3-round-large" id="btnSubmit" onclick="loadupdateMIS('submit','MIS_SAVE',this);"  value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Save & Submit</div>
+         </div>
+         <div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${MiscReimb.getClaimid()!=0} and ${mode=='edit'}">
+            <div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+            <div type="button" class="w3-btn w3-blue w3-round-large" id="btnSave" onclick="loadupdateMIS('save','MIS_SAVE',this);"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update</div>
+            <div type="button" class="w3-btn w3-green w3-round-large" id="btnSubmit" onclick="loadupdateMIS('submit','MIS_SAVE',this);"  value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit</div>
+         </div>
+         <div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${MiscReimb.getClaimid()!=0} and ${mode == 'view'}">
+            <div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+         	<div type="button" class="w3-btn w3-grey w3-round-large" th:onclick="|loadclaimform('${MiscReimb.getClaimid()}')|"> <i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Declaration</div>
+         </div>
+         <script src="/js/reimbursement/miscellaneous/miscCreate.js"></script>
+      </div>
+      <!-- Telephone Reimbursement snigdhaa vaish start-->
+      <div class="w3-container w3-row">
+         <br>
+         <div class="w3-half w3-container">
+            <!-- <p>
+               <label>Entitlement: &nbsp;&nbsp;</label><label style="color: blue;"
+                  th:text="${empent}"></label>&nbsp;<label>INR Per
+               Month</label>
+            </p> -->
+         </div>
+         <!-- <br> <br>
+         <h5 class="w3-text-theme"
+            style="font-weight: bold; margin-top: 2px; bottom: 2px;">
+            Claim Details
+         </h5>
+         <hr class="hrline" style="margin: 0.5%"> -->
+         <div class="w3-row" style="display:none">
+            <div class="w3-quarter w3-container">
+               <p>
+                  <lable>Miscellaneous Id</lable>
+                  <input id="txtctgrmbrsid" type="text" name="claimid"
+                     th:value="${MiscReimb.getClaimid()}" />
+               </p>
+            </div>
+            <div class="w3-quarter w3-container">
+               <p>
+                  <lable>Person Id</lable>
+                  <input id="txtpersonid" type="text" name="personid"
+                     th:value="${personInfo.getPersonid()}" />
+               </p>
+            </div>
+            <div class="w3-quarter w3-container">
+               <p>
+                  <lable>Person Number</lable>
+                  <input id="txtpersonNumber" type="text" name="personnumber"
+                     th:value="${personInfo.getPersonnumber()}" />
+               </p>
+            </div>
+            <div class="w3-quarter w3-container">
+               <p>
+                  <lable>Reimbursemnet ID</lable>
+                  <input id="txtRembId" type="text" name="reimburseid" value="13" />
+               </p>
+            </div>
+            <div class="w3-quarter w3-container">
+               <p>
+                  <lable>Reimbursemnet Name</lable>
+                  <input id="txtRembId" type="text" name="reimbursename" value="Miscelleneous" />
+               </p>
+            </div>
+         </div>
+      </div>
+      <!----------------------------------------------- Page Display in View Mode start Here----------------->
+      <div th:if="${MiscReimb.getClaimid()!=0} and ${mode=='view'}">
+         <div class=w3-half>
+            <div class="w3-container">
+               <p >
+                  <label> Bill Date </label><span style="color:red"> *</span> <input style="height: 38px"
+                     max="9999-12-31" class="w3-input w3-border" id="CR_MIS_BILL_DATE"
+                     type="date" data-date="" data-date-format='YYYY MM DD'
+                     tabindex="1" th:name="billdate"
+                     th:value="${MiscReimb.getBilldate()}" disabled/> 
+               </p>
+               <p >
+                  <label>Work Location</label> 
+                  <select id="CR_MIS_WRK_LCN"
+                     class="w3-select w3-border" th:name="worklocationid" disabled>
+                     <option value="0" hidden selected></option>
+                     <option th:each="loc : ${location}"
+                        th:selected="${loc.getLocationid() eq MiscReimb.getWorklocationid()}"
+                        th:value="${loc.getLocationid()}" th:text="${loc.getName()}"></option>
+                  </select>
+               </p>
+               <p >
+                  <label>Paid To</label> <input class="w3-input w3-border"
+                     id="CR_MIS_PAID_TO" type="text" th:name="paidto"
+                     th:value="${MiscReimb.getPaidto()}" disabled> 
+               </p>
+               <p >
+                  <label>Vehicle Used</label> 
+                  <select
+                     id="CR_MIS_VHCL_USED" class="w3-select w3-border" tabindex="4"
+                     name="vehicleused"  disabled>
+                     <option id="1" disabled selected></option>
+                     <option th:each="vec : ${Vehicalused}"
+                        th:selected="${vec.getDescription() eq MiscReimb.getVehicleused()}"
+                        th:value="${vec.getDescription()}" th:text="${vec.getDescription()}"></option>
+                  </select>
+               </p>
+            </div>
+         </div>
+         <div class=w3-half>
+            <div class="w3-container">
+               <p>
+                  <label>Bill No</label> <input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_BILNO" type="text"
+                     th:name="billno" th:value="${MiscReimb.getBillno()}" disabled /> 
+               </p>
+               <p >
+                  <label>OM/Project</label> 
+                  <select id="CR_MIS_OM_PRJ"
+                     class="w3-select w3-border" th:name="omprojectid" disabled>
+                     <option value="" disabled selected></option>
+                     <option th:each="om : ${om_project}"
+                        th:selected="${om.getId() eq MiscReimb.getOmprojectid()}"
+                        th:value="${om.getId()}" th:text="${om.getDescription()}"></option>
+                  </select>
+               </p>
+               <p >
+                  <label>Claim Amount</label> <input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_CLAIM" type="text"
+                     th:name="claimamount" th:value="${MiscReimb.getClaimamount()}" disabled /> 
+               </p>
+               <p >
+                  <label>Expense Description</label> <input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_EXPENCE_DESCR" type="text"
+                     th:name="expensedescription" th:value="${MiscReimb.getExpensedescription()}" disabled/>
+               </p>
+            </div>
+         </div>
+         <div class="w3-row">
+            <div class="w3-half w3-container ">
+               <p>
+                  <label>Account Description</label>
+                  <select id="CR_MIS_ACOUNT_DESCR"
+                     class="w3-select w3-border" th:name="expenseaccountcode" disabled>
+                     <option id="0" disabled selected></option>
+                     <option th:each="exp : ${expencecode}"
+                        th:value="${exp.getAccountcode()}" th:text="${exp.getDescription()}"
+                        th:selected="${exp.getAccountcode().toString() eq MiscReimb.getExpenseaccountcode()}"></option>
+                  </select>
+               </p>
+            </div>
+             <div class="w3-third w3-container" style="display:none">
+               <p>
+                  <label>Account Description</label>
+                  <input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_EXPENCE" type="text"
+                     th:name="accountdescription" th:value="${MiscReimb.getAccountdescription()}" disabled/> 
+               </p>
+            </div> 
+            <div class="w3-half w3-container">
+               <p >
+                  <span id="DOWNLOAD_LINKsp"  th:text="${MiscReimb.getAttachment()}" style="display:none"></span>
+                  <a id="DOWNLOAD_LINK"  th:href="${MiscReimb.getAttachment()}" target="_blank"
+                     th:if="${(MiscReimb.getAttachment()!='') and (MiscReimb.getAttachment()!=null)}">Download Attachment</a>
+                  <input type="hidden" name="attachhidden" th:value="${MiscReimb.getAttachment()}"/>
+                  <label>Attachment</label> <input style="height: 38px"
+                     class="w3-input w3-border" value="yes" id="CR_MIS_ATTACH"
+                     type="file" name="file" disabled />
+               </p>
+            </div>
+         </div>
+         <h5 > Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${MiscReimb.getClaimid()}" aria-hidden="true" th:onclick='getapprovalhistory(13,this.id);'></i></h5>
+         <section class="container" >
+            <!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+            <div class="container__sources">
+               <div style="box-shadow: none;background-color: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+                  <div class="sources--cms" style="width: 175px">
+                     <p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+                     <p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+                     <p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+                     <div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+                        <i class="fa fa-check tick"></i>
+                     </div>
+                     <div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+                        <i class="fa fa-clock-o pending"></i>
+                     </div>
+                     <div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+                        <i class="fa fa-close cancel"></i>
+                     </div>
+                  </div>
+                  <svg class="svghor" viewBox="0 10 100 100">
+                     <line  x1="5" x2="100" y1="80" y2="80"></line>
+                  </svg>
+                  <svg class="svgver" viewBox="0 20 100 100 ">
+                     <line  x1="40" x2="40" y1="0" y2="100"></line>
+                  </svg>
+               </div>
+               <div style="background: none;margin-top: 40px;margin-left: 26px;" ><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+            </div>
+            <!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+         </section>
+      </div>
+      <!-- Page Display in View Mode End Here  -->
+      <!-- Page Display in Create Mode start Here -->
+      <div th:if="${MiscReimb.getClaimid()==0}">
+         <div class=w3-half>
+            <div class="w3-container">
+               <p >
+                  <label> Bill Date </label> <span style="color:red"> *</span> <input style="height: 38px"
+                     max="9999-12-31" class="w3-input w3-border" id="CR_MIS_BILL_DATE"
+                     type="date" data-date="" data-date-format='YYYY MM DD'
+                     tabindex="1" th:name="billdate" onclick="disablefuturedate();"
+                     th:value="${MiscReimb.getBilldate()}" /> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("billdate")!=null}'
+                     th:text='${bindingResult.getFieldError("billdate").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Work Location</label> <span style="color:red"> *</span>
+                  <select id="CR_MIS_WRK_LCN" onchange="getLocation(this.id,'worklocation');"
+                     class="w3-select w3-border" th:name="worklocationid">
+                     <option value="0"  selected></option>
+                     <option th:each="loc : ${location}"
+                        th:selected="${loc.getLocationid() eq MiscReimb.getWorklocationid()}"
+                        th:value="${loc.getLocationid()}" th:text="${loc.getName()}"></option>
+                  </select>
+				<input type="hidden" id="worklocation" class="worklocation" name="worklocation" th:value="${MiscReimb.getWorklocation()}"/>
+                  <span style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("worklocationid")!=null}'
+                     th:text='${bindingResult.getFieldError("worklocationid").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Paid To</label> <span style="color:red"> *</span><input class="w3-input w3-border"
+                     id="CR_MIS_PAID_TO" type="text" th:name="paidto"
+                     th:value="${MiscReimb.getPaidto()}"> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("paidto")!=null}'
+                     th:text='${bindingResult.getFieldError("paidto").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Vehicle Used</label> <span style="color:red"> *</span> 
+                  <select
+                     id="CR_MIS_VHCL_USED" class="w3-select w3-border" tabindex="4"
+                     name="vehicleused"  >
+                     <option id="1" disabled selected></option>
+                     <option th:each="vec : ${Vehicalused}"
+                        th:selected="${vec.getDescription() eq MiscReimb.getVehicleused()}"
+                        th:value="${vec.getDescription()}" th:text="${vec.getDescription()}"></option>
+                  </select>
+                  <span style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("vehicleused")!=null}'
+                     th:text='${bindingResult.getFieldError("vehicleused").getDefaultMessage()}'></span>
+               </p>
+            </div>
+         </div>
+         <div class=w3-half>
+            <div class="w3-container">
+               <p>
+                  <label>Bill No</label> <span style="color:red"> *</span><input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_BILNO" type="text"
+                     th:name="billno" th:value="${MiscReimb.getBillno()}" /> <span
+                     style="color: #ff0000" 
+                     th:if='${bindingResult != null && bindingResult.getFieldError("billno")!=null}'
+                     th:text='${bindingResult.getFieldError("billno").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>OM/Project</label> <span style="color:red"> *</span>
+                  <select id="CR_MIS_OM_PRJ"
+                     class="w3-select w3-border" th:name="omprojectid">
+                     <option value="0" disabled selected></option>
+                     <option th:each="om : ${om_project}" th:value="${om.getId()}"
+                        th:selected="${om.getId() eq MiscReimb.getOmprojectid()}"
+                        th:text="${om.getDescription()}"></option>
+                  </select>
+                  <span style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("omprojectid")!=null}'
+                     th:text='${bindingResult.getFieldError("omprojectid").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Claim Amount</label> <span style="color:red"> *</span><input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_CLAIM" type="text" th:value="${MiscReimb.getClaimamount()}"
+                     th:name="claimamount" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"	 /> <span
+                     style="color: #ff0000" 
+                     th:if='${bindingResult != null && bindingResult.getFieldError("claimamount")!=null}'
+                     th:text='${bindingResult.getFieldError("claimamount").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Expense Description</label> <span style="color:red"> *</span><input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_EXPENCE_DESCR" type="text"
+                     th:name="expensedescription" th:value="${MiscReimb.getExpensedescription()}" /> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("expensedescription")!=null}'
+                     th:text='${bindingResult.getFieldError("expensedescription").getDefaultMessage()}'></span>
+               </p>
+            </div>
+         </div>
+         <div class="w3-row">
+            <div class="w3-half w3-container ">
+               <p>
+                 <label>Account Description</label> <span style="color:red"> *</span>
+                  <select id="CR_MIS_ACOUNT_DESCR"
+                     class="w3-select w3-border" th:name="expenseaccountcode">
+                     <option id="0" disabled selected></option>
+                     <option th:each="exp : ${expencecode}"
+                        th:value="${exp.getAccountcode()}" th:text="${exp.getDescription()}"
+                        th:selected="${exp.getAccountcode().toString() eq MiscReimb.getExpenseaccountcode()}"
+                        th:msg="${exp.getDescription()}"></option>
+                  </select>
+                  <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("expenseaccountcode")!=null}'
+                     th:text='${bindingResult.getFieldError("expenseaccountcode").getDefaultMessage()}'></span>	
+               </p>
+            </div>
+            <div class="w3-third w3-container" style="display:none">
+               <p>
+                  <label>Account Description</label>
+                  <input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_EXPENCE" type="text"
+                     th:name="accountdescription" 
+                     /> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("accountdescription")!=null}'
+                     th:text='${bindingResult.getFieldError("accountdescription").getDefaultMessage()}'></span>
+               </p>
+            </div>
+            <div class="w3-half w3-container">
+               <p >
+                  <label>Attachment</label> <input style="height: 38px"
+                     class="w3-input w3-border" value="yes" id="CR_MIS_ATTACH"
+                     type="file" name="file"  />
+               </p>
+            </div>
+         </div>
+      </div>
+      <!-- Page Display in Create Mode End Here -->
+      <!-- Page Display in Edit Mode start Here -->
+      <div th:if="${MiscReimb.getClaimid()!=0} and ${mode=='edit'}">
+         <div class=w3-half>
+            <div class="w3-container">
+               <p >
+                  <label> Bill Date </label> <span style="color:red"> *</span><input style="height: 38px"
+                     max="9999-12-31" class="w3-input w3-border" id="CR_MIS_BILL_DATE"
+                     type="date" data-date="" data-date-format='YYYY MM DD'
+                     tabindex="1" th:name="billdate"
+                     th:value="${MiscReimb.getBilldate()}" /> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("billdate")!=null}'
+                     th:text='${bindingResult.getFieldError("billdate").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Work Location</label> <span style="color:red"> *</span>
+                  <select id="CR_MIS_WRK_LCN" onchange="getLocation(this.id,'worklocation');"
+                     class="w3-select w3-border" th:name="worklocationid">
+                     <option value="0"  selected></option>
+                     <option th:each="loc : ${location}"
+                        th:selected="${loc.getLocationid() eq MiscReimb.getWorklocationid()}"
+                        th:value="${loc.getLocationid()}" th:text="${loc.getName()}"></option>
+                  </select>
+                  <span style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("worklocationid")!=null}'
+                     th:text='${bindingResult.getFieldError("worklocationid").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Paid To</label> <span style="color:red"> *</span><input class="w3-input w3-border"
+                     id="CR_MIS_PAID_TO" type="text" th:name="paidto"
+                     th:value="${MiscReimb.getPaidto()}"> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("paidto")!=null}'
+                     th:text='${bindingResult.getFieldError("paidto").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Vehicle Used</label> <span style="color:red"> *</span>
+                  <select
+                     id="CR_MIS_VHCL_USED" class="w3-select w3-border" tabindex="4"
+                     name="vehicleused"  >
+                     <option id="1" disabled selected></option>
+                     <option th:each="vec : ${Vehicalused}"
+                        th:selected="${vec.getDescription() eq MiscReimb.getVehicleused()}"
+                        th:value="${vec.getDescription()}" th:text="${vec.getDescription()}"></option>
+                  </select>
+                  <span style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("vehicleused")!=null}'
+                     th:text='${bindingResult.getFieldError("vehicleused").getDefaultMessage()}'></span>
+               </p>
+            </div>
+         </div>
+         <div class=w3-half>
+            <div class="w3-container">
+               <p>
+                  <label>Bill No</label> <span style="color:red"> *</span><input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_BILNO" type="text"
+                     th:name="billno" th:value="${MiscReimb.getBillno()}" /> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("billno")!=null}'
+                     th:text='${bindingResult.getFieldError("billno").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>OM/Project</label> <span style="color:red"> *</span>
+                  <select id="CR_MIS_OM_PRJ"
+                     class="w3-select w3-border" th:name="omprojectid">
+                     <option value="" disabled selected></option>
+                     <option th:each="om : ${om_project}"
+                        th:selected="${om.getId() eq MiscReimb.getOmprojectid()}"
+                        th:value="${om.getId()}" th:text="${om.getDescription()}"></option>
+                  </select>
+                  <span style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("omprojectid")!=null}'
+                     th:text='${bindingResult.getFieldError("omprojectid").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Claim Amount</label> <span style="color:red"> *</span><input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_CLAIM" type="text"
+                     th:name="claimamount" th:value="${MiscReimb.getClaimamount()}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" /> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("claimamount")!=null}'
+                     th:text='${bindingResult.getFieldError("claimamount").getDefaultMessage()}'></span>
+               </p>
+               <p >
+                  <label>Expense Description</label> <span style="color:red"> *</span><input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_EXPENCE_DESCR" type="text"
+                     th:name="expensedescription" th:value="${MiscReimb.getExpensedescription()}" /> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("expensedescription")!=null}'
+                     th:text='${bindingResult.getFieldError("expensedescription").getDefaultMessage()}'></span>
+               </p>
+            </div>
+         </div>
+         <div class="w3-row">
+            <div class="w3-half w3-container ">
+               <p>
+                 <label>Account Description</label><span style="color:red"> *</span>
+                  <select id="CR_MIS_ACOUNT_DESCR"
+                     class="w3-select w3-border" th:name="expenseaccountcode">
+                     <option id="0"  selected></option>
+                     <option th:each="exp : ${expencecode}"
+                        th:value="${exp.getAccountcode()}" th:text="${exp.getDescription()}" th:msg="${exp.getDescription()}"
+                        th:selected="${exp.getAccountcode().toString() eq MiscReimb.getExpenseaccountcode()}"></option>
+                  </select>
+                  <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("expenseaccountcode")!=null}'
+                     th:text='${bindingResult.getFieldError("expenseaccountcode").getDefaultMessage()}'></span>	
+               </p>
+            </div>
+            <div class="w3-third w3-container" style="display:none">
+               <p>
+                  <label>Account Description</label>
+                  <input style="height: 38px"
+                     class="w3-input w3-border" id="CR_MIS_EXPENCE" type="text"
+                     th:name="accountdescription" th:value="${MiscReimb.getAccountdescription()}" /> <span
+                     style="color: #ff0000"
+                     th:if='${bindingResult != null && bindingResult.getFieldError("accountdescription")!=null}'
+                     th:text='${bindingResult.getFieldError("accountdescription").getDefaultMessage()}'></span>
+               </p>
+            </div>            
+            <div class="w3-half w3-container">
+               <span id="DOWNLOAD_LINKsp"  th:text="${MiscReimb.getAttachment()}" style="display:none"></span>
+               <div>
+	               <a id="DOWNLOAD_LINK"  th:href="${MiscReimb.getAttachment()}" target="_blank"
+                      th:if="${(MiscReimb.getAttachment()!='') and (MiscReimb.getAttachment()!=null)}">Download Attachment</a>
+	           </div>               
+               <input type="hidden" name="attachhidden" th:value="${MiscReimb.getAttachment()}"/>
+               <p>
+                  <label>Attachment</label> <input style="height: 38px"
+                     class="w3-input w3-border" value="yes" id="CR_MIS_ATTACH"
+                     type="file" name="file"  />
+               </p>
+            </div>
+         </div>
+      </div>
+      <!----------------------------------------------- Page Display in Edit Mode End Here----------------->
+      <!-- 
+         <div th:if="${MiscReimb.getClaimid()!=0} and ${mode=='edit'}">
+         <div  class="w3-container" style="margin-bottom:15px;margin-top:20px;">
+         <button class="w3-button w3-theme w3-right" id="addsave"
+         		onclick="loadupdateMIS('submit','MIS_SAVE');" >Submit</button>
+         	<button class="w3-button w3-theme w3-right" id="addsave"
+         		onclick="loadupdateMIS('save','MIS_SAVE');" style="margin-right:15px;">Update</button>
+         
+         </div>
+         </div>
+         <br> 
+         
+         <div th:if="${MiscReimb.getClaimid()==0}">
+         <div  class="w3-container" style="margin-bottom:15px;margin-top:20px;">
+         	<button class="w3-button w3-theme w3-right" id="addsave"
+         		onclick="loadSaveMisc('save','MIS_SAVE');">Save</button>
+         
+         </div>
+         </div>
+         <br>
+         
+         -->
+      <!-- Miscellaneous Reimbursement by Rajat Rawat end -->
+      
+<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+      <script src="/js/reimbursement/miscellaneous/miscCreate.js"></script>
+   </div>
+</form>
+</div>

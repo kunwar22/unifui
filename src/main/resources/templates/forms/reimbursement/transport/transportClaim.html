@@ -1,0 +1,1410 @@
+<div th:fragment="transportClaim">
+	<script th:inline="javascript">
+/*<![CDATA[*/
+    var result = /*[[${result}]]*/;
+/*]]>*/
+</script>
+
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"> <i class="fas fa-car-side"
+						style="color: #fd951a;"></i>&nbsp;Transport Reimbursement
+				</h4>
+			</div>
+		</div>
+
+		<div id="fragmaent_container"
+			th:include="forms/reimbursement/header :: header"></div>
+
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item">Claim Details</h5>
+
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+				th:if="${transportmodel.getTravelid()==0}">
+				<div type="button" class="w3-btn w3-red w3-round-large"
+					onclick="backBtnFunc();" id="btnSearch">
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+					to Search
+				</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large"
+					id="btnSave" onclick="ajaxPost('save')">
+					<i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save
+					Claim
+				</div>
+				<!-- <div type="button" class="w3-btn w3-green w3-round-large"
+					id="btnSubmit" onclick="updateDataFunc('submit')"
+					value="Submit Claim for Approval">
+					<i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit
+				</div> -->
+			</div>
+
+
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+				th:if="${transportmodel.getTravelid()!=0} and ${mode=='edit'}">
+				<div type="button" class="w3-btn w3-red w3-round-large"
+					onclick="backBtnFunc();" id="btnSearch">
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+					to Search
+				</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large"
+					id="btnSave" onclick="updateDataFunc('save')">
+					<i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update
+				</div>
+				<div type="button" class="w3-btn w3-green w3-round-large"
+					id="btnSubmit" onclick="updateDataFunc('submit')"
+					value="Submit Claim for Approval">
+					<i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit
+				</div>
+			</div>
+
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+				th:if="${transportmodel.getTravelid()!=0} and ${mode=='view'}">
+				<div type="button" class="w3-btn w3-red w3-round-large"
+					onclick="backBtnFunc();" id="btnSearch">
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+					to Search
+				</div>
+				<div type="button" class="w3-btn w3-grey w3-round-large"
+					th:onclick="popupDeclearation([[${transportmodel.getTravelid()}]] );">
+					<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Declaration
+				</div>
+			</div>
+		</div>
+
+		<!--Transport Reimbursement Form Content Goes here By @Suraj Start-->
+
+
+
+		<!-- 		<div class="w3-container" style="margin-top: 10px;">
+			<p class="w3-large">
+				<strong>Employee Details:</strong>
+			</p>
+
+			<div class="w3-row">
+				<div class="w3-col m4 ">
+					<div class=" w3-center" style="height: 200px;">
+						<img th:src="@{/images/avatar.png}" alt="Person"
+							style="height: 150px; width: 150px">
+					</div>
+
+				</div>
+				<div class="w3-col m4">
+
+
+					<p>
+						<label><strong>Employee Id:</strong></label>&nbsp;<label
+							th:text="${hdata.getPersonid()}">SRLKEM0296</label>
+					</p>
+
+					<p>
+						<label><strong>Employee Name:</strong></label>&nbsp;<label
+							th:text="${hdata.getPersonname()}">Suraj Yadav</label>
+					</p>
+
+
+					<p>
+						<label><strong>Date of Birth:</strong></label>&nbsp;<label
+							th:text="${hdata.getDateofbirth()}">16-Nov-1999</label>
+					</p>
+
+					<p>
+						<label><strong>Nature of Employment:</strong></label>&nbsp;<label
+							th:text="${hdata.getEmployeetype()}">Software Development
+							Trainee</label>
+					</p>
+
+					<p>
+						<label><strong>Designation:</strong></label>&nbsp;<label
+							th:text="${hdata.getDesignation()}">Web Developer</label>
+					</p>
+				</div>
+				<div class="w3-col m4 ">
+
+
+					<p>
+						<label><strong>Enterprises Hire Date:</strong></label>&nbsp;<label
+							th:text="${hdata.getJoiningdate()}">10-Sep-2020</label>
+					</p>
+
+					<p>
+						<label><strong>Vehicle User:</strong></label>&nbsp;<label
+							th:text="${hdata.getVehicleused()}">AWE12</label>
+					</p>
+
+					<p>
+						<label><strong>Phone Number:</strong></label>&nbsp;<label
+							th:text="${hdata.getPhonenumber()}">+91-7007667165</label>
+					</p>
+
+					<p>
+						<label><strong>Email Id:</strong></label>&nbsp;<label
+							th:text="${hdata.getEmailaid()}">suraj.srdt@gmail.com</label>
+					</p>
+
+				</div>
+			</div>
+			<hr class="hrline">
+
+		</div>
+
+ -->
+
+
+
+
+		<!--Form Start-->
+
+		<div class="w3-container w3-border w3-margin-top">
+			<p>
+				<strong><label>Two Wheeler Entitlement:&nbsp;</label></strong> <label
+					class="w3-text-blue" th:text="${empent}"></label>&nbsp;<label>INR
+					Per Month</label>
+			</p>
+			<p>
+				<strong><label>Four Wheeler Entitlement:&nbsp;</label></strong> <label
+					class="w3-text-blue" th:text="${empentfour}"></label>&nbsp;<label>INR
+					Per Month</label>
+			</p>
+			
+			<div th:if="${transportmodel.getTravelid()==0}">
+				<form method="post" id="TRANSPORT_EMBRSMNT_FORM"
+					enctype="multipart/form-data" onsubmit="return false;">
+					<input id="statusid" value="" type="hidden" name="statusid" /> <input
+						id="Rem_Id" name="reimburseid" placeholder="Reimburse Id"
+						th:value="2" type="hidden" /> <input name="personid"
+						placeholder="Person Id" th:value="${transportmodel.getPersonid()}"
+						type="hidden" /> <input name="personnumber" id="personnumber"
+						placeholder="Person number"
+						th:value="${transportmodel.getPersonnumber()}" type="hidden" />
+					<div class="w3-row">
+						<div class="w3-third">
+							<div class="w3-container">
+
+
+
+								<p>
+									<label>Work Location:</label> <span style="color: red">
+										*</span> <select name="worklocation"
+										class="w3-select w3-border">
+										<option th:value="${transportmodel.getWorklocation()}" th:text="${transportmodel.getWorklocation()}" selected hidden></option>
+										<option value="Lucknow">Lucknow</option>
+										<option value="Kanpur">Kanpur</option>
+									</select><span style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("worklocation")!=null}'
+										th:text='${bindingResult.getFieldError("worklocation").getDefaultMessage()}'></span>
+
+
+
+								</p>
+
+							</div>
+						</div>
+
+
+
+						<div class="w3-third">
+							<div class="w3-container">
+
+								<p>
+									<label>OM/Project:</label> <span style="color: red"> *</span> <select
+										name="omproject" 
+										class="w3-select w3-border">
+										<option th:value="${transportmodel.getOmproject()}" th:text="${transportmodel.getOmproject()}" selected hidden></option>
+										<option value="Operational Management">Operational
+											Management</option>
+										<option value="Project">Project</option>
+									</select> <span style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("omproject")!=null}'
+										th:text='${bindingResult.getFieldError("omproject").getDefaultMessage()}'></span>
+								</p>
+							</div>
+						</div>
+						<div class="w3-third">
+							<div class="w3-container">
+
+								<p>
+									<label>Amount:</label> <span style="color: red"> *</span> <input
+										id="totalAmount" name="claimedamt"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+										th:value="${transportmodel.getClaimedamt()}"
+										class="w3-input w3-border" type="text"> <span
+										style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("claimedamt")!=null}'
+										th:text='${bindingResult.getFieldError("claimedamt").getDefaultMessage()}'></span>
+
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!---____________________________________________________________________________________________________________________________________________ -->
+
+					<div class="w3-container">
+						<div class="pull-left">
+							<h4>
+								<strong>Annexure</strong>
+							</h4>
+						</div>
+					</div>
+					<div class="w3-container">
+						<hr class="hrline">
+					</div>
+					<div style="height: 25px;"></div>
+
+					<!-- _______________________________________________________________________________________________________________ -->
+					<div id="addDestinationVisit" class="w3-container w3-border">
+						<div class="w3-container">
+							<div class="pull-left">
+								<h5>
+									<strong>Destination Visited during month:</strong>
+								</h5>
+							</div>
+						</div>
+						<div id="mainRow">
+							<div id="childrow"
+								th:each="row,stats: ${transportmodel.getHistories()}"
+								class="w3-row w3-container">
+								<div class="w3-col m10">
+									<div class="w3-quarter">
+										<div class="w3-container">
+											<p>
+												<label>S.No:</label> <span style="color: red"> *</span> <input
+													id="Sno" name="Sno" th:value="${stats.index+1}"
+													class="w3-input w3-border" type="text">
+											</p>
+										</div>
+									</div>
+									<div class="w3-quarter">
+										<div class="w3-container">
+											<p>
+												<label>From Date:</label> <span style="color: red"> *</span>
+												<input id="fromdate"
+													th:value="'${transportmodel.getHistories().get(stats.index).getFromdate()}'"
+													th:name="'histories['+${stats.index}+'].fromdate'"
+													class="w3-input w3-border fromdate" type="date"
+													data-date-format="YYYY MM DD"><span
+													style="color: red"
+													th:if='${bindingResult != null && bindingResult.getFieldError("fromdate")!=null}'
+													th:text='${bindingResult.getFieldError("fromdate").getDefaultMessage()}'></span>
+											</p>
+										</div>
+									</div>
+									<div class="w3-quarter">
+										<div class="w3-container">
+											<p>
+												<label>To Date:</label> <span style="color: red"> *</span> <input
+													id="todate"
+													th:value="${transportmodel.getHistories().get(stats.index).getTodate()}"
+													th:name="'histories['+${stats.index}+'].todate'" class="w3-input w3-border"
+													type="date" data-date-format="YYYY MM DD"><span
+													style="color: red"
+													th:if='${bindingResult != null && bindingResult.getFieldError("todate")!=null}'
+													th:text='${bindingResult.getFieldError("todate").getDefaultMessage()}'></span>
+											</p>
+										</div>
+									</div>
+									<div class="w3-quarter">
+										<div class="w3-container">
+											<p>
+												<label>Place:</label> <span style="color: red">*</span> <input
+													id="placeVisit" th:name="'histories['+${stats.index}+'].visitedplace'"
+													th:value="${transportmodel.getHistories().get(stats.index).getVisitedplace()}"
+													class="w3-input w3-border" type="text"><span
+													style="color: red"
+													th:if='${bindingResult != null && bindingResult.getFieldError("visitedplace")!=null}'
+													th:text='${bindingResult.getFieldError("visitedplace").getDefaultMessage()}'></span>
+											</p>
+										</div>
+									</div>
+								</div>
+
+								<div class="w3-col m2 w3-center" style="margin-top: 22px;">
+									<button id="add" onClick="addNewDestinationVisit();"
+										class="w3-button w3-theme w3-center" type="button">
+										<i class="fas fa-plus"></i>
+									</button>
+
+									<button th:if="${stats.index != 0}" id="delete" th:index="${stats.index}" th:name="'del'+${stats.index}"
+											class="w3-button w3-theme w3-center" type="button">
+										<i class="fa fa-trash"></i>
+									</button>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- ____________________________________________________________________________________________________________________________________________-->
+					<div style="height: 25px;"></div>
+
+					<div class="w3-container w3-border">
+
+						<div class="w3-container">
+							<div class="pull-left">
+								<h5>
+									<strong>Details of Fuel Expenses & Other Expenditure:</strong>
+								</h5>
+							</div>
+						</div>
+						<div class="w3-row">
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Total Fuel Expenses:</label> 
+											*</span> <input id="totalFuelExpence" name="totalfuelexpense"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											th:value="${transportmodel.getTotalfuelexpense()}"
+											class="w3-input w3-border" type="text"><span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("totalfuelexpense")!=null}'
+											th:text='${bindingResult.getFieldError("totalfuelexpense").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Salary of Chauffeur:</label>
+											*</span> <input id="salaryofchauffeur" name="salarychauffuer"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											th:value="${transportmodel.getSalarychauffuer()}"
+											class="w3-input w3-border" type="text"><span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("salarychauffuer")!=null}'
+											th:text='${bindingResult.getFieldError("salarychauffuer").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Insurance Of Car:</label>
+										<input id="carinsurance" name="carinsurance"
+											th:value="${transportmodel.getCarinsurance()}"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											class="w3-input w3-border" type="text"><span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("carinsurance")!=null}'
+											th:text='${bindingResult.getFieldError("carinsurance").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- <h1>(proportionate amount on monthly
+								basis)</h1> -->
+						<div class="w3-row">
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Repair and Maintenance:</label>
+										<input id="repairandmaintain"
+											name="repairmaintaince"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											th:value="${transportmodel.getRepairmaintaince()}"
+											class="w3-input w3-border" type="text"><span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("repairmaintaince")!=null}'
+											th:text='${bindingResult.getFieldError("repairmaintaince").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Road Taxes/Octroi/Toll Charges:</label>
+										<input id="tolltax"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											name="roadtaxtotal" th:value="${transportmodel.getRoadtaxtotal()}"
+											class="w3-input w3-border" type="text"><span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("roadtaxtotal")!=null}'
+											th:text='${bindingResult.getFieldError("roadtaxtotal").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Total Other Expenditure:</label>
+										<input id="otherexpences"
+											name="otherexpense" th:value="${transportmodel.getOtherexpense()}"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											class="w3-input w3-border" type="text"><span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("otherexpences")!=null}'
+											th:text='${bindingResult.getFieldError("otherexpences").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="height: 25px;"></div>
+					<!-- -________________________________________________________________________________________________________________ -->
+					<div class="w3-container w3-border">
+
+						<div class="w3-container">
+							<div class="pull-left">
+								<h5>
+									<strong>Vehicle Information:</strong>
+								</h5>
+							</div>
+						</div>
+						<div class="w3-row">
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Type of Vehicle</label> <span style="color: red">
+											*</span> <select name="vihicletype"
+											class="w3-select w3-border" selected>
+											<option th:value="${transportmodel.getVihicletype()}" th:text="${transportmodel.getVihicletype()}" selected hidden></option>
+											<option value="Two Wheeler">Two Wheeler</option>
+											<option value="Four Wheeler">Four Wheeler</option>
+										</select><span style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("vihicletype")!=null}'
+											th:text='${bindingResult.getFieldError("vihicletype").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Registration Number:</label> <span style="color: red">
+											*</span> <input name="vihicleregnbr"
+											th:value="${transportmodel.getVihicleregnbr()}"
+											class="w3-input w3-border" type="text"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("vihicleregnbr")!=null}'
+											th:text='${bindingResult.getFieldError("vihicleregnbr").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Insurance Validity:</label> <span style="color: red">
+											*</span><input id="validity"
+											th:value="${transportmodel.getInsurancevalidity()}"
+											
+											name="insurancevalidity" class="w3-input w3-border"
+											type="date" data-date-format="YYYY MM DD"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("insurancevalidity")!=null}'
+											th:text='${bindingResult.getFieldError("insurancevalidity").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="w3-container w3-row " style="margin-top: 40px;">
+						<div class="w3-quarter w3-left" id="telephonefiles">
+							<input id="attachments" name="attachments" type="hidden" />
+							<p>
+								<label style="size: 50px;"><strong>Upload
+										Documents:</strong> </label>
+							</p>
+
+						</div>
+						<div class="w3-quarter w3-right">
+							<input type="file" name="file" id="file" />
+						</div>
+
+					</div>
+
+
+
+					<!-- _______________________________________________________________________________________________________________ -->
+
+
+
+					<div class="w3-container">
+						<div class="pull-left">
+							<h5>
+								<strong>Declaration:</strong><span style="color: red;">*</span>
+							</h5>
+						</div>
+					</div>
+					<div class="w3-container">
+						<input id="Agree" class="w3-check" type="checkbox"> <label>I
+							hereby certify that,neither I was in leave nor on tour for
+							greater than 15 days consequently during the claim period.</label>
+
+						<!-- </div>
+					<div class="w3-container w3-right" style="margin-bottom: 15px;">
+
+						<button id="Savebtn" class="w3-button w3-theme Savebtn"
+							onclick="ajaxPost('save')">Save</button>
+						<button id="Submitbtn" onclick="ajaxPost('submit')"
+							class="w3-button w3-theme ">Submit</button>
+
+
+					</div> -->
+				</form>
+			</div>
+			<!-- --__________________________________________________View__________________________________________________ -->
+
+
+			<div th:if="${transportmodel.getTravelid()!=0} and ${mode=='view'}">
+				<form id="TRANSPORT_EMBRSMNT_FORM_VIEW"
+					enctype="application/x-www-form-urlencoded"
+					onsubmit="return false;">
+					<input name="travelid" id="claimid"
+						th:value="${transportmodel.getTravelid()}" placeholder="Claim Id"
+						type="hidden"> <input id="Rem_Id" name="reimburseid"
+						placeholder="Reimburse Id"
+						th:value="${transportmodel.getReimburseid()}" type="hidden"> <input
+						name="personid" placeholder="Person Id"
+						th:value="${transportmodel.getPersonid()}" type="hidden"> <input
+						name="personnumber" placeholder="Person number"
+						th:value="${transportmodel.getPersonnumber()}" type="hidden">
+					<div class="w3-row">
+						<div class="w3-third">
+							<div class="w3-container">
+
+
+
+								<p>
+									<label>Work Location:</label> <span style="color: red">
+										*</span> <select name="worklocation" class="w3-select w3-border">
+
+										<option th:value="${transportmodel.getWorklocation()}"
+											th:text="${transportmodel.getWorklocation()}" selected hidden></option>
+										<option value="None">Select</option>
+										<option value="Lucknow">Lucknow</option>
+										<option value="Kanpur">Kanpur</option>
+									</select>
+
+								</p>
+
+							</div>
+						</div>
+
+
+
+						<div class="w3-third">
+							<div class="w3-container">
+
+								<p>
+									<label>OM/Project:</label> <span style="color: red"> *</span> <select
+										name="omproject" class="w3-select w3-border">
+										<option th:value="${transportmodel.getOmproject()}"
+											th:text="${transportmodel.getOmproject()}" selected hidden></option>
+
+										<option value="None">Select</option>
+										<option value="Operational Management">Operational
+											Management</option>
+										<option value="Project">Project</option>
+									</select>
+								</p>
+							</div>
+						</div>
+						<div class="w3-third">
+							<div class="w3-container">
+
+								<p>
+									<label>Amount:</label> <span style="color: red"> *</span> <input
+										id="totalAmount" name="claimedamt"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+										th:value="${transportmodel.getClaimedamt()}"
+										class="w3-input w3-border" type="text" readonly>
+
+								</p>
+							</div>
+						</div>
+					</div>
+
+
+
+					<!---____________________________________________________________________________________________________________________________________________ -->
+
+					<div class="w3-container">
+						<div class="pull-left">
+							<h4>
+								<strong>Annexure</strong>
+							</h4>
+						</div>
+					</div>
+					<div class="w3-container">
+						<hr class="hrline">
+					</div>
+					<div style="height: 25px;"></div>
+
+					<!-- _______________________________________________________________________________________________________________ -->
+					<div id="addDestinationVisit" class="w3-container w3-border">
+						<div class="w3-container">
+							<div class="pull-left">
+								<h5>
+									<strong>Destination Visited during month:</strong>
+								</h5>
+							</div>
+						</div>
+						<div id="mainRow" th:each="row,stats: ${transportmodel.getHistories()}"
+							class="w3-row w3-container">
+							<div class="w3-col m10">
+								<div class="w3-quarter">
+									<div class="w3-container">
+
+										<p>
+											<label>S.No:</label> <span style="color: red"> *</span> <input
+												id="Sno" name="Sno" th:value="${stats.index+1}"
+												class="w3-input w3-border" type="text" readonly>
+										</p>
+									</div>
+								</div>
+								<div class="w3-quarter">
+									<div class="w3-container">
+										<p>
+											<label>From Date:</label> <span style="color: red"> *</span>
+											<input id="fromdate" th:value="${row.getFromdate()}"
+												name="histories[0].fromdate" class="w3-input w3-border"
+												type="date" data-date-format="YYYY MM DD" readonly>
+										</p>
+									</div>
+								</div>
+								<div class="w3-quarter">
+									<p>
+										<label>To Date:</label> <span style="color: red"> *</span> <input
+											id="todate" th:value="${row.getTodate()}"
+											name="histories[0].todate" class="w3-input w3-border"
+											type="date" data-date-format="YYYY MM DD" readonly>
+									</p>
+								</div>
+								<div class="w3-quarter">
+									<div class="w3-container">
+										<p>
+											<label>Place:</label> <span style="color: red">*</span> <input
+												id="placeVisit" name="histories[0].visitedplace"
+												th:value="${row.getVisitedplace()}"
+												class="w3-input w3-border" type="text" readonly>
+										</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="w3-col m2 w3-center" style="margin-top: 22px;">
+								<button id="add" onClick="addNewDestinationVisit();"
+									class="w3-button w3-theme w3-center" type="button" disabled>
+									<i class="fas fa-plus"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<!-- ____________________________________________________________________________________________________________________________________________-->
+					<div style="height: 25px;"></div>
+
+					<div class="w3-container w3-border">
+
+						<div class="w3-container">
+							<div class="pull-left">
+								<h5>
+									<strong>Details of Fuel Expenses & Other Expenditure:</strong>
+								</h5>
+							</div>
+						</div>
+						<div class="w3-row">
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Total Fuel Expenses:</label> 
+										<input id="totalFuelExpence" name="totalfuelexpense"
+											th:value="${transportmodel.getTotalfuelexpense()}"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											class="w3-input w3-border numericonly" type="text" readonly>
+
+									</p>
+								</div>
+							</div>
+
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Salary of Chauffeur:</label>
+										<input id="salaryofchauffeur" name="salarychauffuer"
+											th:value="${transportmodel.getSalarychauffuer()}"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											class="w3-input w3-border numericonly	" type="text" readonly>
+
+									</p>
+								</div>
+							</div>
+
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Insurance Of Car:</label>
+											*</span> <input id="carinsurance" name="carinsurance"
+											th:value="${transportmodel.getCarinsurance()}"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											class="w3-input w3-border numericonly" type="text" readonly>
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- <h1>(proportionate amount on monthly
+								basis)</h1> -->
+						<div class="w3-row">
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Repair and Maintenance:</label>
+										<input id="repairandmaintain"
+											name="repairmaintaince"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											th:value="${transportmodel.getRepairmaintaince()}"
+											class="w3-input w3-border" type="text" readonly>
+
+									</p>
+								</div>
+							</div>
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Road Taxes/Octroi/Toll Charges:</label>
+										<input id="tolltax"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											name="roadtaxtotal" th:value="${transportmodel.getRoadtaxtotal()}"
+											class="w3-input w3-border" type="text" readonly>
+
+									</p>
+								</div>
+							</div>
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Total Other Expenditure:</label>
+										<input id="otherexpences"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											name="otherexpense" th:value="${transportmodel.getOtherexpense()}"
+											class="w3-input w3-border" type="text" readonly>
+
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="height: 25px;"></div>
+					<!-- -________________________________________________________________________________________________________________ -->
+					<div class="w3-container w3-border">
+
+						<div class="w3-container">
+							<div class="pull-left">
+								<h5>
+									<strong>Vehicle Information:</strong>
+								</h5>
+							</div>
+						</div>
+						<div class="w3-row">
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Type of Vehicle</label> <span style="color: red">
+											*</span> <select name="vihicletype" class="w3-select w3-border">
+											<option th:value="${transportmodel.getVihicletype()}"
+												th:text="${transportmodel.getVihicletype()}" selected hidden></option>
+											<option value="None">Select</option>
+											<option value="Two Wheeler">Two Wheeler</option>
+											<option value="Four Wheeler">Four Wheeler</option>
+										</select>
+									</p>
+								</div>
+							</div>
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Registration Number:</label> <span style="color: red">
+											*</span> <input name="vihicleregnbr"
+											th:value="${transportmodel.getVihicleregnbr()}"
+											class="w3-input w3-border" type="text" readonly>
+
+									</p>
+								</div>
+							</div>
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Insurance Validity:</label> <span style="color: red">
+											*</span> <input name="insurancevalidity"
+											th:value="${transportmodel.getInsurancevalidity()}"
+											class="w3-input w3-border" type="date" readonly>
+
+
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="w3-container w3-row " style="margin-top: 40px;">
+						<div class="w3-quarter w3-left" id="telephonefiles">
+							<input id="attachments" name="attachments" type="hidden" />
+							<p>
+								<label style="size: 50px;"><strong>Uploaded
+										Documents:</strong> </label>
+							</p>
+
+						</div>
+
+						<div class="w3-quarter w3-right"
+							th:if="${transportmodel.getAttachments()!=null}">
+							<a id="DOWNLOAD_LINK" th:href="${transportmodel.getAttachments()}"
+								target="_blank" download>Download Attachment</a> 
+								<input type="hidden" id="attachhidden" name="attachhidden" th:value="${transportmodel.getAttachments()}" />
+						</div>
+						<div class="w3-quarter w3-right"
+							th:if="${transportmodel.getAttachments()==null}">No Attachment
+							Found!</div>
+
+					</div>
+					<!-- _______________________________________________________________________________________________________________ -->
+
+
+
+					<div class="w3-container">
+						<div class="pull-left">
+							<h5>
+								<strong>Declaration:</strong><span style="color: red;">*</span>
+							</h5>
+						</div>
+					</div>
+					<div class="w3-container">
+						<input id="Agree" class="w3-check" type="checkbox"
+							checked="checked" disabled readonly> <label>I
+							hereby certify that,neither I was in leave nor on tour for
+							greater than 15 days consequently during the claim period.</label>
+
+					</div>
+
+				<h5 > Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${transportmodel.getTravelid()}" aria-hidden="true" th:onclick='getapprovalhistory(2,this.id);'></i></h5>
+					<section class="container">
+
+						<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+						<div class="container__sources">
+
+							<div style="box-shadow: none; background-color: none;"
+								th:each="aprdata ,stats: ${(approverdata)}">
+								<div class="sources--cms" style="width: 160px">
+									<p>
+										Approval <label th:text='${aprdata.getApprovallevel()}'></label>
+									</p>
+									<p>
+										<label th:text='${aprdata.getApproverpersonname()}'></label>
+									</p>
+									<p>
+										<label th:text='${aprdata.getApprovalstatus()}'></label>
+									</p>
+
+									<div th:if='${aprdata.getApprovalstatus() == "Approved"}'
+										style="margin: 0; padding: 0; float: right; box-shadow: none; position: absolute; margin-top: -30px; margin-left: 124px">
+										<i class="fa fa-check tick"></i>
+
+									</div>
+									<div
+										th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}'
+										style="margin: 0; padding: 0; float: right; box-shadow: none; position: absolute; margin-top: -30px; margin-left: 124px">
+
+										<i class="fa fa-clock-o pending"></i>
+									</div>
+									<div th:if='${aprdata.getApprovalstatus() == "Rejected"}'
+										style="margin: 0; padding: 0; float: right; box-shadow: none; position: absolute; margin-top: -30px; margin-left: 124px">
+
+										<i class="fa fa-close cancel"></i>
+
+									</div>
+
+								</div>
+								<svg class="svghor" viewBox="0 10 100 100">
+									<line x1="5" x2="100" y1="80" y2="80"></line>
+								</svg>
+								<svg class="svgver" viewBox="0 20 100 100 ">
+									<line x1="40" x2="40" y1="0" y2="100"></line>
+								</svg>
+							</div>
+<div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+						</div>
+
+						<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+
+
+					</section>
+
+
+				</form>
+			</div>
+			<!-- --__________________________________________________EDIT___________________________________________________ -->
+
+
+
+			<div th:if="${transportmodel.getTravelid()!=0} and ${mode=='edit'}">
+				<form method="post" id="TRANSPORT_EMBRSMNT_EDIT_FORM"
+					enctype="multipart/form-data" onsubmit="return false;">
+					<input id="statusid" value="" type="hidden" name="statusid" /> <input
+						name="travelid" id="claimid" th:value="${transportmodel.getTravelid()}"
+						placeholder="Claim Id" type="hidden"> <input id="Rem_Id"
+						name="reimburseid" placeholder="Reimburse Id"
+						th:value="${transportmodel.getReimburseid()}" type="hidden"> <input
+						name="personid" placeholder="Person Id"
+						th:value="${transportmodel.getPersonid()}" type="hidden"> <input
+						name="personnumber" id="personnumber" placeholder="Person number"
+						th:value="${transportmodel.getPersonnumber()}" type="hidden">
+					<div class="w3-row">
+						<div class="w3-third">
+							<div class="w3-container">
+
+
+
+								<p>
+									<label>Work Location:</label> <span style="color: red">
+										*</span> <select name="worklocation" class="w3-select w3-border">
+
+										<option th:value="${transportmodel.getWorklocation()}"
+											th:text="${transportmodel.getWorklocation()}" selected hidden></option>
+										<option value="None">Select</option>
+										<option value="Lucknow">Lucknow</option>
+										<option value="Kanpur">Kanpur</option>
+									</select> <span style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("worklocation")!=null}'
+										th:text='${bindingResult.getFieldError("worklocation").getDefaultMessage()}'></span>
+
+								</p>
+
+							</div>
+						</div>
+
+
+
+						<div class="w3-third">
+							<div class="w3-container">
+
+								<p>
+									<label>OM/Project:</label> <span style="color: red"> *</span> <select
+										name="omproject" class="w3-select w3-border">
+										<option th:value="${transportmodel.getOmproject()}"
+											th:text="${transportmodel.getOmproject()}" selected hidden></option>
+
+										<option value="None">Select</option>
+										<option value="Operational Management">Operational
+											Management</option>
+										<option value="Project">Project</option>
+									</select> <span style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("omproject")!=null}'
+										th:text='${bindingResult.getFieldError("omproject").getDefaultMessage()}'></span>
+								</p>
+							</div>
+						</div>
+						<div class="w3-third">
+							<div class="w3-container">
+
+								<p>
+									<label>Amount:</label> <span style="color: red"> *</span> <input
+										id="totalAmount" name="claimedamt"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+										th:value="${transportmodel.getClaimedamt()}"
+										class="w3-input w3-border" type="text"> <span
+										style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("claimedamt")!=null}'
+										th:text='${bindingResult.getFieldError("claimedamt").getDefaultMessage()}'></span>
+
+								</p>
+							</div>
+						</div>
+					</div>
+
+
+
+
+
+					<!---____________________________________________________________________________________________________________________________________________ -->
+
+					<div class="w3-container">
+						<div class="pull-left">
+							<h4>
+								<strong>Annexure</strong>
+							</h4>
+						</div>
+					</div>
+					<div class="w3-container">
+						<hr class="hrline">
+					</div>
+					<div style="height: 25px;"></div>
+
+					<!-- _______________________________________________________________________________________________________________ -->
+					<div id="addDestinationVisit" class="w3-container w3-border">
+						<div class="w3-container">
+							<div class="pull-left">
+								<h5>
+									<strong>Destination Visited during month:</strong>
+								</h5>
+							</div>
+						</div>
+						<div id="mainRow">
+							<div id="childrow"
+								th:each="row,stats: ${transportmodel.getHistories()}"
+								class="w3-row w3-container">
+								<div class="w3-col m10">
+									<div class="w3-quarter">
+										<div class="w3-container">
+											<p>
+												<input type="text" th:if="${row.getHistoryid()!=0}" 
+													th:name="'histories['+${stats.index}+'].historyid'"
+													th:value="${row.getHistoryid()}" hidden/> <label>S.No:</label> <span
+													style="color: red"> *</span> <input id="Sno" name="Sno"
+													th:value="${stats.index+1}" class="w3-input w3-border"
+													type="text" readonly>
+											</p>
+										</div>
+									</div>
+									<div class="w3-quarter">
+										<div class="w3-container">
+											<p>
+												<label>From Date:</label> <span style="color: red"> *</span>
+												<input id="fromdate" th:value="${row.getFromdate()}"
+													th:name="'histories['+${stats.index}+'].fromdate'"
+													class="w3-input w3-border" type="date"
+													data-date-format="YYYY MM DD"> <span
+													style="color: red"
+													th:if='${bindingResult != null && bindingResult.getFieldError("fromdate")!=null}'
+													th:text='${bindingResult.getFieldError("fromdate").getDefaultMessage()}'></span>
+											</p>
+										</div>
+									</div>
+									<div class="w3-quarter">
+										<div class="w3-container">
+											<p>
+												<label>To Date:</label> <span style="color: red"> *</span> <input
+													id="todate" th:value="${row.getTodate()}"
+													th:name="'histories['+${stats.index}+'].todate'"
+													class="w3-input w3-border" type="date"
+													data-date-format="YYYY MM DD"> <span
+													style="color: red"
+													th:if='${bindingResult != null && bindingResult.getFieldError("todate")!=null}'
+													th:text='${bindingResult.getFieldError("todate").getDefaultMessage()}'></span>
+											</p>
+										</div>
+									</div>
+									<div class="w3-quarter">
+										<div class="w3-container">
+											<p>
+												<label>Place:</label> <span style="color: red">*</span> <input
+													id="placeVisit"
+													th:name="'histories['+${stats.index}+'].visitedplace'"
+													th:value="${row.getVisitedplace()}"
+													class="w3-input w3-border" type="text"> <span
+													style="color: red"
+													th:if='${bindingResult != null && bindingResult.getFieldError("visitedplace")!=null}'
+													th:text='${bindingResult.getFieldError("visitedplace").getDefaultMessage()}'></span>
+											</p>
+										</div>
+									</div>
+								</div>
+
+								<div class="w3-col m2 w3-center" style="margin-top: 22px;">
+									<button id="add" onClick="addNewDestinationVisit();"
+										class="w3-button w3-theme w3-center" type="button">
+										<i class="fas fa-plus"></i>
+									</button>
+									&nbsp;
+									<button id="delete" th:index="${stats.index}" th:name="'del'+${stats.index}"
+										class="w3-button w3-theme w3-center" type="button">
+										<i class="fa fa-trash"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- ____________________________________________________________________________________________________________________________________________-->
+					<div style="height: 25px;"></div>
+
+					<div class="w3-container w3-border">
+
+						<div class="w3-container">
+							<div class="pull-left">
+								<h5>
+									<strong>Details of Fuel Expenses & Other Expenditure:</strong>
+								</h5>
+							</div>
+						</div>
+						<div class="w3-row">
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Total Fuel Expenses:</label>
+										<input id="totalFuelExpence" name="totalfuelexpense"
+											th:value="${transportmodel.getTotalfuelexpense()}"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											class="w3-input w3-border" type="text"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("totalfuelexpense")!=null}'
+											th:text='${bindingResult.getFieldError("totalfuelexpense").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Salary of Chauffeur:</label>
+										<input id="salaryofchauffeur" name="salarychauffuer"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											th:value="${transportmodel.getSalarychauffuer()}"
+											class="w3-input w3-border" type="text"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("salarychauffuer")!=null}'
+											th:text='${bindingResult.getFieldError("salarychauffuer").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Insurance Of Car:</label>
+										<input id="carinsurance" name="carinsurance"
+											th:value="${transportmodel.getCarinsurance()}"
+											oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											class="w3-input w3-border" type="text"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("carinsurance")!=null}'
+											th:text='${bindingResult.getFieldError("carinsurance").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- <h1>(proportionate amount on monthly
+								basis)</h1> -->
+						<div class="w3-row">
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Repair and Maintenance:</label>
+										<input id="repairandmaintain"
+											name="repairmaintaince"
+											th:value="${transportmodel.getRepairmaintaince()}"
+											class="w3-input w3-border" type="text"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("repairmaintaince")!=null}'
+											th:text='${bindingResult.getFieldError("repairmaintaince").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Road Taxes/Octroi/Toll Charges:</label>
+										<input id="tolltax"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											name="roadtaxtotal" th:value="${transportmodel.getRoadtaxtotal()}"
+											class="w3-input w3-border" type="text"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("roadtaxtotal")!=null}'
+											th:text='${bindingResult.getFieldError("roadtaxtotal").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Total Other Expenditure:</label>
+										<input id="otherexpences"
+											name="otherexpense" th:value="${transportmodel.getOtherexpense()}"
+											class="w3-input w3-border" type="text"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("otherexpense")!=null}'
+											th:text='${bindingResult.getFieldError("otherexpense").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="height: 25px;"></div>
+					<!-- -________________________________________________________________________________________________________________ -->
+					<div class="w3-container w3-border">
+
+						<div class="w3-container">
+							<div class="pull-left">
+								<h5>
+									<strong>Vehicle Information:</strong>
+								</h5>
+							</div>
+						</div>
+						<div class="w3-row">
+							<div class="w3-third">
+								<div class="w3-container">
+									<p>
+										<label>Type of Vehicle</label> <span style="color: red">
+											*</span> <select name="vihicletype" class="w3-select w3-border">
+											<option th:value="${transportmodel.getVihicletype()}"
+												th:text="${transportmodel.getVihicletype()}" selected hidden></option>
+											<option value=""></option>
+											<option value="Two Wheeler">Two Wheeler</option>
+											<option value="Four Wheeler">Four Wheeler</option>
+										</select> <span style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("vihicletype")!=null}'
+											th:text='${bindingResult.getFieldError("vihicletype").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Registration Number:</label> <span style="color: red">
+											*</span> <input name="vihicleregnbr"
+											th:value="${transportmodel.getVihicleregnbr()}"
+											class="w3-input w3-border" type="text"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("vihicleregnbr")!=null}'
+											th:text='${bindingResult.getFieldError("vihicleregnbr").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+							<div class="w3-third">
+								<div class="w3-container">
+
+									<p>
+										<label>Insurance Validity:</label> <span style="color: red">
+											*</span><input id="" th:value="${transportmodel.getInsurancevalidity()}"
+											name="insurancevalidity" class="w3-input w3-border"
+											type="date" data-date-format="YYYY MM DD"> <span
+											style="color: red"
+											th:if='${bindingResult != null && bindingResult.getFieldError("insurancevalidity")!=null}'
+											th:text='${bindingResult.getFieldError("insurancevalidity").getDefaultMessage()}'></span>
+
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="w3-container w3-row " style="margin-top: 40px;">
+						<div class="w3-quarter w3-left" id="telephonefiles">
+							<input id="attachments" name="attachments" type="hidden" />
+							<p>
+								<label style="size: 50px;"><strong>Upload
+										Documents:</strong> </label>
+							</p>
+
+						</div>
+						<div class="w3-quarter w3-right"
+							th:if="${transportmodel.getAttachments()!=null}">
+							<a id="DOWNLOAD_LINK" th:href="${transportmodel.getAttachments()}"
+								target="_blank" download>Download Attachment</a>
+							<input type="hidden" id="attachhidden" name="attachhidden" th:value="${transportmodel.getAttachments()}" />
+							<input id="attachments" name="attachments" type="hidden" />
+						</div>
+						<div class="w3-quarter w3-right" th:if="${transportmodel.getAttachments()==null}">No Attachment Found!</div>
+						<br />
+						<div class="w3-quarter w3-right">
+							<input type="file" th:value="${transportmodel.getAttachments()}"
+								name="file" id="file" />
+						</div>
+
+					</div>
+					<!-- _______________________________________________________________________________________________________________ -->
+
+
+
+					<div class="w3-container">
+						<div class="pull-left">
+							<h5>
+								<strong>Declaration:</strong><span style="color: red;">*</span>
+							</h5>
+						</div>
+					</div>
+					<div class="w3-container">
+						<input id="Agree" class="w3-check" checked="checked"
+							type="checkbox"> <label>I hereby certify
+							that,neither I was in leave nor on tour for greater than 15 days
+							consequently during the claim period.</label>
+
+					</div>
+					<!-- <div class="w3-container w3-right" style="margin-bottom: 15px;">
+						<button id="Savebtn" class="w3-button w3-theme Savebtn"
+							onclick="updateDataFunc('save');">Update</button>
+						<button id="Submitbtn" 	class="w3-button w3-theme" onclick="updateDataFunc('submit')">Submit</button>
+
+
+					</div> -->
+
+
+				</form>
+			</div>
+<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+			<script src="/js/reimbursement/transport/transport.js"></script>
+		</div>
+	</div>
+</div>
+
+<!-- --------------------------------___________________________________-------------------------------------------------- -->
+
+
+
+<!--Transport Reimbursement Form Content Goes here By @Suraj End-->
+<div id="submitblock" class="w3-modal">
+	<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+		style="max-width: 400px;">
+		<div
+			class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+			<label id="lblMsg" style="font-weight: bold"> </label> <a id="okbtn"
+				rm="reimbursement/transportManager">OK</a>
+		</div>
+	</div>
+</div>
+</div>
+

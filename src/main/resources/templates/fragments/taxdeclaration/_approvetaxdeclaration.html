@@ -1,0 +1,572 @@
+<div th:fragment="apprtaxdeclaration">
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	    var resultfinal = [[${result}]];
+	/*]]>*/
+	</script>
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+	<div style="position: relative;">
+		<div class="w3-container">
+			<h4 style="font-weight: 400; display:inline-block;">
+				<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+					style="cursor: pointer;"> <i class="fas fa-file-invoice-dollar" style="color: rgb(255, 128, 0);"></i> Approve Tax Declaration
+			</h4>
+		</div>
+	</div><div><hr class="hrline"></div>
+	<div class="w3-margin w3-border">
+		
+	<div class="w3-bar w3-blue-gray" >
+		<button name="HRA_DECLARATION" class="w3-bar-item w3-button w3-light-grey tablink " onclick="openTab('HRA_DECLARATION');" >HRA Declaration</button>
+		<button name="CHAPTER_VIA" class="w3-bar-item w3-button tablink " onclick="openTab('CHAPTER_VIA');" >Chapter VIA Deductions</button>
+		<button name="INTEREST_HOMELOAN" class="w3-bar-item w3-button tablink " onclick="openTab('INTEREST_HOMELOAN');" >Interest on Home Loan and Other</button>
+		<button name="PREV_INCOME" class="w3-bar-item w3-button tablink " onclick="openTab('PREV_INCOME');" >Previous Employer Income</button>
+	</div>
+
+	<div id="HRA_DECLARATION" class="w3-container legal">
+	<div class="w3-row">
+		<h5 class="w3-text-theme w3-margin-left" >Tips</h5>
+		<!--<img id="VIEW_NAME_BLOCK" class="w3-right" style="margin-right:10px" alt="" src="/icons/keyboard_arrow_down-black-18dp.svg">-->		
+		<!--<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">-->
+		
+		<div>
+			<ul style="list-style-type:''; font-size: small;">
+			  <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Declaration made in the beginning of the financial year should be enetered in the 'Planned' column.</li>
+			  <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Declaration made at the end of the year should be under the 'Actual' column.</li>
+			  <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>You can attach scanned copies of investment proofs by clicking on 'Attachments'.</li>
+	 		  <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Landlord PAN is mandatory if Annual rent amount exceed Rs.100000.</li>
+			</ul>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+	</div>
+	
+	<form method="post" id="HOUSE_RENT_FORM" enctype="multipart/form-data" onsubmit="return false;">
+	<div class="w3-row">
+		<div class="w3-bar">
+			<h5 class="w3-bar-item" >Owner's Information</h5>
+			<input onclick="addrowOwner();" class="w3-bar-item w3-btn w3-right w3-theme" type="button" id="ADD_ROW_OWNER" value="Add New" style="height:40px; border-radius: 5px; margin-right:10px;" />
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<!-- <img id="EDIT_NAM_BLOCK" class="w3-right" alt="" style="width:17px; height:17px; margin-right:10px" src="/icons/icons8-edit.svg"> -->
+		<div id="OWNER_INFO_BLOCK">
+							<table id="OWNER_INFO_TBL" class="w3-striped">
+								<thead>
+									<th>From Date</th>
+									<th>To Date</th>
+									<th style="text-align: center;">Name</th>
+									<th style="text-align: center;">Address</th>
+									<th style="text-align: center;">PAN</th>
+									<th style="text-align: center;">Attachment</th>
+									<th style="text-align: center;width:10%;">&nbsp;</th>
+
+								</thead>
+								
+								<tbody style="overflow: scroll; overflow: auto">
+
+									<tr th:each="hrowner,stats:${hradetails.getOwner()}">									
+										<td style="width: 15%">
+											<input type="hidden" th:name="'owner['+${stats.index}+'].ownerId'"  th:value="${hrowner.getOwnerId()}"/>
+											<input th:value="${hrowner.getFromdate()}"
+											th:name="'owner['+${stats.index}+'].fromdate'"
+											 class="w3-input w3-border"
+											 id="'own_fromdate'+${stats.index}"
+											 type="date" 
+											 data-date=""
+											 data-date-format="YYYY MM DD" readonly/>
+										</td>
+
+										<td style="width: 15%">
+											<input th:value="${hrowner.getTodate()}"
+											th:name="'owner['+${stats.index}+'].todate'"
+											 class="w3-input w3-border"
+											 id="'own_todate'+${stats.index}"
+											 type="date" 
+											 data-date="" 
+											 data-date-format="YYYY MM DD" readonly/>
+										</td>
+
+										<td style="width: 15%">
+											<input 
+											class="w3-input w3-border"
+											th:value="${hrowner.getName()}"
+											th:name="'owner['+${stats.index}+'].name'"
+											id="'own_name'+${stats.index}"
+											type="text" readonly>
+										</td>
+												
+										<td style="width: 15%">
+											<input 
+											class="w3-input w3-border"
+											th:value="${hrowner.getAddress()}"
+											th:name="'owner['+${stats.index}+'].address'"
+											id="'own_address'+${stats.index}"
+											type="text" readonly>
+										</td>
+											
+										<td style="width: 15%">
+											<input 
+											class="w3-input w3-border"
+											th:value="${hrowner.getPan()}"
+											th:name="'owner['+${stats.index}+'].pan'"
+											id="'own_pan'+${stats.index}"
+											type="text" readonly>
+										</td>
+
+										<td style="width: 15%">
+										<!--th:name="'owner['+${stats.index}+'].ownfile'"-->
+											<input type="hidden" th:name="'owner['+${stats.index}+'].attachment'"  th:value="${hrowner.getAttachment()}"/>
+
+											<div class="w3-row">
+											<div class="w3-half"><input
+											name="ownerfiles"
+											th:id="'own_attachment'+${stats.index}"
+											type="file">
+											</div>
+											<div class="w3-rest" style="margin-left:240px;">
+												<a class="w3-right" th:if="${(hrowner.getAttachment() !=null) and (hrowner.getAttachment() !='')}" th:href="'/getContent?location='+${hrowner.getAttachment()}" target="_blank" download><i class="fa fa-download" aria-hidden="true"></i></a>
+											</div>
+											</div>
+										</td>
+
+										<td style="width:10%;">
+											<div th:if="${stats.index > 0}" th:id="'own_btndel'+${stats.index}" class="w3-text-black" style="text-align: right;"  onclick="deleteOwnerRow(this);">
+											<i class="far fa-times-circle" style="font-size:25px; cursor:pointer;" ></i></div>									
+										</td>								
+									</tr>
+								</tbody>
+								
+							</table>
+							
+						</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+	</div>
+	
+	<div class="w3-row">
+		<div class="w3-bar">
+		<h5 class="w3-bar-item">Rent Declaration</h5>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<!-- <img id="EDIT_NAM_BLOCK" class="w3-right" alt="" style="width:17px; height:17px; margin-right:10px" src="/icons/icons8-edit.svg"> -->
+		<div id="RENT_BLOCK">
+							<table id="RENT_TBL" class="w3-striped">
+								<thead>
+									<th style="text-align: center;">Start Date</th>
+									<th style="text-align: center;">End Date</th>
+									<th style="text-align: right;">Declared</th>
+									<th style="text-align: right;">Verified</th>
+									<th style="text-align: center;">Status</th>
+									<th style="text-align: center;">Remarks</th>
+									<th style="text-align: center;">Attachment</th>
+									<th style="text-align: center;"></th>
+								</thead>
+								
+								<tbody style="overflow: scroll; overflow: auto">
+									
+									<tr th:each="hrrent,stats:${hradetails.getRent()}">
+										<td style="width: 14%; text-align: center;">
+											<input type="hidden" th:name="'rent['+${stats.index}+'].rentId'"  th:value="${hrrent.getRentId()}"/>
+											<input type="hidden" th:name="'rent['+${stats.index}+'].calender_period'"  th:value="${hrrent.getCalender_period()}"/>
+											<label th:text="${hrrent.getEff_startdt()}"></label>
+											<input type="hidden" th:value="${hrrent.getEff_startdt()}" th:name="'rent['+${stats.index}+'].eff_startdt'"/>
+										</td>
+										
+										<td style="width: 14%; text-align: center;">
+											<label th:text="${hrrent.getEff_enddt()}"></label>
+											<input type="hidden" th:value="${hrrent.getEff_enddt()}" th:name="'rent['+${stats.index}+'].eff_enddt'"/>
+										</td>
+										
+										<td style="width: 10%">
+											<input 
+											class="w3-input w3-border"
+											style="text-align: right;"
+											th:value="${hrrent.getD_amt()}"
+											th:name="'rent['+${stats.index}+'].d_amt'"
+											type="text" readonly>
+										</td>
+
+										<td style="width: 10%">
+											<input 
+											class="w3-input w3-border"
+											th:value="${hrrent.getV_amt()}"
+											th:name="'rent['+${stats.index}+'].v_amt'"
+											style="text-align: right;"
+											type="text"> 
+										</td>
+												
+										<td style="width: 14%; text-align: center;">
+											<label th:text="${hrrent.getStatus()}"></label>
+											<input type="hidden" th:value="${hrrent.getStatus()}" th:name="'rent['+${stats.index}+'].status'"/>
+										</td>
+											
+										<td style="width: 22%; text-align: center;">
+											<input class="w3-input w3-border" type="text" th:value="${hrrent.getRemarks()}" th:name="'rent['+${stats.index}+'].remarks'"/>
+										</td>
+
+										<td style="width: 14%">
+										<!--th:name="'rent['+${stats.index}+'].rentfile'"-->
+											<input type="hidden" th:name="'rent['+${stats.index}+'].attachment'"  th:value="${hrrent.getAttachment()}"/>
+											<input 
+											name="rentfiles"
+											th:id="'rentfile'+${stats.index}"
+											type="file"/>
+											<!--<input id="" name="" type="hidden" value="N">-->
+										</td>
+										<td>
+											<a class="w3-right" th:if="${(hrrent.getAttachment() !=null) and (hrrent.getAttachment() !='')}" th:href="'/getContent?location='+${hrrent.getAttachment()}" target="_blank" download><i class="fa fa-download" aria-hidden="true"></i></a>
+										</td>
+									</tr>
+								</tbody>
+								
+							</table>
+
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="HRA_SUBMIT_BTN" onclick="saveHRA()" class="w3-button w3-theme w3-ripple" style="margin-left:auto; margin-right:auto; margin-top:10px;">Submit</button>
+		</div>
+	</div>
+	</form>
+	</div>
+	
+	
+	<div id="CHAPTER_VIA" class="w3-container legal" style="display:none">
+		<div class="w3-row">
+			<h5 class="w3-text-theme w3-margin-left" >Tips</h5>
+			<!--<img id="VIEW_NAME_BLOCK" class="w3-right" style="margin-right:10px" alt="" src="/icons/keyboard_arrow_down-black-18dp.svg">-->
+			<!--<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">-->
+
+			<div>
+				<ul style="list-style-type:''; font-size: small;">
+					<li><h6>As per prevailing Income Tax Act, below are the maximum deduction under Section 80D - Mediclaim Insurance Premium</h6></li>
+					<li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>INR 25,000/- for Self & Immediate Family (Family - Spouse & Children) including Preventive Health Check-up or</li>
+					<li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>INR 50,000/- for Self & Immediate Family (Senior Citizen) including Preventive Health Check-up</li>
+					<li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>INR 25,000/- for Dependent Parents only or</li>
+					<li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>INR 50,000/- for Dependent Parents (Either one of them Senior Citizen) or</li>
+					<li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>INR 50,000/- for Dependent Parents (Either one of them Senior Citizen) including Preventive Health Check-up if Medical Insurance Coverage is not available</li>
+					<li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>INR 5,000/- is the sub-limit for Preventive Health Check-up</li>
+					<li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Preventive Health Check-up can be paid in any mode including cash, but all other payments in cash is not acceptable</li>
+				</ul>
+			</div>
+			<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div>
+	<form method="post" id="CHAPTER_VIA_FORM" enctype="multipart/form-data" onsubmit="return false;">
+	<div class="w3-row">
+		<!-- <img id="EDIT_NAM_BLOCK" class="w3-right" alt="" style="width:17px; height:17px; margin-right:10px" src="/icons/icons8-edit.svg"> -->
+		<div id="CHAPTER_VIA_BLOCK">
+							<input type="hidden" th:value="${chapter6A.getPersonnumber()}" name="personnumber"/>
+							<input type="hidden" th:value="${chapter6A.getYears()}" name="years"/>
+							<table id="CHAPTER_VIA_EXCEPT_D_TBL" class="w3-striped">
+								<thead>
+									<th>Section</th>
+									<th>Particulars</th>
+									<th style="text-align: right;">Year Limit</th>
+									<th style="text-align: right;">Declared</th>
+									<th style="text-align: right;">Verified</th>
+									<th style="text-align: center;">Status</th>
+									<th style="text-align: center;">Remarks</th>
+									<th style="text-align: center;">Attachment</th>
+									<th style="text-align: center; width:4%;">&nbsp;</th>
+								</thead>
+
+								<tbody style="overflow: scroll; overflow: auto">
+									<!-- Important Row -->	
+									<!--th:if="${hradetails.length == 0}"-->									
+									<tr th:each="chapter6A,stats:${chapter6A.getTaxEmployeeChapter6A()}">
+
+										<td style="width: 6%;">
+											<label th:text=${chapter6A.getSection()}></label>
+											<input type="hidden" th:value="${chapter6A.getSection()}" th:name="'taxEmployeeChapter6A['+${stats.index}+'].section'"/>
+											<input type="hidden" th:value="${chapter6A.getEmployeechapter6aid()}" th:name="'taxEmployeeChapter6A['+${stats.index}+'].employeechapter6aid'"/>
+											<input type="hidden" th:value="${chapter6A.getChapter6aid()}" th:name="'taxEmployeeChapter6A['+${stats.index}+'].chapter6aid'"/>
+										</td>
+										<td style="width: 18%;">
+											<label th:text="${chapter6A.getDescription()}"></label>
+											<input  type="hidden" th:value="${chapter6A.getDescription()}" th:name="'taxEmployeeChapter6A['+${stats.index}+'].description'"/>
+
+										</td>
+
+										<td style="width: 12%; text-align: end;">
+											<label th:text="${chapter6A.getYearlimit()}"></label>
+											<input style="text-align: right;" type="hidden" th:value="${chapter6A.getYearlimit()}" th:name="'taxEmployeeChapter6A['+${stats.index}+'].yearlimit'"/>
+										</td>
+
+										<td style="width: 8%">
+											<input 
+											class="w3-input w3-border"
+											th:value="${chapter6A.getDamount()}"
+											th:name="'taxEmployeeChapter6A['+${stats.index}+'].damount'"
+											style="text-align: right;"
+											type="text" readonly>
+										</td>
+												
+										<td style="width: 8%">
+											<input
+											class="w3-input w3-border"
+											th:value="${chapter6A.getVamount()}"
+											th:name="'taxEmployeeChapter6A['+${stats.index}+'].vamount'"
+											style="text-align: right;"
+											type="text">
+										</td>
+											
+										<td style="width: 12%; text-align: center;">
+											<label th:text="${chapter6A.getStatus()}"></label>
+											<input type="hidden" th:value="${chapter6A.getStatus()}" th:name="'taxEmployeeChapter6A['+${stats.index}+'].status'"/>
+										</td>
+										
+										<td style="width: 20%; text-align: center;">
+											<input class="w3-input w3-border" type="text" th:value="${chapter6A.getRemarks()}" th:name="'taxEmployeeChapter6A['+${stats.index}+'].remarks'"/>
+										</td>
+
+										<td style="width: 12%">
+											<input type="hidden" th:name="'taxEmployeeChapter6A['+${stats.index}+'].attachment'"  th:value="${chapter6A.getAttachment()}"/>
+											<input
+											class=""
+											name="chapterVIAfiles"
+											type="file">
+										</td>
+										<td style="width:4%;">
+											<a class="w3-right" th:if="${(chapter6A.getAttachment() !=null) and (chapter6A.getAttachment() !='')}" th:href="'/getContent?location='+${chapter6A.getAttachment()}" target="_blank" download><i class="fa fa-download" aria-hidden="true"></i></a>
+										</td>
+									</tr>
+								</tbody>
+								
+							</table>
+
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="CHAPTER_VI_SUBMIT_BTN" onclick="saveChapterVIA()" class="w3-button w3-theme w3-ripple" style="margin-left:auto; margin-right:auto; margin-top:10px;">Submit</button>
+		</div>
+	</div>
+	
+	</form>
+	</div>
+	
+	
+	
+	<div id="INTEREST_HOMELOAN" class="w3-container legal" style="display:none">
+	<div class="w3-row">
+		<h5 class="w3-text-theme w3-margin-left" >Tips</h5>
+		<!--<img id="VIEW_NAME_BLOCK" class="w3-right" style="margin-right:10px" alt="" src="/icons/keyboard_arrow_down-black-18dp.svg">-->		
+		<!--<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">-->
+		
+		<div>
+			<ul style="list-style-type:''; font-size: small;">
+			  <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Declare income from other sources such as interest income etc under 'income from other sources'.</li>
+			  <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Declare your rental income, net of interest on housing loan, if any under 'income fro housing property'. This amount if a loss, should be entered with a '-' sign. </li>
+			  <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Declare your interest on loan on a self occupied house property under 'interest on housing loan'.</li>
+	 		  
+			</ul>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+	</div>
+	
+	<form method="post" id="HOME_LOAN_FORM" enctype="multipart/form-data" onsubmit="return false;">
+	<div class="w3-row">
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<!-- <img id="EDIT_NAM_BLOCK" class="w3-right" alt="" style="width:17px; height:17px; margin-right:10px" src="/icons/icons8-edit.svg"> -->
+		<div id="INTEREST_HOMELOAN_BLOCK">
+							<table id="HOME_LOAN_TBL" class="w3-striped">
+								<thead>
+									<th>Particulars</th>
+									<th style="text-align: right;">Year Limit</th>
+									<th style="text-align: right;">Declared</th>
+									<th style="text-align: right;">Verified</th>
+									<th style="text-align: center;">Status</th>
+									<th style="text-align: center;">Remarks</th>
+									<th style="text-align: center;">Attachment</th>
+									<th style="text-align: center;width:10%;">&nbsp;</th>
+
+								</thead>
+								
+								<tbody style="overflow: scroll; overflow: auto">
+									<!-- Important Row -->	
+									<!--th:if="${hradetails.length == 0}"-->									
+									<tr th:each="paytax,stats:${paytax.getPerson()}">
+										<td style="width: 20%;">
+											<label th:text="${paytax.getDescription()}"></label>
+											<input type="hidden" th:value="${paytax.getDescription()}" th:name="'person['+${stats.index}+'].description'"/>
+											<input type="hidden" th:value="${paytax.getInclodID()}" th:name="'person['+${stats.index}+'].inclodID'"/>
+										</td>
+
+										<td style="width: 6%; text-align: end;">
+											<label th:text="${paytax.getYearLimit()}"></label>
+											<input type="hidden" th:value="${paytax.getYearLimit()}" th:name="'person['+${stats.index}+'].yearLimit'"/>
+										</td>
+
+										<td style="width: 9%">
+											<input 
+											class="w3-input w3-border"
+											th:value="${paytax.getDecAmount()}"
+											th:name="'person['+${stats.index}+'].decAmount'"
+											style="text-align: right;"
+											type="text" readonly>
+										</td>
+												
+										<td style="width: 9%">
+											<input 
+											class="w3-input w3-border"
+											th:value="${paytax.getVerAmount()}"
+											th:name="'person['+${stats.index}+'].verAmount'"
+											style="text-align: right;"
+											type="text">
+										</td>
+											
+										<td style="width: 13%; text-align: center;">
+											<label th:text="${paytax.getStatus()}"></label>
+											<input type="hidden" th:value="${paytax.getStatus()}" th:name="'person['+${stats.index}+'].status'"/>
+										</td>
+										
+										<td style="width: 21%; text-align: center;">
+											<input class="w3-input w3-border" type="text" th:value="${paytax.getRemarks()}" th:name="'person['+${stats.index}+'].remarks'"/>
+										</td>
+
+										<td style="width: 13%">
+											<input type="hidden" th:name="'person['+${stats.index}+'].attachments'"  th:value="${paytax.getAttachments()}"/>
+											<input
+											class=""
+											name="paytaxfiles"
+											type="file">
+										</td>
+										<td style="width:4%;">
+											<a class="w3-right" th:if="${(paytax.getAttachments() !=null) and (paytax.getAttachments() !='')}" th:href="'/getContent?location='+${paytax.getAttachments()}" target="_blank" download><i class="fa fa-download" aria-hidden="true"></i></a>
+										</td>
+									</tr>
+								</tbody>
+								
+							</table>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+		<button type="button" id="PAYTAX_SUBMIT_BTN" onclick="savePAYTAX()" class="w3-button w3-theme w3-ripple" style="margin-left:auto; margin-right:auto; margin-top:10px;">Submit</button>
+		</div>
+	</div>
+	
+	</form>
+	</div>
+	
+	<div id="PREV_INCOME" class="w3-container legal" style="display:none">
+	<div class="w3-row">
+		<h5 class="w3-text-theme w3-margin-left" >Tips</h5>
+		<!--<img id="VIEW_NAME_BLOCK" class="w3-right" style="margin-right:10px" alt="" src="/icons/keyboard_arrow_down-black-18dp.svg">-->		
+		<!--<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">-->
+		
+		<div>
+			<ul style="list-style-type:''; font-size: small;">
+			  <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>You need to declare your previous employment details if you have joined in the middle of the current financial year for appropriate computation of your taxes.</li>
+			  
+			</ul>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		
+	</div>
+	
+	<form method="post" id="PREV_INCOME_FORM" enctype="multipart/form-data" onsubmit="return false;">
+	<div class="w3-row">
+		
+		<!-- <img id="EDIT_NAM_BLOCK" class="w3-right" alt="" style="width:17px; height:17px; margin-right:10px" src="/icons/icons8-edit.svg"> -->
+		<div id="PREV_INCOME_BLOCK">
+			<input  name="years" th:value="${prevempincome.getYears()}" type="hidden">
+							<table id="PREV_INCOME_TBL" class="w3-striped">
+								<thead>
+									<th>Particulars</th>
+									<th style="text-align: right;">Declared</th>
+									<th style="text-align: right;">Verified</th>
+									<th style="text-align: center;width:10%;">&nbsp;</th>
+								</thead>
+								
+								<tbody style="overflow: scroll; overflow: auto">
+									<!-- Important Row -->	
+									<!--th:if="${hradetails.length == 0}"-->									
+									<tr>
+										<td style="width: 30%;">
+											<label>Previous Employer Income(After Section 10)</label>
+										</td>
+
+										
+										<td style="width: 30%">
+											<input name="emplmid"
+												   th:value="${prevempincome.getEmplmid()}"
+												   type="hidden">
+											<input 
+											class="w3-input w3-border"
+											name="d_amt_prv_inc"
+											th:value="${prevempincome.getD_amt_prv_inc()}"
+											style="text-align: right;"
+											type="text" readonly>
+										</td>
+												
+										<td style="width: 30%">
+
+											<input 
+											class="w3-input w3-border"
+											name="v_amt_prv_inc"
+											th:value="${prevempincome.getV_amt_prv_inc()}"
+											style="text-align: right;"
+											type="text">
+										</td>
+										
+									</tr>
+									<tr>
+										<td style="width: 30%;">
+											<label>Tax Amount</label>
+										</td>
+
+										
+										<td style="width: 30%">
+											<input 
+											class="w3-input w3-border"
+											name="d_amt_prv_tax"
+											th:value="${prevempincome.getD_amt_prv_tax()}"
+											style="text-align: right;"
+											type="text" readonly>
+										</td>
+												
+										<td style="width: 30%">
+											<input 
+											class="w3-input w3-border"
+											name="v_amt_prv_tax"
+											th:value="${prevempincome.getV_amt_prv_tax()}"
+											style="text-align: right;"
+											type="text">
+										</td>
+										
+									</tr>
+								</tbody>
+								
+							</table>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div class="w3-row">
+			<div class="w3-quarter">
+			<p>
+			<label>Attach File</label>
+			<input 
+			class="w3-input w3-border"
+			name="previncomefile"
+			id=""
+			type="file">
+			<input type="hidden" name="attachment" th:value="${prevempincome.getAttachment()}"/>
+			<a th:if="${(prevempincome.getAttachment() !=null) and (prevempincome.getAttachment() !='')}" th:href="'/getContent?location='+${prevempincome.getAttachment()}" target="_blank" download><i class="fa fa-download" aria-hidden="true"></i></a>
+			</p>
+			<p>
+			<label>Status:<span th:text="${prevempincome.getStatus_descr()}"></span></label>
+			
+			</p>
+			<p>
+			<label>Audit Remarks</label>
+			<input class="w3-border w3-input" name="remark" th:value="${prevempincome.getRemark()}">
+			</p>
+			</div>
+		</div>
+		<div style="margin-bottom:15px">
+		<button type="button" id="PREV_SUBMIT_BTN" onclick="savePREV()" class="w3-button w3-theme w3-ripple" style="margin-left:auto; margin-right:auto; margin-top:10px;">Submit</button>
+		</div>
+	</div>
+
+	</form>
+	</div>
+
+	</div>
+<script src="/js/taxdeclaration/approvetaxdeclaration.js"></script>
+</div>
+</div>

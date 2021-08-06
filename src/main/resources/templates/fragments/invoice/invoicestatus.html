@@ -1,0 +1,100 @@
+<div th:fragment="invoicestatus">
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom">
+                <h4 style="font-weight: 400; display: inline-block;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;" /> <i class="fas fa-file-invoice" style="color: #ff00ff;"></i>&nbsp;Generated Invoice Status
+                </h4>
+                <!--<input style="display:inline-block; margin-top:10px;" value="Save" type="button" id="savebtn" onClick="" class="w3-btn w3-theme w3-right w3-round-large"/>-->
+            </div>
+        </div>
+        <hr class="hrline" />
+
+		<form method="post" id="invoice_search" onsubmit="return false;">
+
+        	<div class="w3-bar">
+				<div class="w3-bar-item" style="padding: 0px 0px 0px 16px">
+						<label>From Date</label><span style="color: red;">*</span> 
+						<input type="date" name="startdt" id="startdt" class="w3-input w3-border"/>
+						<span id="fd" style="display:none;color: red;">Fill From Date</span>
+				</div>
+				<div class="w3-bar-item" style="padding: 0px 0px 0px 2px">
+						<label>To Date</label><span style="color: red;">*</span> 
+						<input type="date" name="enddt" id="enddt" class="w3-input w3-border"/>
+						<span id="td" style="display:none;color: red;">Fill To Date</span>
+				</div>
+				<div class="w3-bar-item" style="padding: 0px 0px 0px 2px">
+			            <label>Business Unit</label><span style="color: red;">*</span> 
+			            <select class="w3-select w3-border" name="busid" id="busid">
+			                <option selected disabled></option>
+			                <option th:each="bu : ${busunit}" th:value="${bu.getBusinessunitid()}" th:text="${bu.getName()}"></option>
+			            </select>
+						<span id="bu" style="display:none;color: red;">Select Business Unit</span>
+				</div>
+				<div class="w3-bar-item" style="padding: 0px 0px 0px 2px">
+			            <label>Reimbursement Type</label>
+			            <select class="w3-select w3-border" name="remid" id="remid">
+			                <option value="0" selected disabled></option>
+			                <option th:each="rem : ${remburse}" th:value="${rem.getId()}" th:text="${rem.getDescription()}"></option>
+							<option value="1">Telephone Reimbursement</option>
+							<option value="2">Transport Reimbursement</option>
+							<option value="5">Entertainment Reimbursement</option>
+							<option value="7">CDA and Vehicle Reimbursement</option>
+							<option value="12">TADK Reimbursement</option>
+			            </select>
+				</div>
+
+				<div class="w3-bar-item" style="padding: 22px 0px 0px 2px">
+					<div id="invsearch" class="w3-btn w3-blue w3-round" style="transform: scale(1);" onclick="searchinvoice('startdt','enddt','busid','remid');"><i class="fa fa-search"></i></div>
+				</div>
+
+
+        	</div>
+			<div class="w3-bar">
+				<div class="w3-bar-item" style="padding: 16px 0px 0px 16px">
+					<div id="btnexportxl" class="w3-btn w3-green w3-round" style="display:none;transform: scale(1);" onclick="exportTableToExcel('invoice','invoice_report');"><i class="far fa-file-excel" style="font-size: 20px;"></i></div>
+				</div>
+				<div class="w3-bar-item" style="padding: 16px 0px 0px 4px">
+					<div id="btnexportpdf" class="w3-btn w3-red w3-round" style="display:none;transform: scale(1);" onclick="exportToPdf();"><i class="far fa-file-pdf" style="font-size: 20px;"></i></div>
+				</div>
+			</div>
+			
+		</form>
+		
+		<!-- code for data table starts here -->
+			<div class="w3-row" style="margin-top:10px">
+				<div class="w3-full">
+					<div class="w3-container">						
+						<div id="invsearch_result" style="display: none;" class="w3-responsive">
+							<table border="1" id="invoice" class="w3-table-all" style="width:100%;text-align: center;">
+								<thead>
+									<tr>
+										<th style="text-align: center;">EBS Invoice ID</th>
+										<th style="text-align: center;">Invoice No</th>										
+										<th style="text-align: center;">Person Number</th>
+										<th style="text-align: center;">Person Name</th>
+										<th style="text-align: center;">Reimbursement Name</th>
+										<th style="text-align: center;">Vender ID</th>							
+										<th style="text-align: center;">Site ID</th>																
+										<th style="text-align: center;">Approved Amount</th>					
+										<th style="text-align: center;">Business Unit Name</th>		
+										<th style="text-align: center;">Status</th>			
+										<th style="text-align: center;">Processed Date</th>
+																												
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noinvData" class="w3-responsive">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- code for data table ends here -->
+    </div>
+<script src="/js/table2excel.js"></script>
+<script src="/js/invoice/invoice.js"></script>
+</div>

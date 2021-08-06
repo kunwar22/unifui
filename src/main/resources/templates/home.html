@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unif ERP</title>
+<link rel="icon" type="image/ico" href="/favicon.ico">
+<link rel="stylesheet" type="text/css" href="/css/bootbox/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/w3.css" />
+<link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+<link rel="stylesheet" type="text/css" th:href="${theme}" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" href="/webjars/font-awesome/5.14.0/css/all.css">
+<link rel="stylesheet" type="text/css" href="/css/gridstack.min.css" /> 
+<link rel="stylesheet" type="text/css" href="/css/select2/select2.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/codemirror_css/codemirror.css"/>
+<link rel="stylesheet" type="text/css" href="/css/codemirror_css/idea.css"/> 
+<link rel="stylesheet" type="text/css" href="/css/_custom.css" />
+<link rel="stylesheet" type="text/css" href="/css/collapzion.min.css" />
+
+<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/select2/select2.min.js" defer></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+</head>
+<body>
+
+<!-- Navbar -->
+<div th:replace="fragments/topNavbar :: navbar"></div>
+
+<!-- Sidebar -->
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+<div class="w3-main">
+
+
+	<div class="w3-row w3-padding-64">
+    	<div class="w3-container">
+
+      		<div id="replace_div">
+      		
+      			<div class="w3-main" style="margin-top:10px;margin-bottom:16px;">
+				<div style="position: relative;">
+					<div class="w3-container w3-margin-bottom">
+						<h4 style="font-weight: 400;">
+							<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+								style="cursor: pointer;"> <i class="fas fa-chart-line" aria-hidden="true" style="color:blue"></i>&nbsp;&nbsp;My Dashboard
+						</h4>
+						<!-- CHANGED BY SNIGDHAA 10-NOV-2020 START -->	
+						<!-- <div th:include="fragments/analytics/selfserviceanalytics :: selfserviceanalytics"></div> -->	
+						<div class="w3-border">	
+							<div class="tablink">	
+							  <div id="claimedreimbursement" class="w3-hover-theme my-hover w3-button dsh" onclick="opendashboard(this.id)" rm="/mydashboard/claimedreimbursement">Claimed Reimbursement</div>	
+							  <div id="managereimbursement" class="w3-hover-theme my-hover w3-button dsh" onclick="opendashboard(this.id)" rm="/mydashboard/managereimbursement" style="margin-left:-4px">Manage Reimbursement</div>	
+							  <div id="holiday" class="w3-hover-theme my-hover w3-bar-item w3-button dsh" onclick="opendashboard(this.id)" rm="/mydashboard/holiday" style="margin-left:-4px">Holiday</div>						  	
+							</div>												
+							<div id="mydashboard"></div>	
+						</div>	
+						<!-- CHANGED BY SNIGDHAA 10-NOV-2020 END -->					</div>
+				</div>
+			</div> 
+  			</div>
+  			
+			
+    	</div>
+  	</div>
+</div>
+
+<script src="/js/bootbox/bootstrap.min.js"></script>
+<script src="/js/bootbox/bootbox.all.min.js"></script>
+
+<script src="/js/codemirror_js/codemirror.js"></script>
+<script src="/js/codemirror_js/groovy.js"></script>
+<script src="/js/codemirror_js/closebrackets.js"></script>
+<script src="/js/codemirror_js/matchbrackets.js"></script>
+
+<script src="/js/navBar.js"></script>
+<script src="/js/gridstack.all.js"></script>
+<script src="/js/Chart.min.js"></script>
+<script src="/js/chartJsHelper.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<!-- ------------------------------- -->
+
+<script src="/js/datatables.min.js"></script>
+
+<script type="text/javascript">
+	var grid = GridStack.init();
+</script> 
+</body>
+</html>

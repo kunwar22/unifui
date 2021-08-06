@@ -1,0 +1,271 @@
+<div th:fragment="createfreeAccomodtion">
+
+	<script th:inline="javascript">
+        /*<![CDATA[*/
+        var resultfinal = /*[[${finalres}]]*/;
+        var accomo = /*[[${accomo}]]*/;
+        var pernum = /*[[${pnum}]]*/;
+        var pername = /*[[${pername}]]*/;
+        /*]]>*/
+    </script>
+
+<div id="REPORTS_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+	</div>
+
+	<div class="w3-bar w3-theme-l5" style="margin-top: 26px;">
+		<h4 class="w3-text-theme w3-bar-item">
+			<i class="fas fa-tasks"></i>&nbsp;&nbsp;Manage Rent Free Accomodation
+		</h4>
+		<div class="buttonbarpadding w3-bar-item w3-right"
+			style="margin-top: 3px;">
+			<div id="SaveAcco" onclick="loadSavelease(this,'add');"
+				class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin"
+				type="button">
+				<i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Submit
+			</div>
+			<div id="EditAcco" onclick="loadSavelease(this,'edit');" style="display:none"
+				class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin"
+				type="button">
+				<i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Submit
+			</div>
+			<div id="cancilAccomodation"
+				class="w3-bar-item w3-btn w3-grey w3-round-large w3-right buttonbarmargin"
+				type="button">
+				<i class="fa fa-times" aria-hidden="true" style="color: red"></i>&nbsp;&nbsp;Cancel
+			</div>
+
+		</div>
+
+	</div>
+	<div id="fragmaent_container"
+		th:include="forms/reimbursement/header :: header"></div>
+		<div id="AddRfa" 
+						class=" w3-btn w3-blue w3-round-large w3left buttonbarmargin"
+						type="button">
+						<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add
+		</div>
+		
+	<hr
+		style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+	<form method="post" id="Accomodation_save"
+		enctype="multipart/form-data" onsubmit="return false;">
+		
+<div style="display:none">
+	<input readonly id="txtpersonNumber" type="text" name="personNumber" th:value="${personInfo.getPersonnumber()}" />
+	<input readonly id="txtpersonName" type="text" name="personName" th:value="${personInfo.getPersonname()}" />
+	<input readonly id="leaseId" type="text" name="leaseId"/>
+	<input readonly id="enddate" type="date" name="enddate"/>	
+</div>
+
+
+		<div class="w3-row" id="RFA_Caalculations" style="display:none">
+			<div class=w3-half>
+				<div class="w3-container">
+
+					<p>
+						<label>Effective start date</label> <input type="date"
+							id="Start_Date" name="startdate"
+							class="w3-input w3-border w3-round" style="height: 38px">
+					</p>
+					<p>
+						<label>RFA Type</label> <select class="w3-select w3-border"
+							id="accomodationTypeId" name="accomodationTypeId">
+							<option value="0" ></option>
+							<option th:each="actype: ${accomo}" th:value="${actype.getId()}"
+								th:text="${actype.getDescription()}">
+						</select>
+					</p>
+					<p id="011">
+						<label>Vendor Payment Amount</label> <input name="pmtToVendor_amt"
+							id="pmtToVendor_amt" class="w3-input w3-border" type="text"
+							style="height: 38px"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+					</p>
+					<p id="012">
+						<label>Lease Payment Amount</label> <input name="leaseRecovery_amt"
+							id="leaseRecovery_amt" class="w3-input w3-border" type="text"
+							style="height: 38px"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+					</p>
+					
+					<p id="013">
+						<label>Quarter Payment Amount</label> <input name="qtrRentRecovery_amt"
+							id="QuarterRecovery_amt" class="w3-input w3-border" type="text"
+							style="height: 38px"
+							oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+					</p>
+
+				</div>
+			</div>
+			<div class="w3-half w3-container w3-border w3-border-black" style="display:none">
+				<h6 class="w3-center" style="color: black;">Calculation</h6>
+				<br>
+				<div class="w3-row">
+					<p>
+						<label style="color: black;">Calculated amount</label><input
+							type="text"   id="callculateamt" name="calculateamt" class="w3-input w3-border w3-round" readonly style="background-color: #d5d2d2;"/>
+					</p>
+
+					<p>
+						<label style="color: black;">Override amount</label><input
+							type="text" readonly  id="overrideamt" name="overrideamt" class="w3-input w3-border w3-round" />
+					</p>
+					<div id="SaveAcco" onclick="calculateRfa();"
+						class=" w3-btn w3-green w3-round-large w3-right buttonbarmargin"
+						type="button">
+						<i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;&nbsp;Calculate
+					</div>
+					<br>
+				</div>
+			</div>
+			</div>
+
+			<!------------------------------------------------>
+
+			<br> 
+			<div class="w3-row">
+				<div id="HistoryresultSec" class="w3-responsive"
+					style="display: none">
+					
+					<table id="accoHistoryList" class="display compact w3-table"
+						style="width: 100%;">
+						<thead>
+							<tr class="w3-theme-d3">
+								<th>Person Number</th>
+								<th>Name</th>
+								<th>RFA Type / HRA</th>
+								<th>Start Date</th>
+								<th>End Date.</th>
+								<th>Vendor Amt.</th>
+								<th>Lease Amt.</th>
+								<th>Quarter Amt.</th>
+								<th>Edit</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div id="HistorynoData" class="w3-responsive" style="display: none">
+					<div>
+						<p>No record found...</p>
+					</div>
+				</div>
+				<div id="jsonLoaderPage" class="w3-responsive" style="display: none">
+					<div>
+						<div class='w3-container' style='width: 100%; text-align: center'>
+							<i class='fa fa-cog fa-spin' style='font-size: 30px;'></i>
+							<p style="color: black;">Loading......</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!------------------------------------------------>
+
+
+		<script src="/js/payroll/transection/manageAccomodation.js"></script>
+	</form>
+
+	<!-- line modal -->
+	<div id="id02" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<h3 align="left">Search and Select:Person</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+
+						<div class="w3-row-padding ">
+
+							<div class="w3-half">
+								<p>
+									<label style="float: left;">Person Number&nbsp;&nbsp;</label> <input
+										value="" class="w3-input w3-border" name="Leg_Name"
+										id="CR_PER_POP_ID" type="text">
+								</p>
+							</div>
+
+							<div class="w3-half">
+								<p>
+									<label style="float: left;">Person Name&nbsp;&nbsp;</label> <input
+										value="" class="w3-input w3-border" name="Leg_Country"
+										id="CR_PER_POP_Name" type="text">
+								</p>
+							</div>
+						</div>
+
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="CR_PER_POP_SEARCH"
+											class="w3-button w3-theme w3-grey">Search</button>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="resultSecPerson" class="w3-responsive"
+							style="display: none">
+							<table id="PersonAccomodationList"
+								class="display compact w3-table" style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>Person Id</th>
+										<th>Person Number</th>
+										<th>Person Name</th>
+										<th>Nature of Employment</th>
+
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataPerson" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+						<div id="jsonLoader" class="w3-responsive" style="display: none">
+							<div>
+								<div class='w3-container'
+									style='width: 100%; text-align: center'>
+									<i class='fa fa-cog fa-spin' style='font-size: 30px;'></i>
+									<p style="color: black;">Loading......</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="CR_PER_POP_OK" class="w3-button w3-theme w3-grey"
+									style="display: none">OK</button>
+								<button id="CR_PER_POP_CANCEL"
+									class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<script src="/js/payroll/transection/manageAccomodation.js"></script>
+		</div>
+	</div>
+	<!-- PopUp End Here -->
+
+
+</div>
+
+
+<script src="/js/payroll/transection/manageAccomodation.js"></script>
+
+</div>

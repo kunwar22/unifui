@@ -1,0 +1,45 @@
+<div th:fragment="manageTeam">
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom">
+                <h4 style="font-weight: 400; display: inline-block;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;" /> <i class="fas fa-users" style="color: red;"></i>&nbsp;My Team
+                </h4>
+                <!--<input style="display:inline-block; margin-top:10px;" value="Search" type="button" id="searchbtn" onClick="loadapprovalactions()" 
+            class="w3-btn w3-theme w3-right w3-round-large" disabled/>-->
+            </div>
+        </div>
+        <hr class="hrline" />
+
+        <div class="w3-row w3-container">
+            <div th:each="reportee : ${reportees}">
+                <div class="w3-card w3-third w3-white w3-container w3-margin w3-padding-small w3-border w3-round-large">
+                    <div style=" background-color: #eceff3;">
+                        <p style="padding-bottom: -4px;margin-bottom: 0px;">
+							<label class="w3-text-indigo" style="font-weight: bold;" th:text="${reportee.getPersonname()}"></label><br/>
+							<label class="w3-text-indigo" style="font-weight: bold;" th:text="${reportee.getPersonnumber()}"></label>&nbsp;
+							<label class="w3-text-black" th:text="${reportee.getDesignation()}"></label>&#44;
+							<label class="w3-text-black w3-medium" th:text="${reportee.getDepartment()}"></label><br/>
+						</p>
+					</div>
+
+					<!--<div class="w3-card-4 w3-white" style="height: 110px;">-->
+                    <div class="w3-left" style="width:135px;height: 124px;">
+                        <img src="/images/avatar.png" alt="Avatar" class="w3-image w3-left" width= "135px" height="124px"/>
+                    </div>
+                    <div class="w3-left" style="width: 64%; padding-left:10px;">
+                        <p style="margin: 0">
+							<label class="w3-text-theme" style="font-weight: bold;" >Contact</label><br/>
+							<label class="w3-text-black" th:text="${reportee.getContact()}"></label><br/>
+                            <hr>
+							<label class="w3-text-theme" style="font-weight: bold;" >Location</label><br/>
+							<label class="w3-text-black" th:text="${reportee.getLocation()}"></label><br/>
+                        </p>
+                    </div>
+                <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <!-- <script src="/js/team/manageteam.js"></script>-->
+    </div>
+</div>

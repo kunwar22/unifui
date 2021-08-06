@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="navbar">
+	<style>
+		.xyz:hover{
+			background-color:yellow;
+		}		
+	</style>
+	<div class="w3-top" style="z-index:3">
+
+
+
+
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			var loginid = /*[[${userloginid}]]*/;
+
+			/*]]>*/
+		</script>
+
+
+		<div class="w3-bar w3-theme-l3 w3-top w3-left-align w3-large">
+	    	<a th:if="${component == 'admin'}" class="w3-bar-item w3-right w3-large w3-padding-medium" href="javascript:void(0)" onclick="w3_open()"><i class="material-icons" aria-hidden="true" style="font-size:25px; padding-top: 5px;">reorder</i></a>
+	    	<a th:if="${component == 'admin'}" class="w3-bar-item w3-right w3-large  w3-padding-medium"  href="/logout" style="cursor: pointer; padding-right:0px; padding-left:0px;"><i class="material-icons" aria-hidden="true" style="font-size:25px; padding-top: 5px;">power_settings_new</i></a>
+	    	<a th:if="${component == 'selfservice'}" class="w3-bar-item w3-right w3-large  w3-padding-medium"  href="/logout" style="cursor: pointer; padding-right:10px; padding-left:0px;"><i class="material-icons" aria-hidden="true" style="font-size:25px; padding-top: 5px;">power_settings_new</i></a>
+			<a class="w3-bar-item w3-right w3-large w3-padding-medium" style="cursor: pointer; padding-left:0px; padding-right:0px;" onclick="getNotify()">
+				<span class="badge" style="position: absolute; border-radius:50%; font-size:11px; color: white; background-color: red; right:39px;" th:if="${rowcount.getMessage()!='0'}" th:text="${rowcount.getMessage()}"></span>
+				<i class="material-icons" aria-hidden="true" style="font-size:25px; padding-top:5px; padding-right:13px;">notifications_active</i>
+			</a>
+	    	<a th:if="${component == 'admin'}" class="w3-bar-item w3-right w3-large  w3-padding-medium" href="/selfservice" style="padding-left:0px; "><i class="material-icons" aria-hidden="true" style="font-size:25px; padding-top: 5px;">people</i></a>
+	    	<a th:if="${component == 'selfservice'}" class="w3-bar-item w3-right w3-large w3-padding-medium" href="/home"><i class="material-icons" id="admin_icon" aria-hidden="true" style="font-size:25px; padding-top: 5px;">settings</i></a>
+			<a th:if="${component == 'selfservice'}" id="reimbursementVideo" class="w3-bar-item w3-right w3-large  w3-padding-medium" rm="/videoPlaylist/manageVideoPlaylist" style="cursor: pointer; padding-right:0px; padding-left:0px;"><i class="material-icons" aria-hidden="true" style="font-size:25px; padding-top: 5px;">contact_support</i></a>
+			<a th:if="${component == 'selfservice'}" id="selfservicehome" class="w3-bar-item w3-right w3-large  w3-padding-medium" rm="/mydashboard/loaddashboardfrag" style="cursor: pointer; padding-right:10px; padding-left:0px;"><i class="material-icons" aria-hidden="true" style="font-size:25px; padding-top: 5px;">home</i></a>
+
+			<a class="w3-bar-item  w3-padding-large"><img alt="logo" src="/images/lmrc_logo.png" style="width: 52px;"><strong><i></i></strong></a>
+	  	</div>
+	  	
+		<div class=" w3-bar-block w3-border w3-animate-top" id="notifyid" 
+			style="display:none;overflow-x:auto;right:0;max-height:90%;max-width:300px;position: fixed;margin-top: 49px">
+			<div th:if="${NotifynavBar!=null and NotifynavBar.length!=0}" >
+				<div class="w3-container w3-theme">
+					<div class="w3-half">
+						<h4>Notifications</h4>
+					</div>
+					<div class="w3-half" style="padding-top:13px;text-align:right">
+						<i class="fa fa-window-close w3-hover-white" style="cursor:pointer;" aria-hidden="true" onclick="getNotify2()"></i>
+					</div>
+				</div>
+			<div style="cursor: pointer; background-color: white;word-wrap: break-word;color:#462f91; padding: 12px"  th:each="notifydata ,stats: ${NotifynavBar}"  >
+				
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" th:if="${notifydata.getModuleid() > 0 and notifydata.getModuleid() < 2}" th:rm="'/reimbursement/viewteleapprovaldata/'+${notifydata.getRequestid()}+'/view'" onclick="go_approval(this)">
+				<span>Action Required:</span><br>
+				<p th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+						<div style="text-align:right">
+							<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+				
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" 
+						th:if="${notifydata.getModuleid() ==2}" th:rm="'/reimbursement/viewtransapprovaldata/'+${notifydata.getRequestid()}+'/view'" onclick="go_approval(this)">
+						<span>Action Required:</span><br>
+						<p  th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+						<div style="text-align:right">
+							<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+						</div>			
+					</div>
+
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity"
+					 th:if="${notifydata.getModuleid() == 4}" th:rm="'/reimbursement/viewElectricityReimbursementApproval/'+${notifydata.getRequestid()}+'/view/Unread'" onclick="go_approval(this)">
+					<span>Action Required:</span><br>
+					<p  th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+					<div style="text-align:right">
+						<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity"
+					 th:if="${notifydata.getModuleid() ==5}" th:rm="'/reimbursement/viewentertainmentapprovaldata/'+${notifydata.getRequestid()}+'/view/Unread'" onclick="go_approval(this)">
+					<span>Action Required:</span><br>
+					<p  th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+					<div style="text-align:right">
+						<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity"
+					 th:if="${notifydata.getModuleid() ==6}" th:rm="'/reimbursement/viewadhocdataApproval/'+${notifydata.getRequestid()}+'/view/Unread'" onclick="go_approval(this)">
+					<span>Action Required:</span><br>
+					<p  th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+					<div style="text-align:right">
+						<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+
+
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" 
+						th:if="${notifydata.getModuleid() ==7}" th:rm="'/cdaVehicle/viewcdaapproval/'+${notifydata.getRequestid()}+'/view'" onclick="go_approval(this)">
+						<span>Action Required:</span><br>
+						<p  th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+						<div style="text-align:right">
+							<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+						</div>
+					</div>
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity"
+					 th:if="${notifydata.getModuleid() ==9}" th:rm="'/reimbursement/approvalMedicalAdvance/'+${notifydata.getRequestid()}+'/view/Unread'" onclick="go_approval(this)">
+					<span>Action Required:</span><br>
+					<p  th:text="${notifydata.getModulename()}+' for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+					<div style="text-align:right">
+						<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity"
+					 th:if="${notifydata.getModuleid() ==10}" th:rm="'/reimbursement/medireimbApproval/'+${notifydata.getRequestid()}+'/view/Unread'" onclick="go_approval(this)">
+					<span>Action Required:</span><br>
+					<p  th:text="${notifydata.getModulename()}+' for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+					<div style="text-align:right">
+						<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity"
+					 th:if="${notifydata.getModuleid() ==11}" th:rm="'/ctgReimbursement/viewctgapproval/'+${notifydata.getRequestid()}+'/view/Unread'" onclick="go_approval(this)">
+					<span>Action Required:</span><br>
+					<p th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+					<div style="text-align:right">
+						<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" 
+						th:if="${notifydata.getModuleid() ==12}" th:rm="'/reimbursement/viewTADKApproval/'+${notifydata.getRequestid()}+'/view'" onclick="go_approval(this)">
+						<span>Action Required:</span><br>					
+						<p th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+						<div style="text-align:right">
+							<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+						</div>					
+					</div>
+
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity"
+					 th:if="${notifydata.getModuleid() ==13}" th:rm="'/miscelleneous/viewapproval/'+${notifydata.getRequestid()}+'/view/Unread'" onclick="go_approval(this)">
+					<span>Action Required:</span><br>
+					<p  th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+					<div style="text-align:right">
+						<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity"
+					 th:if="${notifydata.getModuleid() ==3}" th:rm="'/reimbursement/viewApprovalDataChild/'+${notifydata.getRequestid()}+'/view_child/Unread'" onclick="go_approval(this)">
+					<span>Action Required:</span><br>
+					<p  th:text="${notifydata.getModulename()}+' for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+					<div style="text-align:right">
+						<label style="color:black" th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+
+
+				<div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity"
+					 th:if="${notifydata.getModuleid() ==17}"
+					 th:rm="'/reimbursement/viewtravelExpenseapprovaldata/'+${notifydata.getRequestid()}+'/view/Unread'"
+					 onclick="go_approval(this)">
+					<span>Action Required:</span><br>
+					<p
+							th:text="${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}">
+					</p>
+					<div style="text-align:right">
+						<label style="color:black"
+							   th:text="'Scheduled: '+${notifydata.getSubmittedondate()}"></label>
+					</div>
+				</div>
+				<!-- <div style="cursor: pointer; background-color: white;word-wrap: break-word;color:#462f91; padding: 12px" onclick="go_approval(this)" th:each="notifydata ,stats: ${(NotifynavBar)}" th:rm="'/reimbursement/viewteleapprovaldata/'+${notifydata.getRequestid()}+'/view'" >
+
+				<p style="font-weight: bold" th:text="'Action Required: '+${notifydata.getModulename()}+' reimbursement for '+${notifydata.getSubmittedbypersonname()}+' is '+${notifydata.getStatus()}"></p>
+				<br><label th:text="'Schedule: '+${notifydata.getSubmittedondate()}"></label>
+			</div> -->
+
+			</div>
+			</div>
+		</div>
+		<div th:if="${component == 'admin'}" id="breadcrumb"  onClick="nav_open()" class="w3-theme-d4 w3-bar" style="padding-left:20px; padding-right:20px; padding-top:3px; padding-bottom:3px; margin-top:51px; font-family:monospace; font-size: medium;">
+			<a>-</a>
+		</div>
+		<div th:if="${component == 'admin'}" id="rootFloatingNav">
+		</div>
+	</div>
+	<!-- Overlay effect when opening sidebar on small screens -->
+	<div id="myOverlayNav" class="w3-overlay" onclick="nav_close()" style="cursor:pointer" title="close floating nevigation bar"></div>
+	 <!--<script>
+		$(document).ready(function() {
+			
+			$("#notifyid").hide();
+
+
+		});
+		$(document).mouseup(function(e){
+			$("#notifyid").hide();
+		});
+	</script> -->
+	<script>
+
+		$('#reimbursementVideo').on('click', function(e){
+			var url = $(this).attr("rm");
+			$('#replace_div').load(url);
+		});
+
+		$('#selfservicehome').on('click', function(e){
+			var url = $(this).attr("rm");
+			$('#replace_div').load(url);
+		});
+
+	</script>
+</div>
+
+</body>
+</html>
+

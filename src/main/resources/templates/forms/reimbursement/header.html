@@ -1,0 +1,74 @@
+<div th:fragment="header">
+	       
+	        
+	       	<div class="w3-container w3-row" >
+	       		<div class="w3-padding">
+					<div class="w3-row">
+						<div class="w3-quarter w3-container">
+							<div class="w3-container">
+								<img th:if="${(propic.getDescription() !=null) and (propic.getDescription() !='')}" class="w3-circle" onclick="openpopup();" th:src="'/getContent?location='+${propic.getDescription()}" style="width:150px; height:150px; border:2px solid lightgray;"/>
+								<img th:if="${(propic.getDescription() == null) or (propic.getDescription() =='')}" class="w3-circle" onclick="openpopup();" src="/images/profile_pic.jpg" style="width:150px; height:150px; border:2px solid lightgray;"/>
+							</div>
+						</div>
+						
+							<div class="w3-quarter w3-container" >
+									<p>
+										<label>Person Number: &nbsp;&nbsp;</label></br>
+										<label style="color: blue;" th:text="${personInfo.getPersonnumber()}"></label>
+									</p>
+									<p>
+										<label>Employee Name: &nbsp;&nbsp;</label></br>
+										<label style="color: blue;"  th:text="${personInfo.getPersonname()}"></label>
+									</p>
+									<p>
+										<label>Enterprise Hire Date:</label></br>
+										<label style="color: blue;" id="HRDATE" th:text="${personInfo.getJoiningdate()}"></label>
+									</p>
+
+								<script>
+									var datee = $("#HRDATE").text();
+									datee = datee.split("-").reverse().join("-");
+									$("#HRDATE").text(datee);
+								</script>
+													
+								
+							</div>
+							<div class="w3-quarter w3-container" >
+									
+									 <p>
+										<label>Job: &nbsp;&nbsp;</label></br>
+										<label id="lblJob" style="color: blue;" th:text="${personInfo.getJob()}"></label>
+									</p>
+									 <p>
+										<label>Department: &nbsp;&nbsp;</label></br>
+										<label style="color: blue;" th:text="${personInfo.getDepartment()}"></label>
+									</p>
+									<p>
+										<label>Designation: &nbsp;&nbsp;</label></br>
+										<label id="lblDesignation" style="color: blue;" th:text="${personInfo.getDesignation()}"></label>
+									</p>
+									
+											
+								
+							</div>
+							<div class="w3-quarter w3-container" >
+									<p>
+										<label>Phone Number: &nbsp;&nbsp;</label></br>
+										<label style="color: blue;" th:text="${personInfo.getPhonenumber()}"></label>
+									</p>					
+									<p>
+										<label>Email Id: &nbsp;&nbsp;</label></br>
+										<label style="color: blue;" th:text="${personInfo.getEmailaid()}"></label>
+									</p>
+									<p>
+										<label>Nature of Employment: &nbsp;&nbsp;</label></br>
+										<label id="lblNoe" style="color: blue;" th:text="${personInfo.getEmployeetype()}"></label>
+									</p>	
+									
+								</div>
+							
+					
+					</div>
+				</div>
+	       	</div>	   
+</div>               

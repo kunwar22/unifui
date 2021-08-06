@@ -1,0 +1,1005 @@
+<div th:fragment="medicalReimbursement">
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	    var resultfinal = [[${result}]];
+	    var mode = [[${mode}]];
+	    var clid = [[${medrdata.getClaimid()}]];
+	/*]]>*/
+	</script>
+   <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;">  
+                        <i class="fa fa-pills" style="color: #f79b7c;"></i>
+                        &nbsp;Medical Reimbursement
+                </h4>
+            </div>
+        </div>
+
+<!-- ------------- Medical Reimbursement snigdhaa vaish start -------------- -->
+
+      <div id="submitblock" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight: bold"> </label> 
+					<a id="okbtn" rm="/reimbursement/medireimbsearch">OK</a>	
+				</div>	
+			</div>
+		</div>        
+<!-- ------------------------ HEADER STARTS HERE ---------------------------- -->
+       	<div class="w3-row">
+       		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+   	
+			<div class="w3-bar w3-theme-l3">
+				<h5 class="w3-bar-item" >Claim Details</h5>
+				
+				<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${medrdata.getClaimid() == 0}">
+					<div type="button" class="w3-btn w3-red w3-round-large" id="backview" onclick="backBtnFunc()"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+					<div type="button" class="w3-btn w3-blue w3-round-large" id="btnSave" onclick="seri(0,this.id)"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Claim</div>
+					<div type="button" class="w3-btn w3-green w3-round-large" id="btnSubmit" onclick="seri(2)" value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Save & Submit</div>
+				</div>
+			
+			
+				<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${medrdata.getClaimid()!=0} and ${mode == 'edit'}">
+					<div type="button" class="w3-btn w3-red w3-round-large" id="backview" onclick="backBtnFunc()"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+					<div type="button" class="w3-btn w3-blue w3-round-large" id="btnSave" onclick="seri(1)"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update</div>
+					<div type="button" class="w3-btn w3-green w3-round-large" id="btnSubmit" onclick="seri(2)" value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit</div>
+					<!-- <div type="button" class="w3-btn w3-green w3-round-large" id="btnSubmit" onclick="errorfunc();" value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit</div> -->
+				</div>
+				
+				<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${medrdata.getClaimid()!=0} and ${mode == 'view'}">
+					<div type="button" class="w3-btn w3-red w3-round-large" id="backview" onclick="backBtnFunc()"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+					<div type="button" class="w3-btn w3-grey w3-round-large" onclick="submitbtn()"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Declaration</div>
+				</div>
+			</div>
+			<input type="text" id="checkmode" th:value=${mode} style="display:none">
+		</div>
+		
+<!-- -------------------------- FORM STARTS HERE --------------------------------- -->
+		<div class="w3-row">
+			<form id="savemedreim" onsubmit="return(false)" enctype="multipart/form-data">
+				<div style="display:none" class="w3-row w3-container">
+					<input id="statusid" value="" type="hidden" name="statusid"/>					
+					<input type="text" id="rid" class="reimbid" name="reimburseid" th:value="${medrdata.getReimburseid()}">
+					<input type="text" id="rname" class="reimbname" name="reimbursename" th:value="${medrdata.getReimbursename()}">
+					<input type="text" id="pnum" class="pernum" name="personnumber" th:value="${personInfo.getPersonnumber()}">
+					<input type="text" id="pid" class="perid" name="personid" th:value="${personInfo.getPersonid()}">
+					<input type="text" id="sts" class="status" name="status" th:value="${medrdata.getStatus()}">																						
+				</div>
+				<div th:if="${medrdata.getClaimid() != 0}">
+					<div class="w3-container w3-quarter">
+						<label>Claim ID:</label>
+						<input type="text" id="acid" class="w3-input w3-border w3-round medrclaim" name="claimid" th:value=${medrdata.getClaimid()} readonly>
+					</div>
+				</div>
+<!-- ------- FOR NEW VALUE -------------------- -->
+				<div class="w3-container w3-row " style="margin-bottom:20px">
+					<h6 class="w3-text-theme" style="font-weight: bold; margin-top:20px; bottom: 2px;">General Information</h6>
+					<div class="w3-border" style="padding-top:10px">
+						<div class="w3-row">
+						
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">							
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Claim Type:&nbsp;</label><span style="color:red;"> *</span>
+										<select name="claimtype" class="w3-input w3-border w3-round" id="claimtype" onchange="claimchange(this.value)" disabled>
+											<option value="0">Select</option>
+											<option th:each="i:${claimtype}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+												th:selected="${i.getId() == medrdata.getClaimtype()}"></option>										
+										</select>
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Claim Type:&nbsp;</label><span style="color:red;"> *</span>
+										<select name="claimtype" class="w3-input w3-border w3-round" id="claimtype" onchange="claimchange(this.value)">
+											<option value="0">Select</option>
+											<option th:each="i:${claimtype}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+												th:selected="${i.getId() == medrdata.getClaimtype()}"></option>										
+										</select>
+										<input type="text" name="claimtypevalue" id="claimtypevalue" style="display:none">
+										<span style="color:red" id="claimsp"></span>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("claimtype")!=null}'
+											th:text='${bindingResult.getFieldError("claimtype").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							
+							<div th:if="${medrdata.getClaimid() != 0}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Claimed for:&nbsp;</label>	<span style="color:red;"> *</span>
+										<input type="text" th:value="${medrdata.getSelfordependent()}" readonly
+											name="selfordependent" class="w3-input w3-border w3-round" id="selfordependent">
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Claimed for:&nbsp;</label>	<span style="color:red;"> *</span>
+										<select name="selfordependent" class="w3-input w3-border w3-round" id="selfordependent" 
+											onchange="claimedforchange(this.value)">
+											<option value="" selected disabled>Select</option>
+											<option value="Self" th:selected="${'Self' eq medrdata.getSelfordependent()}">Self</option> 
+											<option value="Dependent" th:selected="${'Dependent' eq medrdata.getSelfordependent()}">Dependent</option>										
+										</select>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("selfordependent")!=null}'
+											th:text='${bindingResult.getFieldError("selfordependent").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Hospital Type:&nbsp;</label><span style="color:red;"> *</span>
+										<select name="hospitaltype" class="w3-input w3-border w3-round" id="hospitaltype" disabled>
+											<option value="0">Select</option>
+											<option th:each="i:${hospitaltype}" th:value="${i.getHospitaltypelovid()}" th:text="${i.getName()}"
+												th:selected="${i.getHospitaltypelovid() == medrdata.getHospitaltype()}"></option>										
+										</select>										
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Hospital Type:&nbsp;</label>		<span style="color:red;"> *</span>
+										<select name="hospitaltype" class="w3-input w3-border w3-round" id="hospitaltype" 
+											onchange="changehosname(this.value)">
+											<option value="0">Select</option>
+											<option th:each="i:${hospitaltype}" th:value="${i.getHospitaltypelovid()}" th:text="${i.getName()}"
+												th:selected="${i.getHospitaltypelovid() == medrdata.getHospitaltype()}"></option>										
+										</select>
+										<input type="text" name="hospitaltypevalue" id="hospitaltypevalue" style="display:none" 
+											th:value="${medrdata.getHospitaltypevalue()}">
+										<span style="color:red" 										
+											th:if='${bindingResult != null && bindingResult.getFieldError("hospitaltype")!=null}'
+											th:text='${bindingResult.getFieldError("hospitaltype").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Hospital Name:&nbsp;</label> <span style="color:red;"> *</span>
+										<input type="text" class="w3-input w3-border w3-round" th:value="${medrdata.getHospitalname()}" readonly>																								
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Hospital Name:&nbsp;</label> <span style="color:red;"> *</span>
+										<input type="text" class="w3-input w3-border w3-round" id="hospitalnametext" name="hospitalname"
+											th:value="${medrdata.getHospitalname()}" 
+											th:style="${medrdata.getHospitaltype()!=1 ? 'display:block':'display:none'}">
+										<select class="w3-input w3-border w3-round" id="hospitalname" 
+											th:style="${medrdata.getHospitaltype()==1 ? 'display:block':'display:none'}">
+											<option value="0">Select</option>
+											<option th:each="i:${hospitalname}" th:value="${i.getHospitalnamelovid()}" th:text="${i.getName()}"
+												th:selected="${i.getName() == medrdata.getHospitalname()}"></option>
+										</select>																
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("hospitalname")!=null}'
+											th:text='${bindingResult.getFieldError("hospitalname").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Hospital Name:&nbsp;</label>
+										<input type="text" class="w3-input w3-border w3-round" id="hospitalnametext" name="hospitalname"
+											th:value="${medrdata.getHospitalname()}" 
+											th:style="${medrdata.getHospitaltype()!= 1 ? 'display:block':'display:none'}">
+										<select class="w3-input w3-border w3-round" id="hospitalname" 
+											th:style="${medrdata.getHospitaltype()== 1 ? 'display:block':'display:none'}">
+											<option value="0">Select</option>
+											<option th:each="i:${hospitalname}" th:value="${i.getHospitalnamelovid()}" th:text="${i.getName()}"
+												th:selected="${i.getName() == medrdata.getHospitalname()}"></option>
+										</select>																
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("hospitalname")!=null}'
+											th:text='${bindingResult.getFieldError("hospitalname").getDefaultMessage()}'></span>
+									
+									
+									
+									
+										<!--<label>Hospital Name:&nbsp;</label>
+										<input type="text" class="w3-input w3-border w3-round" id="hospitalnametext" name="hospitalname" style="display:block" disabled>
+										<select class="w3-input w3-border w3-round" id="hospitalname" style="display:none" disabled>
+											<option value="0">Select</option>
+											<option th:each="i:${hospitalname}" th:value="${i.getHospitalnamelovid()}" th:text="${i.getName()}"
+												th:selected="${i.getName() == medrdata.getHospitalname()}"></option>
+										</select>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("hospitalname")!=null}'
+											th:text='${bindingResult.getFieldError("hospitalname").getDefaultMessage()}'></span>-->
+									</p>
+								</div>
+							</div>
+							
+						</div>
+						<div class="w3-row">
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Period From:&nbsp;</label>	<span style="color:red;"> *</span>
+										<input type="date" name="periodfrom" id="periodfrom" class="w3-input w3-border w3-round"
+											 th:value="${medrdata.getPeriodfrom()}" readonly>
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Period From:&nbsp;</label>	<span style="color:red;"> *</span>
+										<input type="date" name="periodfrom" id="periodfrom" class="w3-input w3-border w3-round"
+											th:value="${medrdata.getPeriodfrom()}">
+										<span style="color:red" id="fromsp"></span>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("periodfrom")!=null}'
+											th:text='${bindingResult.getFieldError("periodfrom").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Period To:&nbsp;</label>		<span style="color:red;"> *</span>
+										<input type="date" name="periodto" id="periodto" class="w3-input w3-border w3-round" 
+											th:value="${medrdata.getPeriodto()}" readonly>
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Period To:&nbsp;</label>			<span style="color:red;"> *</span>
+										<input type="date" name="periodto" id="periodto" class="w3-input w3-border w3-round"
+											th:value="${medrdata.getPeriodto()}">
+										<span style="color:red" id="tosp"></span>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("periodto")!=null}'
+											th:text='${bindingResult.getFieldError("periodto").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							
+							<div class="w3-quarter w3-container">
+								<p>
+									<label>No. of Bill:&nbsp;</label>						
+									<input style=" background-color: #d5d2d2;" type="text" name="noofbills" id="noofbills" class="w3-input w3-border w3-round" 
+										th:value="${medrdata.getNoofbills()}" readonly>
+								</p>
+							</div>
+							
+							<div class="w3-quarter w3-container">
+								<p>
+									<label>Total Amount:&nbsp;</label>						
+									<input style=" background-color: #d5d2d2;" type="text" name="totalamount" id="totalamount" class="w3-input w3-border w3-round" value="0" 
+										th:value="${medrdata.getTotalamount()}" readonly>									
+								</p>
+							</div>							
+							
+						</div>
+						<div class="w3-row">
+						
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Date of Admission:&nbsp;</label>						
+										<input type="date" name="admissiondate" id="admissiondate" class="w3-input w3-border w3-round" onchange="checkdate()" 
+											th:value="${medrdata.getAdmissiondate()}" readonly>
+										<span style="color:red" id="admisp"></span>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("admissiondate")!=null}'
+											th:text='${bindingResult.getFieldError("admissiondate").getDefaultMessage()}'></span>
+									</p>
+								</div>							
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Date of Discharge:&nbsp;</label>						
+										<input type="date" name="dischargedate" id="dischargedate" class="w3-input w3-border w3-round" onchange="checkdate()" 
+											th:value="${medrdata.getAdmissiondate()}" readonly>
+										<span style="color:red" id="dissp"></span>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("dischargedate")!=null}'
+											th:text='${bindingResult.getFieldError("dischargedate").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p th:if="${medrdata.getAdmissiondate() != null}">															
+										<label>Date of Admission:&nbsp;</label>	
+										<input type="date" name="admissiondate" id="admissiondate" class="w3-input w3-border w3-round" onchange="checkdate()"
+											th:value="${medrdata.getAdmissiondate()}">
+										<span style="color:red" id="admisp"></span>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("admissiondate")!=null}'
+											th:text='${bindingResult.getFieldError("admissiondate").getDefaultMessage()}'></span>
+									</p>
+									<p th:if="${medrdata.getAdmissiondate() == null}">															
+										<label>Date of Admission:&nbsp;</label>	
+										<input type="date" name="admissiondate" id="admissiondate" class="w3-input w3-border w3-round" onchange="checkdate()"
+											th:value="${medrdata.getAdmissiondate()}" readonly>
+										<span style="color:red" id="admisp"></span>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("admissiondate")!=null}'
+											th:text='${bindingResult.getFieldError("admissiondate").getDefaultMessage()}'></span>
+									</p>									
+								</div>	
+								
+								<div class="w3-quarter w3-container">
+									<p th:if="${medrdata.getDischargedate() != null}">
+										<label>Date of Discharge:&nbsp;</label>						
+										<input type="date" name="dischargedate" id="dischargedate" class="w3-input w3-border w3-round" onchange="checkdate()" 
+											th:value="${medrdata.getDischargedate()}">
+										<span style="color:red" id="dissp"></span>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("dischargedate")!=null}'
+											th:text='${bindingResult.getFieldError("dischargedate").getDefaultMessage()}'></span>
+									</p>
+									<p th:if="${medrdata.getDischargedate() == null}">
+										<label>Date of Discharge:&nbsp;</label>						
+										<input type="date" name="dischargedate" id="dischargedate" class="w3-input w3-border w3-round" onchange="checkdate()" 
+											th:value="${medrdata.getDischargedate()}" readonly>
+										<span style="color:red" id="dissp"></span>
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("dischargedate")!=null}'
+											th:text='${bindingResult.getFieldError("dischargedate").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0}">
+								<div class="w3-quarter w3-container">
+									<p>															
+										<label>Date of Admission:&nbsp;</label>	
+										<input type="date" name="admissiondate" id="admissiondate" class="w3-input w3-border w3-round" 
+											onchange="checkdate()" readonly th:value="${medrdata.getAdmissiondate()}">
+										<span style="color:red" id="admisp"></span>
+										<span style="color:red" id="adminsp"
+											th:if='${bindingResult != null && bindingResult.getFieldError("admissiondate")!=null}'
+											th:text='${bindingResult.getFieldError("admissiondate").getDefaultMessage()}'></span>
+									</p>									
+								</div>	
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Date of Discharge:&nbsp;</label>						
+										<input type="date" name="dischargedate" id="dischargedate" class="w3-input w3-border w3-round" 
+											onchange="checkdate()" readonly th:value="${medrdata.getDischargedate()}">
+										<span style="color:red" id="dissp"></span>
+										<span style="color:red" id="dischsp"
+											th:if='${bindingResult != null && bindingResult.getFieldError("dischargedate")!=null}'
+											th:text='${bindingResult.getFieldError("dischargedate").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>							
+							
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Claim Amount:&nbsp;</label>	<span style="color:red;"> *</span>
+										<input type="text" name="claimamount" id="claimamount" class="w3-input w3-border w3-round" 
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											th:value="${medrdata.getClaimamount()}" readonly>									
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Claim Amount:&nbsp;</label>	<span style="color:red;"> *</span>
+										<input type="text" name="claimamount" id="claimamount" class="w3-input w3-border w3-round" 
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+											th:value="${medrdata.getClaimamount()}">
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("claimamount")!=null}'
+											th:text='${bindingResult.getFieldError("claimamount").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Contact:&nbsp;</label><span style="color:red;"> *</span>
+										<input type="text" name="contact" id="contact" class="w3-input w3-border w3-round" 
+											th:value="${medrdata.getContact()}" readonly>
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Contact:&nbsp;</label>	<span style="color:red;"> *</span>
+										<input type="text" name="contact" id="contact" class="w3-input w3-border w3-round" 
+											th:value="${medrdata.getContact()}" 
+											oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');" 
+											maxlength="10">
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("contact")!=null}'
+											th:text='${bindingResult.getFieldError("contact").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+													
+						</div>
+						<div class="w3-row">
+							
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Prescription Enclose:&nbsp;</label><span style="color:red;"> *</span>
+										 <select name="prescriptionenclose" class="w3-input w3-border w3-round" id="prescriptionenclose" disabled>
+											<option value="0">Select</option>
+											<option value="1" th:selected="('1' eq ${medrdata.getPrescriptionenclose()})">Yes</option>
+											<option value="2" th:selected="('2' eq ${medrdata.getPrescriptionenclose()})">No</option>
+											<!-- <option th:each="i:${prescriptionenclose}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+												th:selected="${i.getId()==medrdata.getPrescriptionenclose()}"></option> -->										
+										</select>										
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Prescription Enclose:&nbsp;</label>	<span style="color:red;"> *</span>
+										<select name="prescriptionenclose" class="w3-input w3-border w3-round" id="prescriptionenclose">
+											<option value="0">Select</option>
+											<option value="1" th:selected="('1' eq ${medrdata.getPrescriptionenclose()})">Yes</option>
+											<option value="2" th:selected="('2' eq ${medrdata.getPrescriptionenclose()})">No</option>
+											<!-- <option th:each="i:${prescriptionenclose}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+												th:selected="${i.getId()==medrdata.getPrescriptionenclose()}"></option> -->										
+										</select>
+										<input type="text" name="precriptionenclosename" id="precriptionenclosename" style="display:none">
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("prescriptionenclose")!=null}'
+											th:text='${bindingResult.getFieldError("prescriptionenclose").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Illness Type:&nbsp;</label><span style="color:red;"> *</span>
+										<select name="illnesstype" class="w3-input w3-border w3-round" id="illnesstype" disabled>
+											<option value="0">Select</option>
+											<option th:each="i:${illnesstype}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+												th:selected="${i.getId()==medrdata.getIllnesstype()}"></option>										
+										</select>										
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Illness Type:&nbsp;</label>	<span style="color:red;"> *</span>
+										<select name="illnesstype" class="w3-input w3-border w3-round" id="illnesstype">
+											<option value="0">Select</option>
+											<option th:each="i:${illnesstype}" th:value="${i.getId()}" th:text="${i.getDescription()}"
+												th:selected="${i.getId()==medrdata.getIllnesstype()}"></option>										
+										</select>
+										<input type="text" name="illnesstypevalues" id="illnesstypevalues" style="display:none">
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("illnesstype")!=null}'
+											th:text='${bindingResult.getFieldError("illnesstype").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Diagnosis/Disease Name:&nbsp;</label>	 <span style="color:red;"> *</span>
+										<input type="text" name="diseasename" id="diseasename" class="w3-input w3-border w3-round" 
+											th:value="${medrdata.getDiseasename()}" readonly>
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Diagnosis/Disease Name:&nbsp;</label>	<span style="color:red;"> *</span>
+										<input type="text" name="diseasename" id="diseasename" class="w3-input w3-border w3-round"
+											th:value="${medrdata.getDiseasename()}" >
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("diseasename")!=null}'
+											th:text='${bindingResult.getFieldError("diseasename").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+							
+							<div th:if="${medrdata.getClaimid() != 0 and mode=='view'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Reason:&nbsp;</label>		<span style="color:red;"> *</span>
+										<input type="text" name="reason" id="reason" class="w3-input w3-border w3-round"
+											th:value="${medrdata.getReason()}" readonly>									
+									</p>
+								</div>
+							</div>
+							<div th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<div class="w3-quarter w3-container">
+									<p>
+										<label>Reason:&nbsp;</label>		<span style="color:red;"> *</span>
+										<input type="text" name="reason" id="reason" class="w3-input w3-border w3-round"
+											th:value="${medrdata.getReason()}">
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("reason")!=null}'
+											th:text='${bindingResult.getFieldError("reason").getDefaultMessage()}'></span>
+									</p>
+								</div>
+							</div>
+																			
+						</div>
+						<div class="w3-row">			
+							<div class="w3-quarter w3-container">
+								<p>
+									<label>Emergency Certificate:&nbsp;</label>
+									<input style=" background-color: #d5d2d2;" type="text" name="emergencycerti" id="emergencycerti" 
+										class="w3-input w3-border w3-round" th:value="${medrdata.getEmergencycerti()}" readonly>									
+								</p>
+							</div>										
+							<div class="w3-quarter w3-container">
+								<span id="DOWNLOAD_LINKsp" th:text="${medrdata.getAttachment()}" style="display:none"></span>   
+								<a id="DOWNLOAD_LINK" 
+									th:if="${medrdata.getClaimid() != 0 and medrdata.getAttachment()!=null and medrdata.getAttachment()!=''}"
+									th:href="${medrdata.getAttachment()}" 
+									target="_blank" download>Download Attachment</a>
+								<input type="hidden" name="attachhidden" th:value="${medrdata.getAttachment()}"/>
+								
+								<input id="attachment" name="attachment" th:value="${medrdata.getAttachment()}" type="hidden"/>
+									<p th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">        
+										<label>File : </label> 
+										<input type="file" name="file" id="fi" class="file" />
+										<span style="color:red" 
+											th:if='${bindingResult != null && bindingResult.getFieldError("attachment")!=null}'
+											th:text='${bindingResult.getFieldError("attachment").getDefaultMessage()}'></span>
+									</p>
+							</div>
+						</div>
+					</div>
+				</div>	
+				<div class="w3-container" style="margin-top:10px; margin-bottom:20px">
+					<h6 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">Bill Information</h6>
+					<div class="w3-border">
+						<div class="w3-row w3-container" style="margin:10px">
+							<button class="w3-button w3-theme leftarrow" onclick="changerow('1','P')">
+								<i class="fa fa-angle-left"></i>
+							</button>
+							<button class="w3-button w3-theme rightarrow" onclick="changerow('1','N')">
+								<i class="fas fa-angle-right"></i>
+							</button>
+							<span th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<button class="w3-button w3-theme w3-right delrow" style="margin-left:5px"
+									onclick="delrow('1')">
+									<i class="fa fa-trash"></i>
+								</button>
+								<button class="w3-button w3-theme w3-right addrow" onclick="addrow('1')">
+									<i class="fas fa-plus"></i>
+								</button>
+							</span>
+							<div class="w3-row" style="margin-top:8px">
+								<div class="w3-container">
+									<span id="countrow" th:text="${spantext}"></span>
+								</div>
+							</div>													
+						</div>
+						<hr style="margin:10px" class="hrline w-container">
+						<div id="medbillrows" style="overflow:auto;max-height:158px">
+							<div class="medrbilrows" th:if="${medrdata.getClaimid() == 0 and stat != 'Save'}">								
+								<input type="text" name="medicalbill[i].billid" class="billid" style="display:none" value="0">
+								<div class="w3-row">
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Description of Expenses/Bill:&nbsp;</label>	<span style="color:red;"> *</span>
+											<input type="text" name="medicalbill[i].billdescription" class="w3-input w3-border w3-round billdescription">											
+										</p>
+									</div>
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Bill Number:&nbsp;</label> <span style="color:red;"> *</span>
+											<input type="text" name="medicalbill[i].billnumber" class="w3-input w3-border w3-round billnumber" onchange="billcount()">										
+										</p>
+									</div>
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Bill Date:&nbsp;</label><span style="color:red;"> *</span>
+											<input type="date" name="medicalbill[i].billDate" class="w3-input w3-border w3-round billDate" onclick="setdaterange()" onchange="setdaterange()">
+										</p>
+									</div>
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Bill Amount:&nbsp;</label>	<span style="color:red;"> *</span>
+											<input type="text" name="medicalbill[i].billamount" class="w3-input w3-border w3-round billamount" value="0" onchange="billcount()" 
+												oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+										</p>
+									</div>
+								</div>
+								<div class="w3-row">
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Remarks(if any):&nbsp;</label>						
+											<input type="text" name="medicalbill[i].remark" class="w3-input w3-border w3-round remark">											
+										</p>
+									</div>
+								</div>			
+							</div>
+							<div class="diveach" th:each="em, stats: ${medrdata.getMedicalbill()}">
+								<div class="medrbilrows" th:if="${medrdata.getClaimid() != 0 or stat eq 'Save'}"
+									th:style="${stats.index==0?'display:block':'display:none'}">
+									<input type="text" name="medicalbill[i].billid" class="billid" style="display:none" 
+										th:value="${em.getBillid()}">
+									<div class="w3-row">
+										<div class="w3-quarter w3-container" th:if="${mode == 'edit'}" >
+											<p>
+												<label>Description of Expenses/Bill:&nbsp;</label>	<span style="color:red;"> *</span>
+												<input type="text" name="medicalbill[i].billdescription" class="w3-input w3-border w3-round billdescription"
+													th:value="${em.getBilldescription()}">
+												<span style="color:red" 
+													th:if='${em.getBilldescription().length()==0 && bindingResult != null && bindingResult.getFieldError("billdescription")!=null}'
+													th:text='${bindingResult.getFieldError("billdescription").getDefaultMessage()}'></span>
+											</p>
+										</div>
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<p>
+												<label>Description of Expenses/Bill:&nbsp;</label><span style="color:red;"> *</span>
+												<input type="text" name="medicalbill[i].billdescription" class="w3-input w3-border w3-round billdescription"
+													th:value="${em.getBilldescription()}" readonly>													
+											</p>
+										</div>
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'edit'}">
+											<p>
+												<label>Bill Number:&nbsp;</label><span style="color:red;"> *</span>
+												<input type="text" name="medicalbill[i].billnumber" class="w3-input w3-border w3-round billnumber" 
+													th:value="${em.getBillnumber()}" onchange="billcount()">
+												<span style="color:red" 
+													th:if='${em.getBillnumber()=="" && bindingResult != null && bindingResult.getFieldError("billnumber")!=null}'
+													th:text='${bindingResult.getFieldError("billnumber").getDefaultMessage()}'></span>
+											</p>
+										</div>
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<p>
+												<label>Bill Number:&nbsp;</label>	<span style="color:red;"> *</span>
+												<input type="text" name="medicalbill[i].billnumber" class="w3-input w3-border w3-round billnumber" 
+													th:value="${em.getBillnumber()}" readonly>													
+											</p>
+										</div>
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'edit'}">
+											<p>
+												<label>Bill Date:&nbsp;</label>	<span style="color:red;"> *</span>
+												<input type="date" name="medicalbill[i].billDate" class="w3-input w3-border w3-round billDate"
+													th:value="${em.getBillDate()}" onclick="setdaterange()">
+												<span style="color:red" 
+													th:if='${em.getBillDate()=="" && bindingResult != null && bindingResult.getFieldError("billDate")!=null}'
+													th:text='${bindingResult.getFieldError("billDate").getDefaultMessage()}'></span>
+											</p>
+										</div>
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<p>
+												<label>Bill Date:&nbsp;</label><span style="color:red;"> *</span>
+												<input type="date" name="medicalbill[i].billDate" class="w3-input w3-border w3-round billDate"
+													th:value="${em.getBillDate()}" readonly>													
+											</p>
+										</div>
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'edit'}">
+											<p>
+												<label>Bill Amount:&nbsp;</label><span style="color:red;"> *</span>
+												<input type="text" name="medicalbill[i].billamount" class="w3-input w3-border w3-round billamount" 
+													th:value="${em.getBillamount()}" onchange="billcount()"
+													oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+												<span style="color:red" 
+													th:if='${em.getBillamount()==0 && bindingResult != null && bindingResult.getFieldError("billamount")!=null}'
+													th:text='${bindingResult.getFieldError("billamount").getDefaultMessage()}'></span>
+											</p>
+										</div>
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<p>
+												<label>Bill Amount:&nbsp;</label>	<span style="color:red;"> *</span>
+												<input type="text" name="medicalbill[i].billamount" class="w3-input w3-border w3-round billamount" 
+													th:value="${em.getBillamount()}"
+													oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" readonly>													
+											</p>
+										</div>
+										
+									</div>
+									<div class="w3-row">										
+										<div class="w3-quarter w3-container" th:if="${mode == 'edit'}">
+											<p>
+												<label>Remarks(if any):&nbsp;</label>						
+												<input type="text" name="medicalbill[i].remark" class="w3-input w3-border w3-round remark"
+													th:value="${em.getRemark()}">
+												<span style="color:red" 
+													th:if='${em.getRemark()=="" && bindingResult != null && bindingResult.getFieldError("remark")!=null}'
+													th:text='${bindingResult.getFieldError("remark").getDefaultMessage()}'></span>										
+											</p>
+										</div>
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<p>
+												<label>Remarks(if any):&nbsp;</label>						
+												<input type="text" name="medicalbill[i].remark" class="w3-input w3-border w3-round remark" 
+													th:value="${em.getRemark()}" readonly>											
+											</p>
+										</div>											
+									</div>
+								</div>
+							</div>					
+						</div>
+					</div>
+				</div>				
+				<div th:style="${medrdata.getSelfordependent() eq 'Self' ? 'display:none':'display:block'}"
+					id="patientdiv" class="w3-container" style="margin-top:10px; margin-bottom:20px">
+					<h6 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">Patient Information</h6>
+					<select id="depenid" style="display:none" disabled>
+						<option value="0">Select</option>
+						<option th:each="i:${depname}" th:value="${i.getDependentdetailsid()}" th:text="${i.getFullname()}"></option>										
+					</select>
+					<div class="w3-border">
+						<div class="w3-row w3-container" style="margin:10px">
+							<button class="w3-button w3-theme leftarrow" onclick="changerow('2','P')">
+								<i class="fa fa-angle-left"></i>
+							</button>
+							<button class="w3-button w3-theme rightarrow" onclick="changerow('2','N')">
+								<i class="fas fa-angle-right"></i>
+							</button>
+							<span th:if="${medrdata.getClaimid() == 0 or mode=='edit'}">
+								<button class="w3-button w3-theme w3-right delrow" style="margin-left:5px"
+									onclick="delrow('2')">
+									<i class="fa fa-trash"></i>
+								</button>
+								<button class="w3-button w3-theme w3-right addrow" onclick="addrow('2')">
+									<i class="fas fa-plus"></i>
+								</button>
+							</span>
+							<div class="w3-row" style="margin-top:8px">
+								<div class="w3-container">
+									<span id="countrow2" th:text="${spantext2}"></span>
+								</div>
+							</div>													
+						</div>
+						<hr style="margin:10px" class="hrline w-container">
+						<div id="meddeprows" style="margin-top:10px; margin-bottom:20px;overflow:auto;max-height:158px">
+							<div class="medrdeprows" th:if="${medrdata.getClaimid() == 0 and stat != 'Save'}">
+								<input type="text" name="medicaldependent[i].dependentid" class="depid" value="0" style="display:none">
+								<div class="w3-row">
+									<div class="w3-quarter w3-container">										
+										<p>
+											<label>Dependent Name:&nbsp;</label>						
+											<select name="medicaldependent[i].dependentnameid" class="w3-input w3-border w3-round depenid" onchange="dependetail(this.value)">
+												<option value="0">Select</option>
+												<option th:each="i:${depname}" th:value="${i.getDependentdetailsid()}" th:text="${i.getFullname()}"></option>										
+											</select>
+											<input type="text" name="medicaldependent[i].dependentname" class="w3-input w3-border w3-round dependentname"
+												style="display:none">											
+										</p>												
+									</div>
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Gender:&nbsp;</label>
+											<input type="text" name="medicaldependent[i].gender" class="w3-input w3-border w3-round gender" readonly>
+										</p>
+									</div>
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Date of Birth:&nbsp;</label>
+											<input type="text" class="w3-input w3-border w3-round dateofbirth1" readonly>						
+											<input type="text" id="date_of_birth" name="medicaldependent[i].dateofbirth" class="w3-input w3-border w3-round dateofbirth" readonly style="display:none">
+										</p>
+									</div>
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Age:&nbsp;</label>						
+											<input type="text" name="medicaldependent[i].age" class="w3-input w3-border w3-round age" readonly>
+										</p>
+									</div>
+								</div>
+								<div class="w3-row">
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Relationship:&nbsp;</label>
+											<input type="text" name="medicaldependent[i].relationship" class="w3-input w3-border w3-round relationship" readonly>
+											<input type="text" name="medicaldependent[i].relationshipid" value="0"
+												class="w3-input w3-border w3-round relationshipid" style="display:none" readonly>
+										</p>
+									</div>
+									<div class="w3-quarter w3-container">
+										<p>
+											<label>Marital Status:&nbsp;</label>						
+											<input type="text" name="medicaldependent[i].maritalstatus" class="w3-input w3-border w3-round maritalstatus">
+										</p>
+									</div>
+								</div>								
+							</div>
+							<div class="diveach2" th:each="em, stats: ${medrdata.getMedicaldependent()}">
+								<div class="medrdeprows" th:if="${medrdata.getClaimid() != 0 or stat == 'Save'}" 
+									th:style="${stats.index==0?'display:block':'display:none'}">
+									<input type="text" name="medicaldependent[i].dependentid" class="depid" 
+										th:value="${em.dependentid}" style="display:none">
+									<div class="w3-row">
+										<div class="w3-quarter w3-container" th:if="${mode == 'edit'}">
+											<p>
+												<label>Dependent Name:&nbsp;</label>
+												<select name="medicaldependent[i].dependentnameid" class="w3-input w3-border w3-round depenid" id="depenid" 
+													th:style="${medrdata.getSelfordependent() eq 'Dependent' ? 'display:block':'display:none'}"
+													onchange="dependetail(this.value)">
+													<option value="0">Select</option>
+													<option th:each="i:${depname}" th:value="${i.getDependentdetailsid()}" th:text="${i.getFullname()}"
+														th:selected="${i.getDependentdetailsid() == em.getDependentnameid()}"></option>										
+												</select>
+												<input type="text" name="medicaldependent[i].dependentname" class="w3-input w3-border w3-round dependentname" 
+													th:value="${em.getDependentname()}" 
+													th:style="${medrdata.getSelfordependent() eq 'Self' ? 'display:block':'display:none'}">
+												<span style="color:red" 
+													th:if='${em.getDependentnameid()==0 && bindingResult != null && bindingResult.getFieldError("dependentnameid")!=null}'
+													th:text='${bindingResult.getFieldError("dependentnameid").getDefaultMessage()}'></span>
+											</p>												
+										</div>
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<p>
+												<label>Dependent Name:&nbsp;</label>
+												<input type="text" name="medicaldependent[i].dependentname" class="w3-input w3-border w3-round dependentname" 
+													th:value="${em.getDependentname()}" readonly>									
+											</p>												
+										</div>
+										
+										<div class="w3-quarter w3-container">
+											<p>
+												<label>Gender:&nbsp;</label>
+												<input type="text" name="medicaldependent[i].gender" class="w3-input w3-border w3-round gender" 
+													th:value="${em.getGender()}" readonly>																		
+											</p>
+										</div>
+										
+										<div class="w3-quarter w3-container">
+											<p>
+												<label>Date of Birth:&nbsp;</label>
+												<input type="text" class="w3-input w3-border w3-round dateofbirth1"
+													th:value="${em.getDateofbirth()}" readonly>						
+												<input type="text" name="medicaldependent[i].dateofbirth" class="w3-input w3-border w3-round dateofbirth" 
+													th:value="${em.getDateofbirth()}"  readonly style="display:none">
+											</p>
+										</div>
+										
+										<div class="w3-quarter w3-container">
+											<p>
+												<label>Age:&nbsp;</label>						
+												<input type="text" name="medicaldependent[i].age" class="w3-input w3-border w3-round age" 
+													th:value="${em.getAge()}" readonly>
+											</p>
+										</div>
+									</div>
+									<div class="w3-row">
+										
+										<div class="w3-quarter w3-container">
+											<p>
+												<label>Relationship:&nbsp;</label>
+												<input type="text" name="medicaldependent[i].relationship" class="w3-input w3-border w3-round relationship" 
+													th:value="${em.getRelationship()}" readonly>
+												<input type="text" name="medicaldependent[i].relationshipid" class="w3-input w3-border w3-round relationshipid" 
+													th:value="${em.getRelationshipid()}" style="display:none" readonly>
+											</p>
+										</div>
+										
+										<div class="w3-quarter w3-container" th:if="${mode == 'edit'}">
+											<p>
+												<label>Marital Status:&nbsp;</label>						
+												<input type="text" name="medicaldependent[i].maritalstatus" class="w3-input w3-border w3-round maritalstatus"
+													th:value='${em.getMaritalstatus()}'>
+												<span style="color:red" 
+													th:if='${em.getMaritalstatus()=="" && bindingResult != null && bindingResult.getFieldError("maritalstatus")!=null}'
+													th:text='${bindingResult.getFieldError("maritalstatus").getDefaultMessage()}'></span>
+											</p>
+										</div>
+										<div class="w3-quarter w3-container" th:if="${mode == 'view'}">
+											<p>
+												<label>Marital Status:&nbsp;</label>						
+												<input type="text" name="medicaldependent[i].maritalstatus" class="w3-input w3-border w3-round maritalstatus"
+													th:value='${em.getMaritalstatus()}' readonly>											
+											</p>
+										</div>
+									</div>								
+								</div>
+							</div>
+						</div>
+					</div>					
+				</div>	
+				<div class="w3-row" value="Y" id="declaratio" style="margin:20px">
+					<input type="checkbox" id="declaration" style="zoom: 1.2;"
+						th:checked="${mode=='view'||mode=='edit'}" th:disabled="${mode=='view'}">&nbsp;I hereby declare that the present medical reimbursement is genuine and has not been claimed through any other source.</input>
+				</div>	
+				
+			</form>
+		</div>
+		<!-- ------------------------------------ FORM ENDS HERE ---------------------------------- -->
+		<h5  th:if="${mode == 'view'}" > Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${medrdata.getClaimid()}" aria-hidden="true" th:onclick='getapprovalhistory(10,this.id);'></i></h5>
+		<section class="container" th:if="${medrdata.getClaimid()!=0} and ${mode == 'view'}" >
+			<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+			<div class="container__sources">
+	
+				<div style="box-shadow: none;background-color: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+					<div class="sources--cms" style="width: 160px">
+						<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+						<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+						<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+	
+						<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-check tick"></i>
+						</div>
+						<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-clock-o pending"></i>
+						</div>
+						<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-close cancel"></i>
+						</div>
+					</div>
+					<svg class="svghor" viewBox="0 10 100 100">
+						<line  x1="5" x2="100" y1="80" y2="80"></line>
+					</svg>
+					<svg class="svgver" viewBox="0 20 100 100 ">
+						<line  x1="40" x2="40" y1="0" y2="100"></line>
+					</svg>
+				</div>
+				<div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+			</div>
+	
+			<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+	
+	
+		</section>
+		   <!-- Medical Reimbursement snigdhaa vaish end-->
+   </div>
+	<div id="apprhistorypopup" class="w3-modal" style="display:none">
+		<div class="w3-modal-content">
+			<header class="w3-container w3-theme">
+				<span onclick="document.getElementById('apprhistorypopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+				<h4><i class="fa fa-history" aria-hidden="true"></i>&nbsp;&nbsp;Approval History</h4>
+			</header>
+
+			<div class="w3-container w3-margin">
+				<div id="apprresultSec" class="w3-responsive" style="display: none">
+					<table id="APPROVAL_HISTORY" class="display compact w3-table-all" style="width: 100%;">
+						<thead>
+						<tr class="w3-theme-d3">
+							<th>Approver Level</th>
+							<th>Action Date</th>
+							<th>Approver Name</th>
+							<th>Approved Amount</th>
+							<th>Taxable Amount</th>
+							<th>Non Taxable Income</th>
+							<th>Action Taken</th>
+							<th>Comment</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+				<div id="noDataAPPR" class="w3-responsive" style="display: none">
+					<div>
+						<p style="font-weight:bold">No approval history found...</p>
+					</div>
+				</div>
+			</div>
+
+			<footer class="w3-container w3-grey">
+			</footer>
+		</div>
+	</div>
+   <script src="/js/reimbursement/medicalReimbursement/medicalreimb.js"></script>
+</div>

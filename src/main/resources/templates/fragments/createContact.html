@@ -1,0 +1,303 @@
+<div th:fragment="createContact">
+
+
+
+	<div class="w3-container" style="margin-top: 14px;">
+		<h4 class="w3-text-theme" style="margin-top: 2px; bottom: 2px;">Create
+			Contact</h4>
+	</div>
+
+	<div class="w3-row">
+		<div class=w3-third>
+			<div class="w3-container">
+
+
+
+				<hr class="hrline">
+				<h5 style="font-weight: bold">Relationship Information</h5>
+				<p>
+					<label>Country Name</label> <input value=""
+						class="w3-input w3-border" name="jobCode" id="CR_JOB_CODE"
+						type="text">
+
+				</p>
+
+				<p>
+					<label>Contact Type</label> <input value=""
+						class="w3-input w3-border" name="jobCode" id="CR_JOB_CODE"
+						type="text">
+
+				</p>
+
+
+				<p>
+					<label>Emergency Contact</label> <select id="CR_JOB_DATASET"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="datasets: ${datasets}"
+							th:value="${datasets.getId()}"
+							th:text="${datasets.getDescription()}">
+					</select>
+
+				</p>
+
+
+
+
+
+			</div>
+
+		</div>
+		<div class=w3-third>
+			<div class="w3-container" style="margin-top: 43px;">
+
+				<p>
+					<label>Effective Start Date</label> <input value=""
+						class="w3-input w3-border" name="JobEffectiveStartDate"
+						id="CR_JOB_EFFDT" type="date" data-date=""
+						data-date-format="YYYY MM DD" />
+				</p>
+				<p>
+					<label>Guardian Name</label> <input value=""
+						class="w3-input w3-border" name="jobName" id="CR_JOB_NAME"
+						type="text">
+
+				</p>
+
+				<p>
+					<label>Guardian Birth Date </label> <input value=""
+						class="w3-input w3-border" name="JobEffectiveStartDate"
+						id="CR_JOB_EFFDT" type="date" data-date=""
+						data-date-format="YYYY MM DD" />
+				</p>
+
+
+
+			</div>
+
+		</div>
+
+
+
+
+		<div class=w3-third>
+			<div class="w3-container" style="margin-top: 43px;">
+
+				<p>
+					<label>Guardian Address</label> <input value=""
+						class="w3-input w3-border" name="jobName" id="CR_JOB_NAME"
+						type="text">
+
+				</p>
+				<p>
+					<label>Guardian Phone</label> <input value=""
+						class="w3-input w3-border" name="jobName" id="CR_JOB_NAME"
+						type="text">
+
+				</p>
+
+
+
+
+			</div>
+
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+			<div class="w3-row">
+					<div class=w3-half>
+						<div class="w3-container">
+
+
+							<h5 style="font-weight: bold">Personal Details</h5>
+							
+
+							<p>
+								<label>Title</label> <select id="CR_HR_TITLE"
+									class="w3-select w3-border" name="option">
+									<option value="" disabled selected></option>
+									<option th:each="Title : ${Title}" th:value="${Title}"
+										th:text="${Title}">
+								</select>
+
+							</p>
+
+
+						
+							<p>
+								<label>Gender</label> <select id="CR_HR_GENDER"
+									class="w3-select w3-border" name="option">
+									<option value="" disabled selected></option>
+									<option th:each="Gender : ${Gender}" th:value="${Gender}"
+										th:text="${Gender}">
+								</select>
+							</p>
+							
+							
+							
+							<p>
+								<label>Date of Birth</label> <input value=""
+									class="w3-input w3-border" name="hireDate" id="CR_HR_HIREDATE"
+									type="date" data-date="" data-date-format="YYYY MM DD" /> </select>
+							</p>
+
+						
+
+
+						</div>
+
+					</div>
+					<div class=w3-half>
+						<div class="w3-container" style="margin-top: 43px;">
+							<p>
+								<label>First Name</label> 
+								 <input value="" class="w3-input w3-border"
+									name="fName" id="CR_HR_FNAME" type="text">
+							</p>
+							
+								<p>
+								<label>Last Name</label> 
+								 <input value="" class="w3-input w3-border"
+									name="lName" id="CR_HR_LNAME" type="text">
+							</p>
+							
+								<p>
+								<label>Middle Name</label> 
+								 <input value="" class="w3-input w3-border"
+									name="mName" id="CR_HR_MNAME" type="text">
+							</p>
+							
+							
+						
+						</div>
+
+					</div>				
+					
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+				
+<h5 style="font-weight: bold">Phone Details</h5>
+
+
+<!-- js plus -->
+				<p>
+				
+				<button id="view" class="w3-button w3-white">View </button> 
+				<button id="Format" class="w3-button w3-white">Format </button> 
+				<button id="AddRowPhone" class="w3-button w3-white">+</button>
+
+				</p>
+				<table id="PhoneHeader" class="display compact w3-table" style="width: 65%;">
+					<thead>
+						<tr>
+							<th>Primary</th>
+							<th>Type</th>
+							<th>Country Details</th>
+							<th>Number</th>							
+							
+						</tr>
+					</thead>
+					</table>
+
+<div  >
+				<table id="PhoneNumber" class="display compact w3-table" style="width: 100%;">
+				<!-- 	<thead>
+						<tr>
+							<th>Primary</th>
+							<th>Country</th>
+							<th>National Id Type</th>
+							<th>National Id</th>							
+							
+						</tr>
+					</thead> -->
+					<tbody>
+							<td><input style="zoom: 1.5;" class="w3-input w3-border"
+								name="Payroll" id="CR_HR_PHONE_PRIMARY" type="checkbox"
+								value="YES"></td>
+							<td><select id="CR_HR_PHONE_TYPE"
+								class="w3-select w3-border" name="option">
+									<option value="" disabled selected></option>
+									<option th:each="PhoneType : ${PhoneType}"
+										th:value="${PhoneType}" th:text="${PhoneType}"></option>
+							</select></td>
+							<td><select id="CR_HR_COUNTRY_DETAILS"
+								class="w3-select w3-border" name="option">
+									<option value="" disabled selected></option>
+									<option th:each="status : ${status}" th:value="${status}"
+										th:text="${status}">
+							</select></td>
+							<td><input value="" class="w3-input w3-border"
+								name="nationalID" id="CR_HR_NUMBER" type="text"></td>
+
+						</tbody>
+				</table>
+			</div>
+
+
+
+<!-- js end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<div class="w3-container">
+			<p>
+				<button id="JOB_CREATE" class="w3-button w3-theme w3-grey">Submit</button>
+
+			</p>
+		</div>
+		<div id="id01" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+					<label><b> Successfully Saved. Click OK to continue.</b> </label> <a
+						id="btnOK" class="w3-button w3-green"
+						rm="enterprisesetup/managejob">OK</a>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+
+	<script src="/js/searchJobsResource.js"></script>
+
+</div>
+

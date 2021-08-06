@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<style type="text/css">
+@font-face{
+  font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+  src: url('https://pathtofile/calibri.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+body{
+	font-family: Calibri;
+}
+.heading{
+	text-align: center;
+	text-size:12px;
+	font-family: Calibri;
+	margin-top: 80px;
+	
+}
+.ane{
+	text-align: right;
+	margin-right: 40px;
+	text-size:12px;
+}
+.sub{
+	text-decoration: underline;
+	margin-left: 40px;
+	text-size:12px;
+}
+.cer{
+	text-align: center;
+	text-decoration: underline;
+	text-size:12px;
+}
+.agreement{
+	margin-right: 40px;
+	margin-left: 40px;
+	text-size:11px;
+	text-align:justify;
+	
+}
+p input {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+.divone{
+	margin-right: 40px;
+	margin-left: 40px;
+	
+}
+.divone p{
+	text-size:10px;
+	text-align:justify;
+}
+.divtwo{
+	float:right;
+	text-align:left;
+	margin-right: 40px;
+	
+}
+.divtwo p{
+	text-size:11px;
+	text-align:justify;
+	
+	
+}
+.divthree{
+	float:left;
+	margin-left: 40px;
+}
+.secondAnexure{
+	margin-top: 500px;
+}
+</style>
+
+<meta charset="ISO-8859-1">
+<title>Transport Reimbursement Annexure Second</title>
+</head>
+<body>
+	<div>
+
+		<p class="heading">
+			<strong>LUCKNOW METRO RAIL CORPORATION LIMITED</strong>
+		</p>
+		<p class="ane">
+			<strong>Annexure-A</strong>
+		</p>
+		<p class="sub">
+			<strong>Subject:Reimbursement of Transport facility</strong>
+		</p>
+		<br>
+		<p class="cer">
+			<strong>CERTIFICATE</strong>
+		</p>
+		<p class="agreement">
+			I certify that for the month of <strong><i><label th:text="${transportmodel.getHistories().get(0).getFromdate()}"></label></i></strong>
+			to <strong><i><label th:text="${transportmodel.getHistories().get(0).getTodate()}"></label></i></strong>
+			I have used my personal car bearing registration Number <strong><i>
+					 <label th:text="${transportmodel.getVihicleregnbr()}"></label>
+			</i></strong> registered in my name for the official purpose and I have incurred
+			an amount of Rs. <strong><i><label th:text="${transportmodel.getClaimedamt()}"></label></i></strong> solely for
+			performing official journeys.The documents/evidences of expenditure
+			incurred are maintained by me as per Annexure-B of the above
+			mentioned order and will be submitted as per item 9 of this Office
+			Order no. 4 dated 28/01/2016 as and when required.
+		</p>
+		<br> <br>
+		<div class="divone">
+			<p>
+				<strong>I further certify that:</strong>
+			</p>
+			<p>a) I was on leave or in tour for the period less than/more
+				than 15 days/30 days consecutively.</p>
+			<p>
+				<strong>During the month.#</strong>
+			</p>
+			<p>
+				b) I was on LWP/EOL for<input type="text">days.#
+			</p>
+			<br>
+			<p>#Strike out if not applicable</p>
+		</div>
+		<div class="divtwo">
+			<p>
+				Signature of the officer:<input type="text">
+			</p>
+			<p>
+				Name of the Officer:&nbsp;<i><strong><label
+						th:text="${empdetails.getPersonname()}"></label></strong></i>
+			</p>
+			<p>
+				Designation:&nbsp;<i><strong><label
+						th:text="${empdetails.getDesignation()}"></label></strong></i>
+			</p>
+			<p>
+				Employee No:&nbsp;<i><strong><label
+						th:text="${empdetails.getPersonnumber()}"></label></strong></i>
+			</p>
+			<p>
+				Place of Posting:&nbsp;<i><strong><label
+						th:text="${empdetails.getWorklocation()}"></label></strong></i>
+			</p>
+		</div>
+		<div class="divthree">
+			<p>
+				Dated:<input type="text">
+			</p>
+			<p>
+				Controlling Officer:<input type="text">
+			</p>
+		</div>
+	</div>
+	<div class="secondAnexure">
+<h3 class="heading">Lucknow Metro Rail Corporation Limited</h3>
+<h3 class="ane">Annexure-B</h3>
+<br>
+<div>
+
+<table border="1" style="width:100%;height:100%;border-collapse:collapse;">
+<thead class="ttop">
+<tr>
+<th>A</th>
+<th colspan="5" style="text-align: left;">Destination visited during month of</th>
+</tr>
+        <tr class="table-info">
+            <th width="20px"><b>&nbsp;</b></th>
+            <th><b>S.No.</b> </th>
+            <th><b>From Date</b> </th>
+            <th><b>To Date</b> </th>
+            <th><b>Visited Place</b> </th>
+            <th><b>KMs</b> </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="claimData, stats : ${transportmodel.getHistories()}"> 
+            <td> &nbsp;</td>
+             <td align="center" th:text="${stats.index}+1+."> </td>
+            <td align="center"  th:text="${claimData.fromdate}"> </td>
+            <td align="center"  th:text="${claimData.todate}"> </td>
+            <td align="center"  th:text="${claimData.visitedplace}"> </td>
+           
+            <td > </td>
+            </tr>
+            <tr>
+<th>B</th>
+<th colspan="4" style="text-align: left;">Details Of fuel expenses.</th>
+<th>&nbsp;</th>
+
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3">Number of Kilometers covered in a month</td>
+<td>(a)</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3">Fuel used in litre</td>
+<td>(b)</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3"  >Total fuel Expenses</td>
+<td align="right"><strong><i><label th:text="${transportmodel.getTotalfuelexpense()}"></label></i></strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="4">&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+
+<th>C</th>
+<th colspan="4" style="text-align: left;">Other Expenditure</th>
+<th>&nbsp;</th>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3" >Salary of Chauffeur</td>
+<td align="right" ><strong><i><label th:text="${transportmodel.getSalarychauffuer()}"></label></i></strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3">Insurance of Car/(proportionate amount on monthly basis)</td>
+<td align="right" ><strong><i><label th:text="${transportmodel.getCarinsurance()}"></label></i></strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3">Repairs and Maintenance</td>
+<td align="right" ><strong><i><label th:text="${transportmodel.getRepairmaintaince()}"></label></i></strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3">Road Taxes/Octroi/Toll Charges</td>
+<td align="right" ><strong><i>  <label th:text="${transportmodel.getRoadtaxtotal()}"></label></i></strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3">Total Other Expenditure</td>
+<td align="right" ><strong><i><label th:text="${transportmodel.getOtherexpense()}"></label> </i></strong></td>
+<td>&nbsp;</td>
+</tr>
+     </tbody>
+</table>
+</div>
+<div class="divone">
+<h5>Declaration:</h5>
+<p>It is hereby declared that:</p>
+<p>a) The above expenditure is actually incurred by me solely for official purpose and documents/evidences of expenditure incurred are maintained by me.</p>
+<p>b) The vehicle used for the official purpose bearing Registration No.<strong><i>
+					 <label th:text="${transportmodel.getVihicleregnbr()}"></label>
+			</i></strong> is registered in my name.</p>
+<p>c) The Vehicle Insurance is Valid upto<strong><i>
+					 <label th:text="${transportmodel.getInsurancevalidity()}"></label>
+			</i></strong> </p>
+<br>
+</div>
+<div>
+<div class="divthree">
+<p >Date:<input type="text"></p>
+</div>
+<div class="divtwo">
+<p>Signature of the officer:&nbsp;<input type="text"></p>
+<p>Name of the Officer:&nbsp;<i><strong><label th:text="${empdetails.getPersonname()}" ></label></strong></i></p>
+<p>Designation:&nbsp;<i><strong><label th:text="${empdetails.getDesignation()}"></label></strong></i></p>
+<p>Employee No:&nbsp;<i><strong><label th:text="${empdetails.getPersonnumber()}"></label></strong></i></p>
+<p>Place of Posting:&nbsp;<i><strong><label th:text="${empdetails.getWorklocation()}"></label></strong></i></p>
+</div>
+</div>
+<br><br>
+</div> 
+</body>
+</html>

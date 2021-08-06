@@ -1,0 +1,54 @@
+<div th:fragment="publicinfo" style="margin-left:15%">
+<!-- <div class="w3-bar w3-theme w3-left-align w3-large" style="position:fixed; z-index:100; margin-top:12px; width:85%;"> -->
+	     <div class="w3-theme" style="z-index:3; margin-top:12px;">
+	    <img id="PROFILE_PIC" alt="" style="width:60px; height:60px; margin-left:auto; margin-right:auto; display:block;" src="/icons/face-white-18dp.svg">
+		<h4 id="PAGE_NAME" style="font-weight:bold; text-align:center; margin-top:0; margin-bottom:0;">USER NAME</h4>
+		<h6 id="USER_NAME"  style="text-align:center; margin-top:0; margin-bottom:5px;">DESIGNATION</h6>
+	    	
+	</div>
+	<div class="w3-container">
+		<form  method="post" id="RESIGNATION" enctype="application/x-www-form-urlencoded" onsubmit="return false;" style="margin-top:10px"> 
+		
+		<div class="w3-row w3-border w3-padding-large">
+		<div style="margin-top:10px">
+		<h4 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline">Contact Info</h4>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<div id="ASSIGN_BLOCK" class="w3-container">
+		<div class=w3-half>
+		<div class="w3-container">
+			<p>
+			<label>Work Email</label> 
+			<input th:value="${public.getWorkmail()}" class="w3-input w3-border"  name="" id="PI_EMAIL" type="email" style="height:38px" disabled />
+			</p>
+			
+			<p>
+			<label>Local Time</label> 
+			<input class="w3-input w3-border" th:value="${time}" name="" id="PI_TIME" type="text"  style="height:38px" disabled/>
+			</p>
+			
+			<p>
+			<label>Location</label> 
+			<input class="w3-input w3-border"  name="" id="PI_TIME" type="text"  style="height:38px" disabled/>
+			</p>
+		</div>
+		</div>
+	
+		<div class=w3-half>
+		<div class="w3-container">
+			<p>
+			<label>Address</label> 
+			<textarea th:text="${public.getCompleteaddress()}" class="w3-input w3-border" id="PI_ADDRESS" name="" rows="8" cols="30" disabled></textarea>
+			</p>
+		</div>
+		</div>
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div>
+	
+</form>
+</div>
+		
+</div>
+	

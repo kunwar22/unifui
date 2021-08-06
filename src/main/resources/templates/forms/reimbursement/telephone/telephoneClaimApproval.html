@@ -1,0 +1,301 @@
+<div th:fragment="telephoneClaimApproval">
+
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var resultfinal = /*[[${result}]]*/;
+    
+/*]]>*/
+</script>
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;">
+                        <i class="fas fa-tty" style="color: #f31590;"></i>
+                        &nbsp;Approval for Telephone Reimbursement
+                    </h4>
+                </div>
+            </div>
+
+        <!-- Telephone Reimbursement snigdhaa vaish start-->
+       	<div id="submitblock" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight: bold"> </label> 
+					<a id="okbtn" rm="reimbursement/telephoneSearch">OK</a>	
+				</div>	
+			</div>
+		</div>        
+       	<div class="w3-row">
+       		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+       	
+	       	<div class="w3-bar w3-theme-l3">
+				<h5 class="w3-bar-item" >Approval Details</h5>
+				<div class="w3-bar-item w3-right" style="margin-top: 1px;" >
+					<!-- <div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div> -->
+					<div type="button" class="w3-btn w3-red w3-round-large" id="btnSubmit"  onclick="approvalSubmit('Rejected');" ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;&nbsp;Reject</div>
+					<div type="button" class="w3-btn w3-green w3-round-large" id="btnSave" onclick="approvalSubmit('Approved');"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;Approve</div>
+				</div>
+			</div>
+       	
+		<!-- 		<h5 class="w3-text-theme" style="font-weight: bold; margin-top:20px; bottom: 2px;">
+				Employee Details
+			</h5>
+			<div class="w3-padding">
+				<div class="w3-row">
+					<div class="w3-quarter w3-padding" style="margin-right:7%">
+						<div class="w3-container">
+							<img src="/images/avatar.png" width="150px" height="150px">
+						</div>
+					</div>
+					<div class="w3-rest w3-padding">
+						<div class="w3-half">
+							<div class="w3-container">
+								<p>
+									<strong><label>Employee Number: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getPersonnumber()}"></label>
+								</p>
+								<p>
+									<strong><label>Employee Name: &nbsp;&nbsp;</label></strong>
+									<label  th:text="${hdata.getPersonname()}">990</label>
+								</p>
+								<p>
+									<strong><label>Date of Birth: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getDateofbirth()}">990</label>
+								</p>
+								<p>
+									<strong><label>Email ID: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getEmailaid()}">990</label>
+								</p>
+								<p>
+									<strong><label>Phone Number: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getPhonenumber()}">990</label>
+								</p>			
+								<p>
+									<strong><label>Employee Type: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getEmployeetype()}">990</label>
+								</p>					
+							</div>
+						</div>
+						<div class="w3-half">
+							<div class="w3-container">
+								<p>
+									<strong><label>Designation: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getDesignation()}">990</label>
+								</p>					
+								<p>
+									<strong><label>Base Location: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getBaselocation()}">990</label>
+								</p>			
+								<p>
+									<strong><label>Work Location: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getWorklocation()}">990</label>
+								</p>
+								<p>
+									<strong><label>Joining Date: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getJoiningdate()}">990</label>
+								</p>
+								<p>
+									<strong><label>Vehicle Used: &nbsp;&nbsp;</label></strong>
+									<label th:text="${hdata.getVehicleused()}">990</label>
+								</p>
+							</div>
+						</div>			
+					</div>
+				</div>
+			</div>	 -->				
+			<br>
+			<div class="w3-half w3-container">
+				<p>
+					<strong><label>Entitlement: &nbsp;</label></strong>
+					<label th:text="${empent}" class="w3-text-blue">990</label>&nbsp;<label>INR Per Month</label>
+				</p>
+			</div>	
+			<br><br>
+			
+			<input type="text" id="checkmode" name="reimburseid" th:value=${mode} style="display:none">
+
+			
+			<div th:style="${viewdata.Telephoneclaimid == null or (viewdata.Telephoneclaimid == 0)}?'display:none':'display:block'">
+
+
+				<div th:style="${mode == 'view'}?'display:block':'display:none'">
+					<form id="teleaprvlform" onsubmit="return(false)" enctype="multipart/form-data">
+						<div class="w3-row">
+							<div class="w3-third w3-container">
+								<p th:if="${(viewdata.Telephoneclaimid == null) or (viewdata.Telephoneclaimid == 0)}">
+									<strong><label style="display:none">Claim ID: &nbsp;&nbsp;</label></strong>
+									<input type="text"  class="w3-input w3-border w3-round"
+										   id="claimid" name="claimid" th:value=${viewdata.getTelephoneclaimid()} hidden>
+								</p>
+								<p th:if="${(viewdata.Telephoneclaimid != null) and (viewdata.Telephoneclaimid != 0)}">
+									<strong><label>Claim ID: &nbsp;&nbsp;</label></strong>
+									<input type="text" name="claimid" class="w3-input w3-border w3-round"
+										   id="claimid" th:value=${viewdata.getTelephoneclaimid()} readonly>
+								</p>
+							</div>
+						</div>
+					<div class="w3-row">
+						<div style="display:none">
+							<input type="text" name="reimburseid" value=1>
+							<input type="text"  name="personnumber" th:value="${personInfo.getPersonnumber()}">
+							<input type="text"  name="personid" th:value="${personInfo.getPersonid()}">
+							<input type="text"  name="duration" value="3">
+						</div>
+						<div class="w3-third w3-container">
+							<p>
+								<strong><label>Phone No: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+								<input type="number" name="phoneno" class="w3-input w3-border w3-round"
+									th:value="${viewdata.getPhoneno()}" readonly>
+									<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("phoneno")!=null}'
+									th:text='${bindingResult.getFieldError("phoneno").getDefaultMessage()}'></span>
+							</p>
+						</div>
+						<div class="w3-third w3-container">
+							<p>
+								<strong><label>Period From: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+								 <input type="date" name="fromdate" class="w3-input w3-border w3-round"
+								 	th:value="${viewdata.getFromdate()}" readonly>
+								 	<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("fromdate")!=null}'
+									th:text='${bindingResult.getFieldError("fromdate").getDefaultMessage()}'></span>
+							</p>
+						</div>
+						<div class="w3-third w3-container">
+							<p>
+								<strong><label>Period to: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+								<input type="date" name="todate" class="w3-input w3-border w3-round"
+									th:value="${viewdata.getTodate()}" readonly>
+									<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("todate")!=null}'
+									th:text='${bindingResult.getFieldError("todate").getDefaultMessage()}'></span>
+							</p>
+						</div>
+					</div>
+					<div class="w3-row">
+						<div class="w3-third w3-container">
+							<p>
+								<strong><label>OM/Project &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+								<select name="omproject" class="w3-input w3-border w3-round" onblur="omSpan()" disabled>
+									<option value="none" th:selected="${viewdata.Omproject eq 'none'}">Select</option>
+									<option value="om" th:selected="${viewdata.Omproject eq 'om'}">Operation & Maintenance</option>
+									<option value="proj" th:selected="${viewdata.Omproject eq 'proj'}">Project</option>
+								</select>
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("omproject")!=null}'
+									th:text='${bindingResult.getFieldError("omproject").getDefaultMessage()}'></span>
+							</p>
+						</div>
+						<div class="w3-third w3-container">
+							<p>
+								<strong><label>Amount: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+								<input type="text" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" name="requestedamt" class="w3-input w3-border w3-round"
+									th:value="${viewdata.getRequestedamt()}" readonly>
+							</p>
+							<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("requestedamt")!=null}'
+									th:text='${bindingResult.getFieldError("requestedamt").getDefaultMessage()}'></span>
+						</div>						
+						<div class="w3-third w3-container" id="telephonefiles">
+							<p>
+								<input id="attachments" name="attachments" 
+									th:value="${viewdata.getAttachments()}" type="hidden"/>
+								<span id="DOWNLOAD_LINKsp" th:text="${viewdata.getAttachments()}" style="display:none"></span>
+								<a id="DOWNLOAD_LINK" 
+									th:if="${(viewdata.getAttachments() !='')}"
+									th:href="${viewdata.getAttachments()}" 
+									target="_blank" download>Download Attachment</a>
+								<label>File : </label>
+								<input type="file" name="file" id="file" disabled/>
+							</p>
+						</div>
+					</div>
+
+
+						<h6 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">
+							To-Do Task
+						</h6>
+						<div class="w3-row">
+							<div class="w3-third w3-container">
+								<p>
+									<strong><label>Approved Amount: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+									<input id="txtAmount" th:value="${APPRAMT}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  
+										type="text" name="approvedamt" class="w3-input w3-border w3-round"/>
+								</p>
+								<label id="amterror"></label>
+							</div>
+							<div class="w3-third w3-container">
+								<p>
+									<strong><label>Comments: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+									<textarea id="txtComment" name="msg" class="w3-input w3-border w3-round"></textarea>
+								</p>
+								<label id="msgerror"></label>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<!-- ---NEW TELEPHONE REIMBURSEMENT CLAIM---- -->
+
+			<h5 > Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${viewdata.getTelephoneclaimid()}" aria-hidden="true" th:onclick='getapprovalhistory(1,this.id);'></i></h5>
+
+
+			<section class="container" th:style="${mode == 'view'}?'display:block':'display:none'">
+
+				<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+				<div class="container__sources">
+
+					<div style="box-shadow: none;background: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+						<div class="sources--cms" style="width: 160px">
+							<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+						<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+							<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+
+							<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+								<i class="fa fa-check tick"></i>
+
+							</div>
+							<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+								<i class="fa fa-clock-o pending"></i>
+							</div>
+							<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+								<i class="fa fa-close cancel"></i>
+
+							</div>
+
+					</div>
+					<svg class="svghor" viewBox="0 10 100 100">
+						<line  x1="5" x2="100" y1="80" y2="80"></line>
+					</svg>
+					<svg class="svgver" viewBox="0 20 100 100 ">
+						<line  x1="40" x2="40" y1="0" y2="100"></line>
+					</svg>
+					</div>
+					<div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+				</div>
+
+				<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+
+
+			</section>
+			
+		</div>		
+
+        <!-- Telephone Reimbursement by snigdhaa vaish end -->
+        
+        
+
+    </div>
+    <div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+	<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+    <script src="/js/reimbursement/telephone/telephone.js"></script> 
+</div>

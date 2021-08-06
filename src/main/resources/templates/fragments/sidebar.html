@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="sidebar">
+
+	<nav class="w3-sidebar w3-bar-block w3-card-4 w3-medium w3-theme-l5 w3-animate-right" style="display: none; right: 0;" id="mySidebar">
+		<div class="w3-container w3-theme-d5 w3-card sticky">
+			<a class="w3-padding-medium w3-medium w3-margin">
+				<i id="goback" class="fa fa-arrow-circle-left" aria-hidden="true" style="font-size: 40px; margin-top: 12px; margin-bottom: 12px; cursor: pointer;"></i>
+			</a>
+			<a class="w3-padding-medium w3-medium w3-right">
+				<i id="gotoroot" class="fa fa-arrow-circle-up" aria-hidden="true" style="font-size: 40px; margin-top: 12px; margin-bottom: 12px; margin-right: 16px; cursor: pointer;"></i>
+			</a>
+		</div>
+
+		<div id="loader" style="display: none; margin-top:60%; position: absolute; left:50%; margin-left: -30px;"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div>
+		<div id="navitemdiv">
+			<div th:each="navItem : ${navBar}">
+				<span th:if="${navItem.getIsparent()=='Y'}">
+					<b th:id="${navItem.getNavbarid()}" th:ne="${navItem.getNavname()}" th:pf="${navItem.getIsparent()}" th:fn="${hoverColorFN}" th:theme="${themeColor}" style="padding-top: 13px; padding-bottom: 0px; font-weight: normal" th:class="${hoverColor}">
+						<p class="fa fa-folder" style="font-size:16px;"></p><span th:text="${'&nbsp;&nbsp;&nbsp;' + navItem.getNavname()}"></span>
+					</b>
+				</span>
+				<span th:unless="${navItem.getIsparent()=='Y'}">
+					<b th:id="${navItem.getNavbarid()}" th:ne="${navItem.getNavname()}" th:pf="${navItem.getIsparent()}" th:fn="${hoverColorFN}" style="padding-top: 13px; padding-bottom: 0px; font-weight: normal" th:class="${hoverColor}">
+						<p class="fa fa-dot-circle-o" style="font-size:16px;"></p><span th:text="${'&nbsp;&nbsp;&nbsp;' + navItem.getNavname()}"></span>
+					</b>
+				</span>
+			</div>
+		</div>
+		
+	</nav>
+
+	<!-- Overlay effect when opening sidebar on small screens -->
+	<div class="w3-overlay" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+</div>
+</body>

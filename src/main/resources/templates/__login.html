@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>UNIF ERP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/w3.css"/>
+    <link rel="icon" type="image/png" href="/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/Login_v18/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/Login_v18/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/Login_v18/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="/Login_v18/css/main.css">
+
+    <style>
+        * {box-sizing: border-box;}
+        body {font-family: Verdana, sans-serif;}
+        .mySlides {display: none;}
+        img {vertical-align: middle;}
+
+        /* Slideshow container */
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        /* Caption text */
+        .text {
+            color: #f2f2f2;
+            font-size: 15px;
+            padding: 8px 12px;
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Number text (1/3 etc) */
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+            margin-top: 8px;
+        }
+
+        /* The dots/bullets/indicators */
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active {
+            background-color: #717171;
+        }
+
+        /* Fading animation */
+        .fade {
+            -webkit-animation-name: fade;
+            -webkit-animation-duration: 8s;
+            animation-name: fade;
+            animation-duration: 8s;
+        }
+
+        @-webkit-keyframes fade {
+            from {opacity: .1}
+            to {opacity: 1}
+        }
+
+        @keyframes fade {
+            from {opacity: .1}
+            to {opacity: 1}
+        }
+
+        /* On smaller screens, decrease text size */
+        @media only screen and (max-width: 300px) {
+            .text {font-size: 11px}
+        }
+
+        * {
+            scrollbar-color: #0A4C95  #C2D2E4;
+            scrollbar-width: thin;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="w3-bar w3-greyscale-min w3-card w3-left-align w3-large">
+       <img class="w3-bar-item w3-left" src="/images/UPMRCL.png" height="100" width="100">
+    </div>
+</div>
+
+<div class="w3-row" style="border-top: 15px solid #770000">
+    <!--<div class="container">-->
+    <form id="loginForm" th:object="${userCredential}" th:action="@{/login}" method="post" class="validate-form">
+        <div class="w3-third w3-margin-top">
+            <p th:if="${isInvalid == 'Y'}" class="w3-margin-left" id="errMessage" style="color: #ff0000; margin-bottom: 16px;">User ID or Password is incorrect.</p>
+            <input type="hidden" value="selfservice" name="usertype">
+            <p class="validate-input w3-padding-large" data-validate = "Valid userid is required" >
+                <input id="loginid" class="w3-input w3-border" type="text" name="loginid" placeholder="User ID">
+            </p>
+
+            <p class="validate-input w3-padding-large" data-validate="Password is required">
+                <input id="pwd" class="w3-input w3-border" type="password" name="pwd" placeholder="Password">
+            </p>
+
+            <p class="w3-padding-large">
+                <button id="submit" class="w3-button w3-blue" type="submit" style="width: 100%;">Login</button>
+            </p>
+
+            <p class="w3-padding-large">
+                <span id="forgotPwd" style="cursor:pointer;"><u style="color: blue;">Forgotten password?</u></span>
+            </p>
+
+            <div class="w3-padding-large">
+                <iframe width="100%" height="200px" src="https://www.youtube.com/embed/Obl9Q1ZTWag" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div class="w3-rest">
+            <div class="slideshow-container w3-padding-large">
+                <div class="mySlides fade">
+                    <div class="numbertext">1 / 3</div>
+                    <img src="/images/upmrcimage.png" style="width:100%; height: 456px;">
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="numbertext">2 / 3</div>
+                    <img src="/images/img2.jpg" style="width:100%; height: 456px;">
+                </div>
+
+                <div class="mySlides fade">
+                    <div class="numbertext">3 / 3</div>
+                    <img src="/images/img3.jpeg" style="width:100%; height: 456px;">
+                </div>
+                <div style="text-align:center">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+
+
+            <script>
+                var slideIndex = 0;
+                showSlides();
+
+                function showSlides() {
+                    var i;
+                    var slides = document.getElementsByClassName("mySlides");
+                    var dots = document.getElementsByClassName("dot");
+                    for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";
+                    }
+                    slideIndex++;
+                    if (slideIndex > slides.length) {slideIndex = 1}
+                    for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                    }
+                    slides[slideIndex-1].style.display = "block";
+                    dots[slideIndex-1].className += " active";
+                    setTimeout(showSlides, 8000); // Change image every 5 seconds
+                }
+            </script>
+            <!--<img class="w3-padding-large" src="/images/upmrcimage.png" height="500" width="100%">-->
+        </div>
+    </form>
+</div>
+<!--style="border-top: 2px solid #214e7b"-->
+    <div class="w3-row">
+        <div class="w3-third">
+            <hr style="width: 340px;background: #770000;height: 29px;margin: 0px;margin-left: 40px;">
+            <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FOfficialUPMetro&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340px" height="500" style=" margin-left: 40px; border:2px solid lightgrey !important; overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+        </div>
+        <div class="w3-third">
+            <hr style="width: 404px;background: #770000;height: 29px;margin: 0px;margin-left: 0px;">
+            <div style="border:2px solid lightgrey !important; width: 90%; height: 500px;">
+                <a class="twitter-timeline" data-width="90%" data-height="495" href="https://twitter.com/OfficialUPMetro?ref_src=twsrc%5Etfw">Tweets by OfficialUPMetro</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+        </div>
+        <div class="w3-third">
+            <hr style="width: 404px;background: #770000;height: 29px;margin: 0px;margin-left: 0px;">
+
+            <div class="" style="width: 90%; border:2px solid lightgrey !important;">
+                <div class="w3-container w3-theme" style="border-bottom: 1px solid lightgrey;">
+                    <h5 class="w3-padding-large">Office Circulars</h5>
+                </div>
+                <div style="max-height: 450px; overflow-y: auto;">
+                    <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                        <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: aliceblue;">
+                            <span>OFFICE ORDER No. 112 / 2020</span><br>
+                            <p style="color: brown; font-size: revert;">Intimation of sanctioned leave/absentee period reagarding.</p>
+                            <div style="text-align:right">
+                                <label style="font-size: small;">Published Date: 20-Nov-2020</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                        <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: #fff6ec;">
+                            <span>OFFICE ORDER No. 111 / 2020</span><br>
+                            <p style="color: brown; font-size: revert;">Grant of Next Higher Grade to Non-executives in UPMRC.</p>
+                            <div style="text-align:right">
+                                <label style="font-size: small;">Published Date: 17-Nov-2020</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                        <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: aliceblue;">
+                            <span>OFFICE ORDER No. 110 / 2020</span><br>
+                            <p style="color: brown; font-size: revert;">Confirmation of Assistant Managers in UPMRCL on permanent basis.</p>
+                            <div style="text-align:right">
+                                <label style="font-size: small;">Published Date: 10-Nov-2020</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                        <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: #fff6ec;">
+                            <span>OFFICE ORDER No. 109 / 2020</span><br>
+                            <p style="color: brown; font-size: revert;">Grant of Next Higher Grade to Non-executives in UPMRC.</p>
+                            <div style="text-align:right">
+                                <label style="font-size: small;">Published Date: 10-Nov-2020</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                        <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: aliceblue;">
+                            <span>OFFICE ORDER No. 108 / 2020</span><br>
+                            <p style="color: brown; font-size: revert;">Revised duty list of HODs & Dy. HODs of Electrical Department.</p>
+                            <div style="text-align:right">
+                                <label style="font-size: small;">Published Date: 06-Nov-2020</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                        <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: #fff6ec;">
+                            <span>OFFICE ORDER No. 106 / 2020</span><br>
+                            <p style="color: brown; font-size: revert;">Posting orders of Executives of UPMRC.</p>
+                            <div style="text-align:right">
+                                <label style="font-size: small;">Published Date: 20-Oct-2020</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                        <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: aliceblue;">
+                            <span>OFFICE ORDER No. 104 / 2020</span><br>
+                            <p style="color: brown; font-size: revert;">Holidays to be  observed in UPMRC during the calendar year 2021.</p>
+                            <div style="text-align:right">
+                                <label style="font-size: small;">Published Date: 16-Oct-2020</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<!--214e7b-->
+    <div class="w3-row" style="height: 50px; background: #770000;">
+        <!--<div style="text-align: center"><i class="fas fa-copyright" style="color: white;"></i> SRDT</div>-->
+    </div>
+
+<script src="/Login_v18/vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="/js/bootbox/bootstrap.min.js"></script>
+<script src="/js/bootbox/bootbox.min.js"></script>
+
+<!--<script type="text/javascript">
+    document.getElementById('id01').style.display='block'
+</script>-->
+<!--<script type="text/javascript">
+    var background = new Array();
+    background[0] = "/images/courseThumbnails/background.jpg";
+    background[1] = "/images/courseThumbnails/background1.jpg";
+    background[2] = "/images/courseThumbnails/background2.jpg";
+    background[3] = "/images/courseThumbnails/background3.jpg";
+    background[4] = "/images/courseThumbnails/background4.jpg";
+    background[5] = "/images/courseThumbnails/background5.jpg";
+    background[6] = "/images/courseThumbnails/background6.jpg";
+    background[7] = "/images/courseThumbnails/background7.jpg";
+    background[8] = "/images/courseThumbnails/background8.jpg";
+
+    var numberGen = Math.floor(Math.random() * 9);
+    document.body.style.backgroundImage='url('+background[numberGen]+')';
+</script>-->
+<script>
+
+    function popshow() {
+        bootbox.alert("You must login to view the File.");
+    }
+
+    $(document).on('click', '#forgotPwd', function(){
+
+        var personid=document.getElementById("loginid").value;
+        if(personid=='' ||personid==null){
+            bootbox.alert("Please fill the User Id.");
+            $("#loginid").css("border","1px solid red");
+        }
+        else{
+
+            var role = "admin";
+
+            bootbox.confirm({
+                message: "Do you want to continue ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result == true){
+                        role = "admin";
+                        var uname = document.getElementById("loginid").value;
+                        if(uname == undefined || uname == "")
+                        {
+                            bootbox.alert("Please enter the Login id before clicking the 'Forgot Password' link.");
+                        }
+                        else
+                        {
+                            $.ajax({
+                                url: "/forgotpass/"+uname+"/"+role,
+                                type: "GET",
+                                success : function(result){
+                                    if(result.message == "MAIL_FAIL")
+                                    {
+                                        bootbox.alert("Error sending mail.");
+                                    }
+                                    else if(result.message == "EMAIL_NOT_FOUND")
+                                    {
+                                        bootbox.alert("Email id not found, please contact to your HR Administrator.");
+                                    }
+                                    else
+                                    {
+                                        var t = result.message.split("^");
+                                        bootbox.alert("An email has been sent to "+t[1]+" which contains the instructions to recover your password.");
+                                    }
+                                },
+                                error: function(result){
+                                    bootbox.alert("Incorrect User ID.");
+                                    console.log(result);
+                                }
+                            });
+                        }
+                    }
+
+                }
+            });
+
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
+
+
+

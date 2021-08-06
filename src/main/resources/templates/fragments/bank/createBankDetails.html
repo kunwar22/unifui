@@ -1,0 +1,368 @@
+<div th:fragment="createBankDet">
+	<script th:inline="javascript">
+			/*<![CDATA[*/
+			var resultfinal = /*[[${result}]]*/;
+
+			/*]]>*/
+		</script>
+
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large"
+						src="/images/hide-grader-panel.png" style="cursor: pointer;">
+					<i class="fas fa-university" style="color: #027b7b;"></i> &nbsp;Bank Info
+				</h4>
+			</div>
+		</div>
+
+		<div id="fragmaent_container"
+			th:include="forms/reimbursement/header :: header"></div>
+
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item">Bank Details</h5>
+
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+				th:if="${bankAccountsDetails.getBankaccountsid()==0}">
+				<div type="button" class="w3-btn w3-red w3-round-large"
+					onclick="backBtnFunc();" id="btnSearch">
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+					to Search
+				</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large"
+					id="btnSave" onclick="ajaxPost()">
+					<i class="fa fa-floppy-o" aria-hidden="true"></i>Save
+				</div>
+			</div>
+
+
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+				th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode=='edit'}">
+				<div type="button" class="w3-btn w3-red w3-round-large"
+					onclick="backBtnFunc();" id="btnSearch">
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+					to Search
+				</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large"
+					id="btnUpdate" onclick="ajaxPost('edit')">
+					<i class="fa fa-floppy-o" aria-hidden="true"></i>Update
+				</div>
+			</div>
+
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+				th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode=='view'}">
+				<div type="button" class="w3-btn w3-red w3-round-large"
+					onclick="backBtnFunc();" id="btnSearch">
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+					to Search
+				</div>
+			</div>
+		</div>
+
+		<div class="w3-row w3-container">
+			<form method="post" id="BANK_ACCOUNT_SAVE"
+				enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+
+				<input id="txtpersonid" type="hidden"
+					th:value="${personInfo.getPersonid()}" th:name="personid"  />
+				<input id="txtbankaccountsid" type="hidden"
+					th:value="${bankAccountsDetails.getBankaccountsid()}"
+					th:name="bankaccountsid" /> <input id="txtpersonnumber"
+					type="hidden" th:value="${personInfo.getPersonnumber()}"
+					th:name="personnumber"  />
+
+				<div class="w3-row w3-container">
+					<div class=w3-half>
+						<div class="w3-container">
+
+
+							<!-- <hr class="hrline">
+			<h5 style="font-weight: bold">
+				Bank Details
+			</h5>
+			 -->
+							<p th:if="${bankAccountsDetails.getBankaccountsid()==0}">
+								<label>Bank Name</label> 
+								<span style="color:red;">*</span>
+								<input class="w3-input w3-border" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+									name="bankname" id="CR_AC_BANK_NAME" type="text"
+									th:value="${bankAccountsDetails.getBankname()}"> 
+									<span
+									style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("bankname")!=null}'
+									th:text='${bindingResult.getFieldError("bankname").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'edit'}">
+								<label>Bank Name</label> 
+								<span style="color:red;">*</span>
+								<input class="w3-input w3-border" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+									name="bankname" id="CR_AC_BANK_NAME" type="text"
+									th:value="${bankAccountsDetails.getBankname()}"> 
+									<span
+									style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("bankname")!=null}'
+									th:text='${bindingResult.getFieldError("bankname").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'view'}">
+								<label>Bank Name</label> <input class="w3-input w3-border" readonly
+									th:name="bankname" id="CR_AC_BANK_NAME" type="text"
+									th:value="${bankAccountsDetails.getBankname()}"> <span
+									style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("bankname")!=null}'
+									th:text='${bindingResult.getFieldError("bankname").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()==0}">
+								<label>Account Holder Name</label> 
+								<span style="color:red;">*</span>
+								<input
+									class="w3-input w3-border" th:name="accountholdername" 
+									oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+									id="CR_AC_NAME" type="text"
+									th:value="${bankAccountsDetails.getAccountholdername()}">
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("accountholdername")!=null}'
+									th:text='${bindingResult.getFieldError("accountholdername").getDefaultMessage()}'>
+								</span>
+							</p>
+							
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'edit'}">
+								<label>Account Holder Name</label> 
+								<span style="color:red;">*</span>
+								<input
+									class="w3-input w3-border" th:name="accountholdername"
+									oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+									id="CR_AC_NAME" type="text"
+									th:value="${bankAccountsDetails.getAccountholdername()}">
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("accountholdername")!=null}'
+									th:text='${bindingResult.getFieldError("accountholdername").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'view'}">
+								<label>Account Holder Name</label> <input
+									class="w3-input w3-border" th:name="accountholdername" readonly
+									id="CR_AC_NAME" type="text"
+									th:value="${bankAccountsDetails.getAccountholdername()}">
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("accountholdername")!=null}'
+									th:text='${bindingResult.getFieldError("accountholdername").getDefaultMessage()}'>
+								</span>
+							</p>
+
+							<p th:if="${bankAccountsDetails.getBankaccountsid()==0}">
+								<label>Account Number</label> 
+								<span style="color:red;">*</span>
+								<input class="w3-input w3-border" oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+									th:name="bankaccountnumber" id="CR_AC_NUMBER" type="text"
+									th:value="${bankAccountsDetails.getBankaccountnumber()}">
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("bankaccountnumber")!=null}'
+									th:text='${bindingResult.getFieldError("bankaccountnumber").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'edit'}">
+								<label>Account Number</label> 
+								<span style="color:red;">*</span>
+								<input class="w3-input w3-border" oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+									th:name="bankaccountnumber" id="CR_AC_NUMBER" type="text"
+									th:value="${bankAccountsDetails.getBankaccountnumber()}">
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("bankaccountnumber")!=null}'
+									th:text='${bindingResult.getFieldError("bankaccountnumber").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'view'}">
+								<label>Account Number</label> <input class="w3-input w3-border" readonly
+									th:name="bankaccountnumber" id="CR_AC_NUMBER" type="text"
+									th:value="${bankAccountsDetails.getBankaccountnumber()}">
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("bankaccountnumber")!=null}'
+									th:text='${bindingResult.getFieldError("bankaccountnumber").getDefaultMessage()}'>
+								</span>
+							</p>
+
+						</div>
+					</div>
+
+					<div class=w3-half>
+						<div class="w3-container">
+
+
+							<p th:if="${bankAccountsDetails.getBankaccountsid()==0}">
+								<label>Bank Address</label> 
+								<span style="color:red;">*</span>
+								<input class="w3-input w3-border"
+									th:name="bankaddress" id="CR_AC_BANK_ADD" type="text"
+									th:value="${bankAccountsDetails.getBankaddress()}"> <span
+									style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("bankaddress")!=null}'
+									th:text='${bindingResult.getFieldError("bankaddress").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'edit'}">
+								<label>Bank Address</label> 
+								<span style="color:red;">*</span>
+								<input class="w3-input w3-border"
+									th:name="bankaddress" id="CR_AC_BANK_ADD" type="text"
+									th:value="${bankAccountsDetails.getBankaddress()}"> <span
+									style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("bankaddress")!=null}'
+									th:text='${bindingResult.getFieldError("bankaddress").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'view'}">
+								<label>Bank Address</label> <input class="w3-input w3-border" readonly
+									th:name="bankaddress" id="CR_AC_BANK_ADD" type="text"
+									th:value="${bankAccountsDetails.getBankaddress()}"> <span
+									style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("bankaddress")!=null}'
+									th:text='${bindingResult.getFieldError("bankaddress").getDefaultMessage()}'>
+								</span>
+							</p>
+
+							<p th:if="${bankAccountsDetails.getBankaccountsid()==0}">
+								<label>IFSC Code</label> 
+								<span style="color:red;">*</span>
+								<input class="w3-input w3-border" oninput="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/(\..*)\./g,'$1');"
+									th:name="branchifsccode" id="CR_AC_IFSC" type="text"
+									th:value="${bankAccountsDetails.getBranchifsccode()}">
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("branchifsccode")!=null}'
+									th:text='${bindingResult.getFieldError("branchifsccode").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'edit'}">
+								<label>IFSC Code</label> 
+								<span style="color:red;">*</span>
+								<input class="w3-input w3-border" oninput="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/(\..*)\./g,'$1');"
+									th:name="branchifsccode" id="CR_AC_IFSC" type="text"
+									th:value="${bankAccountsDetails.getBranchifsccode()}">
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("branchifsccode")!=null}'
+									th:text='${bindingResult.getFieldError("branchifsccode").getDefaultMessage()}'>
+								</span>
+							</p>
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'view'}">
+								<label>IFSC Code</label> <input class="w3-input w3-border"
+									th:name="branchifsccode" id="CR_AC_IFSC" type="text" readonly
+									th:value="${bankAccountsDetails.getBranchifsccode()}">
+								<span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("branchifsccode")!=null}'
+									th:text='${bindingResult.getFieldError("branchifsccode").getDefaultMessage()}'>
+								</span>
+							</p>
+							
+
+							<!-- <p th:if="${bankAccountsDetails.getAccounttype()==null}">
+			     <label>Account Type</label><span style="color:red"> *</span>
+				<select id="CR_AC_TYPE1"class="w3-select w3-border" th:name="accounttype"  >	
+				<option></option>		
+					<option th:each="ac : ${AccountType}" th:selected="${st == 'Salary' }" 
+					th:value="${ac}" th:text="${ac}">
+				</select>
+				<span style="color: #ff0000"
+				th:if='${bindingResult != null && bindingResult.getFieldError("accounttype")!=null}'
+				th:text='${bindingResult.getFieldError("accounttype").getDefaultMessage()}'>
+			</span>
+			</p> -->
+							<p th:if="${bankAccountsDetails.getBankaccountsid()==0}">
+								<label>Account Type</label>
+								<span style="color: red"> *</span> 
+								<select
+									id="CR_AC_TYPE1" class="w3-select w3-border"
+									th:name="accounttype">
+									<option></option>
+									<option th:each="ac : ${AccountType}"
+										th:value="${ac.getDescription()}"
+										th:text="${ac.getDescription()}"
+										th:selected="${bankAccountsDetails.getAccounttype() == ac.getDescription()}">
+								</select> <span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("accounttype")!=null}'
+									th:text='${bindingResult.getFieldError("accounttype").getDefaultMessage()}'>
+								</span>
+							</p>
+
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'edit'}">
+								<label>Account Type</label>
+								<span style="color: red"> *</span> 
+								<select id="CR_AC_TYPE2" class="w3-select w3-border" name="accounttype" required>
+									<!-- <option th:value="${bankAccountsDetails.getAccounttype()}"
+										th:text="${bankAccountsDetails.getAccounttype()}" selected
+										hidden></option> -->
+									<option th:each="ac : ${AccountType}" 
+										th:value="${ac.getDescription()}"
+										th:text="${ac.getDescription()}"
+										th:selected="${bankAccountsDetails.getAccounttype() == ac.getDescription()}"></option>
+								</select> <span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("accounttype")!=null}'
+									th:text='${bindingResult.getFieldError("accounttype").getDefaultMessage()}'>
+								</span>
+							</p>
+
+
+							<p th:if="${bankAccountsDetails.getBankaccountsid()!=0} and ${mode == 'view'}">
+								<label>Account Type</label><span style="color: red"> *</span> <select disabled
+									id="CR_AC_TYPE2" class="w3-select w3-border" name="accounttype"
+									required>
+
+									<option th:value="${bankAccountsDetails.getAccounttype()}"
+										th:text="${bankAccountsDetails.getAccounttype()}" selected
+										hidden></option>
+									<option th:each="ac : ${AccountType}" th:value="${ac}"
+										th:text="${ac}"
+										th:selected="${ac eq bankAccountsDetails.getAccounttype()}">
+								</select> <span style="color: #ff0000"
+									th:if='${bindingResult != null && bindingResult.getFieldError("accounttype")!=null}'
+									th:text='${bindingResult.getFieldError("accounttype").getDefaultMessage()}'>
+								</span>
+							</p>
+
+
+						</div>
+					</div>
+
+					<!-- <div class="w3-container">
+						<p>
+							<button id="AccountCancel" rm="bankAccount/manageBankAccount"
+								tabindex="15" class="w3-button w3-theme w3-grey">Cancel</button>
+
+							<button id="AC_CREATE" onclick="ajaxPost();"
+								class="w3-button w3-theme w3-grey">Submit</button>
+
+						</p>
+					</div> -->
+					<div id="AFTER_SUBMIT_STATUS_BLOCK_BANK" class="w3-modal">
+						<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+							style="max-width: 400px;">
+							<div
+								class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+								<label id="lblMsg" style="font-weight: bold"> </label> <a
+									id="btnOK" rm="bankAccount/manageBankAccount">OK</a>
+
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+
+
+
+			</form>
+		</div>
+
+
+		<script src="/js/create/createBank.js"></script>
+		<script src="/js/validation/validation.js"></script>
+
+	</div>
+</div>
+
+

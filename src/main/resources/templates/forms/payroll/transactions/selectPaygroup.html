@@ -1,0 +1,34 @@
+<div th:fragment="selectPaygroup">
+    <div class="w3-container" style="margin-top: -42px;">
+        <div class="w3-row">
+            <form id="paygroupcalselect" enctype="application/x-www-form-urlencoded" onsubmit="return false;" method="post">
+                <h5>Select Pay-Group and Calendar</h5>
+                <hr class="hrline">
+                <div class="w3-row-padding" style="margin-top: 32px;">
+                    <div class="w3-quarter">
+                        <p>&nbsp;</p>
+                    </div>
+                    <div class="w3-quarter">
+                        <p>
+                            <label>Select Paygroup</label>
+                            <select onchange="setpaygroupval()" id="paygroupid" name="paygroupid" class="w3-select w3-border">
+
+                            </select>
+                        </p>
+                    </div>
+                    <div class="w3-quarter">
+                        <p>
+                            <label>Select Calendar</label>
+                            <select onchange="setcalendarval()" id="calendarid" name="calendarid" class="w3-select w3-border">
+
+                            </select>
+                        </p>
+                    </div>
+                    <div class="w3-quarter">
+                        <p>&nbsp;</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

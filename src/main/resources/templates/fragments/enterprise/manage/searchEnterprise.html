@@ -1,0 +1,84 @@
+
+<div th:fragment="searchlocation">
+	<div class="w3-container">
+		<h4 class="w3-text-theme">Search Enterprise</h4>
+	</div>
+
+	<div class="w3-row">
+		<div class=w3-third style="border-right: 2px solid black">
+
+			<div class="w3-container">
+				<div class="divTable">
+					<div class="divTr">
+
+						<div class="d1">
+							<h5 style="font-weight: bold">Find an existing Value</h5>
+						</div>
+						<div class="d2">
+							<a id="locCreate" rm="/enterprisesetup/createlocation"
+								class="w3-button w3-circle w3-theme w3-large">+</a>
+
+						</div>
+					</div>
+
+				</div>
+
+				<hr class="hrline">
+				<h6>Search Criteria</h6>
+				<p>
+					<label>Name</label> <input value="" class="w3-input w3-border"
+						name="LocationName" id="LOC_NAME" type="text">
+
+				</p>
+				<p>
+					<label>Location</label> <input value="" class="w3-input w3-border"
+						name="LocationCode" id="LOC_CODE" type="text">
+
+				</p>
+				
+
+				<p>
+					<label>Status</label> <select id="CR_STATUS"
+						class="w3-select w3-border" name="option">
+						<option value="" disabled selected></option>
+						<option th:each="status : ${status}" th:value="${status}"
+							th:text="${status}">
+					</select>
+
+				</p>
+
+				<p>
+					<button id="LOC_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+
+				</p>
+			</div>
+
+
+		</div>
+
+		<div class="w3-twothird w3-container">
+			<h5 style="margin-bottom: 0px; margin-bottom: 0px; font-weight: bold;">Search Results</h5>
+			<div id="resultSec" class="w3-responsive" style="display: none">
+				<table id="locationList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<tr class="w3-theme-d3">
+							<th>Name</th>							
+							<th>Location</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noData" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<script src="/js/search/locationsearch.js"></script>
+</div>

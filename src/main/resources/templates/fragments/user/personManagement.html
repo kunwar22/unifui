@@ -1,0 +1,1076 @@
+<div th:fragment="personManagementInfo">
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		    var resultfinal = /*[[${result}]]*/;
+		   
+		/*]]>*/
+	</script>
+
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						 style="cursor: pointer;">
+					<i class="fas fa-people-arrows" style="color: #fd951a"></i> Family & Dependents
+				</h4>
+			</div>
+		</div>
+
+
+	<div id="fragmaent_container"
+		th:include="forms/reimbursement/header :: header"></div>
+
+
+	<div class="w3-bar w3-theme-l3">
+		<h5 class="w3-bar-item">Dependents Details</h5>
+
+		<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+			th:if="${PersonDependentDetails.getDependentdetailsid()==0} ">
+
+
+			<div type="button" class="w3-btn w3-red w3-round-large" id="backbtn">
+				<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+				to Search
+			</div>
+			<div type="button" class="w3-btn w3-blue w3-round-large"
+				id="PersonManageCreate" onclick="ajaxPost();">
+				<i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save
+				Details
+			</div>
+
+		</div>
+		<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+			th:if="${PersonDependentDetails.getDependentdetailsid()!=0} and ${mode=='edit'}">
+			<div type="button" class="w3-btn w3-red w3-round-large" id="backbtn">
+				<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+				to Search
+			</div>
+			<div type="button" class="w3-btn w3-blue w3-round-large"
+				id="PersonManageCreate" onclick="ajaxPost();">
+				<i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update
+				Details
+			</div>
+		</div>
+
+		<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+			th:if="${PersonDependentDetails.getDependentdetailsid()!=0} and ${mode=='view'}">
+			<div type="button" class="w3-btn w3-red w3-round-large" id="backbtn">
+				<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+				to Search
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+	<div class="w3-container">
+		<form method="post" id="PersonManagement"
+			enctype="application/x-www-form-urlencoded" onsubmit="return false;"
+			style="margin-top: 10px">
+
+			 <div style="display:none"> 
+			<!-- <div> -->
+				<input th:value="${PersonDependentDetails.getActionid()}"
+					id="txtPMActionid" name="actionid" type="text" readonly /> <input
+					th:value="${PersonDependentDetails.getDependentdetailsid()}"
+					id="txtPMid" name="dependentdetailsid" type="text" readonly /> <input
+					th:value="${personInfo.getPersonnumber()}" id="txtPMActionid"
+					name="personnumber" type="text" readonly />
+			</div>
+
+
+			<div th:if="${PersonDependentDetails.getDependentdetailsid()==0}">
+			
+				<div class="w3-row w3-border w3-padding-large">
+					<div style="margin-top: 10px">
+						<h4 class="w3-text-theme"
+							style="margin-top: 10px; bottom: 2px; display: inline">Dependent
+							Information</h4>
+					</div>
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+					<P>
+						<b>Enter basic information for the new contact.To enter more
+							detailed information, such as additional address, update the
+							contact's person record after you create it here.</b>
+					</P>
+
+					<div id="ASSIGN_BLOCK" class="w3-container">
+						<div class=w3-half>
+							<div class="w3-container">
+								<p>
+									<label>Title</label> <select
+										id="CR_PM_TITLE" th:name="title" class="w3-select w3-border">
+										<option value="0" disabled selected></option>
+										<option th:each="title : ${title}" th:value="${title.getId()}"
+											th:text="${title.getDescription()}"
+												th:selected="${title.getId() eq PersonDependentDetails.getTitle()}">
+									</select>
+									
+								</p>
+
+								<p>
+									<label>Full Name</label><span style="color: red">*</span>  <input class="w3-input w3-border"
+										id="CR_PM_FNAME" th:name="fullname" type="text" th:value="${PersonDependentDetails.getFullname()}"
+										oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+										style="height: 38px" />
+										<span style="color: #ff0000"
+                       					 th:if='${bindingResult != null && bindingResult.getFieldError("fullname")!=null}'
+                     				     th:text='${bindingResult.getFieldError("fullname").getDefaultMessage()}'></span>
+								</p>
+								<p>
+									<label>Phone Number</label> <input class="w3-input w3-border"
+										oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+										id="CR_PM_PHONE" th:name="phonenumber" maxlength="13" th:value="${PersonDependentDetails.getPhonenumber()}"
+										type="text" style="height: 38px" />
+								</p>
+							</div>
+						</div>
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<p>
+									<label> Date of Birth </label> <span style="color: red">*</span> 
+									<input style="height: 38px" max="9999-12-31" flag="none"
+										class="w3-input w3-border" id="CR_PM_DOB" 
+										th:value="${PersonDependentDetails.getDateofbirth()}"
+										th:name="dateofbirth" type="date" data-date=""
+										data-date-format='YYYY MM DD' tabindex="1" />
+									<span style="color: #ff0000"
+                       					 th:if='${bindingResult != null && bindingResult.getFieldError("dateofbirth")!=null}'
+                     				     th:text='${bindingResult.getFieldError("dateofbirth").getDefaultMessage()}'></span>	
+
+								</p>
+
+								<p>
+									<label>Gender</label><span style="color: red"> *</span> <select
+										id="CR_PM_GENDER" th:name="gender" class="w3-select w3-border">
+										<option value="0" disabled selected></option>
+										<option th:each="gender : ${gender}"
+											th:value="${gender.getId()}"
+											th:text="${gender.getDescription()}" 
+											th:selected="${gender.getId() eq PersonDependentDetails.getGender()}"/>
+									</select>
+									<span style="color: #ff0000"
+                       					 th:if='${bindingResult != null && bindingResult.getFieldError("gender")!=null}'
+                     				     th:text='${bindingResult.getFieldError("gender").getDefaultMessage()}'></span>	
+								</p>
+
+								<p>
+									<label>Email</label> <input class="w3-input w3-border"
+										id="CR_PM_EMAIL" th:name="emailaddress" type="text" onblur="emailValidation();"
+										style="height: 38px" th:value="${PersonDependentDetails.getEmailaddress()}"/>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="w3-row w3-border w3-padding-large">
+					<div style="margin-top: 10px">
+						<h4 class="w3-text-theme"
+							style="margin-top: 10px; bottom: 2px; display: inline">Relationship
+							Information</h4>
+					</div>
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+					<div id="ASSIGN_BLOCK" class="w3-container">
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<p>
+									<label>Country</label> <input
+										class="w3-input w3-border" name="" value="India" id="PI_EMAIL"
+										type="text" style="height: 38px" readonly />
+								</p>
+
+
+								<p>
+									<label>Effective Start Date</label><span style="color: red"> *</span>  <input style="height: 38px" max="9999-12-31" flag="none"
+										class="w3-input w3-border" th:name="effectivestartdate"
+										id="PM_EFFDT" type="date" data-date=""
+										th:value="${PersonDependentDetails.getEffectivestartdate()}"
+										data-date-format='YYYY MM DD' tabindex="1" />
+
+								</p>
+
+								<p>
+									<label>Relationship</label><span style="color: red"> *</span> <select
+										id="CR_PM_CONTACTTYPE" class="w3-select w3-border"
+										th:name="relationship">
+										<option value="0" disabled selected></option>
+										<option th:each="cont : ${contacttype}"
+										th:value="${cont.getId()}" th:text="${cont.getDescription()}" 
+										th:selected="${cont.getId() eq PersonDependentDetails.getRelationship()}"/>
+									</select><span style="color: #ff0000"
+                       					 th:if='${bindingResult != null && bindingResult.getFieldError("relationship")!=null}'
+                     				     th:text='${bindingResult.getFieldError("relationship").getDefaultMessage()}'></span>	
+								</p>
+								
+					<!-- <p th:if="${PersonDependentDetails.getActionid()==0}" style="display:none" id="CR_PR_TWINS">
+									<input class="w3-check" id="CR_PM_TWINS" name="twins"
+										 type="checkbox" value="Yes"> <label>Twins
+									</label>
+								</p> 	 -->		
+					<p  id="CR_PR_TWINS">
+                     <label>Twins</label> 
+                     <select  id="CR_PR_TWIN"
+                        class="w3-select w3-border"
+                        name="twins">
+                        <option id="1" disabled selected></option>
+                        <option th:each="tw : ${twins}" 
+                        th:value="${tw}" th:text="${tw}" 
+                        th:selected="${tw.getDescription() eq PersonDependentDetails.getTwins()}"                    
+                           ></option>
+                     </select>
+                    
+                  </p>
+
+							</div>
+						</div>
+
+						<div class=w3-half>
+							<div class="w3-container">
+								<p>
+									<label>Guardian Phone</label> <input class="w3-input w3-border"
+										id="CR_PM_GRDIAN_PHON" th:name="guardianphone" type="text"
+										th:value="${PersonDependentDetails.getGuardianphone()}"
+										oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+										style="height: 38px" maxlength="13" />
+								</p>
+
+
+								<p>
+									<label>Emergency Contact</label> <select id="CR_PM_EMRGNCY_CNTCT" th:name="emergencycontact"
+										class="w3-select w3-border" name="option" style="height: 41px"
+										tabindex="4">
+										<option th:each="idnti : ${Identifying}"
+											th:selected="${idnti=='No'}" th:value="${idnti}"
+											th:text="${idnti}"
+											>
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+
+								<!-- <p th:if="${PersonDependentDetails.getActionid()==0}">
+									<input class="w3-check" id="CR_PM_DISABILITY" name="disability"
+										type="checkbox" value="Yes"> <label>Disability</label>
+								</p>
+								
+								<p th:if="${PersonDependentDetails.getActionid()==0}" style="display:none" id="CR_PR_TWINS">
+									<input class="w3-check" id="CR_PM_TWINS" name="twins"
+										 type="checkbox" value="Yes"> <label>Twins
+									</label>
+								</p> -->
+								
+								
+				<p>
+                     <label>Disability</label> <span style="color: red"> *</span>
+                     <select
+                        id="CR_PM_DISABILITY" class="w3-select w3-border"
+                        name="disability">
+                        <option id="1" disabled selected></option>
+                        <option th:each="db : ${disability}" 
+                        th:value="${db}" th:text="${db}" 
+                        th:selected="${db.getDescription() eq PersonDependentDetails.getDisability()}"                    
+                           ></option>
+                     </select>
+                    
+                  </p>
+
+							</div>
+						</div>
+					</div>
+					<div style="margin-top: 10px">
+						<h4 class="w3-text-theme"
+							style="margin-top: 10px; bottom: 2px; display: inline">Address
+							Details</h4>
+					</div>
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+					<div>
+						<p>
+							<label>Use My Address </label> <input class="w3-check"
+								id="CR_PM_DEFT_ADD_C" th:name="sameaspersonaddress" type="checkbox" th:value="${currentAdd.getId()}">
+							<label th:text="${currentAdd.getDescription()}"></label>
+						</p>
+					</div>
+
+					<!-- <div>
+
+						<input type="button" id="AddressDetails"
+							class=" w3-bar-item w3-button w3-text-theme"
+							value="Address Details">
+					</div> -->
+				</div>
+				<br>
+				<!-- <div id="correspondenceAddress" class="w3-row w3-border w3-padding-large" style="display: none">
+				</div> --> 
+				<div id="ASSIGN_BLOCK12_C" class="w3-row w3-border w3-padding-large"
+					>
+
+					<div class="w3-container w3-row w3-padding-large">
+
+						<div class=w3-half>
+							<div class="w3-container">
+								<p>
+									<label>Address Type</label> <select tabindex="8"
+										id="CR_PM_ADDRSTYPE" th:name="addresstype"
+										class="w3-select w3-border">
+										<option value="" disabled selected></option>
+										<option th:each="AddressType : ${address}"
+											th:value="${AddressType.getId()}"
+											th:text="${AddressType.getDescription()}"></option>
+									</select>
+								</p>
+								<p>
+									<label>Country</label><select
+										id="countryList1" class="w3-select w3-border"
+										th:name="countryid">
+										<option value="" disabled selected></option>
+										<option th:each="CountryDetails : ${CountryDetails}"
+											th:value="${CountryDetails.getId()}"
+											th:text="${CountryDetails.getDescription()}">
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+
+
+								<p>
+								<div id="divState1">
+									<p>
+										<label>State</label> <select tabindex="6" id="CR_PM_STATE"
+											class="w3-select w3-border" name="state">
+											<option value="0" disabled selected></option>
+											<option th:each="stat : ${state}"
+											th:value="${stat.getId()}"
+											th:text="${stat.getDescription()}"
+											th:selected="${stat.getId() eq PersonDependentDetails.getState()}"></option>
+											<!-- <option th:value="${PersonDependentDetails.getState()}"
+												th:text="${PersonDependentDetails.getStatedsc()}" selected></option> -->
+										</select>
+									</p>
+
+								</div>
+
+								</p>
+
+
+								<p>
+									<label>Pin Code</label> <input class="w3-input w3-border"
+										oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+										id="CR_PM_PINCODE" th:name="pincode" type="text"
+										style="height: 38px" />
+								</p>
+
+							</div>
+						</div>
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<p>
+									<label>Address</label>
+									<textarea class="w3-input w3-border" id="CR_PM_FULL_ADD"
+										th:name="fulladdress" rows="8" cols="30"></textarea>
+								</p>
+
+								<p>
+									<label>City Town</label> <input class="w3-input w3-border"
+										id="CR_PM_CITY" th:name="citytown" type="text"
+										style="height: 38px" />
+								</p>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+			<!--------------------------------------------------------Edit-------------------------------------------------- -->
+			<div
+				th:if="${PersonDependentDetails.getDependentdetailsid()!=0} and ${mode=='edit'}" >
+
+				<div class="w3-row w3-border w3-padding-large">
+					<div style="margin-top: 10px">
+						<h4 class="w3-text-theme"
+							style="margin-top: 10px; bottom: 2px; display: inline">Dependent
+							Information</h4>
+					</div>
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+					<P>
+						<b>Enter basic information for the new contact.To enter more
+							detailed information,such as additional address,update the
+							contact's person record after you create it here.</b>
+					</P>
+
+					<div id="ASSIGN_BLOCK" class="w3-container">
+						<div class=w3-half>
+							<div class="w3-container">
+								<p>
+									<label>Title</label><select
+										id="CR_PM_TITLE" th:name="title" class="w3-select w3-border">
+										<option value="" disabled selected></option>
+										<option th:each="title : ${title}" th:value="${title.getId()}"
+											th:text="${title.getDescription()}"
+											th:selected="${title.getId() eq PersonDependentDetails.getTitle()}"></option>
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+
+								<p>
+									<label>Full Name</label><span style="color: red"> *</span>  <input class="w3-input w3-border"
+										id="CR_PM_FNAME" th:name="fullname" type="text"
+										oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');"
+										th:value="${PersonDependentDetails.getFullname()}"
+										style="height: 38px" />
+										<span style="color: #ff0000"
+                       					 th:if='${bindingResult != null && bindingResult.getFieldError("fullname")!=null}'
+                     				     th:text='${bindingResult.getFieldError("fullname").getDefaultMessage()}'></span>
+								</p>
+								<p>
+									<label>Phone Number</label> <input class="w3-input w3-border"
+										oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+										id="CR_PM_PHONE" th:name="phonenumber" maxlength="13"
+										type="text" style="height: 38px"
+										th:value="${PersonDependentDetails.getPhonenumber()}" />
+								</p>
+							</div>
+						</div>
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<p>
+									<label> Date of Birth </label> <span style="color: red">
+										*</span> <input style="height: 38px" max="9999-12-31" flag="none"
+										class="w3-input w3-border" id="CR_PM_DOB"
+										th:name="dateofbirth" type="date" data-date=""
+										data-date-format='YYYY MM DD' tabindex="1"
+										th:value="${PersonDependentDetails.getDateofbirth()}" />
+										<span style="color: #ff0000"
+                       					 th:if='${bindingResult != null && bindingResult.getFieldError("dateofbirth")!=null}'
+                     				     th:text='${bindingResult.getFieldError("dateofbirth").getDefaultMessage()}'></span>
+
+								</p>
+
+								<p>
+									<label>Gender</label><span style="color: red"> *</span> <select
+										id="CR_PM_GENDER" th:name="gender" class="w3-select w3-border">
+										<option value="0" disabled ></option>
+										<option th:each="gender : ${gender}"
+											th:value="${gender.getId()}"
+											th:text="${gender.getDescription()}"
+											th:selected="${gender.getId() eq PersonDependentDetails.getGender()}"></option>
+									</select><span style="color: #ff0000"
+                       					 th:if='${bindingResult != null && bindingResult.getFieldError("gender")!=null}'
+                     				     th:text='${bindingResult.getFieldError("gender").getDefaultMessage()}'></span>	
+								</p>
+
+								<p>
+									<label>Email</label> <input class="w3-input w3-border"
+										id="CR_PM_EMAIL" th:name="emailaddress" type="text"
+										style="height: 38px"
+										th:value="${PersonDependentDetails.getEmailaddress()}" />
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="w3-row w3-border w3-padding-large">
+					<div style="margin-top: 10px">
+						<h4 class="w3-text-theme"
+							style="margin-top: 10px; bottom: 2px; display: inline">Relationship
+							Information</h4>
+					</div>
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+					<div id="ASSIGN_BLOCK" class="w3-container">
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<p>
+									<label>Country</label> <input
+										class="w3-input w3-border" name="" value="India" id="PI_EMAIL"
+										type="text" style="height: 38px" disabled readonly />
+								</p>
+
+
+								<p>
+									<label>Effective Start Date</label> <input style="height: 38px" max="9999-12-31" flag="none"
+										class="w3-input w3-border" th:name="effectivestartdate"
+										id="PM_EFFDT" type="date" data-date=""
+										th:value="${PersonDependentDetails.getEffectivestartdate()}"
+										data-date-format='YYYY MM DD' tabindex="1" />
+
+								</p>
+
+								<p>
+									<label>Relationship</label><span style="color: red"> *</span> <select
+										id="CR_PM_CONTACTTYPE" class="w3-select w3-border"
+										th:name="relationship">
+										<option value="0" disabled selected></option>
+										<option th:each="cont : ${contacttype}"
+											th:value="${cont.getId()}" th:text="${cont.getDescription()}"
+											th:selected="${cont.getId() eq PersonDependentDetails.getRelationship()}"></option>
+									</select><span style="color: #ff0000"
+                       					 th:if='${bindingResult != null && bindingResult.getFieldError("relationship")!=null}'
+                     				     th:text='${bindingResult.getFieldError("relationship").getDefaultMessage()}'></span>
+								</p>
+								
+								
+								 <!-- <p id="CR_PR_TWINS" th:if="${PersonDependentDetails.getTwins()=='No'}">
+				                     <label>Twins</label> 
+				                     <select  id="CR_PR_TWIN"
+				                        class="w3-select w3-border"
+				                        name="twins">
+				                        <option id="1" disabled selected></option>
+				                        <option th:each="tw : ${twins}" 
+				                        th:value="${tw}" th:text="${tw}" 
+				                        th:selected="${tw.getDescription() eq PersonDependentDetails.getTwins()}"                    
+				                           ></option>
+				                     </select>
+				                    
+				                  </p>   -->
+				                  
+				                  <p id="CR_PR_TWINS" >
+				                     <label>Twins</label> 
+				                     <select  id="CR_PR_TWIN"
+				                        class="w3-select w3-border"
+				                        name="twins">
+				                        <option id="1" disabled selected></option>
+				                        <option th:each="tw : ${twins}" 
+				                        th:value="${tw}" th:text="${tw}" 
+				                        th:selected="${tw.getDescription() eq PersonDependentDetails.getTwins()}"                    
+				                           ></option>
+				                     </select>
+				                    
+				                  </p>
+
+							</div>
+						</div>
+
+						<div class=w3-half>
+							<div class="w3-container">
+								<p>
+									<label>Guardian Phone</label> <input class="w3-input w3-border"
+										id="CR_PM_GRDIAN_PHON" th:name="guardianphone" type="text"
+										th:value="${PersonDependentDetails.getGuardianphone()}"
+										oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+										style="height: 38px" maxlength="13" />
+								</p>
+
+
+								<p>
+									<label>Emergency Contact</label>
+									 <select id="CR_PM_EMRGNCY_CNTCT" th:name="emergencycontact"
+										class="w3-select w3-border" name="option" style="height: 41px"
+										tabindex="4">
+										<option th:each="idnti : ${Identifying}" th:value="${idnti}"
+											th:text="${idnti}"
+											th:selected="${idnti eq PersonDependentDetails.getEmergencycontac()}"></option>
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+
+								<!-- <p th:if="${PersonDependentDetails.getActionid()==0}">
+									<input class="w3-check" id="CR_PM_DISABILITY_1" name="'disability'"
+										type="checkbox" th:value="Yes"> <label>Disability</label>
+								</p>
+
+								<p th:if="${PersonDependentDetails.getDisability()=='Yes'}">
+									<input class="w3-check" id="CR_PM_DISABILITY_2" name="'disability'"
+										type="checkbox" checked="checked" th:value="Yes"> <label>Disability</label>
+								</p>
+
+								<p th:if="${PersonDependentDetails.getDisability()=='No'}">
+									<input class="w3-check" id="CR_PM_DISABILITY_3" name="'disability'"
+										type="checkbox" th:value="Yes"> <label>Disability</label>
+								</p>
+
+
+								<p th:if="${PersonDependentDetails.getActionid()==0}" style="display:none" id="CR_PR_TWINS">
+									<input class="w3-check" id="CR_PM_TWINS" th:name="twins"
+										type="checkbox" th:value="Yes"> <label>Twins </label>
+								</p>
+
+								<p th:if="${PersonDependentDetails.getTwins()=='Yes'}" style="display:none" id="CR_PR_TWINS">
+									<input class="w3-check" id="CR_PM_TWINS" th:name="twins"
+										type="checkbox" checked="checked" th:value="Yes"> <label>Twins
+										?</label>
+								</p>
+
+								<p th:if="${PersonDependentDetails.getTwins()=='No'}" style="display:none" id="CR_PR_TWINS">
+									<input class="w3-check" id="CR_PM_TWINS" th:name="twins"
+										type="checkbox" th:value="No"> <label>Twins </label>
+								</p> -->
+					<p>
+                     <label>Disability</label> <span style="color: red"> *</span>
+                     <select
+                        id="CR_PM_DISABILITY_3" class="w3-select w3-border"
+                        name="disability">
+                        <option id="1" disabled selected></option>
+                        <option th:value="${PersonDependentDetails.getDisability()}"
+                           th:text="${PersonDependentDetails.getDisability()}" selected hidden></option>
+                        <option th:each="db : ${disability}" th:value="${db}"
+                           th:text="${db}"></option>
+                     </select>
+                      </p>
+							</div>
+						</div>
+					</div>
+					<!-- <div style="margin-top: 10px">
+						<h4 class="w3-text-theme"
+							style="margin-top: 10px; bottom: 2px; display: inline">Address
+							Details</h4>
+					</div> -->
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+					<div>
+						<p th:if="${PersonDependentDetails.getActionid()!=0} and ${PersonDependentDetails.getSameaspersonaddress()==0}">
+							<label>Use My Address </label> <input class="w3-check"
+								id="CR_PM_DEFT_ADD_E" th:name="sameaspersonaddress" type="checkbox" th:value="${currentAdd.getId()}">
+							<label th:text="${currentAdd.getDescription()}"></label>
+						</p>
+						<p  th:if="${PersonDependentDetails.getActionid()!=0} and ${PersonDependentDetails.getSameaspersonaddress()!=0}">
+							<label>Use My Address </label> <input class="w3-check"
+								id="CR_PM_DEFT_ADD_E" th:name="sameaspersonaddress" type="checkbox" checked th:value="${currentAdd.getId()}">
+							<label th:text="${currentAdd.getDescription()}"></label>
+						</p>
+					</div>
+
+
+				</div>
+			
+				<br>
+				
+		<!-- 		<div id="correspondenceAddress" class="w3-row w3-border w3-padding-large" style="display: none"> -->
+				</div> 
+				<div id="ASSIGN_BLOCK12_E" class="w3-row w3-border w3-padding-large"	> 
+				<!-- 	<div id="ASSIGN_BLOCK12" class="w3-row w3-border w3-padding-large"
+					th:style="${(PersonDependentDetails.getActionid()!=0) and (PersonDependentDetails.getSameaspersonaddress() != '')}?'display:none':'display:block'">
+ -->
+					<div class="w3-container w3-row w3-padding-large">
+
+						<div class=w3-half>
+							<div class="w3-container">
+								<p>
+									<label>Address Type</label> <select tabindex="8"
+										id="CR_PM_ADDRSTYPE" th:name="addresstype"
+										class="w3-select w3-border">
+										<option value="0" disabled selected></option>
+										<option th:each="AddressType : ${address}"
+											th:value="${AddressType.getId()}"
+											th:text="${AddressType.getDescription()}"
+											th:selected="${AddressType.getId() eq PersonDependentDetails.getAddresstype()}"></option>
+									</select>
+								</p>
+								<p>
+									<label>Country</label><select
+										id="countryList1" class="w3-select w3-border"
+										th:name="countryid">
+										<option value="0" disabled selected></option>
+										<option th:each="CountryDetails : ${CountryDetails}"
+											th:value="${CountryDetails.getId()}"
+											th:text="${CountryDetails.getDescription()}"
+											th:selected="${CountryDetails.getId() eq PersonDependentDetails.getCountryid()}"></option>
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+
+
+								<p>
+								<div id="divState1">
+									<p>
+										<label>State</label> <select tabindex="6" id="CR_PM_STATE"
+											class="w3-select w3-border" name="state">
+											<option value="0" disabled selected></option>
+											<option th:each="stat : ${state}"
+											th:value="${stat.getId()}"
+											th:text="${stat.getDescription()}"
+											th:selected="${stat.getId() eq PersonDependentDetails.getState()}"></option>
+
+										</select>
+									</p>
+
+								</div>
+
+								</p>
+
+
+								<p>
+									<label>Pin Code</label> <input class="w3-input w3-border"
+										oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+										id="CR_PM_PINCODE" th:name="pincode" type="text"
+										th:value="${PersonDependentDetails.getPincode()}"
+										style="height: 38px" />
+								</p>
+
+							</div>
+						</div>
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<p>
+									<label>Address</label>
+									<textarea class="w3-input w3-border" id="CR_PM_FULL_ADD"
+										th:name="fulladdress" rows="8" cols="30"
+										th:text="${PersonDependentDetails.getFulladdress()}"></textarea>
+								</p>
+
+								<p>
+									<label>City Town</label> <input class="w3-input w3-border"
+										id="CR_PM_CITY" th:name="citytown" type="text"
+										style="height: 38px"
+										th:value="${PersonDependentDetails.getCitytown()}" />
+								</p>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			<!-------------------------------------------------------------------------------------------->
+
+			<!--------------------------------------------------------view-------------------------------------------------- -->
+			<div
+				th:if="${PersonDependentDetails.getDependentdetailsid()!=0} and ${mode=='view'}">
+				
+
+				<div class="w3-row w3-border w3-padding-large">
+					<div style="margin-top: 10px">
+						<h4 class="w3-text-theme"
+							style="margin-top: 10px; bottom: 2px; display: inline">Dependent
+							Information</h4>
+					</div>
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+					<P>
+						<b>Enter basic information for the new contact.To enter more
+							detailed information,such as additional address,update the
+							contact's person record after you create it here.</b>
+					</P>
+
+					<div id="ASSIGN_BLOCK" class="w3-container">
+						<div class=w3-half>
+							<div class="w3-container">
+								<p>
+									<label>Title</label> <select
+										id="CR_PM_TITLE" th:name="title" class="w3-select w3-border"
+										disabled>
+										<option value="" disabled selected></option>
+										<option th:each="title : ${title}" th:value="${title.getId()}"
+											th:text="${title.getDescription()}"
+											th:selected="${title.getId() eq PersonDependentDetails.getTitle()}"></option>
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+
+								<p>
+									<label>Full Name</label> <span style="color: red"> *</span> <input class="w3-input w3-border"
+										id="CR_PM_FNAME" th:name="fullname" type="text"
+										th:value="${PersonDependentDetails.getFullname()}"
+										style="height: 38px" readonly disabled/>
+								</p>
+								<p>
+									<label>Phone Number</label> <input class="w3-input w3-border"
+										oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+										id="CR_PM_PHONE" th:name="phonenumber" maxlength="13"
+										type="text" readonly style="height: 38px"
+										th:value="${PersonDependentDetails.getPhonenumber()}" disabled/>
+								</p>
+							</div>
+						</div>
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<p>
+									<label> Date of Birth </label> <span style="color: red">
+										*</span> <input style="height: 38px" max="9999-12-31" flag="none"
+										class="w3-input w3-border" id="CR_PM_DOB"
+										th:name="dateofbirth" type="date" data-date=""
+										data-date-format='YYYY MM DD' readonly tabindex="1"
+										th:value="${PersonDependentDetails.getDateofbirth()}" disabled/>
+
+								</p>
+
+								<p>
+									<label>Gender</label><span style="color: red"> *</span> <select
+										disabled id="CR_PM_GENDER" th:name="gender"
+										class="w3-select w3-border">
+										<option value="" disabled selected></option>
+										<option th:each="gender : ${gender}"
+											th:value="${gender.getId()}"
+											th:text="${gender.getDescription()}"
+											th:selected="${gender.getId() eq PersonDependentDetails.getGender()}"></option>
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+
+								<p>
+									<label>Email</label> <input class="w3-input w3-border"
+										id="CR_PM_EMAIL" th:name="emailaddress" type="text" readonly
+										style="height: 38px" disabled
+										th:value="${PersonDependentDetails.getEmailaddress()}" />
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="w3-row w3-border w3-padding-large">
+					<div style="margin-top: 10px">
+						<h4 class="w3-text-theme"
+							style="margin-top: 10px; bottom: 2px; display: inline">Relationship
+							Information</h4>
+					</div>
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+					<div id="ASSIGN_BLOCK" class="w3-container">
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<p>
+									<label>Country</label> <input
+										class="w3-input w3-border" name="" value="India" id="PI_EMAIL"
+										type="text" style="height: 38px" disabled readonly />
+								</p>
+
+
+								<p>
+									<label>Effective Start Date</label> <span style="color: red">
+										*</span> <input style="height: 38px" max="9999-12-31" flag="none"
+										class="w3-input w3-border" th:name="effectivestartdate"
+										readonly id="PM_EFFDT" type="date" data-date="" disabled
+										th:value="${PersonDependentDetails.getEffectivestartdate()}"
+										data-date-format='YYYY MM DD' tabindex="1" />
+
+								</p>
+
+								<p>
+									<label>Relationship</label><span style="color: red"> *</span> <select
+										id="CR_PM_CONTACTTYPE" class="w3-select w3-border" disabled
+										th:name="relationship">
+										<option value="" disabled selected></option>
+										<option th:each="cont : ${contacttype}"
+											th:value="${cont.getId()}" th:text="${cont.getDescription()}"
+											th:selected="${cont.getId() eq PersonDependentDetails.getRelationship()}"></option>
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+								
+								<p  id="CR_PR_TWINS">
+				                     <label>Twins</label> 
+				                     <select  id="CR_PR_TWIN"
+				                        class="w3-select w3-border"
+				                        name="twins" disabled>
+				                        <option id="1" disabled selected></option>
+				                        <option th:each="tw : ${twins}" 
+				                        th:value="${tw}" th:text="${tw}" 
+				                        th:selected="${tw.getDescription() eq PersonDependentDetails.getTwins()}"                    
+				                           ></option>
+				                     </select>
+				                    
+				                  </p>
+
+							</div>
+						</div>
+
+						<div class=w3-half>
+							<div class="w3-container">
+								<p>
+									<label>Guardian Phone</label> <input class="w3-input w3-border"
+										id="CR_PM_GRDIAN_PHON" th:name="guardianphone" type="text"
+										th:value="${PersonDependentDetails.getGuardianphone()}"
+										oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+										readonly style="height: 38px" maxlength="13" disabled />
+								</p>
+
+
+								<p>
+									<label>Emergency Contact</label> <select id="CR_PM_EMRGNCY_CNTCT" th:name="emergencycontact"
+										class="w3-select w3-border" name="option" style="height: 41px"
+										tabindex="4" disabled>
+										<option th:each="idnti : ${Identifying}" th:value="${idnti}"
+											th:text="${idnti}"
+											th:selected="${idnti eq PersonDependentDetails.getEmergencycontac()}"></option>
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+
+								<!-- <p th:if="${PersonDependentDetails.getActionid()==0}">
+									<input class="w3-check" id="CR_PM_DISABILITY" th:name="disability"
+										disabled type="checkbox" value="Yes"> <label>Disability</label>
+								</p>
+
+								<p th:if="${PersonDependentDetails.getDisability()=='Yes'}">
+									<input class="w3-check" id="CR_PM_DISABILITY" th:name="disability"
+										disabled type="checkbox" checked="checked" th:value="Yes">
+									<label>Disability</label>
+								</p>
+
+								<p th:if="${PersonDependentDetails.getDisability()=='No'}">
+									<input class="w3-check" id="CR_PM_DISABILITY" th:name="disability"
+										disabled type="checkbox" th:value="No"> <label>Disability</label>
+								</p>
+
+
+								<p th:if="${PersonDependentDetails.getActionid()==0}">
+									<input class="w3-check" id="CR_PM_TWINS" th:name="twins"
+										disabled type="checkbox" value="Yes"> <label>Twins
+									</label>
+								</p>
+
+								<p th:if="${PersonDependentDetails.getTwins()=='Yes'}">
+									<input class="w3-check" id="CR_PM_TWINS" th:name="twins"
+										disabled type="checkbox" checked="checked" th:value="Yes">
+									<label>Twins ?</label>
+								</p>
+
+								<p th:if="${PersonDependentDetails.getTwins()=='No'}">
+									<input class="w3-check" id="CR_PM_TWINS" th:name="twins"
+										disabled type="checkbox" th:value="No"> <label>Twins
+									</label>
+								</p> -->
+								
+					<p>
+                     <label>Disability</label>  <span style="color: red"> *</span>
+                     <select
+                        id="CR_PM_DISABILITY_3" class="w3-select w3-border"
+                        name="disability" disabled>
+                        <option id="1" disabled selected></option>
+                        <option th:value="${PersonDependentDetails.getDisability()}"
+                           th:text="${PersonDependentDetails.getDisability()}" selected hidden></option>
+                        <option th:each="db : ${disability}" th:value="${db}"
+                           th:text="${db}"></option>
+                     </select>
+                      </p>
+							</div>
+						</div>
+					</div>
+					<!-- <div style="margin-top: 10px">
+						<h4 class="w3-text-theme"
+							style="margin-top: 10px; bottom: 2px; display: inline">Address
+							Details</h4>
+					</div> -->
+					<hr
+						style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+					<div>
+						<p th:if="${PersonDependentDetails.getActionid()!=0} and ${PersonDependentDetails.getSameaspersonaddress()==0}">
+							<label>Use My Address </label> <input class="w3-check"
+								id="CR_PM_DEFT_ADD_V" th:name="sameaspersonaddress" type="checkbox" th:value="${PersonDependentDetails.getSameaspersonaddress()}" >
+							<label th:text="${PersonDependentDetails.getSameaspersonaddressdsc()}"></label>
+						</p>
+						<p  th:if="${PersonDependentDetails.getActionid()!=0} and ${PersonDependentDetails.getSameaspersonaddress()!=0}">
+							<label>Use My Address </label> <input class="w3-check"
+								id="CR_PM_DEFT_ADD_V" th:name="sameaspersonaddress" type="checkbox" checked th:value="${PersonDependentDetails.getSameaspersonaddress()}" >
+							<label th:text="${PersonDependentDetails.getSameaspersonaddressdsc()}"></label>
+						</p>
+					</div>
+
+				
+				</div>
+				<br>
+				
+				<!-- <div id="ASSIGN_BLOCK12" class="w3-row w3-border w3-padding-large"
+					th:style="${(PersonDependentDetails.getActionid()!=0) or (PersonDependentDetails.getCountryid()!=0)}?'display:block':'display:none'">
+ -->
+ <div id="ASSIGN_BLOCK12_V" class="w3-row w3-border w3-padding-large" >
+ 
+					<div class="w3-container w3-row w3-padding-large">
+
+						<div class=w3-half>
+							<div class="w3-container">
+								<p>
+									<label>Address Type</label> <select tabindex="8"
+										id="CR_PM_ADDRSTYPE" th:name="addresstype"
+										class="w3-select w3-border" disabled>
+										<option value="0" disabled selected></option>
+										<option th:each="AddressType : ${address}"
+											th:value="${AddressType.getId()}"
+											th:text="${AddressType.getDescription()}"
+											th:selected="${AddressType.getId() eq PersonDependentDetails.getAddresstype()}"></option>
+									</select>
+								</p>
+								<p>
+									<label>Country</label><select
+										id="countryList1" class="w3-select w3-border"
+										th:name="countryid" disabled>
+										<option value="0" disabled selected></option>
+										<option th:each="CountryDetails : ${CountryDetails}"
+											th:value="${CountryDetails.getId()}"
+											th:text="${CountryDetails.getDescription()}"
+											th:selected="${CountryDetails.getId() eq PersonDependentDetails.getCountryid()}"></option>
+									</select><span id="LEG_COUNTRY_ERROR" style="color: red"></span>
+								</p>
+
+
+								<p>
+								<div id="divState1">
+									<p>
+										<label>State</label> <select tabindex="6" id="CR_PM_STATE"
+											class="w3-select w3-border" name="state" disabled>
+											<option value="0" disabled selected></option>
+											<option th:each="stat : ${state}"
+											th:value="${stat.getId()}"
+											th:text="${stat.getDescription()}"
+											th:selected="${stat.getId() eq PersonDependentDetails.getState()}"></option>
+
+										</select>
+									</p>
+
+								</div>
+
+								</p>
+
+
+								<p>
+									<label>Pin Code</label> <input class="w3-input w3-border"
+										oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+										readonly id="CR_PM_PINCODE" th:name="pincode" type="text"
+										th:value="${PersonDependentDetails.getPincode()}" disabled
+										style="height: 38px" />
+								</p>
+
+							</div>
+						</div>
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<p>
+									<label>Address</label>
+									<textarea class="w3-input w3-border" id="CR_PM_FULL_ADD"
+										disabled th:name="fulladdress" rows="8" cols="30"
+										th:text="${PersonDependentDetails.getFulladdress()}"></textarea>
+								</p>
+
+								<p>
+									<label>City Town</label> <input class="w3-input w3-border"
+										id="CR_PM_CITY" th:name="citytown" type="text" readonly
+										style="height: 38px" disabled
+										th:value="${PersonDependentDetails.getCitytown()}" />
+								</p>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			<!-------------------------------------------------------------------------------------------->
+
+			<script src="/js/user/personManagement.js"></script>
+			</form>
+	</div>
+
+</div>
+
+<!-- <script src="/js/create/personManagement.js"></script> -->

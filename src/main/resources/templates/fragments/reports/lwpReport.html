@@ -1,0 +1,113 @@
+<div th:fragment="lwpReport">
+	<!-- <h1>LWP REPORT</h1> -->
+	<div class="w3-main" style="margin-top: 10px; margin-bottom: 16px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<form method="post" id="LWPREP"
+					enctype="application/x-www-form-urlencoded"
+					onsubmit="return false;">
+					<div class="w3-row">
+						<div class="w3-quarter w3-container">
+							<p>
+								<label>From Date</label> <input type="date" name="fdt"
+									id="fdt" class="w3-input w3-border" />
+							</p>
+						</div>
+						<div class="w3-quarter w3-container">
+							<p>
+								<label>To Date</label> <input type="date" name="tdt"
+									id="tdt" class="w3-input w3-border" />
+							</p>
+						</div>
+						<div class="w3-quarter w3-container" style="margin-top: 22px;">
+							<div id="psearchbtn" class="w3-btn w3-blue w3-round"
+								onclick="searchLwp('fdt','tdt');">
+								<i class="fa fa-search"></i>&nbsp;&nbsp;Search
+							</div>
+						</div>
+						<div id="lwpexport" class="w3-quarter w3-container" style="margin-top: 22px; display: none;">
+							<div id="lwpexporttable" class="w3-btn w3-blue w3-round"
+								onclick="exportToExcelLwp('lwpreporttbl','Lwp_Report');">
+								<i class="fa fa-search"></i>&nbsp;&nbsp;Export to Excel
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="w3-row">
+				<div class="w3-full">&nbsp;</div>
+			</div>
+
+			<div class="w3-row">
+				<div class="w3-full">
+					<div id="lwpreportdiv" class="w3-responsive" style="display: none;">
+						<table class="w3-table-all" id="lwpreporttbl"
+							style="width: 100%; text-align: center;">
+							<thead>
+								<th>Person Number</th>
+								<th>Person Name</th>
+								<th>Business Unit</th>
+								<th>Status</th>
+								<th>Date</th>
+								<th>Description</th>
+							</thead>
+
+						</table>
+					</div>
+					<div id="noData" class="w3-responsive" style="display: none">
+						<div>
+							<p>No record found...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+		<!-- <div id="lwprep" class="w3-main"
+			style="margin-bottom: 16px; display: none;">
+			<div class="container">
+				<table border="1" style="width: 100%">
+					<thead>
+						<tr>
+							<td>
+								<h3 align="center">UTTAR PRADESH METRO RAIL CORPORATION
+									LIMITED</h3>
+							</td>
+						</tr>
+					</thead>
+				</table>
+				<table border="1" id="lwpreport" style="width: 100%">
+					<thead>
+						<tr align="left">
+							<th>Person Number</th>
+							<th>Person Name</th>
+							<th>Address</th>
+							<th>Phone</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr align="left">
+							<td>1</td>
+							<td>Shiva</td>
+							<td>Kailash</td>
+							<td>-----</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div> -->
+
+		<div id="LWP_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top: 11%; text-align: center'>
+				<i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i>
+			</div>
+			<!--<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>-->
+		</div>
+
+	</div>
+
+		<script src="/table2excel.js"></script>
+		<script src="/js/lwpReport/lwpreport.js"></script>
+	</div>

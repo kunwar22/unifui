@@ -1,0 +1,420 @@
+<div th:fragment="createlegalentity">
+<div class="w3-container" style="margin-top:14px;">
+		<h4 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Create Legal Entity</h4>
+		</div>
+		<div class="w3-row">
+	<div class=w3-half>
+	<div class="w3-container">
+			<hr class="hrline">
+			<h5 style="font-weight: bold">
+								Legal Address Details
+			</h5>
+			  <input
+						th:value="${LeagalEntity.getLegalentityid()}" style="display: none" id="txtLEid"
+						type="text" /> <input
+						th:value="${LeagalEntity.getActionid()}" style="display: none" id="txtLEActionid"
+						 type="text" /> 
+				 <p th:if="${LeagalEntity.getEffectstartdate()==null}">
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input th:value="${LeagalEntity.getEffectstartdate()}" max="9999-12-31" flag="none" th:msg="${LeagalEntity.getAdditionalatr()}" class="w3-input w3-border" name="EffectiveStartDate" id="CR_LE_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD"/>
+					<span id="LEG_EFFDT_ERROR" style="color:red"></span>	
+				</p>
+				 <p th:if="${LeagalEntity.getEffectstartdate()!=null}">
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input th:value="${LeagalEntity.getEffectstartdate()}" max="9999-12-31" flag="none" th:msg="${LeagalEntity.getAdditionalatr()}" class="w3-input w3-border" name="EffectiveStartDate" id="CR_LE_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD" disabled/>
+					<span id="LEG_EFFDT_ERROR" style="color:red"></span>	
+				</p>
+			<p th:if="${LeagalEntity.getLegalentityid()!=0}">
+			<label>Country</label><span style="color:red"> *</span>
+			<select id="countryList" class="w3-select w3-border" name="option" >
+	 		<option value="" disabled selected></option>
+			<option th:each="cl : ${CountryDetails}"
+							th:selected="${cl.getId() eq LeagalEntity.getCountry()}"
+							th:value="${cl.getId()}"
+							th:text="${cl.getDescription()}"></option>
+			</select><span id="LEG_COUNTRY_ERROR" style="color:red"></span>	
+			</p>
+			<p th:if="${LeagalEntity.getLegalentityid()==0}">
+			<label>Country</label><span style="color:red"> *</span>
+			<select id="countryList" class="w3-select w3-border" name="option" >
+	 		<option value="" disabled selected></option>
+			<option th:each="CountryDetails : ${CountryDetails}" 
+			th:value="${CountryDetails.getId()}" 
+			th:text="${CountryDetails.getDescription()}">
+			</select><span id="LEG_COUNTRY_ERROR" style="color:red"></span>	
+			</p>
+			<p>
+			<label>Legal Entity Identifier</label><span style="color:red"> *</span>
+			  <input th:value="${LeagalEntity.getLegalentityidentifier()}" class="w3-input w3-border" name="City" id="CR_LE_IDNTI" type="text">
+			  <span id="LEG_IDENTIFIER_ERROR" style="color:red"></span>				
+			</p>   	
+				<p>
+					<label>Place of Registration</label><span style="color:red"> *</span> 
+					<input th:value="${LeagalEntity.getPlaceofregistration()}"  class="w3-input w3-border" name="City" id="CR_LE_PLCREG" type="text">
+					<span id="LEG_REGNPLACE_ERROR" style="color:red"></span>
+			   </p>	
+		</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container" style="margin-top:43px;">
+				<p>
+					<label>Effective End Date</label> 
+					<input th:value="${LeagalEntity.getEffectenddate()}" max="9999-12-31" class="w3-input w3-border" name="Ent_EffectivEndtartDate" id="CR_LE_EFFENDDT" type="date" data-date="" data-date-format="YYYY MM DD"/>
+				</p>		
+			<p>
+			<label>Name</label><span style="color:red"> *</span>
+			  <input th:value="${LeagalEntity.getName()}" class="w3-input w3-border" name="City" id="CR_LE_NAME" type="text">
+			<span id="LEG_NAME_ERROR" style="color:red"></span>	  	
+			</p>
+			    <p  th:if="${LeagalEntity.getLegalentityid()==0}">
+					<label>Legal Address</label> <span style="color:red"> *</span>
+					<select id="CR_LE_ADDRESS" class="w3-select w3-border" name="option" data-toggle="modal">
+                    <option id="1"  disabled selected></option>
+                      <option hidden id="2" ></option>
+	 				<option  value="search" data-toggle="modal" id="btnsearch" >Search....</option>
+	 				</select><span id="LEG_ADDR_ERROR" style="color:red"></span>
+			</p>
+			<p th:if="${LeagalEntity.getLegalentityid()!=0}">
+					<label>Legal Address</label> <span style="color:red"> *</span>
+					<select id="CR_LE_ADDRESS" class="w3-select w3-border" name="option" data-toggle="modal">
+					 <option id="1"  disabled ></option>
+                    <option id="2" hidden selected th:value="${LeagalEntity.getLegaladdress()}" th:text="${LeagalEntity.getLegaladdressname()}">
+                    </option>
+                      <option value="search" data-toggle="modal" id="btnsearch"  >Search</option>
+	 				</select><span id="LEG_ADDR_ERROR" style="color:red"></span>
+			</p>
+				<p th:if="${LeagalEntity.getLegalentityid()==0}">
+			  <input name="Payroll" id="CR_LE_PAYROLL" type="checkbox" value="Yes">
+			 <label>Payroll statutory unit</label>
+			</p>
+			<p th:if="${LeagalEntity.getIspayrollstatutoryunit()=='Yes'}">
+	        <input checked="checked" th:value="${LeagalEntity.getIspayrollstatutoryunit()}"  name="Payroll" id="CR_LE_PAYROLL" type="checkbox" >
+			 <label>Payroll statutory unit</label>
+			</p>
+			<p th:if="${LeagalEntity.getIspayrollstatutoryunit()=='No'}">
+	        <input th:field="*{LeagalEntity}"  th:value="${LeagalEntity.getIspayrollstatutoryunit()}"  name="Payroll" id="CR_LE_PAYROLL" type="checkbox" >
+			 <label>Payroll statutory unit</label>
+			</p>
+			<p th:if="${LeagalEntity.getLegalentityid()==0}">
+			<input name="employer" id="CR_LE_EMPLOYER" type="checkbox" value="Yes">
+			<label>Legal employer</label>
+			</p>
+			<p th:if="${LeagalEntity.getIslegalemployer()=='Yes'}">
+			 <input checked="checked" th:value="${LeagalEntity.getIslegalemployer()}"  name="Employer" id="CR_LE_EMPLOYER" type="checkbox" >
+			<label>Legal employer</label>
+			</p>
+			<p th:if="${LeagalEntity.getIslegalemployer()=='No'}">
+			<input th:field="*{LeagalEntity}"  th:value="${LeagalEntity.getIslegalemployer()}"  name="Employer" id="CR_LE_EMPLOYER" type="checkbox" >
+			 <label>Legal employer</label>
+			</p>
+			</div>
+		</div>
+	</div>
+		<div class="w3-container">
+		<div class="w3-bar" >
+		<button  class="w3-bar-item w3-button tablink w3-theme" onclick="openTab(event,'REGN_INFO');" >Registration Info</button>
+		<button  class="w3-bar-item w3-button tablink " onclick="openTab(event,'PF_INFO');" >PF Info</button>
+		<button  class="w3-bar-item w3-button tablink " onclick="openTab(event,'ESI_INFO');" >ESI Info</button>
+		<button  class="w3-bar-item w3-button tablink " onclick="openTab(event,'PI_INFO');" >PI Info</button>
+		<button id="IT_BTN" class="w3-bar-item w3-button tablink " onclick="openTab(event,'IT_INFO');" >IT Info</button>
+		<button  class="w3-bar-item w3-button tablink " onclick="openTab(event,'LABOUR_LAW_INFO');" >Labour Laws Info</button>
+		<div id="REGN_INFO" class="w3-container w3-border legal" >
+		<div class="w3-row">
+		<div class=w3-half>
+		<div class="w3-container"  style="margin-top:0">
+			<p>
+			<label>Registration Date</label> 
+			<input th:value="${LeagalEntity.getRegistrationdate()}" max="9999-12-31" id="REGN_DATE" class="w3-input w3-border" name="" type="date" data-date="" data-date-format="YYYY MM DD"/>
+			</p>
+			<p>
+			<label>Identifying Jurisdictions :</label> 
+			<label id = "Identi"  th:text="${LeagalEntity.getIdentifyingjurisdictionsname()}"></label>
+			<input th:value="${LeagalEntity.getIdentifyingjurisdictions()}" class="w3-input w3-border" name="City" id="CR_LE_IDJURI" type="hidden" readonly="readonly">
+	        </p>
+		</div>
+		</div>
+		<div class=w3-half>
+		<div class="w3-container" style="margin-top:0">
+				<p>
+					<label>Legal Reporting Unit Registration Number</label> 
+					<input th:value="${LeagalEntity.getRegistrationnumber()}" class="w3-input w3-border" name="Reporting" id="CR_LE_REGNO" type="text">
+			   </p>	
+			
+		</div>	
+		</div>
+		</div>
+		</div>
+		<div id="PF_INFO" class="w3-container w3-border legal" style="display:none" >
+		<div class="w3-row">
+		<div class=w3-half>
+		<div class="w3-container"   >
+			<p>
+			<label>Registration Date</label> 
+			<input th:value="${LeagalEntity.getPfregistrationdate()}" max="9999-12-31" class="w3-input w3-border" name="" id="PF_REGN_DATE" type="date" data-date="" data-date-format="YYYY MM DD"/>
+			</p>
+			<p>
+			<label>Signatory Name</label>
+			<input th:value="${LeagalEntity.getPfsignatoryname()}" class="w3-input w3-border" name="" id="PF_SIGNATORY_NAME" type="text">
+			</p>
+		</div>
+		</div>
+		<div class=w3-half>
+		<div class="w3-container" >
+			<p>
+			<label>PF Number</label>
+			<input th:value="${LeagalEntity.getPfnumber()}" class="w3-input w3-border" name="" id="PF_NUMBER" type="text">
+			</p>
+			<p>
+			<input id="PFRULES_CHECKBOX" type="checkbox" name="PFRULES_CHECKBOX" value="Yes">
+  			<label for="PFRULES_CHECKBOX"> PF Rules are same for all employees.</label><br>
+  			</p>
+			<p th:if="${LeagalEntity.getPfrulesforemployee()=='Yes'}">
+			<input checked="checked" th:value="${LeagalEntity.getPfrulesforemployee()}"  name="" id="PFRULES_CHECKBOX" type="checkbox" >
+			<label>PF Rules are same for all employees.</label>
+			</p>
+			<p th:if="${LeagalEntity.getPfrulesforemployee()=='No'}">
+			<input th:field="*{LeagalEntity}"  th:value="${LeagalEntity.getPfrulesforemployee()}"  name="" id="PFRULES_CHECKBOX" type="checkbox" >
+			<label>PF Rules are same for all employees.</label>
+			</p>
+		</div>	
+		</div>
+		</div>
+		</div>
+		<div id="ESI_INFO" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+		<div class=w3-half>
+		<div class="w3-container"   >
+			<p>
+			<label>Registration Date</label> 
+			<input th:value="${LeagalEntity.getEsiregistrationdate()}" max="9999-12-31" class="w3-input w3-border" name="" id="ESI_REGN_DATE" type="date" data-date="" data-date-format="YYYY MM DD"/>
+			</p>
+			<p>
+			<label>Signatory Name</label>
+			<input th:value="${LeagalEntity.getEsisignatoryname()}" class="w3-input w3-border" name="" id="ESI_SIGNATORY_NAME" type="text">
+			</p>
+		</div>
+		</div>
+		<div class=w3-half>
+		<div class="w3-container" >
+			<p>
+			<label>ESI Number</label>
+			<input th:value="${LeagalEntity.getEsinumber()}" class="w3-input w3-border" name="" id="ESI_NUMBER" type="text">
+			</p>  
+		</div>	
+		</div>
+		</div>
+		</div>
+		<div id="PI_INFO" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+		<div class=w3-half>
+		<div class="w3-container"   >
+			<p>
+			<label>Registration Date</label> 
+			<input th:value="${LeagalEntity.getPiregistrationdate()}" max="9999-12-31" class="w3-input w3-border" name="" id="PI_REGN_DATE" type="date" data-date="" data-date-format="YYYY MM DD"/>
+			</p>
+			<p>
+			<label>Signatory Name</label>
+			<input th:value="${LeagalEntity.getPisignatoryname()}" class="w3-input w3-border" name="" id="PI_SIGNATORY_NAME" type="text">
+			</p>
+		</div>
+		</div>
+		<div class=w3-half>
+		<div class="w3-container" >
+			<p>
+			<label>PI Number</label>
+			<input th:value="${LeagalEntity.getPinumber()}" class="w3-input w3-border" name="" id="PI_NUMBER" type="text">
+			</p>    
+		</div>	
+		</div>
+		</div>
+		</div>
+		<div id="IT_INFO" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+		<div class=w3-half>
+		<div class="w3-container"   >
+				<p th:if="${LeagalEntity.getLegalentityid()!=0}">
+				<label>Pan Number</label>
+			  	<label id = "tinpan"></label><span id="SPAN_DISP" style="color:red"></span>
+			   	<input th:value="${LeagalEntity.getTinpan()}" type="text" class="w3-input w3-border" name="TIN_PAN" id="CR_LE_TIN_PAN" readonly="readonly" >
+			   	<span id="LEG_TINPAN_ERROR" style="color:red"></span>
+		        </p>
+				<p th:if="${LeagalEntity.getLegalentityid()==0}">
+			    <label id = "tinpan"></label><span id="SPAN_DISP" style="color:red"></span>
+			    <input value="" type="text" class="w3-input w3-border" name="TIN_PAN" id="CR_LE_TIN_PAN" style="display:none" >
+			    <span id="LEG_TINPAN_ERROR" style="color:red"></span>
+		        </p>
+			<p>
+			<label>CIT(TDS)</label>
+			<input th:value="${LeagalEntity.getCitortds()}"class="w3-input w3-border" name="" id="IT_CIT_TDS" type="text">
+			</p> 
+		</div>
+		</div>
+		<div class=w3-half>
+		<div class="w3-container" >
+			<p>
+			<label>TAN Number</label><span style="color:red"> *</span>
+			<input th:value="${LeagalEntity.getTannumber()}" class="w3-input w3-border" name="" id="IT_TAN_NUMBER" type="text">
+			<span id="LEG_TAN_NO_ERROR" style="color:red"></span>
+			</p> 
+			<p>
+			<label>TAN Circle</label><span style="color:red"> *</span>
+			<input th:value="${LeagalEntity.getTancircle()}" class="w3-input w3-border" name="" id="IT_TAN_CIRCLE" type="text">
+			<span id="LEG_TAN_C_ERROR" style="color:red"></span>
+			</p> 
+		</div>	
+		</div>
+		</div>
+		</div>
+		<div id="LABOUR_LAW_INFO" class="w3-container w3-border legal" style="display:none">
+		<div class="w3-row">
+		<div class=w3-half>
+		<div class="w3-container"   >
+			<p>
+			<label>Signatory Name</label>
+			<input th:value="${LeagalEntity.getLaboursignatoryname()}" class="w3-input w3-border" name="" id="LAB_SIGNATORY_NAME" type="text">
+			</p>		
+		</div>
+		</div>
+		<div class=w3-half>
+		<div class="w3-container" >
+			<p>
+			<label>Address</label>
+			<textarea th:value="${LeagalEntity.getLabouraddress()}" class="w3-input w3-border" id="LAB_ADDRESS" name="comment" rows="4" cols="50"></textarea>
+			</p>
+		</div>	
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+	<div class="w3-container">
+		<p>
+		<button id="LegCancel" rm="enterprisesetup/managelegalentitye" tabindex="15" class="w3-button w3-theme w3-grey">Cancel</button>
+		<button id="LE_CREATE" class="w3-button w3-theme w3-grey">Submit</button>
+		</p>
+	</div>
+	<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="enterprisesetup/managelegalentitye">OK</a>
+				</div>
+			</div>
+		</div>
+<!-- Popup Start here  -->
+<!-- line modal -->
+<div id="id01" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+		<div class="modal-header">
+			<h3 align="left">Search and Select: Location</h3>
+				<hr class="hrline">
+		</div>
+		<div class="modal-body">
+		<div>
+	<div class=w3-half>
+	<div class="w3-container">
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Country:</div>
+	             <div class="w3-rest">
+	             <select id="CR_LE_POP_CNTRY" class="w3-select w3-border" name="" >
+		 			<option value="" disabled selected></option>
+					<option th:each="CountryDetails : ${CountryDetails}" 
+					th:value="${CountryDetails.getDescription()}" 
+					th:text="${CountryDetails.getDescription()}"></option>
+				</select>              
+	             </div>
+	             </div>
+	</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container">
+	        
+	</div>
+	</div>
+			<br>
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="CR_LE_POP_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+                </div>
+               </div>
+               </div>               
+			</div>
+			<BR>
+			<div id="resultSec" class="w3-responsive" style="display: none">
+				<table id="LegalEntitySearchList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<tr class="w3-theme-d3">
+							<th>Country</th>
+							<th>Address Line 1</th>
+							<th>City</th>
+							<th>Pin Code</th>
+							<th>State</th>
+							<th>Status</th>
+							<th>Location Id</th>							
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noData" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                <div class="w3-right">
+               <button id="CR_LE_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+               <button id="CR_LE_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+                </div>
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+<!-- PopUp End Here -->
+<!--***Start:Error Msg** -->
+<div id="idError" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg"><b> Date must be latest!!</b> </label> <a id="btnerrorOK" class="w3-button w3-red"
+						rm="enterprisesetup/managelegalentitye">OK</a>
+				</div>
+			</div>
+		</div>
+<script src="/js/validation/validation.js"></script>
+<script src="/js/create/createLegal_Entity.js"></script>
+<script>
+$(document).ready(function(){
+$("#idError").css('display', 'none');
+	var strMsg=$("#CR_LE_EFFDT").attr("msg");
+	if(strMsg=="Error")
+		{
+			$("#idError").css('display', 'block');
+			$("#LE_CREATE").attr('id','btnSUb');
+			$("#CR_LE_EFFDT").attr('flag','update');
+		}
+	else if(strMsg!="Error" || strMsg!="Correct")
+	{
+		if(strMsg=="Correct")
+			{
+				$("#CR_LE_EFFDT").attr('flag','correct');
+			}
+		if(strMsg!="Correct")
+			{
+				$("#CR_LE_EFFDT").val(strMsg);
+				$("#CR_LE_EFFDT").attr('flag','update');
+			}
+	}
+});
+</script>
+</div>

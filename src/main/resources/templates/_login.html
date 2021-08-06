@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>UNIF ERP</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/Login_v18/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/Login_v18/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/Login_v18/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/Login_v18/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/Login_v18/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/Login_v18/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/Login_v18/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/Login_v18/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/Login_v18/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/Login_v18/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/Login_v18/css/_custom.css">
+<!--===============================================================================================-->
+</head>
+<body style="background-color: #666666;">
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<!--<form id="loginForm" class="login100-form validate-form" th:object="${userCredential}">-->
+				<form id="loginForm" th:object="${userCredential}" th:action="@{/login}" method="post" class="login100-form validate-form">
+					<!--<span class="login100-form-title p-b-43">
+						Login to continue
+					</span>-->
+					<div style="text-align: center">
+						<p th:if="${isInvalid == 'Y'}" id="errMessage" style="color: #ff0000; margin-bottom: 16px;">User ID or Password is incorrect !</p>
+						<ul>
+							<li>
+								<input type="radio" id="sl_selfservice" value="selfservice" name="usertype" checked>
+								<label for="sl_selfservice"><img src="/images/login_selfservice.png" style="width: 100px;" /> </label>
+							</li>
+							<li>
+								<input type="radio" id="sl_admin" value="admin" name="usertype">
+								<label for="sl_admin"><img src="/images/login_admin.png" style="width: 100px;" /> </label>
+							</li>
+						</ul>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate = "Valid userid is required">
+						<input id="loginid" class="input100" type="text" name="loginid">
+						<span class="focus-input100"></span>
+						<span class="label-input100">User ID</span>
+					</div>
+
+
+					<div class="wrap-input100 validate-input" data-validate="Password is required">
+						<input id="pwd" class="input100" type="password" name="pwd">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Password</span>
+					</div>
+
+					<div class="flex-sb-m w-full p-t-3 p-b-32">
+						<!-- <div class="contact100-form-checkbox">
+							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+							<label class="label-checkbox100" for="ckb1">
+								Remember me
+							</label>
+						</div> -->
+
+						<!-- <div>
+							<a href="#" class="txt1">
+								Forgot Password?
+							</a>
+						</div> -->
+						<div class="w3-col" style="width:50%;margin-top: 18px!important;">
+		    				<span id="forgotPwd" style="cursor:pointer; float: right;"><u style="color: blue;">Forgot Password ?</u></span>
+		    			</div>
+					</div>
+
+
+					<div class="container-login100-form-btn">
+						<button id="submit" class="login100-form-btn" type="submit">
+							Login
+						</button>
+					</div>
+
+					<div class="w3-row">
+						<div class="w3-half">
+							<iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FOfficialUPMetro&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="500" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+							<div style="overflow: scroll; width: 340px; height: 400px;">
+								<a class="twitter-timeline" href="https://twitter.com/OfficialUPMetro?ref_src=twsrc%5Etfw"  style="border:none; overflow:hidden; width:340px; height:500px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">Tweets by OfficialUPMetro</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<div class="login100-more" style="background-image: url('/Login_v18/images/bg-04.jpg');">
+				<img src="/images/UPMRCL.png" class="UPMRClogo">
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!--===============================================================================================-->
+	<script src="/Login_v18/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/Login_v18/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/Login_v18/vendor/bootstrap/js/popper.js"></script>
+	<script src="/Login_v18/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/Login_v18/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/Login_v18/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/Login_v18/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="/Login_v18/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="/Login_v18/js/main.js"></script>
+	
+	
+	
+	
+
+<script src="/js/bootbox/bootstrap.min.js"></script>
+<script src="/js/bootbox/bootbox.min.js"></script>
+
+<script type="text/javascript">
+	document.getElementById('id01').style.display='block'
+</script>
+<script type="text/javascript">
+	var background = new Array();
+	background[0] = "/images/courseThumbnails/background.jpg";
+	background[1] = "/images/courseThumbnails/background1.jpg";
+	background[2] = "/images/courseThumbnails/background2.jpg";
+	background[3] = "/images/courseThumbnails/background3.jpg";
+	background[4] = "/images/courseThumbnails/background4.jpg";
+	background[5] = "/images/courseThumbnails/background5.jpg";
+	background[6] = "/images/courseThumbnails/background6.jpg";
+	background[7] = "/images/courseThumbnails/background7.jpg";
+	background[8] = "/images/courseThumbnails/background8.jpg";
+	
+	var numberGen = Math.floor(Math.random() * 9);
+	document.body.style.backgroundImage='url('+background[numberGen]+')';
+</script>
+<script>
+	$(document).on('click', '#forgotPwd', function(){
+
+		var personid=document.getElementById("loginid").value;
+		if(personid=='' ||personid==null){
+			bootbox.alert("Please fill the User Id.");
+			$("#loginid").css("border","1px solid red");
+		}
+
+
+		else{
+
+
+
+			var role = "admin";
+
+			bootbox.confirm({
+				message: "Do you want to continue ?",
+				buttons: {
+					confirm: {
+						label: 'Yes',
+						className: 'btn-success'
+					},
+					cancel: {
+						label: 'No',
+						className: 'btn-danger'
+					}
+				},
+				callback: function (result) {
+					if(result == true){
+						role = "admin";
+						var uname = document.getElementById("loginid").value;
+						if(uname == undefined || uname == "")
+						{
+							bootbox.alert("Please enter the Login id before clicking the 'Forgot Password' link.");
+						}
+						else
+						{
+							$.ajax({
+								url: "/forgotpass/"+uname+"/"+role,
+								type: "GET",
+								success : function(result){
+									if(result.message == "MAIL_FAIL")
+									{
+										bootbox.alert("Error sending mail.");
+									}
+									else if(result.message == "EMAIL_NOT_FOUND")
+									{
+										bootbox.alert("Email id not found, please contact to your HR Administrator.");
+									}
+									else
+									{
+										var t = result.message.split("^");
+										bootbox.alert("An email has been sent to "+t[1]+" which contains the instructions to recover your password.");
+									}
+								},
+								error: function(result){
+									bootbox.alert("Incorrect User ID.");
+									console.log(result);
+								}
+							});
+						}
+					}
+
+
+
+
+					/*
+                         else{
+                            role = "selfservice";
+                            var uname = document.getElementById("loginid").value;
+                            if(uname == undefined || uname == "")
+                            {
+                                bootbox.alert("Please enter the Login id before clicking the 'forgot password' link.");
+                            }
+                            else
+                            {
+                                $.ajax({
+                                    url: "/forgotpass/"+uname+"/"+role,
+                                    type: "GET",
+                                    success : function(result){
+                                        if(result.message == "MAIL_FAIL")
+                                        {
+                                            bootbox.alert("Error sending mail.");
+                                        }
+                                        else if(result.message == "EMAIL_NOT_FOUND")
+                                        {
+                                            bootbox.alert("Email id not found contact to your HR.");
+                                        }
+                                        else
+                                        {
+                                            var t = result.message.split("^");
+                                            bootbox.alert("A mail has been sent to "+t[1]+" which contains the instructions for recovering your password..");
+                                        }
+                                    },
+                                    error: function(result){
+                                        bootbox.alert("Some error occcured.");
+                                        console.log(result);
+                                    }
+                                });
+                            }
+                        }
+
+                        */
+
+
+				}
+			});
+
+
+		}
+
+
+	});
+
+</script>
+
+</body>
+</html>

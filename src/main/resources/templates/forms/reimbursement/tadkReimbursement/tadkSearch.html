@@ -1,0 +1,60 @@
+<div th:fragment="tadkSearch">
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"> <i class="fas fa-headset" style="color: #fd451a;"></i>&nbsp;Telephone Attendant cum Dak Khalasis(TADK) Reimbursement
+				</h4>
+			</div>
+		</div>
+		
+		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+		
+		
+		<!--Form Content Goes here-->
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item">Previous Claims</h5>
+			<div onclick="loadCreateTADKClaim();" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" style="margin-top:8px;"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Raise New Request</div>
+		</div>
+		<div class="w3-container w3-margin-top">
+			<!-- code for data table starts here -->
+			<div class="w3-row">
+				<div class="w3-full">
+					<div class="w3-container">
+						<div id="search_result" class="w3-responsive">
+							<table id="tadkreimbursement" class="w3-table-all"
+								style="text-align: center;">
+								<thead>
+									<tr>
+										<th style="text-align: center;">Claim Id</th>
+										<th style="text-align: center;">TADK Name</th>
+										<th style="text-align: center;">Month</th>
+										<th style="text-align: center;">Amount Claimed</th>
+										<th style="text-align: center;">Saved Date</th>
+										<th style="text-align: center;">Amount Approved</th>
+										<th style="text-align: center;">Status</th>
+										<th style="text-align: center;">View</th>
+										<th style="text-align: center;">Edit</th>
+
+									</tr>
+								</thead>
+							</table>
+						</div>						 
+					</div>
+				</div>
+				<div id="noDataTadk">
+					<span>No record found...</span>
+				</div>
+			</div>
+			<!-- code for data table ends here -->
+
+
+		</div>
+
+
+
+
+		<script type="text/javascript" src="/js/reimbursement/tadk/tadk.js"></script>
+	</div>
+</div>

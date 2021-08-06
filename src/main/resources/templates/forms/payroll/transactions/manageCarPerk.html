@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        #addCarPer {
+            z-index: 9997;
+        }
+
+        #id02 {
+            z-index: 9998;
+       
+        }
+
+        .buttons-excel {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+   <!--  <script th:inline="javascript">
+        /*<![CDATA[*/
+        var resultfinal = /*[[${finalres}]]*/;
+        console.log(resultfinal);
+        /*]]>*/
+    </script> -->
+    
+    <!-- <script src="/js/cdn1/jquery-3.5.1.js"></script>
+	<script src="/js/cdn1/jquery.dataTables.min.js"></script>
+	<script src="/js/cdn1/dataTables.buttons.min.js"></script>
+	<script src="/js/cdn1/buttons.flash.min.js"></script>
+	<script src="/js/cdn1/jszip.min.js"></script>
+	<script src="/js/cdn1/pdfmake.min.js"></script>
+	<script src="/js/cdn1/vfs_fonts.js"></script>
+	<script src="/js/cdn1/buttons.html5.min.js"></script>
+	<script src="/js/cdn1/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script> -->
+</head>
+<body>
+<div th:fragment="carPerk">
+
+    <div class="w3-container" style="margin-top: 26px;">
+        <div class="w3-bar w3-theme-l5" style="margin-top: 16px; margin-bottom: 24px;">
+            <h4 class="w3-text-theme w3-bar-item"><i class="fa fa-car" aria-hidden="true"></i>&nbsp;&nbsp;Manage car
+                perquisite</h4>
+            <div class="buttonbarpadding w3-bar-item w3-right" style="margin-top: 3px;">
+                <div id="addCarPerq" onclick="addcarPerk();"
+                     class="w3-bar-item w3-btn w3-blue w3-round-large buttonbarmargin" type="button"><i
+                        class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Manage Perq
+                </div>
+
+            </div>
+        </div>
+
+
+        <hr class="hrline">
+
+        <div id="btnexportempper" class="w3-btn w3-green w3-round w3-left" style="margin-left:10px;display: block;margin-top: 8px;transform: scale(1);" onclick="exportTableToExcel('carPerkList','Car Perk List');"><i class="fa fa-save"></i>&nbsp;&nbsp;Export to Excel</div>
+
+        <div class="w3-row">
+            <div id="resultSec" class="w3-responsive" style="display: none">
+                <table border="1" id="carPerkList" class="display compact w3-table"
+                       style="width: 100%;">
+                    <thead>
+                    <tr class="w3-theme-d3">
+                        <th>Person Number</th>
+                        <th>Person Name</th>
+                        <th>Designation</th>
+                        <th>Location</th>
+                        <th>Start Date</th>
+                        <th>End Date.</th>
+                        <th>Perk. Amt.</th>
+                        <th>Rec. Amt.</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div id="noData" class="w3-responsive" style="display: none">
+                <div>
+                    <p>No record found...</p>
+                </div>
+            </div>
+            <div id="jsonLoaderPage" class="w3-responsive" style="display: none">
+                <div>
+                    <div class='w3-container' style='width: 100%; text-align: center'>
+                        <i class='fa fa-cog fa-spin' style='font-size: 30px;'></i>
+                        <p style="color: black;">Loading......</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="addCarPer" class="w3-modal" style="padding-top: 60px !important; display: none">
+            <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 90%">
+                <header class="w3-container w3-theme-d1">
+                    <span onclick="document.getElementById('addCarPer').style.display='none';"
+                          class="w3-button w3-display-topright">&times;</span>
+                    <h4><i class="fas fa-tasks"></i>&nbsp;&nbsp;View/Update Element Assignment </h4>
+                </header>
+                <br>
+                <div class="w3-container">
+                    <div class="w3-row-padding" style="font-size: 12px;">
+                        <div class="w3-row ">
+                            <div class="w3-half">
+                                <p>
+                                    <label>Person Number:</label><br>
+                                    <label style="color: blue;" id="personnumber"></label>
+                                </p>
+                            </div>
+                            <div class="w3-half">
+                                <p>
+                                    <label>Person Name:</label><br>
+                                    <label style="color: blue;" id="personname"></label>
+                                </p>
+                            </div>
+                            <input id="txtpersonid" type="hidden" name="personid"
+                                   th:value="${personInfo.getPersonnumber()}"/>
+
+                        </div>
+                    </div>
+
+
+                    <hr class="hrline">
+                    <form id="carPerqSave"
+                          enctype="application/x-www-form-urlencoded"
+                          onsubmit="return false;" method="POST">
+                        <div class="w3-row-padding">
+                            <div class="w3-row ">
+
+                                <div class="w3-quarter w3-container">
+                                    <label>Person No&nbsp;&nbsp;<i id="Person"
+                                                                   class="fas fa-cog fa-spin fa-fw"
+                                                                   style="color: black; font-size: 18px; display: none;"></i></label><select
+                                        id="PersonNumber" name="PersonNumber"
+                                        class="w3-select w3-border" data-toggle="modal">
+                                    <option id="1" value="" disabled selected></option>
+                                    <option id="2" value="2" hidden></option>
+                                    <option value="search" data-toggle="modal" id="btnsearchperson">Search....</option>
+                                </select>
+                                </div>
+
+                                <div class="w3-quarter w3-container">
+                                    <label>Start Date &nbsp;&nbsp;<i id="Start_Date"
+                                                                     class="fas fa-cog fa-spin fa-fw"
+                                                                     style="color: black; font-size: 18px; display: none; "></i></label>
+                                    <input type="date" id="Start_Date" name="startdate"
+                                           class="w3-input w3-border w3-round" style="height: 38px">
+                                </div>
+                                <div class="w3-quarter w3-container">
+                                    <label>Peq. &nbsp;Amt.&nbsp;<i id="Perq_Amt"
+                                                                   class="fas fa-cog fa-spin fa-fw"
+                                                                   style="color: black; font-size: 18px; display: none; "></i></label>
+                                    <input type="text" id="Perq_Amt" name="perkAmt"
+                                           class="w3-input w3-border w3-round" style="height: 38px">
+                                </div>
+                                <div class="w3-quarter w3-container">
+                                    <label>Rec. Amt.&nbsp;&nbsp;<i id="Req_Amt"
+                                                                   class="fas fa-cog fa-spin fa-fw"
+                                                                   style="color: black; font-size: 18px; display: none; "></i></label>
+                                    <input type="text" id="Rec_Amt" name="recAmt"
+                                           class="w3-input w3-border w3-round" style="height: 38px">
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="w3-bar">
+                            <div class="buttonbarpadding w3-bar-item w3-right"
+                                 style="margin-top: 3px;">
+                                <div onclick="savePerq()"
+                                     class="w3-bar-item w3-btn w3-blue w3-round-large buttonbarmargin"
+                                     type="button">
+                                    <i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Save
+                                </div>
+                                <div onclick="document.getElementById('addCarPer').style.display='none';"
+                                     class="w3-bar-item w3-btn w3-red w3-round-large buttonbarmargin"
+                                     type="button">
+                                    <i class="fas fa-arrow-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- line modal -->
+        <div id="id02" class="w3-modal">
+            <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                <div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+                    <div class="modal-header">
+                        <h3 align="left">Search and Select:Person</h3>
+                        <hr class="hrline">
+                    </div>
+                    <div class="modal-body">
+                        <div>
+
+                            <div class="w3-row-padding ">
+
+                                <div class="w3-half">
+                                    <p>
+                                        <label style="float: left;">Person Number&nbsp;&nbsp;</label>
+                                        <input value="" class="w3-input w3-border" name="Leg_Name" id="CR_PER_POP_ID"
+                                               type="text">
+                                    </p>
+                                </div>
+
+                                <div class="w3-half">
+                                    <p>
+                                        <label style="float: left;">Person Name&nbsp;&nbsp;</label>
+                                        <input value="" class="w3-input w3-border" name="Leg_Country"
+                                               id="CR_PER_POP_Name" type="text">
+                                    </p>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div class="w3-container">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <div class="w3-right">
+                                            <button id="CR_PER_POP_SEARCH" class="w3-button w3-theme w3-grey">Search
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <BR>
+                            <div id="resultSecPerson" class="w3-responsive" style="display: none">
+                                <table id="PersonAccomodationList" class="display compact w3-table"
+                                       style="width: 100%;">
+                                    <thead>
+                                    <tr class="w3-theme-d3">
+                                        <th>Person Number</th>
+                                        <th>Person Number</th>
+                                        <th>Person Name</th>
+                                        <th>Nature of Employment</th>
+
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div id="noDataPerson" class="w3-responsive" style="display: none">
+                                <div>
+                                    <p>No record found...</p>
+                                </div>
+                            </div>
+                            <div id="jsonLoader" class="w3-responsive" style="display: none">
+                                <div>
+                                    <div class='w3-container' style='width: 100%; text-align: center'>
+                                        <i class='fa fa-cog fa-spin' style='font-size: 30px;'></i>
+                                        <p style="color: black;">Loading......</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="w3-container">
+                            <div class="form-group">
+                                <div class="w3-right">
+                                    <button id="CR_PER_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">
+                                        OK
+                                    </button>
+                                    <button id="CR_PER_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               <!--  <script src="/js/payroll/transection/manageCarPerk.js"></script> -->
+            </div>
+        </div>
+        <!-- PopUp End Here -->
+
+
+    </div>
+
+    <script src="/js/payroll/transection/manageCarPerk.js"></script>
+    <script src="/js/table2excel.js"></script>
+</div>
+</body>
+</html>

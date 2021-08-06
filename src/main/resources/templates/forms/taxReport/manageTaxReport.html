@@ -1,0 +1,164 @@
+<div th:fragment="taxReport">
+<style>
+	.hider{
+		display:none;
+	}
+div.scrollmenu {  
+  overflow: auto;
+  white-space: nowrap;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+.blue {
+  color: blue;
+  text-decoration : underline;
+}
+	
+</style>
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400; display: inline-block;">
+					<img onclick="w3_open()" class="w3-hide-large"
+						src="/images/hide-grader-panel.png" style="cursor: pointer;">
+					<i class="fas fa-file-invoice-dollar"
+						style="color: rgb(255, 128, 0);"></i>&nbsp;Tax Report
+				</h4> </div>
+			<div>
+				<hr class="hrline"> </div>
+		</div>
+		<div id="REPORTS_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+		</div>
+		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+		<div class="w3-quarter w3-container" style="margin-bottom: 16px;">
+			<label>Select Financial Year&nbsp</label>
+			<select class="w3-select w3-border" name="Financial_year" id="Financial_year">
+				<option value="" disabled selected></option>
+				<!--<option th:each="finYear: ${calperiod}" th:value="${finYear.getCalendarcode()}" th:text="${finYear.getCalendarcode()}"/>-->
+				<option value="2021-2022">2021-2022</option>
+			</select>
+		</div>
+
+		<!---------------------------------------------------------------------------------------------------------------------->
+		<div class="w3-row">
+			<!--<div class="w3-half w3-border">
+				<div class="w3-container">
+					<div class="w3-accordion w3-light-grey">
+						<h4>Income Tax Computation for FY </h4>
+						<h4 id="finyear_lbl"></h4>
+						<button onclick="myFunction('Demo1')" class="w3-btn w3-block w3-theme-l3 w3-left-align">Earning</button>
+						<div id="Demo1" class="w3-accordion-content w3-container w3-show">
+							<button style=" margin-top: 5px; margin-bottom: 5px;" onclick="myFunction('earning1')" class="w3-block w3-left-align">Salary (Section 17(1))</button>
+							<div id="earning1" class="w3-accordion-content w3-container w3-hide">
+								<table id="Tax_REPORT" class="display compact w3-table" style="width: 100%;">
+									<thead>
+										<tr style="border-bottom: 1px solid #cdd0d4;">
+											<th style="width: 60%;">Component</th>
+											<th style="text-align: right; width: 20%;">Actual</th>
+											<th style="text-align: right; width: 20%;">Projected</th>
+										</tr>
+									</thead>
+									<tbody> </tbody>
+								</table>
+							</div>
+							<button style=" margin-top: 5px; margin-bottom: 5px;" onclick="myFunction('section17-2')" class="w3-block w3-left-align">Value of Perquisites (Section 17(2))</button>
+							<div id="section17-2" class="w3-accordion-content w3-container w3-hide">
+								<table id="PERQ_Tax_REPORT" class="display compact w3-table" style="width: 100%;">
+									<thead>
+										<tr style="border-bottom: 1px solid #cdd0d4;">
+											<th style="width: 60%;">Component</th>
+											<th style="text-align: right; width: 20%;">Actual</th>
+											<th style="text-align: right; width: 20%;">Projected</th>
+										</tr>
+									</thead>
+									<tbody> </tbody>
+								</table>
+							</div>
+						</div>
+						
+						<button style=" margin-top: 5px; margin-bottom: 5px;" onclick="myFunction('Demo2')" class="w3-btn w3-block w3-theme-l3 w3-left-align ">Exemption Chapter 6A</button>
+							<div id="Demo2" class="w3-accordion-content w3-container w3-hide">
+								<table id="chapterVIA" class="display compact w3-table" style="width: 100%; margin-top: 14px; margin-bottom: 16px;">
+									<thead>
+										<tr style="border-bottom: 1px solid #cdd0d4;">
+											<th style="width: 60%;">Component</th>
+											<th style="text-align: right; width: 20%;">Actual</th>
+											&lt;!&ndash; <th style="text-align: right; width: 20%;">Projected</th> &ndash;&gt;
+										</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
+							</div>
+					</div>
+				</div>
+			</div>-->
+			<div class="w3-container ">
+				<div class="w3-container w3-border">
+					<h4>Tax Calculation</h4>
+					<div id="TotalTaxCal">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="/js/tax_report/managetaxReport.js"></script>
+	<script src="/js/table2excel.js"></script>
+	<script>
+		function myFunction(id) {
+		  var x = document.getElementById(id);
+		  if (x.className.indexOf("w3-show") == -1) {
+			x.className += " w3-show";
+		  } else {
+			x.className = x.className.replace(" w3-show", "");
+		  }
+		  var y = document.getElementById(id+"arr");
+		  y.classList.toggle("fa-angle-double-down");
+		  y.classList.toggle("fa-angle-double-right");
+		}
+	</script>
+	
+	
+			<!--popup added by rajat start here-->
+		<div id="TaxDetailsPopup" class="w3-modal" >
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 90%">
+				<header class="w3-container w3-theme-d1">
+					<span onclick="document.getElementById('TaxDetailsPopup').style.display='none';"	class="w3-button w3-display-topright">&times;</span>
+					<h4>
+						<i class="fas fa-tasks"></i>&nbsp;&nbsp; Tax Details
+					</h4>
+				</header>
+				<br>
+				<div class="w3-container">
+					<div class="w3-row-padding" style="font-size: 12px;">
+						<h4 id="headdingid" style="margin-bottom: 0px;"></h4>
+					</div>
+					<hr class="hrline">
+					
+						<div class="w3-row">
+						<div id="resultSec_Tax" class="w3-responsive" >
+							<div id="Tax_REPORT" style="width: 100%;">
+								
+							</div>
+						</div>
+						
+					   </div>
+					   
+					   
+						<div class="w3-bar">
+							<div class="buttonbarpadding w3-bar-item w3-right"	style="margin-top: 3px;">
+								
+								<div onclick="document.getElementById('TaxDetailsPopup').style.display='none';"	class="w3-bar-item w3-btn w3-blue w3-round-large buttonbarmargin" type="button">&nbsp;&nbsp;OK</div>
+							</div>
+						</div>
+					
+				</div>
+			</div>
+		</div>
+		<!--popup added by rajat end here  -->
+	
+</div>

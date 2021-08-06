@@ -1,0 +1,273 @@
+<div th:fragment="medicalreimAnnexure">
+    <div class="w3-main"> 
+    	<style>
+          ol {
+            font-weight:bolder;
+          }
+
+          ol li span {
+            font-weight: normal;
+          }          
+        </style>
+		
+		<div class="row">
+			<img src="/images/UPMRCL.png">
+		</div>
+		<br>
+		<hr style="margin-bottom:15px">
+		<div>
+		<table border="0" cellpadding="10" style="width: 100%;">
+			<tr>
+				<td style="width:33%">
+					
+						<strong><label>Emp:&nbsp;</label></strong>
+						<label th:text="${personInfo.getPersonnumber()}"></label>
+				</td>
+				<td style="width:33%">
+					
+						<strong><label>Name:&nbsp;</label></strong>
+						<label  th:text="${personInfo.getPersonname()}">990</label>
+					</td>
+				<td style="width:33%">
+					
+						<strong><label>Employee Type:&nbsp;</label></strong>
+						<label th:text="${personInfo.getEmployeetype()}">990</label>
+					</td>			
+			</tr>
+			<tr>
+				<td>
+					
+						<strong><label>Designation:&nbsp;</label></strong>
+						<label th:text="${personInfo.getDesignation()}">990</label>
+					</td>
+				<td>
+					
+						<strong><label>Base Location:&nbsp;</label></strong>
+						<label th:text="${personInfo.getBaselocation()}">990</label>
+					</td>
+				<td>
+					
+						<strong><label>Work Location:&nbsp;</label></strong>
+						<label th:text="${personInfo.getWorklocation()}">990</label>
+					</td>			
+			</tr>
+			<tr>
+				<td>
+					
+						<strong><label>Hire Date:&nbsp;</label></strong>
+						<label th:text="${personInfo.getJoiningdate()}">990</label>
+					</td>
+				<td>
+						<strong><label>Department:&nbsp;</label></strong>
+						<label th:text="${personInfo.getDepartment()}">990</label>
+					</td>				
+			</tr>
+		</table>
+		</div>
+		<hr style="margin-bottom:15px">
+		<div class="row" style="text-align:center">
+			<strong><span><u>Application For Medical Re-imbursement</u></span></strong>
+		</div><br>
+		<div class="row" style="text-align:right; padding-right:50px">
+			<strong><span>Reimbursement Request No.</span></strong>
+			<span th:text="${medr.getClaimid()}"></span>
+		</div>
+		
+		<ol>
+          <li>
+          	<span style="margin-right:15px"><strong>Re-imbursement claim made for-</strong></span>
+          	<span th:text="${medr.getClaimtypevalue()}"></span>
+          </li><br>
+          <li>
+          	<div style="float:left; width:33%">
+	          	<span><strong>From Date</strong></span>
+	          	<span th:text="'...'+${medr.getPeriodfrom()}"></span>
+	        </div>
+          	<div style="float:left">
+          		<span><strong>To Date</strong></span>
+          		<span th:text="'...'+${medr.getPeriodto()}"></span>
+          	</div>
+          </li><br>
+          <li>
+          	<div style="float:left; width:33%">
+          		<span><strong>Contact.-&nbsp;&nbsp;&nbsp;Mob.</strong></span>
+          		<span th:text="${medr.getContact()}"></span>
+          	</div>
+          	<div style="float:left;">
+	         	<span><strong>Phone No./Extn</strong></span>
+	         	<span th:text="'...'"></span>
+          	</div>          
+          </li><br>
+          <li>
+          	<span style="margin-right:15px"><strong>Re-imbursement taken for treatment of Self/Spuses/Widowed Mother/Children* 
+          		(*below the age of 21 years or till they get married or employed whichever is earlier).</strong></span>          	
+          	<table style="width:100%; height:60px; margin-top:15px;border: 1px solid black;border-collapse: collapse;">
+        		<tr class="w3-theme" style="border:1px solid black; font-weight:bold">
+        			<th style="border: 1px solid black;border-collapse: collapse;">Name</th>		        		
+        			<th style="border: 1px solid black;border-collapse: collapse;">Gender</th>
+        			<th style="border: 1px solid black;border-collapse: collapse;">Date of Birth</th>
+        			<th style="border: 1px solid black;border-collapse: collapse;">Age</th>
+        			<th style="border: 1px solid black;border-collapse: collapse;">Relationship</th>
+        			<th style="border: 1px solid black;border-collapse: collapse;">Residing with me</th>
+        			<th style="border: 1px solid black;border-collapse: collapse;">Marital Status</th>		
+        		</tr>
+        		<tbody>
+        			<tr th:each="dat, stats:${meddep}">
+	        			<td th:text="${dat.dependentname}" 
+	        				style="border: 1px solid black;border-collapse: collapse;"></td>
+	        			<td th:text="${dat.gender}"
+	        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+	        			<td th:text="${dat.dateofbirth}"
+	        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+	        			<td th:text="${dat.age}"
+	        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+	        			<td th:text="${dat.relationship}"
+	        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+	        			<td style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+	        			<td th:text="${dat.maritalstatus}"
+	        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>	        			
+	        		</tr>
+        		</tbody>        		        		        		   	
+        	</table><br>
+        	<span><strong>My wife/husband is employed in......................................is not employed and 
+        		she/he will not claim reimbursement from LMRC or her/his employer and she/he will not avail the medical 
+        		facilities available to her/him from any source. Certified that the person(s) for whom reimbursement
+        		will be climed is/are wholly dependent upon me and residing with me.</strong></span>
+          </li><br>
+          <li>
+          	<span><strong>Treatment taken from-</strong></span>
+          	<span th:text="'.....'+${medr.getHospitalname()}"></span>
+          </li><br>
+          <li>
+          	<span><strong>Whether hospital is nominated/Non-nominated/out-station/Govt Hospital</strong></span>
+          	<span th:text="'.....'+${medr.getHospitaltypevalue()}"></span>
+          </li><br>
+          <ol>
+          	<li>
+          		<span style="margin-right:100px"><strong>If, nominated, is the Emergency Certificate enclosed?</strong></span>
+          		<span th:text="${medr.getEmergencycerti()}"></span>
+          	</li><br>
+          	<li>
+          		<span style="margin-right:116px"><strong>If, outstation, is administrative approval obtained?</strong></span>
+          		<span></span>
+          	</li>
+          </ol><br>          
+          <li>
+          	<div style="float:left; width:33%">
+	          	<span><strong>Date of Admission</strong></span>
+	          	<span th:text="'....'+${admdate}"></span>
+	        </div>
+	        <div style="float:left;">
+	          	<span><strong>Date of Discharge</strong></span>
+	          	<span th:text="'...'+${disdate}"></span>
+	        </div>
+          </li><br>
+          <li>
+          	<div style="float:left; width:33%">
+	          	<span><strong>Time of Admission</strong></span>
+	          	<span th:text="....................."></span>
+	        </div>
+	        <div style="float:left;">
+	          	<span><strong>Time of Discharge</strong></span>
+	          	<span th:text="....................."></span>
+	        </div>
+          </li><br>
+          <li>
+          	<span><strong>Period of Hospitalization</strong>.........................................days</span>
+          </li><br>
+          <li>
+          	<span><strong>Illness Type</strong>...</span>
+          	<span th:text="${medr.getIllnesstypevalues()}"></span>
+          </li><br>
+          <li>
+          	<span><strong>Diagnosis/Disease</strong>...</span>
+          	<span th:text="${medr.getDiseasename()}"></span>
+          </li><br>
+          <li>
+          	<span><strong>Amount of claim Rs</strong>...</span>
+          	<span th:text="${medr.getClaimamount()}"></span>
+          </li><br>
+          <li>
+          	<span><strong>Whether Medical advance drawn (if yes, mention the amount) Rs</strong>...</span>          	
+          </li><br>
+          <li>
+          	<span><strong>For Indoor medical bills, detailed break-up of package along with discharge summary duly stamped and signed
+          		by Hospital authority, is enclosed</strong></span>
+          	<span>.....................................................</span>          	
+          </li><br>
+          <li>
+          	<span><strong>For all lab test a self-certified copy of investigation report and prescription is enclosed</strong></span>
+          	<span>.....................................................</span>          	
+          </li><br>
+          <li>
+          	<span><strong>Discount offered by hospital/Path/Lab, if any</strong></span>
+          	<span>.......................</span>          	
+          </li><br>
+          <li>
+          	<span><strong>Whether treatment is taken as per entitlement</strong></span>
+          	<span>..............................if not,reason for it........................................</span>          	
+          </li><br>          		  
+        </ol>
+		<span><strong>(Attach all bills, summarized below, in original duly verified and photocopy of prescription advising medicines/pathological 
+        	tests).</strong></span><br>
+        <span><strong>SUMMARY OF BILLS</strong></span>
+        <table style="width:100%; height:60px; margin-top:15px;border: 1px solid black;border-collapse: collapse;">
+       		<tr class="w3-theme" style="border:1px solid black; font-weight:bold">
+       			<th style="border: 1px solid black;border-collapse: collapse;">Description of Expenses/Bill</th>		        		
+       			<th style="border: 1px solid black;border-collapse: collapse;">Bill Number</th>
+       			<th style="border: 1px solid black;border-collapse: collapse;">Bill Date</th>
+       			<th style="border: 1px solid black;border-collapse: collapse;">Bill Amount</th>
+       			<th style="border: 1px solid black;border-collapse: collapse;">Remarks</th>        			
+       		</tr>
+       		<tbody>
+       			<tr th:each="dat, stats:${medbil}">
+        			<td th:text="${dat.billdescription}" 
+        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+        			<td th:text="${dat.billnumber}"
+        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+        			<td th:text="${dat.billDate}"
+        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+        			<td th:text="${dat.billamount}"
+        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+        			<td th:text="${dat.remark}"
+        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>	        				        			
+        		</tr>
+       		</tbody>
+       		<tr>
+       			<td style="padding:5px">
+       				<span><strong>No of Bills:&nbsp;&nbsp;</strong><span th:text="${medr.getNoofbills()}"></span></span>					
+       			</td>
+       			<td style="border-right:1px solid black"></td>
+       			<td style="text-align:right;padding:5px">
+       				<span><strong>Total Bill Amount:&nbsp;&nbsp;</strong></span>
+       			</td>
+       			<td style="padding:5px">
+       				<span th:text="${medr.getTotalamount()}"></span>
+       			</td>
+       			<td></td>
+       		</tr>        		
+       	</table>
+       	<ol>
+       		<ol>
+       			<li><strong>I hereby certify that all the above bills are true and correct.</strong></li><br>
+       			<li><strong>It is also certified that my spouse is housewife/working in</strong>..............................
+       				<strong>and she/he is not claiming medical re-imbursement from her/his employer.</strong></li><br>
+       			<li><strong>Claims submitted are not older than six months.</strong></li><br>
+       			<li><strong>I hereby declare that the present medical reimbursement claim is genuine and has not been claimed through any other source.</strong></li><br>
+       		</ol>
+       	</ol>
+       	<div style="height:50px;"></div>
+       	<div>
+			<div class="row">
+				<div class="column" style="width:70%;float:left;">
+					<p><strong>Date</strong>.......................................</p>
+					<p><strong>Dy. HOD</strong></p>
+				</div>
+				<div class="column" style="float:left;text-align:right">
+					<p><strong>(Signature of the employee)</strong></p>
+				</div>						
+			</div>
+		</div>
+	</div>
+	<script src="/js/reimbursement/contingent/adhocLocalSearch.js"></script>
+</div>

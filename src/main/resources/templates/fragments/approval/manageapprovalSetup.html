@@ -1,0 +1,35 @@
+<div th:fragment="manageapprovalSetup">
+	<!-- <div class="w3-main">
+		<div style="position: relative;">
+			<div class="w3-theme-d2" style="opacity: .8">
+				<div class="w3-container">
+					<h style="font-weight: 400;">
+						<img class="w3-hide-large" src="/images/hide-grader-panel.png"
+							style="cursor: pointer;"> <i class="fa fa-dot-circle"></i>
+						&nbsp;Approval Setup
+					</h3>
+				</div>
+			</div>
+		</div> -->
+
+		<div class="w3-row w3-margin-top">
+		<h4 class="w3-text-theme" style="font-weight: bold;">Approval Setup</h4>
+		<hr class="hrline">
+			
+			<div class="w3-third"><!--  style="border-right: 2px solid black"> -->
+				<div class="w3-container">
+					<ul class="w3-ul w3-margin-bottom">
+						<li class="w3-hover-theme my-hover" onclick="apr_name('REIMBURSEMENT')" style="border-bottom: 1px solid grey;"><h6 id="REIMBURSEMENT">Approval for Reimbursement</h6></li>
+						<li class="w3-hover-theme my-hover" onclick="apr_name('APPROVAL')" style="border-bottom: 1px solid grey;"><h6 id="APPROVAL">Approval for Absence</h6></li>
+					</ul>
+				</div>
+			</div>
+			<div class="w3-third">&nbsp;</div>
+			<div class="w3-third">&nbsp;</div>
+
+		
+		
+		
+		<script type="text/javascript" src="/js/approval/manageapproval.js"></script>
+	</div>
+</div>

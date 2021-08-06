@@ -1,0 +1,299 @@
+<div th:fragment="tadkClaim">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<script th:inline="javascript">
+/*<![CDATA[*/
+    var resultfinal = /*[[${result}]]*/;
+   
+/*]]>*/
+</script>
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"> <i class="fas fa-headset" style="color: #fd451a;"></i>&nbsp;Telephone Attendant cum Dak Khalasis(TADK) Reimbursement
+				</h4>
+			</div>
+		</div>
+
+<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item" >Claim Details</h5>
+			<!-- <div onclick="loadCreateTADKClaim();" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" style="margin-top:8px;"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Raise New Request</div> -->
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${tadkmodel.getClaimid()==0}">
+				<div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large" id="btnSave" onclick="ajaxsave('save','save',this)"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Claim</div>
+				<!-- <div type="button" class="w3-btn w3-green w3-round-large" id="btnSubmit" onclick="ajaxsave('submit','submit',this)" value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit</div> -->
+			</div>
+
+
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+				<div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large" id="btnSave" onclick="ajaxsave('update','save')"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update</div>
+				<div type="button" class="w3-btn w3-green w3-round-large" id="btnSubmit" onclick="ajaxsave('submit','submit',this)" value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit</div>
+			</div>
+			
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+				<div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-grey w3-round-large" th:onclick="|loadPopup('${tadkmodel.getClaimid()}')|"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Declaration</div>
+			</div>
+		</div>
+
+		<!--Form Content Goes here-->
+
+		<div class="w3-row w3-padding-large w3-margin-top">
+
+			<p>
+				<strong><label>Entitlement:&nbsp;</label></strong> <label id="tadk_entitle" class="w3-text-blue"
+					th:text="${empent}"></label>&nbsp;<label>INR Per
+					Month</label>
+			</p>
+
+			
+			<form method="post" enctype="multipart/form-data" onsubmit="return false;" id="TADK_SAVE">
+				<div class="w3-row">
+					<div style="display: none;">
+						<input id="statusid" value="" type="hidden" name="statusid" /> <input
+							type="text" id="tadk_rembid" name="reimburseid" value="12" />
+
+						<!-- <input type="text" id="tadk_personnumber" name="personnumber"
+							th:value="${personInfo.getPersonnumber()}" /> -->
+
+						<input type="text" id="tadk_personnumber" name="personnumber"
+							th:value="${personInfo.getPersonnumber()}" />
+
+						<!-- <input type="text" id="tadk_personid"
+							name="personid" th:value="${personInfo.getPersonid()}" /> -->
+
+						<input type="text" id="tadk_personid" name="personid"
+							th:value="${personInfo.getPersonid()}" /> <input type="text" id="tadk_claimid"
+							name="claimid" th:value="${tadkmodel.getClaimid()}" /> <input
+							type="text" name="eligibleamt" value="8000"
+							id="tadkeligibility" readonly />
+
+						<!-- <input type="text"
+							id="person_designation" name="person_designation" value="" /> -->
+
+						<!-- <input type="text"
+							id="person_designation" name="person_designation" th:value="${personInfo.getDesignation()}" /> -->
+					</div>
+				</div>
+				<div class="w3-row">&nbsp;</div>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<p th:if="${tadkmodel.getClaimid()==0}">
+							<label>TADK Name</label><span style="color: red;">*</span> <input
+								type="text" name="tadkname" id="tadk_name"
+								class="w3-input w3-border w3-round" required  th:value="${tadkmodel.getTadkname()}"/> <span
+								style="color: #ff0000"
+
+								th:if='${bindingResult != null && bindingResult.getFieldError("tadkname")!=null}'
+								th:text='${bindingResult.getFieldError("tadkname").getDefaultMessage()}'></span>
+						</p>
+						<p
+							th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label>TADK Name</label><span style="color: red;">*</span> <input
+								type="text" name="tadkname"
+								th:value="${tadkmodel.getTadkname()}" id="tadk_name"
+								class="w3-input w3-border w3-round" /> <span
+								style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("tadkname")!=null}'
+								th:text='${bindingResult.getFieldError("tadkname").getDefaultMessage()}'></span>
+						</p>
+						<p
+							th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label>TADK Name</label><span style="color: red;">*</span> <input
+								type="text" name="tadkname"
+								th:value="${tadkmodel.getTadkname()}" id="tadk_name"
+								class="w3-input w3-border w3-round" readonly />
+						</p>
+					</div>
+					<div class="w3-half w3-container">
+						<p th:if="${tadkmodel.getClaimid()==0}">
+							<label>Month</label><span style="color: red;">*</span> <select
+								name="month" class="w3-select w3-border w3-round" id="month">
+								<option selected disabled>Select</option>
+								<option th:each="m:${month}" th:value="${m.getDescription()}"
+									th:text="${m.getDescription()}" th:selected="${tadkmodel.getMonth() == m.getDescription()}"></option>
+							</select> <span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("month")!=null}'
+								th:text='${bindingResult.getFieldError("month").getDefaultMessage()}'></span>
+						</p>
+						<p
+							th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label>Month</label><span style="color: red;">*</span> <select
+								name="month" class="w3-select w3-border w3-round" id="month">
+								<option selected disabled>Select</option>
+								<option th:each="m:${month}" th:value="${m.getDescription()}"
+									th:text="${m.getDescription()}"
+									th:selected="${tadkmodel.getMonth() == m.getDescription()}"></option>
+							</select> <span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("month")!=null}'
+								th:text='${bindingResult.getFieldError("month").getDefaultMessage()}'></span>
+						</p>
+						<p
+							th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label>Month</label><span style="color: red;">*</span> <select
+								name="month" class="w3-select w3-border w3-round" id="month"
+								disabled>
+								<option value="">Select</option>
+								<option th:each="m:${month}" th:value="${m.getDescription()}"
+									th:text="${m.getDescription()}"
+									th:selected="${tadkmodel.getMonth() == m.getDescription()}"></option>
+							</select>
+						</p>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<p th:if="${tadkmodel.getClaimid()==0}">
+							<label>Amount</label><span style="color: red;">*</span> <input
+								type="text" name="claimamt" id="tadk_amount" value="0"
+								class="w3-input w3-border w3-round" th:value="${tadkmodel.getClaimamt()}"
+								oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');" />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("claimamt")!=null}'
+								th:text='${bindingResult.getFieldError("claimamt").getDefaultMessage()}'></span>
+						</p>
+						<p
+							th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label>Amount</label><span style="color: red;">*</span> <input
+								type="text" name="claimamt" id="tadk_amount"
+								oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"
+								th:value="${tadkmodel.getClaimamt()}"
+								class="w3-input w3-border w3-round" required /> <span
+								style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("claimamt")!=null}'
+								th:text='${bindingResult.getFieldError("claimamt").getDefaultMessage()}'></span>
+						</p>
+						<p
+							th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label>Amount</label><span style="color: red;">*</span> <input
+								type="text" name="claimamt" id="tadk_amount"
+								th:value="${tadkmodel.getClaimamt()}"
+								class="w3-input w3-border w3-round" readonly />
+						</p>
+					</div>
+					<div class="w3-half w3-container">
+						<input id="tadkrcpt" name="attachment" type="hidden" />
+						<p th:if="${tadkmodel.getClaimid()==0}">
+							<label>Enclose Receipt, if any</label><input type="file"
+								name="file" id="tadk_amount" class="w3-input w3-border w3-round" />
+						</p>
+						<div th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<div>
+							<label>Enclose Receipt, if any</label>
+							<input type="file" name="file" id="tadk_rcpt" class="w3-input w3-border w3-round" />
+							</div>
+							
+							<input id="tadkrcpt" name="attachment" type="hidden" />
+							<a th:if="${(tadkmodel.getAttachment() != '') and (tadkmodel.getAttachment() != null)}" id="DOWNLOAD_LINK" th:href="${tadkmodel.getAttachment()}" target="_blank" download>Download Attachment</a>
+							<input type="hidden" name="attachhidden" th:value="${tadkmodel.getAttachment()}"/>
+							
+							
+						</div>
+						<p th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<a th:if="${(tadkmodel.getAttachment() != '') and (tadkmodel.getAttachment() != null)}" id="DOWNLOAD_LINK" th:href="${tadkmodel.getAttachment()}" target="_blank" download>Download Attachment</a>
+							<input type="hidden" name="attachhidden" th:value="${tadkmodel.getAttachment()}"/>
+
+						</p>
+					</div>
+				</div>
+				
+				<!-- <div class="w3-row" style="float: right;" th:if="${tadkmodel.getClaimid()==0}">
+					<input type="button" class="w3-btn w3-theme" id="btnSave" onclick="ajaxsave('save','save')" value="Save Claim" />&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="w3-btn w3-theme" id="btnSearch" value="Return to Search"  />
+				</div>
+
+
+				<div class="w3-row" style="float: right;" th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+					<input type="button" class="w3-btn w3-theme" id="btnSave" onclick="ajaxsave('update','save')" value="Update" />&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="w3-btn w3-theme" id="btnSubmit" onclick="ajaxsave('submit','submit')" value="Submit Claim for Approval" />
+				</div>
+				
+				<div class="w3-row" style="float: right;" th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+					<button class="w3-btn w3-theme" th:onclick="|loadPopup('${tadkmodel.getClaimid()}')|">Declaration</button>
+					<input type="button" class="w3-btn w3-theme" id="btnCancel" onclick="backBtnFunc()" value="Return to search" />&nbsp;&nbsp;&nbsp;&nbsp;
+				</div> -->
+
+			</form>
+			
+			
+			
+			
+			
+			
+			
+			
+						<h5 th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'view'}"> Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" aria-hidden="true" th:onclick="'getapprovalhistory(12,'+${tadkmodel.getClaimid()}+');'"></i></h5>
+						<section class="container" th:if="${tadkmodel.getClaimid()!=0} and ${display_mode == 'view'}" >
+						
+						<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+						<div class="container__sources">
+
+							<div style="box-shadow: none;background-color: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+								<div class="sources--cms" style="width: 160px">
+									<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+									<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+									<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+
+									<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+										<i class="fa fa-check tick"></i>
+
+									</div>
+									<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+										<i class="fa fa-clock-o pending"></i>
+									</div>
+									<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+										<i class="fa fa-close cancel"></i>
+
+									</div>
+
+								</div>
+								<svg class="svghor" viewBox="0 10 100 100">
+									<line  x1="5" x2="100" y1="80" y2="80"></line>
+								</svg>
+								<svg class="svgver" viewBox="0 20 100 100 ">
+									<line  x1="40" x2="40" y1="0" y2="100"></line>
+								</svg>
+							</div>
+						<div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+						</div>
+
+						<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+
+
+					</section>
+
+
+			
+			
+		</div>
+
+		<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+					<!-- <label id="lblMsg" style="font-weight: bold"> </label> <a
+						id="btnOK">OK</a> -->
+
+					<label id="lblMsg" style="font-weight: bold"> </label> <a
+						id="btnOK" rm="reimbursement/tadk">OK</a>
+
+				</div>
+
+			</div>
+		</div>
+		<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+		
+		<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+		<script type="text/javascript" src="/js/reimbursement/tadk/tadk.js"></script>
+	</div>
+</div>

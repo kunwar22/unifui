@@ -1,0 +1,726 @@
+<!-- Child Reimbursement Page -  Asmita_18_09 -->
+<div th:fragment="createChildClaim">
+	<script th:inline="javascript">
+/*<![CDATA[*/
+    var finalresult = /*[[${result}]]*/;
+    
+/*]]>*/
+</script>
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400;">
+					<img class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"> <i class="fas fa-user-graduate"
+						style="color: #279ef3;"></i> &nbsp;Child Reimbursement
+				</h4>
+			</div>
+		</div>
+		<div id="fragmaent_container"
+			th:include="forms/reimbursement/header :: header"></div>
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item">Claim Details</h5>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+				th:if="${childreimbursemodel.getChildclaimid()==0}">
+				<div type="button" class="w3-btn w3-red w3-round-large"
+					onclick="backBtnFunc();" id="btnSearch">
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+					to Search
+				</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large"
+					id="btnSave" onclick="ajaxPost('save','save',this);">
+					<i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save
+					Claim
+				</div>
+				 <div type="button" class="w3-btn w3-green w3-round-large"
+					id="btnSubmit" onclick="ajaxPost('Save&Submit','submit',this)"
+					value="Submit Claim for Approval">
+					<i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Save & Submit
+				</div> 
+			</div>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+				th:if="${childreimbursemodel.getChildclaimid()!=0} and ${display_mode == 'edit_child'}">
+				<div type="button" class="w3-btn w3-red w3-round-large"
+					onclick="backBtnFunc();" id="btnSearch">
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+					to Search
+				</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large"
+					id="btnSave" onclick="ajaxPost('update','save',this)">
+					<i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update
+				</div>
+				<div type="button" class="w3-btn w3-green w3-round-large"
+					id="btnSubmit" onclick="ajaxPost('submit','submit',this)"
+					value="Submit Claim for Approval">
+					<i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit
+				</div>
+			</div>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;"
+				th:if="${childreimbursemodel.getChildclaimid()!=0} and ${display_mode == 'view_child'}">
+				<div type="button" class="w3-btn w3-red w3-round-large"
+					onclick="backBtnFunc();" id="btnSearch">
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return
+					to Search
+				</div>
+			</div>
+
+		</div>
+		<!-- Child Reimbursement Input Details starts here -->
+
+		
+
+		<form method="post" enctype="multipart/form-data" id="CER_SAVE">
+			<input type="hidden" id="feereceipt" name="feereceipt">
+			<div class="w3-row w3-padding-large w3-margin-top">
+				<div class="w3-quarter w3-container"
+					style="border-right: 2px solid black">
+					<p th:if="${childreimbursemodel.getChildclaimid()==0}">
+						<label>Academic Year</label> <span style="color: red;">*</span> <select
+							name="acadyear" class="w3-select w3-border w3-round"
+							id="acadyear">
+							<option selected disabled>Select</option>
+							<option th:if="${childreimbursemodel.getacadyear() !=null}" th:selected="${childreimbursemodel.getacadyear()}"
+								th:text="${childreimbursemodel.getacadyear()}"
+								th:value="${childreimbursemodel.getacadyear()}"></option>
+						</select>
+						<span style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("acadyear")!=null}'
+							th:text='${bindingResult.getFieldError("acadyear").getDefaultMessage()}'></span>
+					</p>
+
+					<p
+						th:if="${childreimbursemodel.getChildclaimid()!=0} and ${display_mode=='edit_child'}">
+						<label>Academic Year</label> <span style="color: red;">*</span> <select
+							name="acadyear" class="w3-select w3-border w3-round"
+							id="acadyear1">
+							<option th:selected="${childreimbursemodel.getacadyear()}"
+								th:text="${childreimbursemodel.getacadyear()}"
+								th:value="${childreimbursemodel.getacadyear()}"></option>
+
+						</select>
+						<span style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("acadyear")!=null}'
+							th:text='${bindingResult.getFieldError("acadyear").getDefaultMessage()}'></span>
+					</p>
+
+					<p
+						th:if="${childreimbursemodel.getChildclaimid()!=0} and ${display_mode=='view_child'}">
+						<label>Academic Year</label> <span style="color: red;">*</span> <select
+							disabled name="acadyear" class="w3-select w3-border w3-round"
+							id="acadyear">
+							<option th:selected="${childreimbursemodel.getacadyear()}"
+								th:text="${childreimbursemodel.getacadyear()}"
+								th:value="${childreimbursemodel.getacadyear()}"></option>
+
+						</select> <span style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("acadyear")!=null}'
+							th:text='${bindingResult.getFieldError("acadyear").getDefaultMessage()}'></span>
+
+					</p>
+
+
+
+
+					<p th:if="${childreimbursemodel.getChildclaimid()==0}">
+						<label>Fees Paid for</label> <span style="color: red;">*</span> <select
+							id="FEESELECTOR" name="feetype"
+							class="w3-select w3-border w3-round">
+							<option selected disabled>Select</option>
+							<option value="School" th:selected="${childreimbursemodel.getfeetype() eq 'School'}">School</option>
+							<option value="Hostel" th:selected="${childreimbursemodel.getfeetype() eq 'Hostel'}">Hostel</option>
+							
+						</select>
+						<span style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("feetype")!=null}'
+							th:text='${bindingResult.getFieldError("feetype").getDefaultMessage()}'></span>
+					</p>
+
+					<p
+						th:if="${childreimbursemodel.getChildclaimid()!=0} and ${display_mode=='edit_child'}">
+						<label>Fees Paid for</label> <span style="color: red;">*</span> <select
+							id="FEESELECTOR1" name="feetype"
+							class="w3-select w3-border w3-round">
+							<option selected disabled>Select</option>
+							<option value="School" th:selected="${childreimbursemodel.getfeetype() eq 'School'}">School</option>
+							<option value="Hostel" th:selected="${childreimbursemodel.getfeetype() eq 'Hostel'}">Hostel</option>
+							
+							
+						</select>
+						<span style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("feetype")!=null}'
+							th:text='${bindingResult.getFieldError("feetype").getDefaultMessage()}'></span>
+					</p>
+
+					<p
+						th:if="${childreimbursemodel.getChildclaimid()!=0} and ${display_mode=='view_child'}">
+						<label>Fees Paid for</label> <span style="color: red;">*</span> <select
+							disabled id="FEESELECTOR1" name="feetype"
+							class="w3-select w3-border w3-round">
+							<option selected disabled value="">Select</option>
+							<option th:selected="${childreimbursemodel.getfeetype()}"
+								th:text="${childreimbursemodel.getfeetype()}"
+								th:value="${childreimbursemodel.getfeetype()}"></option>
+						</select> <span style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("feetype")!=null}'
+							th:text='${bindingResult.getFieldError("feetype").getDefaultMessage()}'></span>
+					</p>
+				</div>
+
+				<div class="w3-rest w3-container" id="CHILD_BLOCK" style="display:none;">
+					<div class="w3-right" style="color: black; font-weight: bold;">
+						Claim Limit : <span class="feelimit"></span><br>
+						Claim Limit(Handicapped Child) : <span class="feelimithandicapped"></span><br>
+					</div>
+					<h6 class="w3-text-theme">Child Details</h6>
+
+					<hr  class="hrline" style="margin-top: 20px;"/>
+					<div style="display:none">
+						<input id="status_id" value="" type="hidden" name="status_id" />
+						<input type="text" id="ChildRemburseID" name="reimburseid"
+							value="3" /> <input type="text" id="txtRemburseName"
+							name="reimbursename" value="Child Reimbursement" /> <input type="text"
+							id="txtPersonNumber" name="personnumber"
+							th:value="${personInfo.getPersonnumber()}" /> <input type="text"
+							id="txtPersonId" name="personid"
+							th:value="${personInfo.getPersonid()}" /> <input type="text"
+							id="ChildClaimId" name="childclaimid"
+							th:value="${childreimbursemodel.getChildclaimid()}" />
+						<!-- <input type="text" id="claimdate" name="dates" value="2020-09-30" /> -->
+
+						<!-- <p th:each="childid : ${childreimbursemodel.getchilds()}">
+							<input type="text" name="childid"
+								th:value="${childid.getChildid()}" />
+						</p> -->
+					</div>
+					<div class="w3-border">
+						<div class="w3-row w3-container" style="margin: 15px;">
+							<div class="w3-bar" style="margin: 10px;">
+								<div class="w3-button w3-theme w3-right addchild"
+									onclick="addchildnew();">
+									<i class="fa fa-plus"></i>
+								</div>
+							</div>
+
+							<!-- <hr style="margin: 10px" class="hrline"> -->
+							<div id="childrows">
+							
+								<div class="childrow" th:if="${childreimbursemodel.getChildclaimid()==0}" th:each="child,stats : ${childreimbursemodel.getchilds()}">
+									<div class="w3-container w3-border w3-padding-large">
+										<div class="w3-bar w3-theme-l3" style="margin-bottom: 20px;">
+											<h5 class="w3-bar-item">Child <span th:text="${stats.index + 1}"></span></h5>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container">
+												<p>
+													<label>Child Name </label> <span style="color: red;">*</span>
+													<select th:name="'childs['+${stats.index}+'].childname'" id="CHILD_NAME"
+															class="w3-select w3-border w3-round"
+															onchange="loadChildDetails(event,'CHILD_NAME','CHILD_DOB','CHILD_GENDER','CHILD_TWINS','CHILD_DISABILITY')">
+															<option value="" selected>Select</option>
+															<option th:each="dep : ${dependentChilds}"
+																th:value="${dep.getChildname()}"
+																th:text="${dep.getChildname()}"
+																th:selected="${child.getChildname() eq dep.getChildname()}"
+																th:attr="data-child-dob=${dep.getChilddob()},data-child-gender=${dep.getChildgendar()},data-child-twins=${dep.getIstwins()},data-child-disability=${dep.getDisability()}" />
+														</select><span style="color: #ff0000"
+														th:if='${ bindingResult != null && bindingResult.getFieldError("childname")!=null && child.getChildname()==""}'
+														th:text='${bindingResult.getFieldError("childname").getDefaultMessage()}'></span> 
+
+												</p>
+											</div>
+											<div class="w3-half w3-container dob">
+												<p>
+												<label>Date of Birth </label> <span style="color: red;">*</span>
+													<input type="text" id="CHILD_DOB" th:name="'childs['+${stats.index}+'].dob'"
+															th:value="${child.getDob()}"
+															class="w3-input w3-border w3-round birthday" readonly />
+												</p>
+											</div>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container gender">
+												<p>
+													<label>Gender </label> <span style="color: red;">*</span>
+														<input type="text" id="CHILD_GENDER"
+															th:name="'childs['+${stats.index}+'].gender'" th:value="${child.getGender()}"
+															class="w3-input w3-border w3-round" readonly />
+
+												</p>
+											</div>
+											<div class="w3-half w3-container">
+												<p>
+													<label>Class</label> <span style="color: red;">*</span> <select
+															id="CHILD_CLASS" th:name="'childs['+${stats.index}+'].childclass'"
+															class="w3-select w3-border w3-round">
+															<option value="" select disabled>Select</option>
+															<option th:each="cls : ${childclass}"
+																th:value="${cls.getDescription()}"
+																th:text="${cls.getDescription()}"
+																th:selected="${child.getChildclass()== cls.getDescription()}" />
+														</select><span style="color: #ff0000"
+														th:if='${bindingResult != null && bindingResult.getFieldError("childs[0].childclass")!=null}'
+														th:text='${bindingResult.getFieldError("childs[0].childclass").getDefaultMessage()}'></span>
+												</p>
+											</div>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container">
+												<p>
+													<label>School Name</label> <span style="color: red;">*</span>
+														<input id="SCHOOL_NAME" type="text"
+															th:name="'childs['+${stats.index}+'].schoolname'"
+															th:value="${child.getSchoolname()}"
+															class="w3-input w3-border w3-round">
+															<span style="color: #ff0000"
+														th:if='${ bindingResult != null && bindingResult.getFieldError("schoolname")!=null && child.getSchoolname()==""}'
+														th:text='${bindingResult.getFieldError("schoolname").getDefaultMessage()}'></span>
+												</p>
+											</div>
+											<div class="w3-half w3-container">
+												<p>
+													<label>School Address</label><br />
+														<textarea rows="1" cols="30" th:name="'childs['+${stats.index}+'].schooladdr'"
+															th:text="${child.getSchooladdr()}" id="SCHOOL_ADDR"
+															class="w3-input w3-border w3-round"></textarea>
+												</p>
+											</div>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container">
+												<p>
+													<label>Amount Claimed</label> <span style="color: red;">*</span>
+														<input type="text" th:name="'childs['+${stats.index}+'].fees'" id="CLAIM_AMT" 
+														oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															th:value="${child.getFees()}"
+															class="w3-input w3-border w3-round">
+															<span style="color: #ff0000"
+														th:if='${ bindingResult != null && bindingResult.getFieldError("fees")!=null && child.getFees()==0.0}'
+														th:text='${bindingResult.getFieldError("fees").getDefaultMessage()}'></span> 
+												</p>
+											</div>
+											<div class="w3-half w3-container twin">
+												<p>
+													<label>If Twin</label> <span style="color: red;">*</span><br />
+														<input type="text" id="CHILD_TWINS"
+															th:name="'childs['+${stats.index}+'].istwins'" th:value="${child.getIstwins()}"
+															readonly class="w3-input w3-border w3-round">
+												</p>
+											</div>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container disab">
+												<p>
+													<label>If Disabled</label> <span style="color: red;">*</span><br />
+														<input type="text" id="CHILD_DISABILITY"
+															th:name="'childs['+${stats.index}+'].disability'"
+															th:value="${child.getDisability()}" readonly
+															class="w3-input w3-border w3-round">
+												</p>
+											</div>
+											<div class="w3-half w3-container">
+												<label>Receipt Enclosed </label>
+												<input type="file" name="file" class="file w3-input w3-round" />
+												<input type="hidden" name="'childs['+${stats.index}+'].feereceipt'" class="feereceipt">	
+												<input type="hidden" name="'childs['+${stats.index}+'].attachhidden'" class=".atthi">									
+												<input type="hidden" name="'childs['+${stats.index}+'].filepres'" class="filepres">
+											</div>
+										</div>
+									</div>
+								</div>
+<!-- 								<div class="childrow"
+									th:if="${childreimbursemodel.getChildclaimid()==0}">
+									<div class="w3-container w3-border w3-padding-large">
+										<div class="w3-bar w3-theme-l3" style="margin-bottom: 20px;">
+											<h5 class="w3-bar-item">Child 1</h5>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container">
+												<p>
+													<label>Child Name </label> <span style="color: red;">*</span>
+													<select name="childs[0].childname" id="CHILD_NAME"
+														class="w3-select w3-border w3-round"
+														onchange="loadChildDetails(event,'CHILD_NAME','CHILD_DOB','CHILD_GENDER','CHILD_TWINS','CHILD_DISABILITY')">
+														<option value="" selected>Select</option>
+														<option th:each="dep : ${dependentChilds}"
+															th:value="${dep.getChildname()}"
+															th:text="${dep.getChildname()}"
+															th:selected="${childreimbursemodel.getchilds().get(0).getChildname() eq dep.getChildname()}"
+															th:attr="data-child-dob=${dep.getChilddob()},data-child-gender=${dep.getChildgendar()},data-child-twins=${dep.getIstwins()},data-child-disability=${dep.getDisability()}" />
+													</select> <span style="color: #ff0000"
+														th:if='${bindingResult != null && bindingResult.getFieldError("childname")!=null && childreimbursemodel.getchilds().get(0).getChildname()==""}'
+														th:text='${bindingResult.getFieldError("childname").getDefaultMessage()}'></span>
+
+												</p>
+											</div>
+											<div class="w3-half w3-container dob">
+												<p>
+													<label>Date of Birth </label> <input type="text"
+														id="CHILD_DOB" name="childs[0].dob"
+														class="w3-input w3-border w3-round birthday" readonly />
+												</p>
+											</div>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container gender">
+												<p>
+													<label>Gender </label> <input type="text" id="CHILD_GENDER"
+														name="childs[0].gender"
+														class="w3-input w3-border w3-round" readonly />
+
+												</p>
+											</div>
+											<div class="w3-half w3-container">
+												<p>
+													<label>Class</label> <span style="color: red;">*</span> <select
+														id="CHILD_CLASS" name="childs[0].childclass"
+														class="w3-select w3-border w3-round">
+														<option value="" select disabled>Select</option>
+														<option th:each="cls : ${childclass}"
+															th:value="${cls.getDescription()}"
+															th:text="${cls.getDescription()}" />
+													</select> <span style="color: #ff0000"
+														th:if='${bindingResult != null && bindingResult.getFieldError("childs[0].childclass")!=null}'
+														th:text='${bindingResult.getFieldError("childs[0].childclass").getDefaultMessage()}'></span>
+												</p>
+											</div>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container">
+												<p>
+													<label>School Name</label> <span style="color: red;">*</span>
+													<input id="SCHOOL_NAME" type="text"
+														name="childs[0].schoolname"
+														class="w3-input w3-border w3-round">
+												</p>
+											</div>
+											<div class="w3-half w3-container">
+												<p>
+													<label>School Address</label><br />
+													<textarea rows="1" cols="30" name="childs[0].schooladdr"
+														id="SCHOOL_ADDR" class="w3-input w3-border w3-round"></textarea>
+												</p>
+											</div>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container">
+												<p>
+													<label>Amount Claimed</label> <span style="color: red;">*</span>
+													<input type="text" name="childs[0].fees" id="CLAIM_AMT"
+													oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+														class="w3-input w3-border w3-round" value="0"> <span
+														style="color: #ff0000"
+														th:if='${bindingResult != null && bindingResult.getFieldError("childs[0].fees")!=null}'
+														th:text='${bindingResult.getFieldError("childs[0].fees").getDefaultMessage()}'></span>
+												</p>
+											</div>
+											<div class="w3-half w3-container twin">
+												<p>
+													<label>If Twin</label> <span style="color: red;">*</span><br />
+													<input type="text" id="CHILD_TWINS"
+														name="childs[0].istwins" readonly
+														class="w3-input w3-border w3-round">
+												</p>
+											</div>
+										</div>
+										<div class="w3-row">
+											<div class="w3-half w3-container disab">
+												<p>
+													<label>If Disabled</label> <span style="color: red;">*</span><br />
+													<input type="text" id="CHILD_DISABILITY"
+														name="childs[0].disability" readonly
+														class="w3-input w3-border w3-round">
+												</p>
+											</div>
+											<div class="w3-half w3-container">
+												<label>Receipt Enclosed </label>
+												<input type="file" name="file" class="file w3-input w3-round" />
+												<input type="hidden" name="childs[0].feereceipt" class="feereceipt">	
+												<input type="hidden" name="'childs['+${stats.index}+'].attachhidden'" class=".atthi">									
+												<input type="hidden" name="childs[0].filepres" class="filepres">
+											</div>
+										</div>
+									</div>
+								</div> -->
+
+
+
+								<div th:if="${childreimbursemodel.getChildclaimid()!=0}"
+									th:each="child,stats : ${childreimbursemodel.getchilds()}">
+									<div class="childrow">
+										<div class="w3-container w3-border w3-padding-large">
+											<div class="w3-bar w3-theme-l3">
+												<h5 class="w3-bar-item">Child Information</h5>
+											</div>
+											
+											<p th:if="${display_mode == 'edit_child'}" style="display:none">
+														<label>child Id</label> <span style="color: red;">*</span>
+														<input type="text" th:name="'childs['+${stats.index}+'].childid'" id="childid" 
+															th:value="${child.getChildid()}"
+															class="w3-input w3-border w3-round">
+													</p>
+											
+											<div class="w3-row">
+												<div class="w3-half w3-container">
+
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>Child Name </label> <span style="color: red;">*</span>
+														<select name="'childs['+${stats.index}+'].childname'" id="CHILD_NAME"
+															class="w3-select w3-border w3-round"
+															onchange="loadChildDetails(event,'CHILD_NAME','CHILD_DOB','CHILD_GENDER','CHILD_TWINS','CHILD_DISABILITY')">
+															<option value="" selected>Select</option>
+															<option th:each="dep : ${dependentChilds}"
+																th:value="${dep.getChildname()}"
+																th:text="${dep.getChildname()}"
+																th:selected="${child.getChildname()== dep.getChildname()}"
+																th:attr="data-child-dob=${dep.getChilddob()},data-child-gender=${dep.getChildgendar()},data-child-twins=${dep.getIstwins()},data-child-disability=${dep.getDisability()}" />
+														</select>
+													</p>
+
+													<p th:if="${display_mode == 'view_child'}">
+														<label>Child Name </label> <span style="color: red;">*</span>
+														<select name="childs[0].childname" id="CHILD_NAME"
+															disabled class="w3-select w3-border w3-round"
+															onchange="loadChildDetails(event,'CHILD_NAME','CHILD_DOB','CHILD_GENDER','CHILD_TWINS','CHILD_DISABILITY')">
+															<option value="" selected>Select</option>
+															<option th:each="dep : ${dependentChilds}"
+																th:value="${dep.getChildname()}"
+																th:text="${dep.getChildname()}"
+																th:selected="${child.getChildname()== dep.getChildname()}"
+																th:attr="data-child-dob=${dep.getChilddob()},data-child-gender=${dep.getChildgendar()},data-child-twins=${dep.getIstwins()},data-child-disability=${dep.getDisability()}" />
+														</select>
+													</p>
+												</div>
+
+												<div class="w3-half w3-container dob">
+
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>Date of Birth </label> <span style="color: red;">*</span>
+														<input type="text" id="CHILD_DOB" th:name="'childs['+${stats.index}+'].dob'"
+															th:value="${child.getDob()}"
+															class="w3-input w3-border w3-round birthday" readonly />
+													</p>
+													<p th:if="${display_mode == 'view_child'}">
+														<label>Date of Birth </label> <span style="color: red;">*</span>
+														<input type="text" id="CHILD_DOB" name="childs[0].dob"
+															th:value="${child.getDob()}"
+															class="w3-input w3-border w3-round birthday" readonly />
+													</p>
+												</div>
+
+											</div>
+
+											<div class="w3-row">
+												<div class="w3-half w3-container gender">
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>Gender </label> <span style="color: red;">*</span>
+														<input type="text" id="CHILD_GENDER"
+															th:name="'childs['+${stats.index}+'].gender'" th:value="${child.getGender()}"
+															class="w3-input w3-border w3-round" readonly />
+
+													</p>
+													<p th:if="${display_mode == 'view_child'}">
+														<label>Gender </label> <span style="color: red;">*</span>
+														<input type="text" id="CHILD_GENDER"
+															name="childs[0].gender" th:value="${child.getGender()}"
+															class="w3-input w3-border w3-round" readonly />
+
+													</p>
+												</div>
+												<div class="w3-half w3-container">
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>Class</label> <span style="color: red;">*</span> <select
+															id="CHILD_CLASS" th:name="'childs['+${stats.index}+'].childclass'"
+															class="w3-select w3-border w3-round">
+															<option value="" select disabled>Select</option>
+															<option th:each="cls : ${childclass}"
+																th:value="${cls.getDescription()}"
+																th:text="${cls.getDescription()}"
+																th:selected="${child.getChildclass()== cls.getDescription()}" />
+														</select>
+													</p>
+													<p th:if="${display_mode == 'view_child'}">
+														<label>Class</label> <span style="color: red;">*</span> <select
+															disabled id="CHILD_CLASS" name="childs[0].childclass"
+															class="w3-select w3-border w3-round">
+															<option value="" select disabled>Select</option>
+															<option th:each="cls : ${childclass}"
+																th:value="${cls.getDescription()}"
+																th:text="${cls.getDescription()}"
+																th:selected="${child.getChildclass()== cls.getDescription()}" />
+														</select>
+													</p>
+												</div>
+											</div>
+
+											<div class="w3-row">
+												<div class="w3-half w3-container">
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>School Name</label> <span style="color: red;">*</span>
+														<input id="SCHOOL_NAME" type="text"
+															th:name="'childs['+${stats.index}+'].schoolname'"
+															th:value="${child.getSchoolname()}"
+															class="w3-input w3-border w3-round">
+													</p>
+													<p th:if="${display_mode == 'view_child'}">
+														<label>School Name</label> <span style="color: red;">*</span>
+														<input id="SCHOOL_NAME" type="text" readonly
+															name="childs[0].schoolname"
+															th:value="${child.getSchoolname()}"
+															class="w3-input w3-border w3-round">
+													</p>
+												</div>
+												<div class="w3-half w3-container">
+
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>School Address</label><br />
+														<textarea rows="1" cols="30" th:name="'childs['+${stats.index}+'].schooladdr'"
+															th:text="${child.getSchooladdr()}" id="SCHOOL_ADDR"
+															class="w3-input w3-border w3-round"></textarea>
+													</p>
+													<p th:if="${display_mode == 'view_child'}">
+														<label>School Address</label><br />
+														<textarea rows="1" cols="30" name="childs[0].schooladdr"
+															th:text="${child.getSchooladdr()}" readonly
+															id="SCHOOL_ADDR" class="w3-input w3-border w3-round"></textarea>
+													</p>
+												</div>
+											</div>
+
+											<div class="w3-row">
+												<div class="w3-half w3-container">
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>Amount Claimed</label> <span style="color: red;">*</span>
+														<input type="text" th:name="'childs['+${stats.index}+'].fees'" id="CLAIM_AMT" 
+														oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															th:value="${child.getFees()}"
+															class="w3-input w3-border w3-round">
+													</p>
+													<p th:if="${display_mode == 'view_child'}">
+														<label>Amount Claimed</label> <span style="color: red;">*</span>
+														<input type="text" name="childs[0].fees" id="CLAIM_AMT"
+														oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+															th:value="${child.getFees()}" readonly
+															class="w3-input w3-border w3-round">
+													</p>
+												</div>
+												<div class="w3-half w3-container twin">
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>If Twin</label> <span style="color: red;">*</span><br />
+														<input type="text" id="CHILD_TWINS"
+															th:name="'childs['+${stats.index}+'].istwins'" th:value="${child.getIstwins()}"
+															readonly class="w3-input w3-border w3-round">
+													</p>
+													<p th:if="${display_mode == 'view_child'}">
+														<label>If Twin</label> <span style="color: red;">*</span><br />
+														<input type="text" id="CHILD_TWINS"
+															name="childs[0].istwins" th:value="${child.getIstwins()}"
+															readonly class="w3-input w3-border w3-round">
+													</p>
+												</div>
+											</div>
+
+											<div class="w3-row">
+												<div class="w3-half w3-container disab">
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>If Disabled</label> <span style="color: red;">*</span><br />
+														<input type="text" id="CHILD_DISABILITY"
+															th:name="'childs['+${stats.index}+'].disability'"
+															th:value="${child.getDisability()}" readonly
+															class="w3-input w3-border w3-round">
+													</p>
+													<p th:if="${display_mode == 'view_child'}">
+														<label>If Disabled</label> <span style="color: red;">*</span><br />
+														<input type="text" id="CHILD_DISABILITY"
+															name="childs[0].disability"
+															th:value="${child.getDisability()}" readonly
+															class="w3-input w3-border w3-round">
+													</p>
+												</div>
+												<div class="w3-half w3-container">
+													<p th:if="${display_mode == 'edit_child'}">
+														<label>Receipt Enclosed </label> 
+														<a class="DOWNLOAD_LINK"
+															th:href="${child.getFeereceipt()}" target="_blank" download
+															th:if="${child.getFeereceipt()!='' && child.getFeereceipt()!=null}">Download
+															Attachment</a> <input type="hidden"
+															name="'childs['+${stats.index}+'].feereceipt'" class="feereceipt" value="" />
+														<input type="hidden" name="'childs['+${stats.index}+'].attachhidden'" 
+															th:value="${child.getFeereceipt()}" id="DOWNLOAD_LINKsp atthi">
+														<input type="file" name="file" />
+														<input type="hidden" name="childs[0].filepres" class="filepres">
+													</p>
+													<p th:if="${display_mode == 'view_child'}">
+														<a class="DOWNLOAD_LINK"
+															th:href="${child.getFeereceipt()}" target="_blank" download
+															th:if="${child.getFeereceipt()!='' && child.getFeereceipt()!=null}">Download
+															Attachment</a> <input type="hidden"
+															name="'childs['+${stats.index}+'].feereceipt'" class="feereceipt"/>
+														<input type="hidden" name="'childs['+${stats.index}+'].attachhidden'" 
+															th:value="${child.getFeereceipt()}" class="DOWNLOAD_LINKsp atthi">
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+								
+							</div>
+							
+						</div>
+						
+					</div>
+					
+				</div>
+							<h5 th:if="${display_mode == 'view_child'}"> Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${childreimbursemodel.getChildclaimid()}" aria-hidden="true" th:onclick='getapprovalhistory(3,this.id);'></i></h5>
+				
+			<section class="container" th:if="${display_mode == 'view_child'}">
+
+				<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+				<div  class="container__sources">
+
+					<div style="box-shadow: none;background: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+						<div class="sources--cms" style="width: 160px">
+							<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+						<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+							<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+
+							<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+								<i class="fa fa-check tick"></i>
+
+							</div>
+							<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+								<i class="fa fa-clock-o pending"></i>
+							</div>
+							<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+								<i class="fa fa-close cancel"></i>
+
+							</div>
+
+					</div>
+					<svg class="svghor" viewBox="0 10 100 100">
+						<line  x1="5" x2="100" y1="80" y2="80"></line>
+					</svg>
+					<svg class="svgver" viewBox="0 20 100 100 ">
+						<line  x1="40" x2="40" y1="0" y2="100"></line>
+					</svg>
+					</div>
+					<div style="background: none;margin-top: 40px;margin-left: 26px;" ><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+				</div>
+
+				<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+
+
+			</section>
+			</div>
+		</form>
+		
+	</div>
+    <div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+	<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+
+	<script src="/js/reimbursement/child/load_child_pages.js"></script>
+	<script src="/js/reimbursement/child/createChildEducationClaim.js"></script>
+</div>

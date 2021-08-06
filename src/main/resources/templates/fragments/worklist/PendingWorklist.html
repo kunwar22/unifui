@@ -1,0 +1,65 @@
+<div th:fragment="PendingWorklist">
+	<div class="w3-main" style="margin-top: 10px; margin-bottom: 16px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<form method="post" id="COMP_APP_SAVE" enctype="application/x-www-form-urlencoded"
+					onsubmit="return false;">
+					<div class="w3-row">
+						<div class="w3-third w3-container">
+							<p>
+								<label>From Date</label>
+								<input type="date" name="fromdate" id="pfromdate" class="w3-input w3-border"
+									style="margin-left:-35px;transform: scale(0.80);" />
+							</p>
+						</div>
+						<div class="w3-third w3-container"  style="margin-left:-80px;">
+							<p>
+								<label>To Date</label>
+								<input type="date" name="todate" id="ptodate" class="w3-input w3-border"
+									style="margin-left:-35px;transform: scale(0.80);" />
+							</p>
+						</div>
+						<div class="w3-third w3-container" style="margin-left:-38px;">
+							<div id="psearchbtn" class="w3-btn w3-blue w3-round"
+								style="margin-top: 22px;margin-left:-50px;transform: scale(0.90);"
+								onclick="searchPendingApprovals('pfromdate','ptodate');"><i
+									class="fa fa-search"></i>&nbsp;&nbsp;Search</div>
+						</div>
+				</form>
+			</div>
+			<div class="w3-row">
+				<div class="w3-full">&nbsp;</div>
+			</div>
+			<div class="w3-row">
+				<div class="w3-full">
+					<div id="pendingtasks" class="w3-responsive" style="display:none;">
+						<table class="w3-table-all" id="pendingtaskstbl" style="width: 100%;text-align: center;">
+							<thead>
+								<th>EMP ID</th>
+								<th>Person Name</th>
+								<th>Submitted Date</th>
+								<th>Module Name</th>
+								<!--<th>Status</th>-->
+								<th>Message</th>
+							</thead>
+							<!--<tr th:each="wl:${worklist}">
+								<td th:text="${wl.getSubmittedbypersonno()}"></td>
+								<td th:text="${wl.getSubmittedbypersonname()}"></td>
+								<td th:text="${wl.getSubmittedondate()}"></td>
+								<td th:text="${wl.getModulename()}"></td>
+								<td th:text="${wl.getStatus()}"></td>
+								<td th:text="${wl.getModulename()} + ' Reimbursement for '+ ${wl.getSubmittedbypersonname()}+' is '+ ${wl.getStatus()}"></td>
+							</tr>-->
+						</table>
+					</div>
+					<div id="noPendingData" class="w3-responsive" style="display: none">
+						<div>
+							<p>No record found...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="/js/worklist/ApprovalPendingTask.js"></script>
+	</div>
+</div>

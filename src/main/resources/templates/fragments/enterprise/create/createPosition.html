@@ -1,0 +1,810 @@
+<div th:fragment="createPosition">
+<form  method="post" id="POSITION_SAVE" enctype="application/x-www-form-urlencoded" onsubmit="return false;">   
+<div class="w3-container" style="margin-top:14px;">
+		<h4 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Position</h4>
+		</div>
+		<div class="w3-row">
+		<div class=w3-half>
+		<hr class="hrline">
+		<h5 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Basic Details</h5>
+	     <input th:value="${CreatePosition.getActionid()}" id="txtPoid" name="actionid" type="text" hidden/>
+		 <input th:value="${CreatePosition.getPositionid()}" id="txtPoActionid" name="positionid" type="text" hidden/>  
+		<div class="w3-container"  >
+		
+			<p th:if="${CreatePosition.getPositionid()==0}">
+			<label>Effective Start Date <span style="color:red"> *</span></label> 
+			<input th:value="${CreatePosition.getEffectstartdate()}" class="w3-input w3-border" max="9999-12-31"
+			name="effectstartdate" id="CR_GRADE_EFFDT_START" type="date" data-date="" 
+			flag="none" th:msg="${CreatePosition.getAdditionalatr()}" 
+			 data-date-format="YYYY MM DD"/>
+			 <span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("effectstartdate") != null}' th:text='${bindingResult.getFieldError("effectstartdate").getDefaultMessage()}'></span>
+			</p>
+			
+			<p th:if="${CreatePosition.getPositionid()!=0}">
+			<label>Effective Start Date <span style="color:red"> *</span></label> 
+			<input th:value="${CreatePosition.getEffectstartdate()}" class="w3-input w3-border" max="9999-12-31"
+			name="effectstartdate" id="CR_GRADE_EFFDT_START" type="date" data-date="" 
+			flag="none" th:msg="${CreatePosition.getAdditionalatr()}" 
+			 data-date-format="YYYY MM DD" readonly/>
+			 <span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("effectstartdate") != null}' th:text='${bindingResult.getFieldError("effectstartdate").getDefaultMessage()}'></span>
+			</p>
+			
+			
+			<p>
+			<label>Effective End Date</label> 
+			<input th:value="${CreatePosition.getEffectenddate()}" class="w3-input w3-border" max="9999-12-31"
+			name="effectenddate" id="CR_GRADE_EFFDT_END"  type="date" data-date="" 
+			data-date-format="YYYY MM DD"/>
+			</p>
+			
+		</div>
+	</div>
+	
+	<div class=w3-half>
+	<hr class="hrline">
+	<div class="w3-container" style="margin-top:43px;">
+		      <p th:if="${CreatePosition.getPositionid()==0}">
+					<label>Status</label> 
+					<select id="CR_COMP_BASE_PAY" class="w3-select w3-border" name="status">
+						<option th:each="status : ${status}" th:selected="${status == 'Active'}" th:value="${status}" th:text="${status}">
+					</select>
+				</p>
+		       <p th:if="${CreatePosition.getPositionid()!=0}">
+				<label>Status</label> 
+					
+					<select id="CR_COMP_BASE_PAY" class="w3-select w3-border" name="status">
+						<option th:each="status : ${status}" th:selected="${CreatePosition.getStatus() eq status}" th:value="${status}" th:text="${status}">
+					</select>
+				</p>
+		</div>
+	</div>
+	<div class="w3-row">
+		<div class=w3-half>
+		<h5 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Position Description</h5>
+		<div class="w3-container"  >
+			  <p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getBusinessunitname()==0}">
+					<label>Business Unit <span style="color:red"> *</span></label> 
+					<select id="businessUnit" class="w3-select w3-border" name="businessunitid" data-toggle="modal">
+	 				<option id="1" value="0" hidden selected></option>
+	 				<option id="2"  hidden></option>
+					<option value="search" data-toggle="modal" id="btnsearch2">Search....</option>					
+				</select>
+				<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("businessunitid") != null}' th:text='${bindingResult.getFieldError("businessunitid").getDefaultMessage()}'></span>
+			 </p>
+			 <p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getBusinessunitname()!=0}">
+					<label>Business Unit <span style="color:red"> *</span></label> 
+					<select id="businessUnit" class="w3-select w3-border" name="businessunitid" data-toggle="modal">
+					<option id="1" value="0"  hidden></option>
+                    <option id="2" hidden  selected th:value="${CreatePosition.getBusinessunitid()}" th:text="${CreatePosition.getBusinessunitname()}">
+                       </option>
+                     <option value="search" data-toggle="modal" id="btnsearch2"  >Search</option>	 				
+	 				</select>
+	 				<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("businessunitid") != null}' th:text='${bindingResult.getFieldError("businessunitid").getDefaultMessage()}'></span>
+			   </p>
+			<p>
+			<label>Name <span style="color:red"> *</span></label>
+			<input th:value="${CreatePosition.getName()}" class="w3-input w3-border" name="name" id="title" type="text">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("name") != null}' th:text='${bindingResult.getFieldError("name").getDefaultMessage()}'></span>
+			</p>
+			<p th:if="${CreatePosition.getPositionid()==0}">
+			<label>Code <span style="color:red"> *</span></label>
+			<input th:value="${CreatePosition.getCode()}" class="w3-input w3-border" name="code" id="CR_POS_CODE" type="text">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("code") != null}' th:text='${bindingResult.getFieldError("code").getDefaultMessage()}'></span>
+			</p>
+			<p th:if="${CreatePosition.getPositionid()!=0}">
+			<label>Code <span style="color:red"> *</span></label>
+			<input th:value="${CreatePosition.getCode()}" class="w3-input w3-border" name="code" id="CR_POS_CODE" type="text" readonly>
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("code") != null}' th:text='${bindingResult.getFieldError("code").getDefaultMessage()}'></span>
+			</p>
+	           <p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getDepartmentsid()==0}">
+					<label>Department <span style="color:red"> *</span></label> 
+					<select id="CR_ENT_DEP_CODE" class="w3-select w3-border" name="departmentsid" data-toggle="modal" disabled>
+	 				<option id="1" value="0" hidden selected></option>
+	 				<option id="2"  hidden></option>
+					<option value="search" data-toggle="modal" id="btnsearch1">Search....</option>
+				</select>
+				<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("departmentsid") != null}' th:text='${bindingResult.getFieldError("departmentsid").getDefaultMessage()}'></span>	
+				</p>	
+				 <p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getDepartmentsid()!=0}">
+					<label>Department <span style="color:red"> *</span></label> 
+					<select id="CR_ENT_DEP_CODE" class="w3-select w3-border" name="departmentsid" data-toggle="modal">
+					<option id="1" value="0"  hidden></option>
+                    <option id="2"  selected hidden th:value="${CreatePosition.getDepartmentsid()}" th:text="${CreatePosition.getDepartmentsname()}">
+                    </option>
+                    <option value="search" data-toggle="modal" id="btnsearch1">Search....</option>	 				
+	 				</select>
+	 				<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("departmentsid") != null}' th:text='${bindingResult.getFieldError("departmentsid").getDefaultMessage()}'></span>
+			     </p>
+					  <p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getJobsid()==0}">
+					<label>Job Code <span style="color:red"> *</span></label> 
+					<select id="POP_JOB_SEARCH" class="w3-select w3-border" name="jobsid" data-toggle="modal" disabled>
+	 				<option id="1" value="0" hidden selected></option>
+	 				<option id="2"  hidden></option>
+					<option value="search" data-toggle="modal" id="btnsearch3">Search....</option>
+				    </select>
+					<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("jobsid") != null}' th:text='${bindingResult.getFieldError("jobsid").getDefaultMessage()}'></span>
+				    </p>	
+			        <p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getJobsid()!=0}">
+					<label>Job Code <span style="color:red"> *</span></label> 
+					<select id="POP_JOB_SEARCH" class="w3-select w3-border" name="jobsid" data-toggle="modal">
+					<option id="1" value="0" hidden></option>
+                    <option id="2" hidden selected th:value="${CreatePosition.getJobsid()}" th:text="${CreatePosition.getJobsname()}">
+                    </option>
+                   <option value="search" data-toggle="modal" id="btnsearch3">Search....</option>
+	 				</select>
+	 				<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("jobsid") != null}' th:text='${bindingResult.getFieldError("jobsid").getDefaultMessage()}'></span>
+			        </p>
+		</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container" style="margin-top:42px;">
+		         <p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getLocationname()==0}">
+					<label>Location </label> 
+					<select id="CR_ENT_LOC_CODE" class="w3-select w3-border" name="locationid" data-toggle="modal">
+                     <option id="1" value="0"  hidden selected></option>
+                      <option id="2"  hidden></option>
+	 				<option value="search" data-toggle="modal" id="btnsearch" >Search....</option>
+					</select>
+					</p> 
+				<p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getLocationname()!=0}">
+					<label>Location </label>
+					<select id="CR_ENT_LOC_CODE" class="w3-select w3-border" name="locationid" data-toggle="modal">
+					<option id="1" value="0" hidden></option>
+                    <option id="2" hidden  selected th:value="${CreatePosition.getLocationid()}" th:text="${CreatePosition.getLocationname()}">
+                    </option>
+                    <option value="search" data-toggle="modal" id="btnsearch" >Search....</option>
+	 				</select>
+	 				</p>
+		   <p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getAssignmentcategory()==0}">
+			<label>Assignment Category <span style="color:red"> *</span></label>
+				<select id="assignmentcategory" class="w3-select w3-border" name="assignmentcategory" >
+	 				<option value="" disabled selected></option>
+					<option th:each="assignCat : ${assignCat}" th:value="${assignCat.getId()}" th:text="${assignCat.getDescription()}">
+				</select>
+				<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("assignmentcategory") != null}' th:text='${bindingResult.getFieldError("assignmentcategory").getDefaultMessage()}'></span>
+			</p>
+			<p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getAssignmentcategory()!=0}">
+			<label>Assignment Category <span style="color:red"> *</span></label>
+			<select id="assignmentcategory"  name="assignmentcategory"  class="w3-select w3-border"  >
+			<option th:each="ac : ${assignCat}"
+							th:selected="${ac.getId() eq CreatePosition.getAssignmentcategory()}"
+							th:value="${ac.getId()}"
+							th:text="${ac.getDescription()}"></option>			
+							</select>
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("assignmentcategory") != null}' th:text='${bindingResult.getFieldError("assignmentcategory").getDefaultMessage()}'></span>
+			</p>
+			<p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getRegulartemporary()==0}">
+			<label>Regular or Temporary</label>
+				<select id="regularTemp" class="w3-select w3-border" name="regulartemporary" >
+	 				<option value="" disabled selected></option>
+					<option th:each="regortemp : ${regortemp}" th:value="${regortemp.getId()}" th:text="${regortemp.getDescription()}">
+				</select>
+			</p>
+			<p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getRegulartemporary()!=0}">
+			<label>Regular or Temporary</label>
+				<select id="regularTemp" class="w3-select w3-border" name="regulartemporary" >
+	 				<option value="" disabled selected></option>
+		           	<option th:each="rg : ${regortemp}"
+							th:selected="${rg.getId() eq CreatePosition.getRegulartemporary()}"
+							th:value="${rg.getId()}"
+							th:text="${rg.getDescription()}"></option>			
+			    </select>
+			</p>
+			<p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getFulltimeparttime()==0}">
+			<label>Full Time or Part Time</label>
+				<select id="fullPartTime" class="w3-select w3-border" name="fulltimeparttime" >
+	 				<option value="" disabled selected></option>
+					<option th:each="fullorpart : ${fullorpart}" th:value="${fullorpart.getId()}" th:text="${fullorpart.getDescription()}">
+				</select>
+			</p>
+			<p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getFulltimeparttime()!=0}">
+			<label>Full Time or Part Time</label>
+				<select id="fullPartTime" class="w3-select w3-border" name="fulltimeparttime" >
+	 				<option value="" disabled selected></option>
+		           	<option th:each="fp : ${fullorpart}"
+							th:selected="${fp.getId() eq CreatePosition.getFulltimeparttime()}"
+							th:value="${fp.getId()}"
+							th:text="${fp.getDescription()}"></option>			
+			    </select>
+			</p>
+		</div>
+	</div>
+	</div>
+	<div class="w3-row">
+		<div class=w3-half>
+	
+		<div class="w3-container"  >
+			   <p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getGradesname()==0}">
+					<label>Entry Grade </label> 
+					<select id="ENTRY_GRADE" class="w3-select w3-border" name="gradesid">
+						 <option id="1" value="0"  hidden selected></option>
+                      <option id="2"  hidden></option>
+	 				<option value="search" data-toggle="modal" id="btnsearchEntryGrade" >Search....</option>
+					</select>
+				</p>
+				<p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getGradesname()!=0}">
+					<label>Entry Grade </label>
+					<select id="ENTRY_GRADE" class="w3-select w3-border" name="gradesid" data-toggle="modal">
+					<option id="1" value="0" hidden></option>
+                    <option id="2" hidden  selected th:value="${CreatePosition.getGradesid()}" th:text="${CreatePosition.getGradesname()}">
+                    </option>
+                 	<option value="search" data-toggle="modal" id="btnsearchEntryGrade" >Search....</option>
+					</select>
+			        </p>
+				<div id="divEntryStep">				
+				</div>
+				<div id="divHide">
+				<p th:if="${CreatePosition.getPositionid()!=0 or CreatePosition.getGradesid()!=0 }">
+					<label>Entry Step</label>					
+				<select id="gradestepsid_disp" class="w3-select w3-border" name="gradestepsid" >	
+						<option id="2" th:value="${CreatePosition.getGradestepsid()}"  th:text="${CreatePosition.getGradestepsname()}" selected hidden></option> 
+					</select>
+					</p>
+				</div>
+					<label>Probation Period</label> 
+					<div>
+					<input th:value="${CreatePosition.getProbationuom()}" class="w3-input w3-border w3-half" name="probationuom" id="title" type="number" style="width:50%; display:inline-block;"/>
+					 <p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getProbationperiod()!=0}">					
+					<select id="CR_COMP_BASE_PAY" class="w3-select w3-border" name="probationperiod" style="width:50%">
+						<option value="" disabled selected></option>						
+						<option th:each="pp : ${probperiod}"
+							th:selected="${pp.getId() eq CreatePosition.getProbationperiod()}"
+							th:value="${pp.getId()}"
+							th:text="${pp.getDescription()}"></option> 
+					</select>
+					</p>
+					 <p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getProbationperiod()==0}">					
+					<select id="CR_COMP_BASE_PAY" class="w3-select w3-border" name="probationperiod" style="width:50%">
+						<option value="" disabled selected></option>
+						<option th:each="probperiod : ${probperiod}" th:value="${probperiod.getId()}" th:text="${probperiod.getDescription()}">
+					</select>
+					</p>
+					</div>
+					<label>Notice Period</label> 
+					<div>
+					<input th:value="${CreatePosition.getNoticeperiod()}" class="w3-input w3-border w3-half" name="noticeperiod" id="title" type="number" style="width:50%; display:inline-block;"/>
+					 <p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getNoticeperiodtype()==0}">
+					<select id="CR_COMP_BASE_PAY" class="w3-select w3-border" name="noticeperiodtype" style="width:50%">
+						<option value="" disabled selected></option>
+							<option th:each="noticeperiod: ${noticeperiod}" th:value="${noticeperiod.getId()}" th:text="${noticeperiod.getDescription()}">
+					</select>
+					</p>
+					 <p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getNoticeperiodtype()!=0}">
+					<select id="CR_COMP_BASE_PAY" class="w3-select w3-border" name="noticeperiodtype" style="width:50%">
+						<option value="" disabled selected></option>						
+						<option th:each="np : ${noticeperiod}"
+							th:selected="${np.getId() eq CreatePosition.getNoticeperiodtype()}"
+							th:value="${np.getId()}"
+							th:text="${np.getDescription()}"></option> 
+					</select>
+					</p>
+					</div>
+		</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container" >
+			 <p th:if="${CreatePosition.getPositionid()==0} and ${CreatePosition.getType()==0}">
+					<label>Type</label> <span style="color:red"> *</span>
+					<select id="POS_TYPE" class="w3-select w3-border" name="type">
+						<option value="" disabled selected></option>
+						<option th:each="type : ${type}" th:value="${type.getId()}" th:text="${type.getDescription()}">
+					</select>
+					<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("type") != null}' th:text='${bindingResult.getFieldError("type").getDefaultMessage()}'></span>
+				</p>
+				 <p th:if="${CreatePosition.getPositionid()!=0} or ${CreatePosition.getType()!=0}">
+					<label>Type</label> <span style="color:red"> *</span>
+					<select id="POS_TYPE" class="w3-select w3-border" name="type">
+						<option th:each="tp : ${type}"
+							th:selected="${tp.getId() eq CreatePosition.getType()}"
+							th:value="${tp.getId()}"
+							th:text="${tp.getDescription()}"></option> 
+					</select>
+					<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("type") != null}' th:text='${bindingResult.getFieldError("type").getDefaultMessage()}'></span>
+				</p>
+			<p>
+			<label>FTE</label><span style="color:red"> *</span>
+			<input th:value="${CreatePosition.getFte()}" class="w3-input w3-border" name="fte" id="POS_FTE" type="number">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("fte") != null}' th:text='${bindingResult.getFieldError("fte").getDefaultMessage()}'></span>
+			</p>
+			<p>
+			<label>Head Count</label><span style="color:red"> *</span>
+			<input th:value="${CreatePosition.getHeadcount()}" class="w3-input w3-border" name="headcount" id="POS_HEAD" type="number">
+			<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("headcount") != null}' th:text='${bindingResult.getFieldError("headcount").getDefaultMessage()}'></span>
+			</p>
+		</div>
+	</div>
+	</div>
+	<div class="w3-container">
+		<p>
+		<button id="PosCancelB" rm="enterprisesetup/manageposition" tabindex="15" class="w3-button w3-theme w3-grey">Cancel</button>
+		<input type="button"  onclick="ajaxPost();" class="w3-button w3-theme w3-grey" id="positionCreate" value="Submit"/>
+		</p>
+	</div>
+	<div id="idSave" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:400px;">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			<label ><b>
+			Successfully Saved. Click OK to continue.</b>
+			</label>
+			<a id="btnOK" class="w3-button w3-green" rm="enterprisesetup/manageposition">OK</a>
+			</div>
+		</div>
+	</div>
+	</div>
+
+</form>	
+<!-------------------------------------------------------------  -->
+<!-- Popup  for Location Search Start here  -->
+<!-- line modal -->
+<div id="id01" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+		<div class="modal-header">
+			<h3 align="left">Search and Select:Location</h3>
+				<hr class="hrline">
+		</div>
+		<div class="modal-body">
+		<div>
+		<div class=w3-half>
+	    <div class="w3-container">
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_ENT_POP_NAME" type="text">
+	             </div>
+	             </div>
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_ENT_POP_CODE" type="text">
+	             </div>
+	             </div>
+	</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container">
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Country:</div>
+	             <div class="w3-rest">
+	             <select id="CR_ENT_POP_CNTRY" class="w3-select w3-border" name="" >
+		 			<option value="" disabled selected></option>
+					<option th:each="CountryDetails : ${CountryDetails}" 
+					th:value="${CountryDetails.getDescription()}" 
+					th:text="${CountryDetails.getDescription()}"></option>
+				</select>
+	             </div>
+	             </div>
+	          
+	</div>
+	</div>
+			<br>
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="CR_ENT_POP_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+              
+                </div>
+               </div>
+               </div>               
+			</div>
+			<BR>
+			<div id="resultSec" class="w3-responsive" style="display: none">
+				<table id="EnterpriseList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<tr class="w3-theme-d3">
+							<th>Name</th>
+							<th>Code</th>
+							<th>Country</th>
+							<th>State</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataLOcation" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                <div class="w3-right">
+               <button id="CR_ENT_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+               <button id="CR_ENT_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+                </div>
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+<!-- PopUp End Here -->
+<!-- Popup  for Department Search Start here  -->
+<!-- line modal -->
+<div id="id02" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+		<div class="modal-header">
+			<h3 align="left">Search and Select:Department</h3>
+				<hr class="hrline">
+		</div>
+		<div class="modal-body">
+		<div>
+		<div class=w3-half>
+	    <div class="w3-container">
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="DEPT_NAME" type="text">
+	             </div>
+	             </div>
+	</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container">
+	            <div class="w3-row w3-section" style="display:none">
+	             <div class="w3-col" style="width:80px">Dataset:</div>
+	             <div class="w3-rest">
+	              <input th:if="${CreatePosition.getBusinessunitsetid()!=0}" th:value="${CreatePosition.getBusinessunitsetid()}" class="w3-input w3-border"  id="DEPT_DATASET" type="text" >
+	              <input th:if="${CreatePosition.getBusinessunitsetid()==0}" value="" class="w3-input w3-border"  id="DEPT_DATASET" type="text" >
+	            
+	             </div>
+	             </div>
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="DEPT_CODE" type="text">
+	             </div>
+	             </div>
+	            
+	</div>
+	</div>
+			<br>
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="DEPT_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+             
+                </div>
+               </div>
+               </div>               
+			</div>
+			<BR>
+			<div id="deptresultSec" class="w3-responsive" style="display: none">
+				<table id="DepartmentList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+					<tr class="w3-theme-d3">
+							<th>Name</th>
+							<th>Code</th>
+							<th>Data sets</th>
+							<th>Status</th>
+							<th>Start Date</th>
+							<th>Department Id</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataDEPT" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                <div class="w3-right">
+               <button id="CR_DEP_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+               <button id="CR_ENT_DEP_CANCEL" class="w3-button w3-theme w3-grey"  >Cancel</button>
+                </div>
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+<!-- PopUp End Here -->
+<!-- Popup  for BU Search Start here  -->
+<!-- line modal -->
+<div id="id03" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			<div class="modal-header">
+			<h3 align="left">Search and Select:Business Unit</h3>
+				<hr class="hrline">
+		</div>
+		<div class="modal-body">
+		<div>
+		<div class=w3-half>
+	    <div class="w3-container">
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="SRCH_NAME" type="text">
+	             </div>
+	             </div>
+	</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container">
+				<div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="SRCH_CODE" type="text">
+	             </div>
+	             </div>
+
+	</div>
+	</div>
+			<br>
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="BU_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+                </div>
+               </div>
+               </div>               
+			</div>
+			<BR>
+			<div id="buresultSec" class="w3-responsive" style="display: none">
+				<table id="BU_LIST" class="display compact w3-table" style="width: 100%;">
+					<thead>
+					<tr class="w3-theme-d3">
+						<th>Name</th>
+						<th>Code</th>
+						<th>BU Set</th>
+						<th>Status</th>
+						<th></th>
+						<th></th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataBU" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                <div class="w3-right">
+               <button id="BU_POP_OK" class="w3-button w3-theme w3-grey"  style="display:none">OK</button>
+               <button id="BU_POP_CANCEL" class="w3-button w3-theme w3-grey"  onclick="document.getElementById('id03').style.display='none'">Cancel</button>
+                </div>
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<!-- PopUp End Here -->
+<!-- Popup  for JOB Search Start here  -->
+<!-- line modal -->
+<div id="id04" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+		<div class="modal-header">
+			<h3 align="left">Search and Select:Job Code</h3>
+				<hr class="hrline">
+		</div>
+		<div class="modal-body">
+		<div>
+		<div class=w3-half>
+	    <div class="w3-container">
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="JOB_NAME" type="text">
+	             </div>
+	             </div>
+               <div class="w3-row w3-section" style="display:none" >
+	             <div class="w3-col" style="width:80px">Dataset:</div>
+	             <div class="w3-rest">
+	             <input th:if="${CreatePosition.getBusinessunitsetid()!=0}" th:value="${CreatePosition.getBusinessunitsetid()}" class="w3-input w3-border"  id="JOB_DATASET" type="text" >
+	             <input th:if="${CreatePosition.getBusinessunitsetid()==0}" value="" class="w3-input w3-border"  id="JOB_DATASET" type="text" >
+	             	
+	             </div>
+	             </div>
+	</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container">
+	            
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="JOB_CODE" type="text">
+	             </div>
+	             </div>
+	             
+	</div>
+	</div>
+			<br>
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="JOB_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+                </div>
+               </div>
+               </div>               
+			</div>
+			<BR>
+			<div id="jobresultSec" class="w3-responsive" style="display: none">
+				<table id="JobList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+					<tr class="w3-theme-d3">
+						<tr class="w3-theme-d3">
+							<th>Name</th>
+							<th>Code</th>
+							<th>Dataset</th>
+							<th>Start Date</th>
+							<th>Status</th>
+							<th>Job Id</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataJOB" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                <div class="w3-right">
+               <button id="JOB_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+               <button id="JOB_POP_CANCEL" class="w3-button w3-theme w3-grey" >Cancel</button>
+                </div>
+               </div>               
+			</div>
+		</div>
+		</div>
+			</div>
+			</div>
+		<!-- PopUp End Here -->
+<!--************************** Popup  for Grade Search Start here ******************** -->
+<!-- line modal -->
+<div id="id05" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+		<div class="modal-header">
+			<h3 align="left">Search and Select:Grade</h3>
+				<hr class="hrline">
+		</div>
+		<div class="modal-body">
+		<div>
+		<div class=w3-half>
+	    <div class="w3-container">
+	    <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border"  id="SRCH_CODE" type="text">
+	             </div>
+	             </div>
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border"  id="SRCH_NAME" type="text">
+	             </div>
+	             </div>
+	</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container">
+	            
+	</div>
+	</div>
+			<br>
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="GRADE_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+                </div>
+               </div>
+               </div>               
+			</div>
+			<BR>
+			<div id="graderesultSec" class="w3-responsive" style="display: none">
+				<table id="GRADE_LIST" class="display compact w3-table" style="width: 100%;">
+					<thead>
+					<tr class="w3-theme-d3">
+						<th>Name</th>
+						<th>Code</th>
+						<th>Status</th>
+						<th>Data Set</th>
+						<th></th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataGrade" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                <div class="w3-right">
+                <button id="GRADE_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+               <button id="GRADE_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+                </div>
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<!-- PopUp End Here -->
+<!-----------------------------------------------------------------  -->
+<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK1"
+						rm="enterprisesetup/manageposition">OK</a>
+				</div>
+			</div>
+		</div>
+<script>
+$(document).ready(function(){
+$("#idError").css('display', 'none');
+	var strMsg=$("#CR_GRADE_EFFDT_START").attr("msg");
+	if(strMsg=="Error")
+		{
+			$("#idError").css('display', 'block');
+			$("#positionCreate").attr('id','btnSUb');
+			$("#CR_GRADE_EFFDT_START").attr('flag','update');
+		}
+	else if((strMsg!="Error" || strMsg!="Correct") && strMsg!=undefined)
+	{
+		if(strMsg=="Correct")
+			{
+				$("#CR_GRADE_EFFDT_START").attr('flag','correct');
+			}
+		if(strMsg!="Correct")
+			{
+				$("#CR_GRADE_EFFDT_START").val(strMsg);
+				$("#CR_GRADE_EFFDT_START").attr('flag','update');
+			}
+	}
+});
+</script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var message = /*[[${response}]]*/;
+    console.log(message);
+/*]]>*/
+</script>
+<script src="/js/search/positionSearch.js"></script>
+</div>
+<!------------------------------------------------>
+	<!--***Start:Error Msg** -->
+<div id="idError" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg"><b> Date must be latest!!</b> </label> <a id="btnerrorOK" class="w3-button w3-red"
+						rm="/enterprisesetup/manageposition">OK</a>
+				</div>
+			</div>		
+	</div>

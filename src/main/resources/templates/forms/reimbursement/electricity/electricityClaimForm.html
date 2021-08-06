@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Claim Form for Electricity Bill</title>
+<style type="text/css">
+.heading {
+	margin-top: 180px;
+	margin-left: 250px;
+}
+
+.heading>h4 {
+	margin-top: 180px;
+	margin-left: 70px;
+}
+
+.declaration {
+	margin-left: 150px;
+}
+
+.points>li {
+	font-size: 18px;
+	margin-left: 150px;
+	padding-left: 0.5em;
+	line-height: 2.5em;
+}
+
+.table {
+font-size: 15px;
+border-collapse: collapse;
+width: 90%;
+margin-left: 50px;
+margin-right: 50px;
+}
+
+.table th, td {
+padding: 5px;
+}
+
+.right {
+	margin-left: 580px;
+	margin-right: 70px;
+	width: 350px;
+}
+</style>
+</head>
+<body>
+	<div class="heading">
+		<h4>U.P. Metro Rail Corporation Ltd.</h4>
+		<h3>CLAIM FORM FOR ELECTRICITY BILL</h3>
+	</div>
+	<div style="overflow-x: auto;">
+		<table class="table" border="1">
+			<tr>
+				<th style="width:150px;">Bill Month</th>
+				<th>Units Consumed during the month</th>
+				<th>Units admissible during the month</th>
+				<th>Amount paid Rs.</th>
+				<th>Amount admissible Rs.</th>
+				<th>Remarks</th>
+			</tr>
+			<tr>
+				<td style="text-align: center;"><label th:text="${electricitymodel.getFromdate()}"></label><br/>To<br/><label th:text="${electricitymodel.getTodate()}"></label></td>
+				<td style="text-align: center;"><label th:text="${electricitymodel.getBilledunits()}"></label><br/></td>
+				<td style="text-align: center;"><label th:text="${electricitymodel.getClaimedunit()}"></label></td>
+				<td style="text-align: center;"><label th:text="${electricitymodel.getBilledamt()}"></label><br/></td>
+				<td style="text-align: center;"><label th:text="${electricitymodel.getClaimedamt()}"></label><br/></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+	<h4 class="declaration">Declaration</h4>
+	<ol type="1" class="points">
+		<li>I have maintained the relevant papers, bills, etc.</li>
+		<li>The amount claimed has not been claimed before and will not
+			be claimed hereafter.</li>
+		<li>The admissible amount of Rs. <label th:text="${electricitymodel.getClaimedamt()}"></label> may be reimbursed to me.</li>
+	</ol>
+<br/><br/><br/><br/>
+	<div class="right">
+		<p><b>Signature</b></p>
+		<p><b>Name:- </b><label th:text="${personInfo.getPersonname()}"></label></p>
+		<p><b>Designation:-</b> <label th:text="${personInfo.getDesignation()}"></label></p>
+		<p><b>Employee ID:-</b><label th:text="${personInfo.getPersonnumber()}"></label></p>
+	</div>
+	<div style="margin-left: 200px;">
+		<b>Date</b> <br /> <br /><b>DyGM / HR</b>
+	</div>
+
+</body>
+</html>

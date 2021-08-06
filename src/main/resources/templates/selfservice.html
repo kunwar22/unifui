@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Unif ERP</title>
+    <link rel="icon" type="image/ico" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/css/bootbox/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/w3.css" />
+    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/icon.css" />
+    <link rel="stylesheet" type="text/css" th:href="${theme}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="/webjars/font-awesome/5.14.0/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/css/select2/select2.min.css"/>
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css"/>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/_custom.css" />
+
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/js/moment.min.js"></script>
+    <script src="/js/select2/select2.min.js" defer></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+
+<script src="/js/bootbox/bootstrap.min.js"></script>
+<script src="/js/bootbox/bootbox.min.js"></script>
+
+ <script type="text/javascript">
+
+    var idleTime = 0;
+    $(document).ready(function () {
+        // Increment the idle time counter every minute.
+        var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
+
+    });
+
+    function timerIncrement() {
+        idleTime = idleTime + 1;
+       
+    }
+</script>
+<script type="text/javascript">
+
+ var IDLE_TIMEOUT = 600; //seconds
+var _idleSecondsCounter = 0;
+document.onclick = function() {
+   _idleSecondsCounter = 0;
+};
+document.onmousemove = function() {
+   _idleSecondsCounter = 0;
+};
+document.onkeypress = function() {
+   _idleSecondsCounter = 0;
+};
+window.setInterval(CheckIdleTime, 1000);
+
+function CheckIdleTime() {
+   _idleSecondsCounter++;
+    var idleInterval = setInterval(timerIncrement, 60000);
+   var oPanel =setInterval(timerIncrement, 60000);
+   if (oPanel)
+       oPanel.innerHTML = (IDLE_TIMEOUT - _idleSecondsCounter) + "";
+   if (_idleSecondsCounter >= IDLE_TIMEOUT) {
+       bootbox.alert({
+          size: 'medium',
+          title: '<i class="fa fa-times-circle" style="font-size:25px; color:red;">&nbsp;&nbsp;Alert</i>',
+          message: "your Session Expired please login again.",
+          callback: function() {
+               document.location.href = "logout";
+            }
+        });
+      // document.location.href = "logout";
+   }
+}
+</script> 
+
+</head>
+<!--<body style="background-attachment: fixed; background-repeat: no-repeat; background-size: cover; background-position: center center; background-image: url(/images/bg.png)">-->
+<body style="background-image: url('/images/back.png'); background-size:cover; background-attachment: fixed; background-repeat: no-repeat; background-size: cover; background-position: center center;">
+ 
+<!-- Navbar -->
+<div th:replace="fragments/topNavbar :: navbar"></div>
+
+<div class="w3-main">
+    <div class="w3-row" style="padding-top: 69px; padding-bottom: 16px;">
+        <div th:replace="fragments/leftsidebar :: leftsidebar"></div>
+        <div id="replace_div">
+
+        </div>
+    </div>
+</div>
+
+<div id="overlayDiv1" class="w3-overlay w3-hide">
+    <div class="overlayContent">
+        <i class="fa fa-cog fa-spin" style="font-size: 70px; color: black;"></i>
+    </div>
+</div>
+<script src="/js/bootbox/bootstrap.min.js"></script>
+<script src="/js/bootbox/bootbox.all.min.js"></script>
+<script src="/js/datatables.min.js"></script>
+
+<script src="/js/loadforms.js"></script>
+
+
+
+<script type="text/javascript">
+
+
+
+
+    function w3_open() {
+        //document.getElementById("mySidebar").style.display = "block";
+        $("#mySidebar").css("display","block");
+    }
+
+    function w3_close() {
+        //document.getElementById("mySidebar").style.display = "none";
+        $("#mySidebar").css("display","none");
+    }
+
+    function go_approval(e)
+    {
+        //debugger;
+		$("#notifyid").slideUp();
+        var url = $(e).attr("rm");
+        $('#replace_div').load(url);
+    }
+
+
+</script>
+</body>
+</html>

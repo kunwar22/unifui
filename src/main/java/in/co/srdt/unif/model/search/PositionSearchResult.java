@@ -1,0 +1,106 @@
+package in.co.srdt.unif.model.search;
+
+public class PositionSearchResult {
+	
+	private long actionid;
+	private long positionid;
+	private String name;
+	private String code;
+	private String effectstartdate;
+	private String effectenddate;
+	
+	private String businessunitid;
+	private String status;
+	
+	public PositionSearchResult() {
+		
+	}
+
+	public PositionSearchResult(long actionid, long positionid, String name, String code, String effectstartdate, String effectenddate,
+			String businessunitid, String status) {
+		super();
+		this.actionid = actionid;
+		this.positionid = positionid;
+		this.name = name;
+		this.code = code;
+		this.effectstartdate = effectstartdate;
+		this.businessunitid = businessunitid;
+		this.status = status;
+		this.effectenddate=effectenddate;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "PositionSearchResult [actionid=" + actionid + ", positionid=" + positionid + ", name=" + name
+				+ ", code=" + code + ", effectstartdate=" + effectstartdate + ", effectenddate=" + effectenddate
+				+ ", businessunitid=" + businessunitid + ", status=" + status + "]";
+	}
+
+	public long getActionid() {
+		return actionid;
+	}
+
+	public void setActionid(long actionid) {
+		this.actionid = actionid;
+	}
+
+	public long getPositionid() {
+		return positionid;
+	}
+
+	public void setPositionid(long positionid) {
+		this.positionid = positionid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getEffectstartdate() {
+		return effectstartdate;
+	}
+
+	public void setEffectstartdate(String effectstartdate) {
+		this.effectstartdate = effectstartdate;
+	}
+	
+
+	public String getEffectenddate() {
+		return effectenddate;
+	}
+
+	public void setEffectenddate(String effectenddate) {
+		this.effectenddate = effectenddate;
+	}
+
+	public String getBusinessunitid() {
+		return businessunitid;
+	}
+
+	public void setBusinessunitid(String businessunitid) {
+		this.businessunitid = businessunitid;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+}

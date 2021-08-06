@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+
+
+
+<head>
+<link rel="stylesheet" type="text/css" href="/css/w3.css" />
+<link rel="stylesheet" type="text/css" href="/css/datatables.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+<link rel="stylesheet" type="text/css" th:href="${theme}" />
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" type="text/css" href="/css/popupModel.css" />
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+
+
+ <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+ <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+	<form class="w3-container">
+		<h2>Create Location</h2>
+		<table class="w3-table w3-hoverable" id="locData">
+			<tr>
+				<td><label for="name">Name</label></td>
+				<td><input class="w3-input w3-border" type="text" id="locName" /></td>
+				<td><label for="name">Code</label></td>
+				<td><input class="w3-input w3-border" type="text" id="locCode" /></td>
+			</tr>
+			<tr>
+				<td><label for="name">Status</label></td>
+				<td><select id="StatusLov" class="w3-input w3-border">
+						<option value="">--Select--</option>
+						<option value="Active">Active</option>
+						<option value="Inactive">Inactive</option>
+				</select></td>
+				<td><label for="name">Effective Start Date</label></td>
+				<td><input class="w3-input w3-border" type="date" id="loceffsdt"/></td>
+			</tr>
+		</table>
+			<div class="w3-center w3-marging-top">
+	<button id="locCreate" class="w3-btn w3-theme w3-large" type="button">Create</button>
+		
+	</div>
+		
+	</form>
+	
+	<!-- code start here--->
+
+	<!-- <button id="myBtn">Click Me</button>
+	<div id="myModal" class="modal">
+	
+	<div class="modal-content">
+	<span class="close">&times;</span>
+	<h6 class="w3-text-theme" style="margin-top:2px; margin-bottom:2px;">User Profile</h6>
+	</div>
+	</div> -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<div class="center"><button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-primary center-block">Click Me</button></div>
+
+
+
+	<div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			<h3 class="modal-title" id="lineModalLabel">My Modal</h3>
+		</div>
+		<div class="modal-body">
+			
+            <!-- content goes here -->
+			<form>
+              <div class="col-xs-3">
+                <label for="Name">Name</label>
+                <input type="text" class="form-control" id="Name" >
+              </div>
+              <div class="col-xs-3">
+                <label for="Country">Country</label>
+                <input type="text" class="form-control" id="Country" >
+              </div>
+               <div class="col-xs-2">
+                <label for="Status">Status</label>
+               <select id="StatusLov" class="w3-input w3-border">
+						<option value="">--Select--</option>
+						<option value="Active">Active</option>
+						<option value="Inactive">Inactive</option>
+				</select>
+              </div>
+              <div class="col-xs-2">
+                <label for="Code">Code</label>
+                <input type="text" class="form-control" id="Code">
+              </div>
+               <div class="col-xs-2">
+                <br>
+                <button type="button" class="btn btn-primary center-block" id="userSearch">Search</button>
+              </div>
+             
+              <input type="button" class="disable"style="color:transparent;background-color:transparent;border-color:transparent;cursor:default;">
+             
+            </form>
+            
+            
+				
+				<div class="w3-twothird w3-container">
+					
+					<div id="resultSec" class="w3-responsive" style="display: none">
+					<h5 style="margin-bottom: 0px; margin-bottom: 0px; font-weight: bold;">Search Results</h5>
+						<table id="userList" class="display compact w3-table" style="width: 100%;">
+							<thead>
+								<tr class="w3-theme-d3">
+									<th>User ID</th>
+									<th>Employee ID</th>
+									<th>E-mail</th>
+									<th>Is Active</th>
+									<th></th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div  id="noData" class="w3-responsive" style="display: none">
+						<div>
+							<p>No record found...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script src="/js/locationsearch.js"></script>
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		<!--  
+		<div class="modal-footer">
+			<div class="btn-group btn-group-justified" role="group" aria-label="group button">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+				</div>
+				<div class="btn-group btn-delete hidden" role="group">
+					<button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Delete</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" id="saveImage" class="btn btn-default btn-hover-green" data-action="save" role="button">Save</button>
+				</div>
+			</div>
+		</div>
+		-->
+	</div>
+  </div>
+</div>
+	
+	
+	
+	
+	
+	
+	
+    <!-- code End here--->
+
+
+	 <!--   <div class="w3-container">
+		<h3>Search Results</h3>
+		<div class="w3-table w3-hoverable">
+			<table class="w3-table-all w3-card-4">
+				<thead>
+					<tr class="w3=grey">
+						<th>Name</th>
+						<th>Code</th>
+						<th>Status</th>
+						<th>Effective Start Date</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+
+-->
+
+
+	<script src="/js/createLocation.js"></script>
+	<script src="/js/locationsearch.js"></script>
+	
+	
+	
+	<script src="/js/datatables.min.js"></script>
+   
+
+
+	<!-- Charts JS-->
+
+	
+	
+	
+
+	
+</body>

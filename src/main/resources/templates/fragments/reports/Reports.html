@@ -1,0 +1,359 @@
+<div th:fragment="Reports">
+    <div id="REPORTS_LOADER" class="w3-modal" style="display: none;">
+        <div class="w3-container" style="margin-top: 12px; text-align: center;"><i class="fa fa-cog fa-spin" style="font-size: 70px; color: white;"></i></div>
+    </div>
+    <div class="w3-row w3-margin-top">
+        <div class="w3-quarter w3-container" id="lftpane" style="margin-left: -40px; margin-top: -20px; transform: scale(0.8); border-right: 2px solid black;">
+            <h5 style="font-weight: bold;">Search Criteria for Reports</h5>
+            <hr class="hrline" />
+            <p>
+                <label>Select Report Type<span style="color: red;">*</span></label>
+                <select class="w3-select w3-border" name="reptype" id="reptype" onchange="enbledisble(this);">
+                    <option selected disabled></option>
+                    <option value="1">Payroll MOD-III</option>
+                    <option value="2">Payroll MOD</option>
+                    <option value="3">Salary Bill Summary</option>
+                    <option value="4">Employee MOD Report</option>
+                    <option value="5">Employee Personal Data Report</option>
+                    <option value="6">Employee Bank Details MOD Report</option>
+                    <option value="7">Employee Salary Card</option>
+                    <option value="8">Birthday Report</option>
+                    <option value="9">Payroll Register</option>
+                    <option value="16">Pay Slip</option>
+                    <option value="10">LWP Report</option>
+                    <option value="11">Employee Salary Bank Transaction</option>
+                    <option value="12">Bank Advice Salary Register</option>
+                    <!--<option value="13">Bank Advice Reimbursement Register</option>-->
+                    <option value="14">EPF Report</option>
+                    <option value="15">NPS Report</option>
+                    <option value="17">Vendor Wise Deduction Report</option>
+                    <!--<option value="18">Current Payroll Register</option>
+					<option value="19">Current Payroll MOD-III</option>
+					<option value="20">Current Payroll MOD</option>    -->
+                    <option value="21">Travel Reimbursement Report</option>
+                </select>
+                <span id="rterr" style="color: red; display: none;">Select Report</span>
+            </p>
+            <p id="busunitblock">
+                <label>Business Unit<span style="color: red;">*</span></label>
+                <select class="w3-select w3-border" name="busid" id="busid" onchange="removepaygroup();">
+                    <option selected disabled></option>
+                    <option th:each="bu : ${busunit}" th:value="${bu.getBusinessunitid()}" th:text="${bu.getName()}"></option>
+                </select>
+                <span id="buerr" style="color: red; display: none;">Mandatory</span>
+            </p>
+            <p id="paygrpblock">
+                <label>Pay Group<span style="color: red;">*</span></label>
+                <select class="w3-select w3-border" name="paygrp" id="paygrp" onchange="loadCalendars(event,this.value)">
+                    <option disabled selected></option>
+                    <option th:each="pg,stats : ${pgrp}" th:value="${pg.getPaygroupid()}" th:text="${pg.getName()}"> </option>
+                </select>
+                <span id="pgerr" style="color: red; display: none;">Mandatory</span>
+            </p>
+        </div>
+
+        <div class="w3-threequarter w3-container" id="rightpane" style="margin-left: -30px;">
+            <div class="w3-bar w3-light-grey">
+                <button class="w3-bar-item w3-button tablink payroll w3-theme" onclick="openTab(event,'PAYROLL_REPORT_TAB');">Payroll Reports</button>
+                <!--<button class="w3-bar-item w3-button tablink birthday" onclick="openTab(event,'BIRTHDAY_REPORT_TAB');">Birthday Report</button>
+                <button class="w3-bar-item w3-button tablink ctc" onclick="openTab(event,'CTC_REPORT_TAB');">CTC Report</button>-->
+            </div>
+
+            <div id="PAYROLL_REPORT_TAB" class="rightpane w3-container w3-border w3-white">
+                <div class="w3-bar" style="margin-top: 10px;">
+                    <div class="w3-bar-item" id="birthmonthblock" style="display: none; padding: 0px 0px 0px 16px;">
+                        <p>
+                            <label>Month<span style="color: red;">*</span></label>
+                            <select name="birthmonth" id="birthmonth" class="w3-select w3-round w3-border" onchange="disablebtn();">
+                                <option selected disabled></option>
+                                <option th:each="m:${month}" th:value="${m.getDescription()}" th:text="${m.getDescription()}"></option>
+                            </select>
+                            <span id="mntherr" style="color: red; display: none;">Mandatory</span>
+                        </p>
+                    </div>
+                    <div class="w3-bar-item" id="staticcalcblock" style="display: none; padding: 0px 0px 0px 16px;">
+                        <p>
+                            <label>Calendar Code<span style="color: red;">*</span></label><br />
+                            <select class="w3-select w3-border w3-round" name="staticcalcode" id="staticcalcode" style="width: 150px;"> </select>
+                            <span id="frmcalcodeerr" style="color: red; display: none;">Mandatory</span>
+                            <br />
+                            <!--  <input type="text" name="frmcalcode" id="frmcalcode" style="display: none;" class="w3-input w3-border w3-round" /> -->
+                        </p>
+                    </div>
+                    <div class="w3-bar-item" id="fromcalcblock" style="padding: 0px 0px 0px 16px;">
+                        <p>
+                            <label>From Calendar Code<span style="color: red;">*</span></label>
+                            <select class="w3-select w3-border w3-round" name="fromcalcode" id="fromcalcode" style="display: block; width: 150px;" onchange="getfromfirstndlastdateofmonth(this);"> </select>
+                            <span id="frmcalcodeerr" style="color: red; display: none;">Mandatory</span>
+                            <br />
+                            <!--  <input type="text" name="frmcalcode" id="frmcalcode" style="display: none;" class="w3-input w3-border w3-round" /> -->
+                        </p>
+                    </div>
+                    <div class="w3-bar-item" id="tocalcblock" style="display: none; padding: 0px 0px 0px 16px;">
+                        <p>
+                            <label>To Calendar Code<span style="color: red;">*</span></label>
+                            <select class="w3-select w3-border w3-round" name="tocalcode" id="tocalcode" style="display: block; width: 150px;" onchange="gettofirstndlastdateofmonth(this);"> </select>
+                            <span id="tocalcodeerr" style="color: red; display: none;">Mandatory</span>
+                            <br />
+
+                            <!-- <input type="text" name="tcalcode" id="tcalcode" style="display: none;" class="w3-input w3-border w3-round" /> -->
+                        </p>
+                    </div>
+                    <div class="w3-bar-item" id="natureempblock" style="display: none; padding: 0px 0px 0px 16px;">
+                        <p>
+                            <label>Nature of Employment<span id="natstar" style="color: red; display: none;">*</span></label>
+                            <select class="w3-select w3-border w3-round" name="natemp" id="natemp" style="display: block; width: 150px;" onchange="disablebtn();">
+                                <option selected="" disabled=""></option>
+                                <option value="0">All</option>
+                                <option th:each="natemp:${natemp}" th:value="${natemp.getId()}" th:text="${natemp.getDescription()}"></option>
+                            </select>
+                            <span id="noeerr" style="color: red; display: none;">Mandatory</span>
+                        </p>
+                    </div>
+                    <div class="w3-bar-item" id="empnoblock" style="display: none; padding: 0px 0px 0px 16px;">
+                        <p>
+                            <label>Employee Number<span id="pnostar" style="color: red; display: none;">*</span></label>
+                            <input type="text" name="personno" id="personno" class="w3-input w3-border w3-round" style="display: block; width: 150px;" />
+                            <span id="pernoerr" style="color: red; display: none;">Mandatory</span>
+                        </p>
+                    </div>
+                    <div class="w3-bar-item" id="fromdatelwp" style="display: none; padding: 0px 0px 0px 16px;">
+                        <p>
+                            <label>From Date<span style="color: red;">*</span></label>
+                            <input type="date" name="fdt" id="fdt" class="w3-input w3-border" />
+                            <span id="frmdterr" style="color: red; display: none;">Mandatory</span>
+                        </p>
+                    </div>
+                    <div class="w3-bar-item" id="todatelwp" style="display: none; padding: 0px 0px 0px 16px;">
+                        <p>
+                            <label>To Date<span style="color: red;">*</span></label>
+                            <input type="date" name="tdt" id="tdt" class="w3-input w3-border" />
+                            <span id="todterr" style="color: red; display: none;">Mandatory</span>
+                        </p>
+                    </div>
+                    <div class="w3-bar-item" id="banktypeblock" style="display: none; padding: 0px 0px 0px 16px;">
+                        <p>
+                            <label>Bank Type<span style="color: red;">*</span></label>
+                            <select class="w3-select w3-border w3-round" name="banktype" id="banktype" onchange="disablebtn();" style="display: block; width: 150px;">
+                                <option selected="" disabled=""></option>
+                                <!-- <option value="Salary">HDFC</option>
+                                <option value="NotSalary">Non-HDFC</option>  -->
+                                <option th:each="bnktype:${banktype}" th:value="${bnktype.getDescription()}" th:text="${bnktype.getDescription()}"></option>
+                            </select>
+                            <span id="bnktypeerr" style="color: red; display: none;">Mandatory</span>
+                        </p>
+                    </div>
+
+                    <div class="w3-bar-item" id="wrapper" style="padding: 22px 0px 20px 2px;">
+                        <div id="btnsearch" class="w3-btn w3-blue w3-round w3-right" style="margin-left: 15px; transform: scale(1);" 
+                        onclick="searchPayroll();"><!-- <i class="fa fa-search"></i> -->Get Data</div>
+                    </div>
+                </div>
+                <!-- Button List Starts Below -->
+                <div class="w3-bar">
+                    <!-- Report 1 -->
+
+					<div id="btnexportpayregmod" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px;margin-top:22px;margin-right: 10px; display: none;" onclick="loadPayrollRegexcel();">
+                		<i class="far fa-file-excel" style="font-size: 20px;"></i>
+                	</div>
+                   <!--  <a id="btnexportpayregmod" target="_blank" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" download>
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a> -->
+
+                    <!-- Report 2 -->
+
+                    <a id="btnexportpaymod3" target="_blank" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" download>
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a>
+
+                    <a id="btnexportpaymod3pdf" target="_blank" class="w3-btn w3-red w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" download>
+                        <i class="far fa-file-pdf" style="font-size: 20px;"></i>
+                    </a>
+
+                    <!-- Report 3 -->
+
+                    <a id="btnexportsalbill" class="w3-btn w3-red w3-left w3-round" target="_blank" download onclick="downloadSalaryBillSummary();" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-pdf" style="font-size: 20px;"></i>
+                    </a>
+
+                    <!-- Report 4 -->
+                    <div id="btnexportempmod" class="w3-btn w3-green w3-left w3-round" style="margin-left:10px;margin-top: 22px; margin-right: 10px; display: none;" th:if="${datalength!=0}" onclick="loadEmployeeMODExcel();">
+                       <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                   </div>
+                    <!-- <a id="btnexportempmod" class="w3-btn w3-green w3-left w3-round" target="_blank" download style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a> -->
+
+                    <!-- Report 5 -->
+                    <div id="btnexportempperexcel" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadEmpdetails();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+                   <!--  <a id="btnexportempperexcel" target="_blank" download class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a> -->
+                    
+                    <!-- Report 6 -->
+                    <div id="btnexportbankmod" class="w3-btn w3-green w3-round w3-left" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadBankdetailsexcel();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+                    <!-- <a id="btnexportbankmod" target="_blank" download class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a> -->
+                    <div id="btnexportbankpdf" class="w3-btn w3-red w3-left w3-round" style="margin-top: 0px; margin-right: 10px; display: none;" onclick="loadBankdetailspdf();">
+                        <i class="far fa-file-pdf" style="font-size: 20px;"></i>
+                    </div> 
+
+                    <!-- Report 7 -->
+                    <a id="btnexportsalcard" target="_blank" download class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a>
+
+                    <a id="btnexportsalcardpdf" target="_blank" download class="w3-btn w3-red w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-pdf" style="font-size: 20px;"></i>
+                    </a>
+
+                    <!-- Report 8 -->
+                    <!-- <div id="btnexportbirthdayexcel" class="w3-btn w3-green w3-round w3-left" style="margin-left: 10px; margin-top: 22px; margin-right: 10px; display: none;" onclick="loadBirthdaysexcel();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div> -->
+                       <div id="btnexportbirthdayexcel" class="w3-btn w3-green w3-round w3-left" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadBirthdaysexcel();">
+                       <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                   </div>
+                    
+                    <!-- <a id="btnexportbirthdayexcel" target="_blank" download class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a> -->
+
+                    <div id="btnexportbirthdaypdf" class="w3-btn w3-red w3-round w3-left" style="margin-top: 0px; margin-right: 10px; display: none;" onclick="loadBirthdayspdf();">
+                        <i class="far fa-file-pdf" style="font-size: 20px;"></i>
+                    </div>
+
+                    <!-- Report 9 -->
+
+					<div id="btnexportpayrollregister" class="w3-btn w3-green w3-left w3-round" style="margin-left:10px;margin-top: 22px; margin-right: 10px; display: none;" onclick="loadPayrollRegister();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+                    <!-- <a id="btnexportpayrollregister" class="w3-btn w3-green w3-left w3-round" target="_blank" download style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a> -->
+
+                    <!-- Report 10 -->
+                    <!-- <div id="btnexportLWPReportxls" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadLwpreportexcel();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div> -->
+                    
+                    <a id="btnexportLWPReportxls" class="w3-btn w3-green w3-left w3-round" target="_blank" download style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a>
+                    
+                    <!-- <div id="btnexportLWPReportpdf" class="w3-btn w3-red w3-left w3-round" style="margin-top: 0px; margin-right: 10px; display: none;" onclick="loadLwpreportpdf();">
+                        <i class="far fa-file-pdf" style="font-size: 20px;"></i>
+                    </div> -->
+                    <a id="btnexportLWPReportpdf" class="w3-btn w3-red w3-left w3-round" target="_blank" download style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-pdf" style="font-size: 20px;"></i>
+                    </a>
+
+                    <!-- Report 11 -->
+                    <div id="btnexportempsaltrans" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadEmpSalarydetails();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+
+                    <!-- Report 12 -->
+                    <div id="btnexportbankadvice" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadBankwiseempdetails();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+
+                    <!-- Report 13 -->
+                    <div id="btnexportbankrembadvice" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 22px; margin-right: 10px; display: none;" onclick="loadEmpRembdetails();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+
+                    <!-- Report 14 -->
+                    <div id="btnexportepfreport" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadEPFReport();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+
+                    <!-- Report 15 -->
+                    <div id="btnexportnpsreport" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadNPSReport();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+
+                    <!-- Report 16 -->
+                    <a id="btnexportpayslip" class="w3-btn w3-red w3-left w3-round" target="_blank" download onclick="downloadPaySlip();" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-pdf" style="font-size: 20px;"></i>
+                    </a>
+
+                    <!-- Report 17 -->
+                    <div id="btnexportvendordet" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadVendorData();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+
+                    <!-- Report 18 -->
+                    <div id="btnexportcurrentpayrollregister" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadCurrentPayrollRegister();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+
+                    <!-- Report 19 -->
+                    <div id="btnexportpayregmod_3_static" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadPayrollRegexcel_current_Mod3();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+
+                    <!-- Report 20 -->
+                    <div id="btnexportpayregmodxl_static" class="w3-btn w3-green w3-round w3-left" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadCurrentModReportexcel();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div>
+                    <div id="btnexportpayregmodpdf_static" class="w3-btn w3-red w3-left w3-round" style="margin-top: 0px; margin-right: 10px; display: none;" onclick="loadCurrentModReportpdf();">
+                        <i class="far fa-file-pdf" style="font-size: 20px;"></i>
+                    </div>
+                    
+                    <!-- Report 21 -->
+                    <!-- <div id="btnexporttravelreport" class="w3-btn w3-green w3-left w3-round" style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;" onclick="loadtravelreport();">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </div> -->
+                    
+                    <a id="btnexporttravelreport" class="w3-btn w3-green w3-left w3-round" target="_blank" download style="margin-left: 10px; margin-top: 0px; margin-right: 10px; display: none;">
+                        <i class="far fa-file-excel" style="font-size: 20px;"></i>
+                    </a>
+                    <!-- Button List Ends Above -->
+                </div>
+
+                <hr style="display: block; margin-left: auto; margin-right: auto; border-width: 0.5px;" />
+
+                <div id="payroll_div">
+                    <div class="w3-row">
+                        <div class="w3-full">
+                            <div id="lwpreportdiv" class="w3-responsive" style="display: none;">
+                                <table class="w3-table-all" id="lwpreporttbl" style="width: 100%; text-align: center;">
+                                    <thead>
+                                        <th>Person Number</th>
+                                        <th>Person Name</th>
+                                        <th>Business Unit</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div id="noData" class="w3-responsive" style="display: none;">
+                                <div>
+                                    <p>No record found...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="LWP_LOADER" class="w3-modal" style="display: none;">
+                        <div class="w3-container" style="margin-top: 11%; text-align: center;">
+                            <i class="fa fa-cog fa-spin" style="font-size: 70px; color: white;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/table2excel.js"></script>
+    <script src="/js/reports/reports.js"></script>
+    <script src="/js/reports/validatereport.js"></script>
+    <script src="/js/reports/enable.js"></script>
+    <script src="/js/reports/generatereport.js"></script>
+</div>

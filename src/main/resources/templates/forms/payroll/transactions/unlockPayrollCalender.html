@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="payrollCalenderUnlock">
+
+ <div id="REPORTS_LOADER" class="w3-modal" style="display: none; text-align: center;">
+        <div class="w3-container" style="margin-top: 12px; text-align: center;"><i class="fa fa-cog fa-spin" style="font-size: 70px; color: white;"></i></div>
+ </div>
+
+    <div class="w3-container" style="margin-top: 26px;">
+        <div class="w3-bar w3-theme-l5">
+            <h4 class="w3-bar-item w3-text-theme"
+                style="padding-top: 0px; padding-bottom: 0px;">
+                <i class="fas fa-tasks"></i>&nbsp;&nbsp;Unlock Payroll Calender
+            </h4>
+        </div>
+        <br>
+        <h4  style="padding-top: 0px; padding-bottom: 0px;">
+            &nbsp;&nbsp;Locked Calender :<lable th:text="${claimId.getCalendarid()}"></lable>
+        </h4>
+        <hr class="hrline">
+		<br>
+
+        <div class="w3-row ">
+
+            <div class="w3-quarter w3-container" id="download">
+                <a id="downloadLink" href="">Click to Download Payroll Register (Draft)</a>
+            </div>
+            <div class="w3-quarter w3-container">
+					<label>Locked Payroll&nbsp;&nbsp;<i id="Person" class="fas fa-cog fa-spin fa-fw" style="color: black; font-size: 18px; display: none;"></i></label>
+					<select id="LockedPayroll" name="LockedPayroll" class="w3-select w3-border" data-toggle="modal">
+						<option value="" disabled selected></option>
+						<option th:each="locCal: ${lockedCalender}" th:value="${locCal.getId()}" th:text="${locCal.getDescription()}">
+					</select>
+				</div>
+            
+            
+            <div class="w3-quarter w3-container">
+                <div id="Unlockpayrollbtn" onclick="unlockPayrollcalender();"
+                     style="background-color: #ff8507; color: white; cursor: pointer;" class="w3-btn w3-round-large"
+                     type="button"><i class="fa fa-lock" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Unlock
+                    Payroll
+                </div>
+            </div>
+            
+            <div class="w3-quarter w3-container">
+                <div id="Finalizepayrollbtn" onclick="finalizedPayrollCalender();"
+                     style="background-color: #ff8507; color: white; cursor: pointer;" class="w3-btn w3-round-large"
+                     type="button"><i class="fa fa-lock" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Finalize
+                    Payroll
+                </div>
+            </div>
+
+            <input class="w3-input w3-border" type="hidden" id="calenderId" th:value="${claimId.getCalendarid()}">
+            <input class="w3-input w3-border" type="hidden" id="calendarcode" th:value="${claimId.getCalendarcode()}">
+
+            <div id="infomsg">
+                <h6  style="padding-top: 0px; padding-bottom: 0px;color: red"><i>No calendar has been locked yet.</i>   </h6>
+            </div>
+        </div>
+
+        <script src="/js/payroll/transection/unlockPayroll.js"></script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<div th:fragment="electricitySearch">
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"> <i class="fas fa-bolt" style="color: #f7d351"></i>
+					&nbsp;Electricity Reimbursement
+				</h4>
+			</div>
+		</div>
+
+		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+		
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item">Previous Claims</h5>
+			<div id="addbtn" onclick="loadCreateElectricityClaim();"
+				class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" style="margin-top:8px;"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Raise New Request</div>
+		</div>
+		
+		<!-- <div class="w3-container">
+			<h5 class="w3-text-theme"
+				style="font-weight: bold; margin-top: 2px; bottom: 2px;">Employee
+				Details</h5>
+
+
+			Employee Data display starts here
+
+			<div class="w3-panel w3-padding w3-border">
+				<div class="w3-row">
+					<div class="w3-col m4 w3-padding">
+						<div class="w3-center">
+							<img class="w3-round" src="/images/profile_pic.jpg" style="width:50%;"/>
+						</div>
+					</div>
+					<br />
+					<div class="w3-col m4 w3-padding">
+						<p>
+							<label style="font-weight: bold; color: black;">Employee
+								Number&nbsp;&nbsp;</label><label
+								th:text="${personInfo.getPersonnumber()}"></label>
+						</p>
+						<p>
+							<label style="font-weight: bold; color: black;">Employee
+								Name&nbsp;&nbsp;</label><label th:text="${personInfo.getPersonname()}"></label>
+						</p>
+						<p>
+							<label style="font-weight: bold; color: black;">Date Of
+								Birth&nbsp;&nbsp;</label><label th:text="${personInfo.getDateofbirth()}"></label>
+						</p>
+						<p>
+							<label style="font-weight: bold; color: black;">Email
+								ID&nbsp;&nbsp;</label><label th:text="${personInfo.getEmailaid()}"></label>
+						</p>
+						<p>
+							<label style="font-weight: bold; color: black;">Phone
+								Number&nbsp;&nbsp;</label><label
+								th:text="${personInfo.getPhonenumber()}"></label>
+						</p>
+						<p>
+							<label style="font-weight: bold; color: black;">Employee
+								Type&nbsp;&nbsp;</label><label th:text="${personInfo.getEmployeetype()}"></label>
+						</p>
+					</div>
+					<div class="w3-col m4 w3-padding">
+
+						<p>
+							<label style="font-weight: bold; color: black;">Designation&nbsp;&nbsp;</label>
+							<label th:text="${personInfo.getDesignation()}"></label>
+						</p>
+						<p>
+							<label style="font-weight: bold; color: black;">Base
+								Location&nbsp;&nbsp;</label><label
+								th:text="${personInfo.getBaselocation()}"></label>
+						</p>
+						<p>
+							<label style="font-weight: bold; color: black;">Work
+								Location&nbsp;&nbsp;</label><label
+								th:text="${personInfo.getWorklocation()}"></label>
+						</p>
+						<p>
+							<label style="font-weight: bold; color: black;">Joining
+								Date&nbsp;&nbsp;</label><label th:text="${personInfo.getJoiningdate()}"></label>
+						</p>
+						<p>
+							<label style="font-weight: bold; color: black;">Vehicle
+								Used&nbsp;&nbsp;</label><label th:text="${personInfo.getVehicleused()}"></label>
+						</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<hr class="hrline" />
+ -->
+		<!--Form Content Goes here-->
+
+		<div class="w3-container">
+
+			
+			<!-- code for data table starts here -->
+			<div class="w3-row" style="margin-top:10px">
+				<div class="w3-full">
+					<div class="w3-container">						
+						<div id="search_result" class="w3-responsive">
+							<table id="electricityreimbursement" class="w3-table-all" style="width:100%">
+								<thead>
+									<tr>
+										<th style="text-align: center;">Claim ID</th>										
+										<th style="text-align: center;">Period From</th>
+										<th style="text-align: center;">Period To</th>							
+										<th style="text-align: center;">Billed Units</th>							
+										<th style="text-align: center;">Amount Billed</th>					
+										<th style="text-align: center;">Units Claimed</th>					
+										<th style="text-align: center;">Amount Claimed</th>		
+										<th style="text-align: center;">Status</th>			
+										<th style="text-align: center;">Saved Date</th>
+										<th style="text-align: center;">Amount Approved</th>
+										<th style="text-align: center;">View</th>
+										<th style="text-align: center;">Edit</th>																				
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noData" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- code for data table ends here -->
+			
+			
+		</div>
+
+
+
+		 
+<script type="text/javascript"
+			src="/js/reimbursement/electricity/electricity.js"></script>
+	</div>
+</div>

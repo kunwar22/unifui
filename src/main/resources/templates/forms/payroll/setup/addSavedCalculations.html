@@ -1,0 +1,72 @@
+<div th:fragment="addSavedCalculations">
+    <div class="w3-container" style="margin-top:14px;">
+        <h4 class="w3-text-theme">Add Saved Calculation</h4>
+
+        <form>
+            <div class="w3-row w3-padding-24">
+                <div class="w3-container w3-half">
+                    <p>
+                        <label>Calculation Name</label>
+                        <input class="w3-input w3-border" type="text" id="calculationName" name="calculationName">
+                    </p>
+                    <p>
+                        <label>Salary Component</label>
+                        <select class="componentSelect w3-select" name="componentSelect[]" multiple="multiple">
+                            <option value="B0001">Basic</option>
+                            <option value="B0002">Fixed Allowance</option>
+                            <option value="B0003">Allowance</option>
+                            <option value="B0004">Hourly</option>
+                            <option value="B0005">Basic1</option>
+                            <option value="B0006">Fixed Allowance1</option>
+                            <option value="B0007">Allowance1</option>
+                            <option value="B0008">Hourly1</option>
+                            <option value="B0009">Basic2</option>
+                            <option value="B0010">Fixed Allowance2</option>
+                            <option value="B0011">Allowance2</option>
+                            <option value="B0012">Hourly2</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label>Payroll Element</label>
+                        <select class="payrollElementSelect w3-select" name="payrollElementSelect">
+                            <option></option>
+                            <option value="B0001">Basic</option>
+                            <option value="B0002">Fixed Allowance</option>
+                            <option value="B0003">Allowance</option>
+                            <option value="B0004">Hourly</option>
+                            <option value="B0005">Basic1</option>
+                            <option value="B0006">Fixed Allowance1</option>
+                            <option value="B0007">Allowance1</option>
+                            <option value="B0008">Hourly1</option>
+                            <option value="B0009">Basic2</option>
+                            <option value="B0010">Fixed Allowance2</option>
+                            <option value="B0011">Allowance2</option>
+                            <option value="B0012">Hourly2</option>
+                        </select>
+                    </p>
+                    <p>
+                        <label>Payroll Group</label>
+                        <select class="payrollGroupSelect w3-select" name="payrollGroupSelect">
+                            <option></option>
+                            <option value="B0001">LRMC Payroll - Fulltime</option>
+                            <option value="B0002">LMRC Payroll - Contractual</option>
+                            <option value="B0003">LMRC Payroll - Field Workers</option>
+                        </select>
+                    </p>
+                </div>
+                <div class="w3-half">
+                    <p>
+                        <label>Calculation Formula</label>
+                        <textarea class="calculationFunction w3-input w3-border" style="resize: none" rows="12"></textarea>
+                    </p>
+                </div>
+            </div>
+            <div class="w3-bar">
+                <div id="savedCalculationAdd" class="w3-bar-item w3-btn w3-blue w3-round-large buttonbarmargin" type="button"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Save</div>
+                <div id="cancilAddSavedCalculation" class="w3-bar-item w3-btn w3-grey w3-round-large buttonbarmargin" type="button"><i class="fa fa-times" aria-hidden="true" style="color: red"></i>&nbsp;&nbsp;Cancel</div>
+            </div>
+        </form>
+    </div>
+    <script src="/js/payroll/setup/addSavedCalculations.js"></script>
+    <script src="/js/codemirror_js/codemirror_myscript.js"></script>
+</div>

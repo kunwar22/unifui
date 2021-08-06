@@ -1,0 +1,2543 @@
+<div th:fragment="hireEmployee">
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var resultfinal = /*[[${finalres}]]*/;
+		var natofempl = /*[[${newperson.getNaturename()}]]*/;
+		var prim = /*[[${prim}]]*/;
+		console.log(resultfinal+natofempl+prim);
+		/*]]>*/
+	</script>
+	<form method="post" id="frmHire"
+		  enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+		<div class="w3-container" style="overflow-y: scroll;">
+			<h4 class="w3-text-theme">Hire Employee</h4>
+			<div class="w3-bar">
+				<button id="identificationdetail" class="w3-bar-item w3-button tablink w3-theme"
+						onclick="sendHireData('identificationdetail')">Identification</button>
+				<button class="w3-bar-item w3-button tablink"
+						id="personaldetail" onclick="sendHireData('personaldetail')" disabled>Person Information</button>
+				<button class="w3-bar-item w3-button tablink" id="employmentInformation"
+						onclick="sendHireData('employmentInformation')" disabled>Employment
+					Information</button>
+				<button class="w3-bar-item w3-button tablink" id="compensation"
+						onclick="sendHireData('compensation')" disabled>Compensation</button>
+				<div id="fragmaent_container"
+					 th:include="fragments/hireEmployee :: identificationdetail">
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<!--------------------------------- Hire an Employee:Identification start here ---------------------------------------->
+<div th:fragment="identificationdetail">
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var prim = /*[[${prim}]]*/;
+		console.log(prim);
+		/*]]>*/
+	</script>
+	<input type="hidden" value="" id="cmd" name="cmd"> <input
+		type="hidden" value="identificationdetail" id="current_cmd"
+		name="currentcmd"> <input type="hidden" id="hidLegal"
+								  name="hidLegal" /><input type="hidden" id="hidNatofEmpl"
+														   name="hidNatofEmpl" />
+	<div id="identificationdetail" class="w3-container w3-border hire">
+		<div class="w3-row">
+			<h5 class="w3-text-theme" style="font-weight: bold">Basic Details</h5>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+			<div class="w3-row-padding">
+				<div class=w3-half>
+					<p>
+						<label>Hire Date</label><span style="color: red"> *</span>
+						<input th:value="${newperson.getJobdata().getHiredate()}" class="w3-input w3-border" name="jobdata.hiredate" type="date" id="HIRE_DATE" /> <span id="HIRE_ERROR" style="color: red"></span>
+					</p>
+				</div>
+				<div class=w3-half>
+					<p>
+						<label>Person Number</label><span style="color: red"> *</span><input
+							th:value="${newperson.getPersonnumber()}" style="height: 38px"
+							onkeyup="pnumcheck();"
+							class="w3-input w3-border" name="personnumber"
+							id="CR_HR_PER_NUM" type="text">
+						<span id="HIRE_PNUM_ERROR" style="color: red"></span>
+						<span id="HIRE_PNUM_AVL" style="color: green"></span>
+					</p>
+				</div>
+			</div>
+
+			<div class="w3-row-padding">
+				<div class=w3-half>
+					<p th:if="${newperson.getJobdata().getWorktype()!=0}">
+						<label>Worker Type</label><span style="color: red"> *</span>
+						<select id="Workertype" class="w3-select w3-border" name="jobdata.worktype">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getWorkertypelov()}"
+									th:selected="${newperson.getJobdata().getWorktype() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getJobdata().getWorktype()==0}">
+						<label>Worker Type</label><span style="color: red"> *</span> <select
+							id="Workertype" class="w3-select w3-border"
+							name="jobdata.worktype">
+						<option value="0" disabled selected></option>
+						<option th:each="worktype : ${lovbinding.getWorkertypelov()}"
+								th:value="${worktype.getId()}"
+								th:text="${worktype.getDescription()}" />
+					</select> <span id="TYPE_ERROR" style="color: red"></span>
+					</p>
+				</div>
+				<div class=w3-half>
+					<p th:if="${newperson.getJobdata().getHireaction()!=0}">
+						<label>Hire Action</label><span style="color: red"> *</span>
+						<select id="HIRE_ACTION" class="w3-select w3-border" name="jobdata.hireaction">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getHireactionlov()}"
+									th:selected="${newperson.getJobdata().getHireaction() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getJobdata().getHireaction()==0}">
+						<label>Hire Action</label><span style="color: red"> *</span> <select
+							id="HIRE_ACTION" class="w3-select w3-border"
+							name="jobdata.hireaction">
+						<option value="0" disabled selected></option>
+						<option th:each="hireaction : ${lovbinding.getHireactionlov()}"
+								th:value="${hireaction.getId()}"
+								th:text="${hireaction.getDescription()}" />
+					</select> <span id="HIRE_ACTION_ERROR" style="color: red"></span>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getLegalentity()!=0}">
+						<label>Legal Employer</label><span style="color: red"> *</span>
+						<select id="legalEmployer" name="jobdata.legalentity" class="w3-select w3-border" data-toggle="modal" onchange="legempl()">
+							<option id="2" selected
+									th:value="${newperson.getJobdata().getLegalentity()}"
+									th:text="${newperson.getLegalentityname()}"></option>
+							<option value="search" data-toggle="modal" id="btnsearchLegal">Search....</option>
+						</select>
+					</p>
+					<p th:if="${newperson.getJobdata().getLegalentity()==0}">
+						<label>Legal Employer</label><span style="color: red"> *</span>
+						<select id="legalEmployer" name="jobdata.legalentity" class="w3-select w3-border" data-toggle="modal" onchange="legempl()">
+							<option id="1" value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option value="search" data-toggle="modal" id="btnsearchLegal">Search....</option>
+						</select> <span id="LEGAL_ERROR" style="color: red"></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<div id="ACTION_REASON_BLOCK">
+						<p th:if="${newperson.getJobdata().getHirereason()==0}">
+							<label>Action Reason</label><span style="color: red"> *</span>
+							<select id="ACTION_REASON" class="w3-select w3-border" name="jobdata.hirereason">
+								<option value="0" disabled>Select Hire Action</option>
+							</select>
+							<span id="HIRE_ACTION_REASON_ERROR" style="color: red"></span>
+						</p>
+						<p th:if="${newperson.getJobdata().getHirereason()!=0}">
+							<label>Action Reason</label><span style="color: red"> *</span>
+							<select id="ACTION_REASON" class="w3-select w3-border" name="jobdata.hirereason">
+								<option value="0" disabled selected></option>
+								<option th:each="hirereason : ${lovbinding.getHirereasonlov()}"
+										th:selected="${newperson.getJobdata().getHirereason() eq hirereason.getId()}"
+										th:value="${hirereason.getId()}"
+										th:text="${hirereason.getDescription()}" />
+							</select>
+							<span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("hirereason")!=null}' th:text='${bindingResult.getFieldError("hirereason").getDefaultMessage()}'></span>
+							<span id="HIRE_ACTION_REASON_ERROR" style="color: red"></span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div class="w3-row">
+			<h5 class="w3-text-theme" style="font-weight: bold">Additional Details</h5>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getUpmrcaddon().getNatureofemployement()!=0}">
+						<label>Nature of Employment</label><span style="color: red"> *</span>
+						<select id="NAT_OF_EMPL" class="w3-select w3-border" name="upmrcaddon.natureofemployement">
+							<option value="0" disabled selected></option>
+							<option th:each="natofempl : ${lovbinding.getNature_of_employment()}"
+									th:selected="${newperson.getUpmrcaddon().getNatureofemployement() eq natofempl.getId()}"
+									th:value="${natofempl.getId()}"
+									th:text="${natofempl.getDescription()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("natureofemployement")!=null}' th:text='${bindingResult.getFieldError("natureofemployement").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getUpmrcaddon().getNatureofemployement()==0}">
+						<label>Nature of Employment</label><span style="color: red"> *</span>
+						<select id="NAT_OF_EMPL" class="w3-select w3-border" name="upmrcaddon.natureofemployement">
+							<option value="0" disabled selected></option>
+							<option
+									th:each="natofempl : ${lovbinding.getNature_of_employment()}"
+									th:value="${natofempl.getId()}"
+									th:text="${natofempl.getDescription()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("natureofemployement")!=null}' th:text='${bindingResult.getFieldError("natureofemployement").getDefaultMessage()}'></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getUpmrcaddon().getEmployeecategory()!=0}">
+						<label>Employee Category</label>
+						<select id="" class="w3-select w3-border" name="upmrcaddon.employeecategory">
+							<option value="0" disabled selected></option>
+							<option th:each="emp_cat : ${lovbinding.getEmployee_category()}"
+									th:selected="${newperson.getUpmrcaddon().getEmployeecategory() eq emp_cat.getId()}"
+									th:value="${emp_cat.getId()}"
+									th:text="${emp_cat.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getUpmrcaddon().getEmployeecategory()==0}">
+						<label>Employee Category</label>
+						<select id="" class="w3-select w3-border" name="upmrcaddon.employeecategory">
+							<option value="0" disabled selected></option>
+							<option th:each="emp_cat : ${lovbinding.getEmployee_category()}"
+									th:value="${emp_cat.getId()}"
+									th:text="${emp_cat.getDescription()}" />
+						</select>
+						<span id="TYPE_ERROR" style="color: red"></span>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>PF Start Date</label>
+						<input th:value="${newperson.getUpmrcaddon().getPfeffectivestartdate()}" class="w3-input w3-border" name="upmrcaddon.pfeffectivestartdate" type="date" data-date="" data-date-format="YYYY MM DD" />
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getUpmrcaddon().getStaff()!=0}">
+						<label>Staff</label>
+						<select id="" class="w3-select w3-border" name="upmrcaddon.staff">
+							<option value="0" disabled selected></option>
+							<option th:each="staff : ${lovbinding.getStaff()}"
+									th:selected="${newperson.getUpmrcaddon().getStaff() eq staff.getId()}"
+									th:value="${staff.getId()}" th:text="${staff.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getUpmrcaddon().getStaff()==0}">
+						<label>Staff</label>
+						<select id="" class="w3-select w3-border" name="upmrcaddon.staff">
+							<option value="0" disabled selected></option>
+							<option th:each="staff : ${lovbinding.getStaff()}" th:value="${staff.getId()}" th:text="${staff.getDescription()}" />
+						</select>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Provident Fund Number</label>
+						<input th:value="${newperson.getUpmrcaddon().getPfnumber()}" style="height: 38px" class="w3-input w3-border" name="upmrcaddon.pfnumber" id="" type="text">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getUpmrcaddon().getProjectom()!=0}">
+						<label>Project OM</label>
+						<select id="" class="w3-select w3-border" name="upmrcaddon.projectom">
+							<option value="0" disabled selected></option>
+							<option th:each="projectom : ${lovbinding.getProjectom()}"
+									th:selected="${newperson.getUpmrcaddon().getProjectom() eq projectom.getId()}"
+									th:value="${projectom.getId()}"
+									th:text="${projectom.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getUpmrcaddon().getProjectom()==0}">
+						<label>Project OM</label>
+						<select id="" class="w3-select w3-border" name="upmrcaddon.projectom">
+							<option value="0" disabled selected></option>
+							<option th:each="projectom : ${lovbinding.getProjectom()}"
+									th:value="${projectom.getId()}"
+									th:text="${projectom.getDescription()}" />
+						</select>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>PRAN</label>
+						<input th:value="${newperson.getUpmrcaddon().getPrannumber()}" style="height: 38px" class="w3-input w3-border" name="upmrcaddon.prannumber" id="" type="text">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Previous Organization Basic Salary (Per Month)</label> <input
+							th:value="${newperson.getUpmrcaddon().getPrevorgbasicsalary()}"
+							style="height: 38px" class="w3-input w3-border"
+							name="upmrcaddon.prevorgbasicsalary" id="" type="text">
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>ESI Number</label>
+						<input th:value="${newperson.getUpmrcaddon().getEsinumber()}" style="height: 38px" class="w3-input w3-border" name="upmrcaddon.esinumber" id="" type="text">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Previous Organization Location</label>  <input
+							th:value="${newperson.getUpmrcaddon().getPrevorglocation()}"
+							style="height: 38px" class="w3-input w3-border"
+							name="upmrcaddon.prevorglocation" id="" type="text">
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>UAN</label>
+						<input th:value="${newperson.getUpmrcaddon().getUannumber()}" style="height: 38px" class="w3-input w3-border" name="upmrcaddon.uannumber" id="" type="text">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Previous Organization Name</label>  <input
+							th:value="${newperson.getUpmrcaddon().getPrevorgcompanyname()}"
+							style="height: 38px" class="w3-input w3-border"
+							name="upmrcaddon.prevorgcompanyname" id="" type="text">
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Month of Increment</label>
+						<select class="w3-select w3-border" name="upmrcaddon.monthofincrement">
+							<option th:value="${newperson.getUpmrcaddon().getMonthofincrement()}" th:text="${newperson.getUpmrcaddon().getMonthofincrement()}" hidden selected></option>
+							<option value="January">January</option>
+							<option value="February">February</option>
+							<option value="March">March</option>
+							<option value="April">April</option>
+							<option value="May">May</option>
+							<option value="June">June</option>
+							<option value="July">July</option>
+							<option value="August">August</option>
+							<option value="September">September</option>
+							<option value="October">October</option>
+							<option value="November">November</option>
+							<option value="December">December</option>
+						</select>
+					</p>
+				</div>
+				<div class="w3-half">
+
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-col" style="width:30%">
+					<div th:if='${newperson.getUpmrcaddon().getAttribute2()==null}'>
+						<label>Is Deputation?</label><br>
+						<input type="radio" id="d" name="upmrcaddon.attribute2" value="Yes">
+						<label for="d">Yes</label><br>
+						<input type="radio" id="e" name="upmrcaddon.attribute2" value="No" checked>
+						<label for="e">No</label><br>
+					</div>
+					<div th:if='${newperson.getUpmrcaddon().getAttribute2()=="Yes"}'>
+						<label>Is Deputation?</label><br>
+						<input type="radio" id="d" name="upmrcaddon.attribute2" value="Yes" checked>
+						<label for="d">Yes</label><br>
+						<input type="radio" id="e" name="upmrcaddon.attribute2" value="No"> <label for="e">No</label><br>
+					</div>
+					<div th:if='${newperson.getUpmrcaddon().getAttribute2()=="No"}'>
+						<label>Is Deputation?</label><br>
+						<input type="radio" id="d" name="upmrcaddon.attribute2" value="Yes">
+						<label for="d">Yes</label><br>
+						<input type="radio" id="e" name="upmrcaddon.attribute2" value="No" checked>
+						<label for="e">No</label><br>
+					</div>
+				</div>
+				<div class="w3-col" style="width:30%">
+					<div th:if='${newperson.getUpmrcaddon().getAttribute4()==null}'>
+						<label>Is Deputation Location Same?</label><br>
+						<input type="radio" id="h" name="upmrcaddon.attribute4" value="Yes">
+						<label for="h">Yes</label><br>
+						<input type="radio" id="i" name="upmrcaddon.attribute4" value="No" checked>
+						<label for="i">No</label><br>
+					</div>
+					<div th:if='${newperson.getUpmrcaddon().getAttribute4()=="Yes"}'>
+						<label>Is Deputation Location Same?</label><br>
+						<input type="radio" id="h" name="upmrcaddon.attribute4" value="Yes" checked>
+						<label for="h">Yes</label><br>
+						<input type="radio" id="i"  name="upmrcaddon.attribute4" value="No">
+						<label for="i">No</label><br>
+					</div>
+					<div th:if='${newperson.getUpmrcaddon().getAttribute4()=="No"}'>
+						<label>Is Deputation Location Same?</label><br>
+						<input type="radio" id="h" name="upmrcaddon.attribute4" value="Yes">
+						<label for="h">Yes</label><br>
+						<input type="radio" id="i" name="upmrcaddon.attribute4" value="No" checked>
+						<label for="i">No</label><br>
+					</div>
+				</div>
+				<div class="w3-col" style="width:30%">
+					<div th:if='${newperson.getUpmrcaddon().getAttribute3()==null}'>
+						<label>Is in PRC2?</label><br>
+						<input type="radio" id="f" name="upmrcaddon.attribute3" value="Yes">
+						<label for="f">Yes</label><br>
+						<input type="radio" id="g" name="upmrcaddon.attribute3" value="No" checked>
+						<label for="g">No</label><br>
+					</div>
+					<div th:if='${newperson.getUpmrcaddon().getAttribute3()=="Yes"}'>
+						<label>Is in PRC2?</label><br>
+						<input type="radio" id="f" name="upmrcaddon.attribute3" value="Yes" checked>
+						<label for="f">Yes</label><br>
+						<input type="radio" id="g" name="upmrcaddon.attribute3" value="No"> <label for="g">No</label><br>
+					</div>
+					<div th:if='${newperson.getUpmrcaddon().getAttribute3()=="No"}'>
+						<label>Is in PRC2?</label><br>
+						<input type="radio" id="f" name="upmrcaddon.attribute3" value="Yes">
+						<label for="f">Yes</label><br>
+						<input type="radio" id="g" name="upmrcaddon.attribute3" value="No" checked>
+						<label for="g">No</label><br>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div class="w3-row">
+			<h5 class="w3-text-theme" style="font-weight: bold">Personal Details</h5>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width:1px;">
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getPersonalrecord().getTitle()!=0}">
+						<label>Title</label><span style="color: red"> *</span>
+						<select id="title" class="w3-select w3-border" name="personalrecord.title">
+							<option th:each="lovbinding : ${lovbinding.getTitleLov()}"
+									th:selected="${newperson.getPersonalrecord().getTitle() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("title")!=null}' th:text='${bindingResult.getFieldError("title").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getPersonalrecord().getTitle()==0}">
+						<label>Title</label><span style="color: red"> *</span>
+						<select id="title" class="w3-select w3-border" name="personalrecord.title">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getTitleLov()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+						<span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("title")!=null}' th:text='${bindingResult.getFieldError("title").getDefaultMessage()}'></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>First Name</label> <span style="color: red"> *</span>
+						<input th:value="${newperson.getPersonalrecord().getFirstname()}" style="height: 38px" class="w3-input w3-border" name="personalrecord.firstname" id="CR_HR_FNAME" type="text">
+						<span style="color: red"  th:if='${bindingResult != null && bindingResult.getFieldError("firstname")!=null}' th:text='${bindingResult.getFieldError("firstname").getDefaultMessage()}'></span>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getPersonalrecord().getGender()!=0}">
+						<label>Gender</label><span style="color: red"> *</span>
+						<select id="regularTemp" class="w3-select w3-border" name="personalrecord.gender">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getGenderlov()}"
+									th:selected="${newperson.getPersonalrecord().getGender() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getPersonalrecord().getGender()==0}">
+						<label>Gender</label><span style="color: red"> *</span>
+						<select id="genderTemp" class="w3-select w3-border" name="personalrecord.gender">
+							<option value="0" disabled selected></option>
+							<option th:each="gender : ${lovbinding.getGenderlov()}"
+									th:value="${gender.getId()}"
+									th:text="${gender.getDescription()}" />
+						</select>
+						<span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("gender")!=null}' th:text='${bindingResult.getFieldError("gender").getDefaultMessage()}'></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Middle Name</label>
+						<input th:value="${newperson.getPersonalrecord().getMiddilname()}" style="height: 38px" class="w3-input w3-border" name="personalrecord.middilname" id="CR_HR_MNAME" type="text">
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Date of Birth</label><span style="color: red"> *</span>
+						<input th:value="${newperson.getPersonalrecord().getDateofbirth()}" class="w3-input w3-border" name="personalrecord.dateofbirth" id="CR_HR_DOB" type="date" data-date="" data-date-format="YYYY MM DD" /> </select>
+						<span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("dateofbirth")!=null}' th:text='${bindingResult.getFieldError("dateofbirth").getDefaultMessage()}'></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Last Name</label>
+						<input th:value="${newperson.getPersonalrecord().getLastname()}" style="height: 38px" class="w3-input w3-border" name="personalrecord.lastname" id="CR_HR_LNAME" type="text">
+						<!--<span style="color: red"  th:if='${bindingResult != null && bindingResult.getFieldError("lastname")!=null}' th:text='${bindingResult.getFieldError("lastname").getDefaultMessage()}'></span>-->
+					</p>
+				</div>
+			</div>
+
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<!-----------------------------Multiple row start here-------------------------------------------->
+		<div class="w3-row">
+			<div class="w3-padding-large">
+				<h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display:inline;">National Identifier</h5>
+				<input onclick="addrow();" class="w3-right w3-btn w3-theme w3-round-large" type="button" id="add" value="+" />
+			</div>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+			<div class="w3-padding">
+				<p>
+					<!-- <label>View</label>
+					<button id="VIEW_BTN" class="w3-button w3-white w3-small">^</button> -->
+				</p>
+				<div class="w3-padding-large">
+					<table id="NAT_ID_TBL" class="display compact w3-table"
+						   style="width: 100%;">
+						<thead>
+						<th style="text-align: center;">Primary</th>
+						<th style="text-align: center;">Country<span
+								style="color: red"> *</span></th>
+						<th style="text-align: center;">National ID Type<span
+								style="color: red"> *</span></th>
+						<th style="text-align: center;">National ID<span
+								style="color: red"> *</span></th>
+						<th></th>
+						<th></th>
+						</thead>
+						<tbody>
+						<tr th:each="entry ,stats: ${(newperson.getNationaldetails())}">
+							<td style="width: 10%">
+								<div th:if="${entry.getPrimary()=='Yes'}">
+									<input style="zoom: 1.5;" class="w3-input w3-border natCheck"
+										   checked="checked" onclick="uncheckAll(this.name)"
+										   id="CHECKBOX_NATIDENTIFIER0"
+										   th:name="'nationaldetails['+${stats.index}+'].primary'"
+										   type="checkbox" value="Yes">
+								</div>
+								<div th:if="${entry.getPrimary()=='No'}">
+									<input style="zoom: 1.5;" class="w3-input w3-border natCheck"
+										   onclick="uncheckAll(this.name)" id="CHECKBOX_NATIDENTIFIER0"
+										   th:name="'nationaldetails['+${stats.index}+'].primary'"
+										   type="checkbox" value="Yes">
+								</div>
+							</td>
+							<td style="width: 25%">
+								<div th:if="${entry.getCountryid()!=0}">
+									<select id="CR_HR_COUNTRY" class="w3-select w3-border"
+											th:name="'nationaldetails['+${stats.index}+'].countryid'">
+										<option value="0" disabled selected></option>
+										<option th:each="country : ${lovbinding.getCountrylov()}"
+												th:selected="${entry.getCountryid() eq country.getId()}"
+												th:value="${country.getId()}"
+												th:text="${country.getDescription()}" />
+									</select><span style="color: red"
+												   th:if='${bindingResult != null && bindingResult.getFieldError("countryid")!=null && (newperson.getNationaldetails().get(stats.index).getCountryid()=="" || newperson.getNationaldetails().get(stats.index).getCountryid()==0)}'
+												   th:text='${bindingResult.getFieldError("countryid").getDefaultMessage()}'></span>
+								</div>
+								<div th:if="${entry.getCountryid()==0}">
+									<select id="CR_HR_COUNTRY" class="w3-select w3-border"
+											th:name="'nationaldetails['+${stats.index}+'].countryid'">
+										<option value="0" disabled selected></option>
+										<option th:each="country : ${lovbinding.getCountrylov()}"
+												th:value="${country.getId()}"
+												th:text="${country.getDescription()}" />
+									</select> <span style="color: red"
+													th:if='${bindingResult != null && bindingResult.getFieldError("countryid")!=null && (newperson.getNationaldetails().get(stats.index).getCountryid()=="" || newperson.getNationaldetails().get(stats.index).getCountryid()==0)}'
+													th:text='${bindingResult.getFieldError("countryid").getDefaultMessage()}'></span>
+								</div>
+							</td>
+							<td style="width: 25%">
+								<div th:if="${entry.getNationaltype()!=0}">
+									<select id="nationType" class="w3-select w3-border"
+											th:name="'nationaldetails['+${stats.index}+'].nationaltype'">
+										<option value="0" disabled selected></option>
+										<option th:each="natid : ${lovbinding.getNationaltypelov()}"
+												th:selected="${entry.getNationaltype() eq natid.getId()}"
+												th:value="${natid.getId()}"
+												th:text="${natid.getDescription()}" />
+									</select> <span style="color: red"
+													th:if='${bindingResult != null && bindingResult.getFieldError("nationaltype")!=null && (newperson.getNationaldetails().get(stats.index).getNationaltype()=="" || newperson.getNationaldetails().get(stats.index).getNationaltype()==0) }'
+													th:text='${bindingResult.getFieldError("nationaltype").getDefaultMessage()}'></span>
+								</div>
+								<div th:if="${entry.getNationaltype()==0}">
+									<select id="nationType" class="w3-select w3-border"
+											th:name="'nationaldetails['+${stats.index}+'].nationaltype'">
+										<option value="0" disabled selected></option>
+										<option th:each="natid : ${lovbinding.getNationaltypelov()}"
+												th:value="${natid.getId()}"
+												th:text="${natid.getDescription()}" />
+									</select> <span style="color: red"
+													th:if='${bindingResult != null && bindingResult.getFieldError("nationaltype")!=null && (newperson.getNationaldetails().get(stats.index).getNationaltype()=="" || newperson.getNationaldetails().get(stats.index).getNationaltype()==0) }'
+													th:text='${bindingResult.getFieldError("nationaltype").getDefaultMessage()}'></span>
+								</div>
+							</td>
+							<td style="width: 30%"><input
+									th:value="${entry.getNationalid()}" class="w3-input w3-border"
+									style="height: 38px"
+									th:name="'nationaldetails['+${stats.index}+'].nationalid'"
+									type="text"> <span style="color: red"
+													   th:if='${bindingResult != null && bindingResult.getFieldError("nationalid")!=null && (newperson.getNationaldetails().get(stats.index).getNationalid()=="")}'
+													   th:text='${bindingResult.getFieldError("nationalid").getDefaultMessage()}'></span>
+							</td>
+							<td th:if="${stats.index!=0}" style="width: 5%"><input
+									th:index="${stats.index}" flg="national"
+									class="w3-btn w3-theme" id="delete" type="button" value="x">
+								<!--<input class="w3-btn  w3-theme" type="button" value="+" onclick="addRowNowNATID();"/>-->
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-----------------------------Multiple row end here-------------------------------------------->
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div class="w3-container">
+			<p>
+				<!--<button class="w3-button w3-theme w3-grey" onclick="openHire(event,'personInformation'); document.getElementById('PERSONINFO_TAB_BTN').classList.add('w3-theme');">Next</button>-->
+				<input type="button" class="w3-button w3-theme w3-grey" onclick="sendHireData('personaldetail')" value="Next">
+			</p>
+		</div>
+		<!-- Popup  for LEGAL EMPLOYER Search Start here  -->
+		<!-- line modal -->
+		<div id="id05" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+				<div
+						class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<div class="modal-header">
+						<button type="button" class="w3-button w3-display-topright"
+								onclick="document.getElementById('id05').style.display='none'">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h3 align="left">Search and Select: Legal Employer</h3>
+						<hr class="hrline">
+					</div>
+					<div class="modal-body">
+						<div>
+							<div class=w3-half>
+								<div class="w3-container">
+									<div class="w3-row w3-section">
+										<div class="w3-col" style="width: 80px">Name:</div>
+										<div class="w3-rest">
+											<input value="" class="w3-input w3-border" name="Ent_Name"
+												   id="LEGAL_NAME" type="text">
+										</div>
+									</div>
+									<div class="w3-row w3-section">
+										<div class="w3-col" style="width: 80px">Country:</div>
+										<div class="w3-rest">
+											<input value="" class="w3-input w3-border" name="Ent_Name"
+												   id="LEGAL_COUNTRY" type="text">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class=w3-half>
+								<div class="w3-container">
+									<div class="w3-row w3-section">
+										<div class="w3-col" style="width: 80px">Legal Entity
+											Identifier:</div>
+										<div class="w3-rest">
+											<input value="" class="w3-input w3-border" name="Ent_Name"
+												   id="LEGAL_ENTITY_IDENTIFIER" type="text">
+										</div>
+									</div>
+								</div>
+							</div>
+							<br>
+							<div class="w3-container">
+								<div class="form-group">
+									<div class="col-sm-12">
+										<div class="w3-right">
+											<button id="LEGAL_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<BR>
+							<div id="legresultSec" class="w3-responsive" style="display: none">
+								<table id="LegalList" class="display compact w3-table"
+									   style="width: 100%;">
+									<thead>
+									<tr class="w3-theme-d3">
+										<th>Name</th>
+										<th>Country</th>
+										<th>Legal Entity Identifier</th>
+										<th>Effective Start Date</th>
+										<th>Registration Place</th>
+										<th>Registration Number</th>
+										<th>Legal Entity Id</th>
+									</tr>
+									</thead>
+								</table>
+							</div>
+							<div id="noDataLEG" class="w3-responsive" style="display: none">
+								<div>
+									<p>No record found...</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="w3-right">
+									<button id="LEG_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+									<button id="LEG_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="HIRE_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+		</div>
+		<!-- ----POPUP END HERE---- -->
+		<!-- Popup  for LEGAL EMPLOYER Search Start here  -->
+		<script src="/js/hireEmployee.js"></script>
+	</div>
+
+	<!--------------------------------- Hire an Employee:Identification End here ---------------------------------------->
+</div>
+<!--------------------------------- Person Information start here ---------------------------------------->
+<div th:fragment="personaldetail">
+	<div id="personInformation" class="w3-container w3-border hire">
+		<input type="hidden" value="" id="cmd" name="cmd"> <input
+			type="hidden" value="personaldetail" id="current_cmd"
+			name="currentcmd">
+		<div class="w3-row">
+			<h5 class="w3-text-theme" style="font-weight: bold;">Home Address</h5>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getAddressdetails().get(0).getCountry()!=0}">
+						<label>Country</label><span style="color:red"> *</span>
+						<select id="countryList" class="w3-select w3-border" th:name="'addressdetails[0].country'">
+							<option value="0" disabled selected></option>
+							<option th:each="country : ${lovbinding.getCountrylov()}"
+									th:selected="${newperson.getAddressdetails().get(0).getCountry() eq country.getId()}"
+									th:value="${country.getId()}"
+									th:text="${country.getDescription()}" />
+						</select>
+						<span style="color: red"  th:if='${bindingResult != null && bindingResult.getFieldError("country")!=null}' th:text='${bindingResult.getFieldError("country").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getAddressdetails().get(0).getCountry()==0}">
+						<label>Country</label><span style="color:red"> *</span>
+						<select id="countryList" class="w3-select w3-border" th:name="'addressdetails[0].country'">
+							<option value="0" disabled selected></option>
+							<option th:each="country : ${lovbinding.getCountrylov()}"
+									th:value="${country.getId()}"
+									th:text="${country.getDescription()}" />
+						</select>
+						<span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("country")!=null}' th:text='${bindingResult.getFieldError("country").getDefaultMessage()}'></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<div id="divStateDisp">
+						<p th:if="${newperson.getAddressdetails().get(0).getState()==0}">
+							<label>State</label><span style="color:red"> *</span>
+							<select id="stateList" class="w3-select w3-border" name="addressdetails[0].state">
+								<option value="0" disabled>Select State</option>
+							</select>
+							<span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("state")!=null}'  th:text='${bindingResult.getFieldError("state").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${newperson.getAddressdetails().get(0).getState()!=0}">
+							<label>State</label><span style="color:red"> *</span>
+							<select id="countryList" class="w3-select w3-border" th:name="'addressdetails[0].state'">
+								<option value="0" disabled selected></option>
+								<option th:each="state : ${lovbinding.getStatelov()}"
+										th:selected="${newperson.getAddressdetails().get(0).getState() eq state.getId()}"
+										th:value="${state.getId()}"
+										th:text="${state.getDescription()}" />
+							</select>
+							<span style="color: red" th:if='${bindingResult != null && bindingResult.getFieldError("state")!=null}' th:text='${bindingResult.getFieldError("state").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<div id="divState"></div>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Address Line 1</label><span style="color:red"> *</span>
+						<input th:value="${newperson.getAddressdetails().get(0).getAddressline1()}" style="height: 38px" class="w3-input w3-border" name="addressdetails[0].Addressline1" id="CR_HR_ADD1" type="text">
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("addressline1")!=null}' th:text='${bindingResult.getFieldError("addressline1").getDefaultMessage()}'></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>City or Town</label>
+						<input style="height: 38px" th:value="${newperson.getAddressdetails().get(0).getCitytown()}" class="w3-input w3-border" name="addressdetails[0].citytown" id="CR_HR_ADD1" type="text">
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Address Line 2</label>
+						<input style="height: 38px" th:value="${newperson.getAddressdetails().get(0).getAddressline2()}" class="w3-input w3-border" name="addressdetails[0].Addressline2" id="CR_HR_ADD1" type="text">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Pin Code</label>
+						<!--/^[1-9]{1}[0-9]{5}$/-->
+						<input style="height: 38px" oninput="this.value = this.value.replace(/[^\d]/g, '').replace(/(^[\d]{7})[\d]/g, '$1');" th:value="${newperson.getAddressdetails().get(0).getPinCode()}" class="w3-input w3-border" name="addressdetails[0].pinCode"  id="CR_HR_ADD1" type="text">
+					</p>
+				</div>
+			</div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<!-----------------------------Multiple row phone details start here-------------------------------------------->
+		<div class="w3-row">
+			<div class="w3-padding-large">
+				<h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display:inline;">Phone Details</h5>
+				<input onclick="addrowcontact();" class="w3-right w3-btn w3-theme w3-round-large" type="button" id="addphone" value="+" />
+			</div>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+			<div class="w3-container">
+				<div class="w3-padding">
+					<div class=" w3-padding-large">
+						<table id="PHONE_DETAIL_TBL" class="display compact w3-table"
+							   style="width: 100%;">
+							<thead>
+							<th style="text-align: center; width: 5%;">Primary</th>
+							<th style="text-align: center; width: 10%;">Type</th>
+							<th style="text-align: center; width: 7%;">Country Code</th>
+							<th style="text-align: center; width: 50%;">Contact Number</th>
+							<th style="width: 5%"></th>
+							<th style="width: 5%"></th>
+							</thead>
+							<tbody>
+							<tr th:each="ct ,stats: ${(newperson.getContactdetails())}">
+								<td style="width: 10%">
+									<div th:if="${ct.getPrimary()=='Yes'}">
+										<input style="zoom: 1.5;"
+											   class="w3-input w3-border phoneCheck"
+											   onclick="uncheckAllPhone(this.name)"
+											   th:name="'contactdetails['+${stats.index}+'].primary'"
+											   id="CHECKBOX_PRIMARY0" type="checkbox" value="Yes" checked>
+									</div>
+									<div th:if="${ct.getPrimary()=='No'}">
+										<input style="zoom: 1.5;"
+											   class="w3-input w3-border phoneCheck"
+											   onclick="uncheckAllPhone(this.name)"
+											   th:name="'contactdetails['+${stats.index}+'].primary'"
+											   id="CHECKBOX_PRIMARY0" type="checkbox" value="Yes">
+									</div>
+								</td>
+								<td>
+									<div th:if="${ct.getContacttype()!=0}">
+										<select id="CR_HR_CONTACTTYPE" class="w3-select w3-border"
+												th:name="'contactdetails['+${stats.index}+'].contacttype'">
+											<option value="0" disabled selected></option>
+											<option th:each="cont : ${lovbinding.getPhonetypelov()}"
+													th:selected="${ct.getContacttype() eq cont.getId()}"
+													th:value="${cont.getId()}"
+													th:text="${cont.getDescription()}" />
+										</select>
+									</div>
+									<div th:if="${ct.getContacttype()==0}">
+										<select id="CR_HR_CONTACTTYPE" class="w3-select w3-border"
+												th:name="'contactdetails['+${stats.index}+'].contacttype'">
+											<option value="0" disabled selected></option>
+											<option th:each="cont : ${lovbinding.getPhonetypelov()}"
+													th:value="${cont.getId()}"
+													th:text="${cont.getDescription()}" />
+										</select>
+									</div>
+								</td>
+								<td>
+									<div th:if="${ct.getCountrycode()!=0}">
+										<select id="CR_HR_COUNTRYCODE" class="w3-select w3-border"
+												th:name="'contactdetails['+${stats.index}+'].countrycode'">
+											<option value="0" disabled selected></option>
+											<option th:each="countrycode : ${lovbinding.getCntrycode()}"
+													th:selected="${ct.getCountrycode() eq countrycode.getId()}"
+													th:value="${countrycode.getId()}"
+													th:text="${countrycode.getDescription()}" />
+										</select>
+									</div>
+									<div th:if="${ct.getCountrycode()==0}">
+										<select id="CR_HR_COUNTRYCODE" class="w3-select w3-border"
+												th:name="'contactdetails['+${stats.index}+'].countrycode'">
+											<option value="0" disabled selected></option>
+											<option th:each="countrycode : ${lovbinding.getCntrycode()}"
+													th:value="${countrycode.getId()}"
+													th:text="${countrycode.getDescription()}" />
+										</select>
+									</div>
+								</td>
+								<td><input th:value="${ct.getContactnumber()}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+										   class="w3-input w3-border"
+										   th:name="'contactdetails['+${stats.index}+'].contactnumber'"
+										   type="text"></td>
+								<script th:inline="javascript">
+									/*<![CDATA[*/
+									window.globalCounter = parseInt(/*[[${stats.index+1}]]*/);
+									/*]]>*/
+								</script>
+								<td th:if="${stats.index!=0}" style="width: 5%"><input
+										class="w3-btn w3-theme" id="deletephone" type="button"
+										value="x" th:index="${stats.index}" flg="phone"></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<!-----------------------------Multiple row phone details end here-------------------------------------------->
+		<!-----------------------------Multiple row email details start here-------------------------------------------->
+		<div class="w3-row">
+			<div class="w3-padding-large">
+				<h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display:inline;">Email Details</h5>
+				<input onclick="addrowemail();" class="w3-right w3-btn w3-theme w3-round-large" type="button" id="addemail" value="+" />
+			</div>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+			<div class="w3-container">
+				<div class="w3-padding">
+					<!-- <p>
+                        <label>View</label>
+                        <button id="VIEW_BTN" class="w3-button w3-white w3-small">^</button>
+                        <input onclick="addrowemail();" class="w3-btn w3-theme"
+                            type="button" id="addemail" value="+" />
+                    </p> -->
+					<div class="w3-padding-large">
+						<table id="EMAIL_DETAIL_TBL" class="display compact w3-table"
+							   style="width: 100%;">
+							<thead>
+							<th style="text-align: center; width: 5%;">Primary</th>
+							<th style="text-align: center; width: 10%;">Type</th>
+							<th style="text-align: center; width: 55%;">Email</th>
+							<th style="width: 5%"></th>
+							<th style="width: 5%"></th>
+							</thead>
+							<tbody>
+							<tr th:each="em ,stats: ${(newperson.getEmaildetails())}">
+								<td style="width: 10%">
+									<div th:if="${em.getPrimary()=='Yes'}">
+										<input style="zoom: 1.5;"
+											   class="w3-input w3-border emailCheck"
+											   onclick="uncheckAllMail(this.name)"
+											   th:name="'emaildetails['+${stats.index}+'].primary'"
+											   id="CHECKBOX_PRIMARY_EMAIL0" type="checkbox" value="Yes" checked>
+									</div>
+									<div th:if="${em.getPrimary()=='No'}">
+										<input style="zoom: 1.5;"
+											   class="w3-input w3-border emailCheck"
+											   onclick="uncheckAllMail(this.name)"
+											   th:name="'emaildetails['+${stats.index}+'].primary'"
+											   id="CHECKBOX_PRIMARY_EMAIL0" type="checkbox" value="Yes">
+									</div>
+								</td>
+								<td>
+									<div th:if="${em.getEmailtype()!=0}">
+										<select id="CR_HR_EMAILTYPE" class="w3-select w3-border"
+												th:name="'emaildetails['+${stats.index}+'].emailtype'">
+											<option value="0" disabled selected></option>
+											<option th:each="eml : ${lovbinding.getEmailtypelov()}"
+													th:selected="${em.getEmailtype() eq eml.getId()}"
+													th:value="${eml.getId()}" th:text="${eml.getDescription()}" />
+										</select>
+									</div>
+									<div th:if="${em.getEmailtype()==0}">
+										<select id="CR_HR_EMAILTYPE" class="w3-select w3-border"
+												th:name="'emaildetails['+${stats.index}+'].emailtype'">
+											<option value="0" disabled selected></option>
+											<option th:each="eml : ${lovbinding.getEmailtypelov()}"
+													th:value="${eml.getId()}" th:text="${eml.getDescription()}" />
+											<span style="color: #ff0000"
+												  th:if='${bindingResult != null && bindingResult.getFieldError("emailtype")!=null}'
+												  th:text='${bindingResult.getFieldError("emailtype").getDefaultMessage()}'></span>
+										</select>
+									</div>
+								</td>
+								<td><input th:value="${em.getEmailaddress()}"
+										   class="w3-input w3-border"
+										   th:name="'emaildetails['+${stats.index}+'].emailaddress'"
+										   type="text"> <span style="color: #ff0000"
+															  th:if='${bindingResult != null && bindingResult.getFieldError("emailaddress")!=null}'
+															  th:text='${bindingResult.getFieldError("emailaddress").getDefaultMessage()}'></span>
+								</td>
+								<script th:inline="javascript">
+									/*<![CDATA[*/
+									window.globalCounter = parseInt(/*[[${stats.index+1}]]*/);
+									/*]]>*/
+								</script>
+								<td th:if="${stats.index!=0}" style="width: 5%"><input
+										flg="email" class="w3-btn w3-theme" id="deleteemail"
+										type="button" value="x"></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<!-----------------------------Multiple row email details end here-------------------------------------------->
+		<div class="w3-row">
+			<h5 class="w3-text-theme" style="font-weight: bold">Legislative Information</h5>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getMaritaldetails().getMaritalstatus()!=0}">
+						<label>Marital Status</label>
+						<select id="CR_HR_MARITAL_STATUS" class="w3-select w3-border" name="maritaldetails.maritalstatus">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getMaritalstatuslov()}"
+									th:selected="${newperson.getMaritaldetails().getMaritalstatus() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getMaritaldetails().getMaritalstatus()==0}">
+						<label>Marital Status</label>
+						<select id="CR_HR_MARITAL_STATUS" class="w3-select w3-border" name="maritaldetails.maritalstatus">
+							<option value="0" disabled selected></option>
+							<option
+									th:each="lovbinding : ${lovbinding.getMaritalstatuslov()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getReligiondetails().getReligion()!=0}">
+						<label>Caste</label>
+						<select id="CR_HR_RELIGION"  class="w3-select w3-border" name="religiondetails.religion">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getReligionlov()}"
+									th:selected="${newperson.getReligiondetails().getReligion() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getReligiondetails().getReligion()==0}">
+						<label>Caste</label>
+						<select id="CR_HR_RELIGION"  class="w3-select w3-border" name="religiondetails.religion">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getReligionlov()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p id="MARRIAGE_DATE" style="display: none;">
+						<label>Marriage Date</label>
+						<input th:value="${newperson.getMaritaldetails().getMerriagedate()}" class="w3-input w3-border" name="jobdata.merriagedate" id="CR_HR_MRG_DATE" type="date" data-date="" data-date-format="YYYY MM DD" />
+					</p>
+				</div>
+				<div class="w3-half">
+
+				</div>
+			</div>
+		</div>
+		<div class="w3-row">
+			<h5 class="w3-text-theme" style="font-weight: bold">Bank Details</h5>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Bank Name</label>
+						<input class="w3-input w3-border" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" name="bankaccountdetails.bankname" type="text" th:value="${newperson.getBankaccountdetails().getBankname()}">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Bank Address</label>
+						<input class="w3-input w3-border" name="bankaccountdetails.bankaddress"  type="text" th:value="${newperson.getBankaccountdetails().getBankaddress()}">
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Account Holder Name</label>
+						<input class="w3-input w3-border" name="bankaccountdetails.accountholdername" oninput="this.value=this.value.replace(/[^a-zA-Z. ]/g,'').replace(/(\..*)\./g,'$1');" type="text" th:value="${newperson.getBankaccountdetails().getAccountholdername()}">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>IFSC</label>
+						<input class="w3-input w3-border" oninput="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/(\..*)\./g,'$1');" name="bankaccountdetails.branchifsccode" type="text" th:value="${newperson.getBankaccountdetails().getBranchifsccode()}">
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Account Number</label>
+						<input class="w3-input w3-border" oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"  name="bankaccountdetails.bankaccountnumber" type="text" th:value="${newperson.getBankaccountdetails().getBankaccountnumber()}">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getBankaccountdetails().getAccounttype() == '' or newperson.getBankaccountdetails().getAccounttype() == null}">
+						<label>Account Type</label>
+						<select class="w3-select w3-border" name="bankaccountdetails.accounttype">
+							<option disabled selected></option>
+							<!-- <option th:each="acctype : ${acctype}" th:value="${acctype}" th:text="${acctype}"></option> -->
+							<option th:each="acctype : ${acctype}"th:value="${acctype.getDescription()}" th:text="${acctype.getDescription()}"></option>
+						</select>
+					</p>
+					<p th:if="${newperson.getBankaccountdetails().getAccounttype()!='' and newperson.getBankaccountdetails().getAccounttype()!=null}">
+						<label>Account Type</label>
+						<select class="w3-select w3-border" name="bankaccountdetails.accounttype">
+							<option th:value="${newperson.getBankaccountdetails().getAccounttype()}" th:text="${newperson.getBankaccountdetails().getAccounttype()}" selected hidden></option>
+							<option th:each="acctype : ${acctype}"th:value="${acctype.getDescription()}" th:text="${acctype.getDescription()}"></option>
+						</select>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="w3-row-padding">
+			<p>
+				<input type="button" class="w3-button w3-theme w3-grey"
+					   onclick="sendHireData('identificationdetail')" value="Previous">
+				<input type="button" class="w3-button w3-theme w3-grey"
+					   onclick="sendHireData('employmentInformation')" value="Next">
+			</p>
+		</div>
+	</div>
+	<div id="HIRE_LOADER" class="w3-modal" style="display: none">
+		<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+	</div>
+	<script src="/js/hireEmployee.js"></script>
+</div>
+<!--------------------------------- Person Information End here ---------------------------------------->
+<!--------------------------------- Employment Information start here ---------------------------------------->
+<div th:fragment="employmentInformation">
+	<input type="hidden" value="" id="cmd" name="cmd">
+	<input type="hidden" value="employmentInformation" id="current_cmd" name="currentcmd">
+	<input type="hidden" id="hidBU"  name="hidBU" />
+	<input type="hidden" id="hidJOB" name="hidJOB" />
+	<input type="hidden" id="hidDEPT" name="hidDEPT" />
+	<input type="hidden" id="hidPOS" name="hidPOS" />
+	<input type="hidden" id="hidLOC" name="hidLOC" />
+	<input type="hidden" id="hidWRKLOC" name="hidWRKLOC" /><input type="hidden" id="hidMNGR" name="hidMNGR" />
+	<div id="employmentInformationdiv" class="w3-container w3-border hire">
+		<div class="w3-row">
+			<h5 style="font-weight: bold" class="w3-text-theme">Assignment</h5>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getHrstatus()!=0}">
+						<label>HR Status</label><span style="color: red"> *</span>
+						<select id="CR_HR_STATUS" class="w3-select w3-border" name="jobdata.hrstatus">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getHrstatuslov()}"
+									th:selected="${newperson.getJobdata().getHrstatus() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("hrstatus")!=null}' th:text='${bindingResult.getFieldError("hrstatus").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getJobdata().getHrstatus()==0}">
+						<label>HR Status</label><span style="color: red"> *</span>
+						<select id="CR_HR_STATUS" class="w3-select w3-border" name="jobdata.hrstatus">
+							<option value="0" disabled selected></option>
+							<option th:each="hrstatus : ${lovbinding.getHrstatuslov()}"
+									th:value="${hrstatus.getId()}"
+									th:text="${hrstatus.getDescription()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("hrstatus")!=null}' th:text='${bindingResult.getFieldError("hrstatus").getDefaultMessage()}'></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getPayrollstatus()==null}">
+						<label>Payroll Status</label> <span style="color: red"> *</span>
+						<select id="CR_PAYROLL_STAT" class="w3-select w3-border" name="jobdata.payrollstatus">
+							<option th:each="status : ${status}" th:selected="${status == 'Active'}" th:value="${status}" th:text="${status}">
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("payrollstatus")!=null}' th:text='${bindingResult.getFieldError("payrollstatus").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getJobdata().getPayrollstatus()!=null}">
+						<label>Payroll Status</label> <span style="color: red"> *</span>
+						<select id="CR_PAYROLL_STAT" class="w3-select w3-border" name="jobdata.payrollstatus">
+							<option th:each="status : ${status}" th:selected="${newperson.getJobdata().getPayrollstatus() eq status}" th:value="${status}" th:text="${status}">
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("payrollstatus")!=null}' th:text='${bindingResult.getFieldError("payrollstatus").getDefaultMessage()}'></span>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getBussinessunit()!=0}">
+						<label>Business Unit</label><span style="color: red"> *</span>
+						<select id="businessUnit" name="jobdata.bussinessunit" class="w3-select w3-border" data-toggle="modal" onchange="buchange()">
+							<option id="2" selected th:value="${newperson.getJobdata().getBussinessunit()}" th:text="${newperson.getBuname()}"></option>
+							<option value="search" data-toggle="modal" id="btnsearchLegal">Search....</option>
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("bussinessunit")!=null}' th:text='${bindingResult.getFieldError("bussinessunit").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getJobdata().getBussinessunit()==0}">
+						<label>Business Unit</label><span style="color: red"> *</span>
+						<select id="businessUnit" class="w3-select w3-border" name="jobdata.bussinessunit" data-toggle="modal" onchange="buchange()">
+							<option id="1" value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option value="search" data-toggle="modal" id="btnsearch2">Search....</option>
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("bussinessunit")!=null}' th:text='${bindingResult.getFieldError("bussinessunit").getDefaultMessage()}'></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getDepartments()!=0}">
+						<label>Department</label><span style="color: red"> *</span>
+						<select id="DEPT_LOV" name="jobdata.departments" class="w3-select w3-border" data-toggle="modal">
+							<option id="2" selected th:value="${newperson.getJobdata().getDepartments()}" th:text="${newperson.getDepartname()}"></option>
+							<option value="search" data-toggle="modal" id="btnsearchLegal">Search....</option>
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("departments")!=null}' th:text='${bindingResult.getFieldError("departments").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getJobdata().getDepartments()==0}">
+						<label>Department</label><span style="color: red"> *</span>
+						<select id="DEPT_LOV" class="w3-select w3-border" name="jobdata.departments" data-toggle="modal" disabled>
+							<option id="1" value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option value="search" data-toggle="modal" id="OPTIONSEARCH">Search....</option>
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("departments")!=null}' th:text='${bindingResult.getFieldError("departments").getDefaultMessage()}'></span>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getPositionnumber()!=0}">
+						<label>Position</label><span style="color: red"> *</span>
+						<select id="POS_LOV" name="jobdata.positionnumber" class="w3-select w3-border" data-toggle="modal">
+							<option id="2" selected th:value="${newperson.getJobdata().getPositionnumber()}" th:text="${newperson.getPositionname()}"></option>
+							<option value="search" data-toggle="modal" id="btnsearchLegal">Search....</option>
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("positionnumber")!=null}' th:text='${bindingResult.getFieldError("positionnumber").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getJobdata().getPositionnumber()==0}">
+						<label>Position</label><span style="color: red"> *</span>
+						<select id="POS_LOV" class="w3-select w3-border" name="jobdata.positionnumber" data-toggle="modal" disabled>
+							<option id="1" value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option value="search" data-toggle="modal" id="OPTIONSEARCH">Search....</option>
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("positionnumber")!=null}' th:text='${bindingResult.getFieldError("positionnumber").getDefaultMessage()}'></span>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getJobcode()!=0}">
+						<label>Job Code</label><span style="color: red"> *</span>
+						<select id="JOBS_LOV" name="jobdata.jobcode" class="w3-select w3-border" data-toggle="modal">
+							<option id="2" selected th:value="${newperson.getJobdata().getJobcode()}" th:text="${newperson.getJobname()}"></option>
+							<option value="search" data-toggle="modal" id="btnsearchLegal">Search....</option>
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("jobcode")!=null}' th:text='${bindingResult.getFieldError("jobcode").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getJobdata().getJobcode()==0}">
+						<label>Job Code</label><span style="color: red"> *</span>
+						<select id="JOBS_LOV" class="w3-select w3-border" name="jobdata.jobcode" data-toggle="modal" disabled>
+							<option id="1" value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option value="search" data-toggle="modal" id="OPTIONSEARCH">Search....</option>
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("jobcode")!=null}' th:text='${bindingResult.getFieldError("jobcode").getDefaultMessage()}'></span>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Grade Pay</label>
+						<input th:value="${newperson.getJobdata().getGradpay()}" style="height: 38px" class="w3-input w3-border" name="jobdata.gradpay" id="CR_HR_GRADE_PAY" type="text">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getPayrollgroupid()!=0}">
+						<label>Pay Group</label><span style="color: red"> *</span>
+						<select id="CR_ENT_WRK_PAY" name="jobdata.payrollgroupid" class="w3-select w3-border" data-toggle="modal">
+							<option th:each="lovbinding : ${lovbinding.getPaygroupLOV()}"
+									th:selected="${newperson.getJobdata().getPayrollgroupid() eq lovbinding.getPaygroupid()}"
+									th:value="${lovbinding.getPaygroupid()}"
+									th:text="${lovbinding.getName()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && (bindingResult.getFieldError("payrollgroupid")!=null || bindingResult.getFieldError("payrollgroupdsc")!=null) }' th:text='${bindingResult.getFieldError("payrollgroupid").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getJobdata().getPayrollgroupid()==0}">
+						<label>Paygroup</label><span style="color: red"> *</span>
+						<select id="CR_ENT_WRK_PAY" class="w3-select w3-border" name="jobdata.payrollgroupid" data-toggle="modal" >
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getPaygroupLOV()}"
+									th:value="${lovbinding.getPaygroupid()}"
+									th:text="${lovbinding.getName()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && (bindingResult.getFieldError("payrollgroupid")!=null || bindingResult.getFieldError("payrollgroupdsc")!=null) }' th:text='${bindingResult.getFieldError("payrollgroupid").getDefaultMessage()}'></span>
+					</p>
+					<input type="hidden" id="paygroup" name="jobdata.payrollgroupdsc" th:value="${newperson.getJobdata().getPayrollgroupdsc()}" />
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getBaselocation()!=0}">
+						<label>Base Location</label>
+						<select id="CR_ENT_LOC_CODE" name="jobdata.baselocation" class="w3-select w3-border" data-toggle="modal">
+							<option th:each="lovbinding : ${lovbinding.getLocationLOV()}"
+									th:selected="${newperson.getJobdata().getBaselocation() eq lovbinding.getLocationid()}"
+									th:value="${lovbinding.getLocationid()}"
+									th:text="${lovbinding.getName()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getJobdata().getBaselocation()==0}">
+						<label>Base Location</label>
+						<select id="CR_ENT_LOC_CODE" class="w3-select w3-border" name="jobdata.baselocation" data-toggle="modal" >
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getLocationLOV()}"
+									th:value="${lovbinding.getLocationid()}"
+									th:text="${lovbinding.getName()}" />
+						</select>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getWorklocation()!=0}">
+						<label>Work Location</label><span style="color: red"> *</span>
+						<select id="CR_ENT_WRK_LOC_CODE" name="jobdata.worklocation" class="w3-select w3-border" data-toggle="modal">
+							<option th:each="lovbinding : ${lovbinding.getLocationLOV()}"
+									th:selected="${newperson.getJobdata().getWorklocation() eq lovbinding.getLocationid()}"
+									th:value="${lovbinding.getLocationid()}"
+									th:text="${lovbinding.getName()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && (bindingResult.getFieldError("worklocation")!=null || bindingResult.getFieldError("worklocation")!=null) }' th:text='${bindingResult.getFieldError("worklocation").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getJobdata().getWorklocation()==0}">
+						<label>Work Location</label><span style="color: red"> *</span>
+						<select id="CR_ENT_WRK_LOC_CODE" class="w3-select w3-border" name="jobdata.worklocation" data-toggle="modal" >
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getLocationLOV()}"
+									th:value="${lovbinding.getLocationid()}"
+									th:text="${lovbinding.getName()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && (bindingResult.getFieldError("worklocation")!=null || bindingResult.getFieldError("worklocation")!=null) }' th:text='${bindingResult.getFieldError("worklocation").getDefaultMessage()}'></span>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Working Hours</label>
+						<input th:value="${newperson.getJobdata().getWorkinghours()}" style="height: 38px" class="w3-input w3-border" name="jobdata.workinghours" id="CR_HE_WRK_HRS" type="text">
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getWorkingasamanager()!=0}">
+						<label>Working as a Manager</label><span style="color: red"> *</span>
+						<select id="CR_HE_WRK_AS_MNGR" class="w3-select w3-border" name="jobdata.workingasamanager">
+							<option value="" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getWorkingmanagerlov()}"
+									th:selected="${newperson.getJobdata().getWorkingasamanager() eq lovbinding.getDescription()}"
+									th:value="${lovbinding.getDescription()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("workingasamanager")!=null}'  th:text='${bindingResult.getFieldError("workingasamanager").getDefaultMessage()}'></span>
+					</p>
+					<p th:if="${newperson.getJobdata().getWorkingasamanager()==0}">
+						<label>Working as a Manager</label><span style="color: red"> *</span>
+						<select id="CR_HE_WRK_AS_MNGR" class="w3-select w3-border" name="jobdata.workingasamanager">
+							<option id="2" value="0"></option>
+							<option th:each="manager : ${lovbinding.getWorkingmanagerlov()}"
+									th:value="${manager.getDescription()}"
+									th:selected="${manager.getDescription() eq 'No'}"
+									th:text="${manager.getDescription()}" />
+						</select>
+						<span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("workingasamanager")!=null}' th:text='${bindingResult.getFieldError("workingasamanager").getDefaultMessage()}'></span>
+					</p>
+					<!--<p th:if="${newperson.getJobdata().getAssignmentcategory()!=0}">
+						<label>Assignment Category</label>
+						<select id="ASSIGN_CAT" class="w3-select w3-border" name="jobdata.assignmentcategory">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getAssignmentcatlov()}"
+									th:selected="${newperson.getJobdata().getAssignmentcategory() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getJobdata().getAssignmentcategory()==0}">
+						<label>Assignment Category</label>
+						<select id="ASSIGN_CAT" class="w3-select w3-border" name="jobdata.assignmentcategory">
+							<option value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option th:each="assign : ${lovbinding.getAssignmentcatlov()}"
+									th:value="${assign.getId()}"
+									th:text="${assign.getDescription()}" />
+						</select>
+					</p>-->
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getRegulartemporary()!=0}">
+						<label>Regular or Temporary</label>
+						<select id="REGorTEMP_LOV" class="w3-select w3-border" name="jobdata.regulartemporary">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getRegulartemplov()}"
+									th:selected="${newperson.getJobdata().getRegulartemporary() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getJobdata().getAssignmentcategory()==0}">
+						<label>Regular or Temporary</label>
+						<select id="REGorTEMP_LOV" class="w3-select w3-border" name="jobdata.regulartemporary">
+							<option value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option th:each="regortemp : ${lovbinding.getRegulartemplov()}"
+									th:value="${regortemp.getId()}"
+									th:text="${regortemp.getDescription()}" />
+						</select>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p th:if="${newperson.getJobdata().getFulltimeparttime()!=0}">
+						<label>Full Time or Part Time</label>
+						<select id="FULL_PART_TIME_LOV" class="w3-select w3-border" name="jobdata.fulltimeparttime">
+							<option value="0" disabled selected></option>
+							<option th:each="lovbinding : ${lovbinding.getFullpartlov()}"
+									th:selected="${newperson.getJobdata().getFulltimeparttime() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getJobdata().getFulltimeparttime()==0}">
+						<label>Full Time or Part Time</label>
+						<select id="FULL_PART_TIME_LOV" class="w3-select w3-border" name="jobdata.fulltimeparttime">
+							<option value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option th:each="regortemp : ${lovbinding.getFullpartlov()}"
+									th:value="${regortemp.getId()}"
+									th:text="${regortemp.getDescription()}" />
+						</select>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>FTE</label>
+						<input th:value="${newperson.getJobdata().getFte()}" name="jobdata.fte" style="height: 38px" class="w3-input w3-border" id="FTE_INPUT" type="text" readonly/>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Head Count</label>
+						<input th:value="${newperson.getJobdata().getHeadcount()}" style="height: 38px" name="jobdata.headcount" class="w3-input w3-border" id="HEAD_CNT_INPUT" type="text" readonly/>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+
+				</div>
+				<div class="w3-half">
+
+				</div>
+			</div>
+
+		</div>
+
+		<!-------------------------- POPUP  FOR BU SEARCH START HERE  --------------------------->
+		<!-- LINE MODAL -->
+		<!-----------------------------Multiple row manager details start here-------------------------------------------->
+		<div class="w3-container">
+			<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+			<div class="w3-padding-large">
+				<h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display:inline;">Manager Details</h5>
+				<input onclick="addrowmanager();" class="w3-right w3-btn w3-theme w3-round-large" type="button" id="addmgr" value="+" />
+			</div>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+			<div class="w3-padding ">
+				<div class="w3-padding-large">
+					<table id="MGR_DET_TBL" class="display compact w3-table"
+						   style="width: 100%;">
+						<thead>
+						<th style="text-align: center;">Manager Name</th>
+						<th style="text-align: center">Manager Id</th>
+						<th style="text-align: center;">Type</th>
+						<th></th>
+						<th></th>
+						</thead>
+						<tbody>
+						<tr th:each="entry ,stats: ${(newperson.getManagertypes())}">
+							<td style="width: 30%">
+								<div th:if="${entry.getSupervisorid()!=0}">
+									<select id="MGR0" name="managertypes[0].supervisorname"
+											onchange="mgrchange(0)" class="w3-select w3-border"
+											data-toggle="modal">
+										<option id="2" selected
+												th:value="${entry.getSupervisorname()}"
+												th:text="${entry.getSupervisorname()}"></option>
+										<option value="search" data-toggle="modal"
+												id="btnsearchLegal">Search....</option>
+									</select>
+								</div>
+								<div th:if="${entry.getSupervisorid()==0}">
+									<select id="MGR0" class="w3-select w3-border"
+											name="managertypes[0].supervisorname" onchange="mgrchange(0)"
+											data-toggle="modal" disabled>
+										<option id="1" value="0" disabled selected></option>
+										<option id="2" value="0"></option>
+										<option value="search" data-toggle="modal" id="OPTIONSEARCH">Search....</option>
+									</select>
+								</div>
+							</td>
+							<td style="width: 30%;"><input class="w3-input w3-border"
+														   th:id="'MNGR_ID'+${stats.index}"
+														   th:value="${entry.getSupervisorid()}"
+														   th:name="'managertypes['+${stats.index}+'].supervisorid'"
+														   type="text"> <!--	<span style="color:#ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("emailaddress")!=null}' th:text='${bindingResult.getFieldError("emailaddress").getDefaultMessage()}'></span>
+						 <input th:value="${em.getEmailaddress()}"
+										class="w3-input w3-border"
+										th:name="'managertypes['+${stats.index}+'].emailaddress'" type="text">
+										<span style="color:#ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("emailaddress")!=null}' th:text='${bindingResult.getFieldError("emailaddress").getDefaultMessage()}'></span>
+						 --></td>
+							<td style="width: 30%">
+								<div th:if="${entry.getManagertype()!=0}">
+									<select id="CR_HR_MGR_TYPE" class="w3-select w3-border"
+											th:name="'managertypes['+${stats.index}+'].managertype'">
+										<option
+												th:each="managertype : ${lovbinding.getManagertypelov()}"
+												th:selected="${entry.getManagertype() eq managertype.getId()}"
+												th:value="${managertype.getId()}"
+												th:text="${managertype.getDescription()}" />
+									</select>
+								</div>
+								<div th:if="${entry.getManagertype()==0}">
+									<select id="CR_HR_MGR_TYPE" class="w3-select w3-border"
+											th:name="'managertypes[0].managertype'">
+										<option value="0" disabled selected></option>
+										<option
+												th:each="managertype : ${lovbinding.getManagertypelov()}"
+												th:value="${managertype.getId()}"
+												th:text="${managertype.getDescription()}" />
+									</select>
+									<!--<span style="color:red" th:if='${bindingResult != null && bindingResult.getFieldError("countryid")!=null}' th:text='${bindingResult.getFieldError("countryid").getDefaultMessage()}'></span>
+-->
+								</div>
+							</td>
+							<td th:if="${stats.index!=0}" style="width: 10%"><input
+									th:index="${stats.index}" flg="manager" class="w3-btn w3-theme"
+									id="deletemgr" type="button" value="x"> <!--<input class="w3-btn  w3-theme" type="button" value="+" onclick="addRowNowNATID();"/>
+                                    --></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-----------------------------Multiple row manager details end here-------------------------------------------->
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div class="w3-row">
+			<h5 class="w3-text-theme" style="font-weight: bold">Notice and Probation Details</h5>
+			<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Probation Period</label>
+					</p>
+					<input th:value="${newperson.getJobdata().getProbationuom()}" class="w3-input w3-border w3-half" name="jobdata.probationuom" id="PROB_INPUT" type="text" style="width: 50%; display: inline-block;" />
+					<div th:if="${newperson.getJobdata().getProbationperiod()!=0}">
+						<select id="PROBPERIOD_LOV" class="w3-select w3-border" name="jobdata.probationperiod" style="width: 50%">
+							<option value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option th:each="lovbinding : ${lovbinding.getProbationlov()}"
+									th:selected="${newperson.getJobdata().getProbationperiod() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</div>
+					<div th:if="${newperson.getJobdata().getProbationperiod()==0}">
+						<select id="PROBPERIOD_LOV" class="w3-select w3-border" name="jobdata.probationperiod" style="width: 50%">
+							<option value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option th:each="probation : ${lovbinding.getProbationlov()}"
+									th:value="${probation.getId()}"
+									th:text="${probation.getDescription()}" />
+						</select>
+					</div>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Notice Period</label>
+					</p>
+					<input th:value="${newperson.getJobdata().getNoticeperiod()}" name="jobdata.noticeperiod" class="w3-input w3-border w3-half" d="NOTICE_INPUT" type="text" style="width: 50%; display: inline-block;" />
+					<div th:if="${newperson.getJobdata().getNoticeperiodtype()!=0}">
+						<select id="NOTICEPERIOD_LOV" class="w3-select w3-border" name="jobdata.noticeperiodtype" style="width: 50%">
+							<option value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option th:each="lovbinding : ${lovbinding.getNoticelov()}"
+									th:selected="${newperson.getJobdata().getNoticeperiodtype() eq lovbinding.getId()}"
+									th:value="${lovbinding.getId()}"
+									th:text="${lovbinding.getDescription()}" />
+						</select>
+					</div>
+					<div th:if="${newperson.getJobdata().getNoticeperiodtype()==0}">
+						<select id="NOTICEPERIOD_LOV" class="w3-select w3-border" name="jobdata.noticeperiodtype" style="width: 50%">
+							<option value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option th:each="notice : ${lovbinding.getNoticelov()}"
+									th:value="${notice.getId()}"
+									th:text="${notice.getDescription()}" />
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p>
+						<label>Probation End Date</label>
+						<input th:value="${newperson.getJobdata().getProbationenddate()}" class="w3-input w3-border" name="jobdata.probationenddate" id="CR_HR_PRJ_END_DATE" type="date" data-date="" data-date-format="YYYY MM DD" />
+					</p>
+				</div>
+				<div class="w3-half">
+
+				</div>
+			</div>
+		</div>
+
+		<div class="w3-container">
+			<p>
+				<input type="button" class="w3-button w3-theme w3-grey"
+					   onclick="sendHireData('personaldetail')" value="Previous">
+				<input type="button" class="w3-button w3-theme w3-grey"
+					   onclick="sendHireData('compensation')" value="Next">
+			</p>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+	</div>
+
+	<div id="HIRE_LOADER" class="w3-modal" style="display: none">
+		<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+	</div>
+
+	<!-- POPUPS START HERE -->
+	<div id="id03" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<h3 align="left">Search and Select:Business Unit</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="SRCH_NAME" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="SRCH_CODE" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="BU_SEARCH" onclick="Busearch()"
+												class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="buresultSec" class="w3-responsive" style="display: none">
+							<table id="BU_LIST" class="display compact w3-table"
+								   style="width: 100%;">
+								<thead>
+								<tr class="w3-theme-d3">
+									<th>Name</th>
+									<th>Code</th>
+									<th>BU Set</th>
+									<th>Status</th>
+									<th>Business Unit Id</th>
+									<th>Dataset Id</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataBU" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="BU_POP_OK" class="w3-button w3-theme w3-grey"
+										style="display: none">OK</button>
+								<button id="BU_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!------------------------- POPUP END HERE ------------------------->
+	<!-- -------------POPUP FOR DEPT ON BU START------------ -->
+	<!-- line modal -->
+	<div id="id08" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<h3 align="left">Select: Department</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div id="deptburesultSec" class="w3-responsive"
+							 style="display: none">
+							<table id="DEPTBU_LIST1" class="display compact w3-table"
+								   style="width: 100%;">
+								<thead>
+								<tr class="w3-theme-d3">
+									<th>Name</th>
+									<th>Code</th>
+									<th>Effective Start Date</th>
+									<th>Dataset</th>
+									<th>Status</th>
+									<th>Department Id</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataDEPTBU" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="DEPTBU_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="DEPTBU_POP_CANCEL"
+										class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- -------------POPUP FOR DEPT ON BU END------------ -->
+	<!-- ----------------------POPUP FOR POS ON BU START------------------------- -->
+	<!-- LINE MODAL -->
+	<div id="id07" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+							onclick="document.getElementById('id07').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Select:Position</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="SRCH_NAME" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="SRCH_CODE" type="text">
+									</div>
+								</div>
+								<!-- <div class="w3-row w3-section">
+                                    <div class="w3-col" style="width: 80px">Status:</div>
+                                    <div class="w3-rest">
+                                        <select id="SRCH_STATUS" class="w3-select w3-border"
+                                                name="option">
+                                            <option value="" disabled selected></option>
+                                            <option th:each="status : ${status}" th:value="${status}"
+                                                    th:text="${status}">
+                                        </select>
+                                    </div>
+                                </div> -->
+							</div>
+						</div>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="POS_SEARCH"
+												class="w3-button w3-theme w3-grey w3-padding-4">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="posresultSec1" class="w3-responsive"
+							 style="display: none">
+							<table id="POS_LIST1" class="display compact w3-table"
+								   style="width: 100%;">
+								<thead>
+								<tr class="w3-theme-d3">
+									<th>Name</th>
+									<th>Code</th>
+									<th>Department</th>
+									<th>Job</th>
+									<th>Status</th>
+									<th>Start Date</th>
+									<th>Position Id</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataPOS1" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right" style="margin-top: 5px">
+								<button id="POS_POP_OK1" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="POS_POP_CANCEL1" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- -------------POPUP FOR POS ON BU END------------ -->
+	<!-- Popup  for Department Search Start here  -->
+	<!-- line modal -->
+	<div id="id02" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<h3 align="left">Search and Select:Department</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="DEPT_NAME" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="DEPT_CODE" type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section" style="display: none">
+									<div class="w3-col" style="width: 80px;">Dataset:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="DEPT_DATASET" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="DEPT_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="deptresultSec" class="w3-responsive"
+							 style="display: none">
+							<table id="DEPTBU_LIST" class="display compact w3-table"
+								   style="width: 100%;">
+								<thead>
+								<tr class="w3-theme-d3">
+									<th>Name</th>
+									<th>Code</th>
+									<th>Effective Start Date</th>
+									<th>Dataset</th>
+									<th>Status</th>
+									<th>Department Id</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataDEPT" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="CR_DEP_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="CR_ENT_DEP_CANCEL"
+										class="w3-button w3-theme w3-grey"
+										onclick="document.getElementById('id02').style.display='none'">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- PopUp End Here -->
+	<div id="id0Manager" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+							onclick="document.getElementById('id03').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Search and Select:Manager</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">First Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" id="MGR_SRCH_NAME"
+											   type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Person Number:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" id="MGR_SRCH_CODE"
+											   type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="MGR_SRCH" onclick="mgrsearch()"
+												class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="mgrresultSec" class="w3-responsive" style="display: none">
+							<table id="MGR_LIST" class="display compact w3-table"
+								   style="width: 100%;">
+								<thead>
+								<tr class="w3-theme-d3">
+									<th>Name</th>
+									<th>Person Number</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataMGR" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="MGR_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="MGR_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Popup  for Location Search Start here  -->
+	<!-- line modal -->
+	<div id="id01" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+							onclick="document.getElementById('id01').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Search and Select:Location</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="CR_ENT_POP_NAME" type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="CR_ENT_POP_CODE" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Country:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="CR_ENT_POP_CNTRY" type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Status:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="CR_ENT_POP_STATUS" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="CR_ENT_POP_SEARCH"
+												class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="resultSec" class="w3-responsive" style="display: none">
+							<table id="EnterpriseList" class="display compact w3-table"
+								   style="width: 100%;">
+								<thead>
+								<tr class="w3-theme-d3">
+									<th>Name</th>
+									<th>Code</th>
+									<th>Country</th>
+									<th>State</th>
+									<th>Status</th>
+									<th></th>
+									<th></th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataLOcation" class="w3-responsive"
+							 style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="CR_ENT_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="CR_ENT_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- PopUp End Here -->
+	<!-- Popup  for JOB Search Start here  -->
+	<!-- line modal -->
+	<div id="id04" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+							onclick="document.getElementById('id04').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Search and Select:Job Code</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="JOB_NAME" type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											   id="JOB_CODE" type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Dataset:</div>
+									<div class="w3-rest">
+										<select id="JOB_DATASET" class="w3-select w3-border"
+												name="option">
+											<option value="" disabled selected></option>
+											<option th:each="datasets: ${datasets}"
+													th:value="${datasets.getDescription()}"
+													th:text="${datasets.getDescription()}">
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Effective Start
+										Date:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border"
+											   name="EffectiveStartDate" id="JOB_EFFDT" type="date"
+											   data-date="" data-date-format="YYYY MM DD" />
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Status:</div>
+									<div class="w3-rest">
+										<select id="JOB_STATUS" class="w3-select w3-border"
+												name="option">
+											<option value="" disabled selected></option>
+											<option th:each="status : ${status}" th:value="${status}"
+													th:text="${status}">
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="JOB_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="jobresultSec" class="w3-responsive" style="display: none">
+							<table id="JobList" class="display compact w3-table"
+								   style="width: 100%;">
+								<thead>
+								<tr class="w3-theme-d3">
+								<tr class="w3-theme-d3">
+									<th>Name</th>
+									<th>Code</th>
+									<th>Dataset</th>
+									<th>Eff.Start date</th>
+									<th>status</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataJOB" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="JOB_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="JOB_POP_CANCEL" class="w3-button w3-theme w3-grey"
+										onclick="document.getElementById('id04').style.display='none'">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- PopUp End Here -->
+	<!-- -------------POPUP FOR JOBS ON BU START------------ -->
+	<!-- line modal -->
+	<div id="id09" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+							onclick="document.getElementById('id09').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Select: Job</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div id="jobsburesultSec" class="w3-responsive"
+							 style="display: none">
+							<table id="JOBSBU_LIST" class="display compact w3-table"
+								   style="width: 100%;">
+								<thead>
+								<tr class="w3-theme-d3">
+									<th>Name</th>
+									<th>Code</th>
+									<th>Effective Start Date</th>
+									<th>Dataset</th>
+									<th>Status</th>
+									<th>Job Id</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataJOBSBU" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="JOBSBU_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="JOBSBU_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- -------------POPUP FOR JOBS ON BU END------------ -->
+	<script src="/js/hireEmployee.js"></script>
+</div>
+<!--------------------------------- Compensation Information start here ---------------------------------------->
+<div th:fragment="compensation">
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		natofempl = /*[[${newperson.getNaturename()}]]*/;
+		console.log(natofempl);
+		/*]]>*/
+	</script>
+	<input type="hidden" value="" id="cmd" name="cmd">
+	<input type="hidden" value="compensation" id="current_cmd" name="currentcmd">
+	<input type="hidden" id="hidGRADE" name="hidGRADE" />
+	<div id="compensation" class="w3-container w3-border hire">
+
+		<div class="w3-row">
+
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getSalarybasis().getGrade()!=0}">
+						<label>Grade</label>
+						<select id="gradesLOV" name="salarybasis.grade" class="w3-select w3-border" data-toggle="modal" onchange="gradechange()">
+							<option id="2" selected th:value="${newperson.getSalarybasis().getGrade()}" th:text="${newperson.getGradename()}"></option>
+							<option value="search" data-toggle="modal" id="btnsearchLegal">Search....</option>
+						</select>
+					</p>
+					<p th:if="${newperson.getSalarybasis().getGrade()==0}">
+						<label>Grade</label>
+						<select id="gradesLOV" class="w3-select w3-border" name="salarybasis.grade" data-toggle="modal" onchange="gradechange()">
+							<option id="1" value="0" disabled selected></option>
+							<option id="2" value="0"></option>
+							<option value="search" data-toggle="modal" id="btnsearch2">Search....</option>
+						</select>
+					</p>
+				</div>
+				<div class="w3-half">
+					<div id="GRADE_STEP_BLOCK">
+						<p th:if="${newperson.getSalarybasis().getGradesteps()==0 and newperson.getNaturename()=='IDA'}">
+							<label>Grade Step</label>
+							<select id="COMP_GRADE_STEP" class="w3-select w3-border" name="salarybasis.gradesteps" disabled>
+								<option disabled>Select Grade</option>
+							</select>
+						</p>
+						<p th:if="${newperson.getSalarybasis().getGradesteps()==0 and newperson.getNaturename()!='IDA'}">
+							<label>Grade Step</label>
+							<select id="COMP_GRADE_STEP" class="w3-select w3-border" name="salarybasis.gradesteps" >
+								<option id="1" disabled>Select Grade</option>
+							</select>
+						</p>
+						<p th:if="${newperson.getSalarybasis().getGradesteps()!=0 and newperson.getNaturename()=='IDA'}">
+							<label>Grade Step</label>
+							<select id="COMP_GRADE_STEP" class="w3-select w3-border" name="salarybasis.gradesteps" disabled>
+								<option id="1" value="0" disabled selected></option>
+								<option th:each="gradestep : ${lovbinding.getGradesteplov()}"
+										th:selected="${newperson.getSalarybasis().getGradesteps() eq gradestep.getGradestepid()}"
+										th:value="${gradestep.getGradestepid()}"
+										th:text="${gradestep.getStepname()}"
+										th:amt="${gradestep.getStepamount()}"/>
+							</select>
+						</p>
+						<p th:if="${newperson.getSalarybasis().getGradesteps()!=0 and newperson.getNaturename()!='IDA'}">
+							<label>Grade Step</label>
+							<select id="COMP_GRADE_STEP" class="w3-select w3-border" name="salarybasis.gradesteps">
+								<option id="1" value="0" disabled selected></option>
+								<option th:each="gradestep : ${lovbinding.getGradesteplov()}"
+										th:selected="${newperson.getSalarybasis().getGradesteps() eq gradestep.getGradestepid()}"
+										th:value="${gradestep.getGradestepid()}"
+										th:text="${gradestep.getStepname()}"
+										th:amt="${gradestep.getStepamount()}"/>
+							</select>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getSalarybasis().getSalarytype()==0}">
+						<label>Type</label>
+						<select id="COMP_TYPE" class="w3-select w3-border" name="salarybasis.salarytype">
+							<option id="1" value="0" disabled selected></option>
+							<option th:each="type : ${lovbinding.getSaltypeLOV()}"
+									th:value="${type.getId()}"
+									th:text="${type.getDescription()}" />
+						</select>
+					</p>
+					<p th:if="${newperson.getSalarybasis().getSalarytype()!=0}">
+						<label>Type</label>
+						<select id="COMP_TYPE" class="w3-select w3-border" name="salarybasis.salarytype">
+							<option id="1" value="0" disabled selected></option>
+							<option th:each="type : ${lovbinding.getSaltypeLOV()}" th:value="${type.getId()}" th:selected="${newperson.getSalarybasis().getSalarytype() eq type.getId()}" th:text="${type.getDescription()}" />
+						</select>
+					</p>
+				</div>
+				<div class="w3-half">
+					<p>
+						<label>Frequency</label>
+						<select id="COMP_FREQ" class="w3-select w3-border" name="salarybasis.frequency" >
+							<option id="1" value="0" disabled selected></option>
+							<option th:each="freq : ${lovbinding.getFreqLOV()}" th:value="${freq.getId()}" th:selected="${newperson.getSalarybasis().getFrequency() eq freq.getId()}" th:text="${freq.getDescription()}" />
+						</select>
+					</p>
+				</div>
+			</div>
+			<div class="w3-row-padding">
+				<div class="w3-half">
+					<p th:if="${newperson.getNaturename()!='CDA'}">
+						<label>Salary Amount</label>
+						<input th:value="${newperson.getSalarybasis().getRateofpay()}" style="height: 38px" name="salarybasis.rateofpay" class="w3-input w3-border" id="COMP_SALARY_AMT" type="text" />
+					</p>
+					<p th:if="${newperson.getNaturename() =='CDA'}">
+						<label>Salary Amount</label>
+						<input th:value="${newperson.getSalarybasis().getRateofpay()}" style="height: 38px" name="salarybasis.rateofpay" class="w3-input w3-border" id="COMP_SALARY_AMT" type="text" disabled/>
+					</p>
+				</div>
+				<div class="w3-half">
+
+				</div>
+			</div>
+		</div>
+
+		<div class="w3-container">
+			<p>
+				<input type="button" class="w3-button w3-theme w3-grey"
+					   onclick="sendHireData('employmentInformation')" value="Previous">
+				<!-- <button id="SAVE_HIRE_BTN" class="w3-button w3-theme w3-grey">Submit</button> -->
+				<input type="button" onclick="sendHireData('Save');"
+					   class="w3-button w3-theme w3-grey" id="positionCreate"
+					   value="Submit" />
+			</p>
+		</div>
+	</div>
+	<div id="HIRE_LOADER" class="w3-modal" style="display: none">
+		<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+	</div>
+	<!--************************** Popup  for Grade Search Start here ******************** -->
+	<!-- line modal -->
+	<div id="id06" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright"
+							onclick="document.getElementById('id06').style.display='none'">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h3 align="left">Search and Select:Grade</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" id="SRCH_CODE"
+											   type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" id="SRCH_NAME"
+											   type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Status:</div>
+									<div class="w3-rest">
+										<select id="statusList" class="w3-select w3-border"
+												name="option">
+											<option value="" disabled selected></option>
+											<option th:each="status : ${status}" th:value="${status}"
+													th:text="${status}">
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="GRADE_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="graderesultSec" class="w3-responsive"
+							 style="display: none">
+							<table id="GRADE_LIST" class="display compact w3-table"
+								   style="width: 100%;">
+								<thead>
+								<tr class="w3-theme-d3">
+									<th>Name</th>
+									<th>Code</th>
+									<th>Status</th>
+									<th>Data Set</th>
+									<th>Grades ID</th>
+								</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noDataGrade" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="GRADE_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+								<button id="GRADE_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- PopUp End Here -->
+	<script src="/js/hireEmployee.js"></script>
+</div>
+<!--*******************************************SEARCH POPUPS START HERE************************************-->

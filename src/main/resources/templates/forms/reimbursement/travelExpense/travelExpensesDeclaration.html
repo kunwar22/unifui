@@ -1,0 +1,144 @@
+<div th:fragment="travelExpensesRequest">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<div class="w3-main">
+		<div class="row">
+			<img src="/images/UPMRCL.png">
+		</div>
+		<br>
+		<hr style="color: black;margin-bottom:15px;">
+		<div>
+			<table border="1" style="width: 100%;border-collapse:collapse;">
+				<tr style="border-top: 2px solid black;border-bottom: 2px solid black;">
+					<th colspan="3" style="height: 30px;width:75%;">Travel Expenses Request</th>
+					<th style="width:25%;text-align:right;vertical-align: bottom;">Date:
+						<script
+							type="text/javascript">var d = new Date(); document.write(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear());</script>
+				</tr>
+				<tr style="height: 50px;">
+					<td>
+
+						<strong><label>Employee No:&nbsp;</label></strong>
+						<label th:text="${personInfo.getPersonnumber()}"></label>
+					</td>
+					<td>
+
+						<strong><label>Name:&nbsp;</label></strong>
+						<label th:text="${personInfo.getPersonname()}">990</label>
+					</td>
+					<td>
+
+						<strong><label>Type:&nbsp;</label></strong>
+						<label th:text="${personInfo.getEmployeetype()}">990</label>
+					</td>
+
+					<td>
+
+						<strong><label>Designation:&nbsp;</label></strong>
+						<label th:text="${personInfo.getDesignation()}">990</label>
+					</td>
+				</tr>
+				<tr style="height: 50px;border-bottom: 2px solid black;">
+					<td>
+
+						<strong><label>Base Location:&nbsp;</label></strong>
+						<label th:text="${personInfo.getBaselocation()}">990</label>
+					</td>
+					<td>
+
+						<strong><label>Work Location:&nbsp;</label></strong>
+						<label th:text="${personInfo.getWorklocation()}">990</label>
+					</td>
+					<td>
+
+						<strong><label>Hire Date:&nbsp;</label></strong>
+						<label th:text="${personInfo.getJoiningdate()}">990</label>
+					</td>
+					<td>
+						<strong><label>Vehicle Used:&nbsp;</label></strong>
+						<label th:text="${personInfo.getVehicleused()}">990</label>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br />
+		<div>
+			<table border="0" style="width: 100%;border-collapse:collapse;">
+				<tr>
+					<th colspan="4" style="height: 50px;">Travel Expense Summary</th>
+				</tr>
+				<tr>
+					<td>
+
+						<strong><label>Tour Intimation No. </label></strong>
+						<label th:text="NA"></label>
+					</td>
+					<td>
+
+						<strong><label>From:&nbsp;</label></strong>
+						<label class="tdate" th:text="${travelDetails.getTravelingdatefrom()}">990</label>
+					</td>
+					<td>
+
+						<strong><label>To &nbsp;</label></strong>
+						<label class="tdate" th:text="${travelDetails.getTravelingdateto()}">990</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+
+						<strong><label>Travel Advance &nbsp;</label></strong>
+						<label th:text="${travelDetails.getTraveladvance()}">990</label>
+					</td>
+					<td>
+
+						<strong><label>Visiting Country1 &nbsp;</label></strong>
+						<label th:text="${travelDetails.getFirstcountry()}">990</label>
+					</td>
+					<td>
+
+						<strong><label>Country2 &nbsp;</label></strong>
+						<label th:text="${travelDetails.getSecondcountry()}">990</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong><label>Visiting City1 &nbsp;</label></strong>
+						<label th:text="${travelDetails.getFirstcity()}">990</label>
+					</td>
+					<td>
+						<strong><label>City2 &nbsp;</label></strong>
+						<label th:text="${travelDetails.getSecondcity()}">990</label>
+					</td>
+					<td>
+						<strong><label>City3 &nbsp;</label></strong>
+					<!--	<label th:text="none">990</label>-->
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br />
+		<div>
+			<table id="result_table" border="1" cellpadding="10" style="width: 100%;border-collapse: collapse;">
+				<thead>
+					<th>Travel Date</th>
+					<th>Expense Type</th>
+					<th>Expenses Description</th>
+					<th>Amount Paid</th>
+					<th>Currency</th>
+				</thead>
+				<th:block th:each="exp, stats: ${travelDetails.getExpensedetails()}">
+					<tr>
+						<td class="tdate" th:text="${exp.traveldate}">Hello</td>
+						<td th:text="${exp.expencetype}">Hello</td>
+						<td th:text="${exp.expencedescription}">Hello</td>
+						<td th:text="${exp.amountpaid}">Hello</td>
+						<td th:text="INR"></td>
+					</tr>
+				</th:block>
+			</table>
+		</div>
+		<br/>
+		<hr style="color: black;border-color: black;"/>
+	</div>
+	<script src="/js/reimbursement/travelReimbursement/travelpopup.js"></script>
+</div>	

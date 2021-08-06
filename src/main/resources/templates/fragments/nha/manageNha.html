@@ -1,0 +1,82 @@
+<div th:fragment="manageNha">
+	<form method="post" id="NHA_SAVE" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+		<div class="w3-row">
+			<div class="w3-half w3-container">
+				<h5 class="w3-text-theme" style="margin-top: 25px; bottom: 2px;">Grant
+					New National Holiday Allowance</h5>
+
+				<div class="w3-padding-large w3-border ">
+					<table id="nhaTable" class="display compact w3-table" style="width: 100%;">
+						<thead>
+							<tr>
+								<th style="text-align: center;">Name</th>
+								<th style="text-align: center;">Date</th>
+								<th style="text-align: center;">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="hd,stats:${holiday}">
+							<td style="display:none;">
+								<input type="text" id="pno" th:value="${pno}" th:name="'createnha['+${stats.index}+'].personnumber'"/>
+								<input type="text" id="locationid" th:value="${locationid}" th:name="'createnha['+${stats.index}+'].location'"/>
+								<input type="text" id="holidayid" th:value="${hd.getHolidayid()}" th:name="'createnha['+${stats.index}+'].holidayid'"/>
+								</td>
+								<td style="text-align: center;">
+									<input type="text" th:name="'createnha['+${stats.index}+'].holidayname'" th:value="${hd.getHolidayname()}" class="w3-input w3-border" readonly/>
+								</td>
+								<td style="text-align: center;">
+									<input type="text" th:name="'createnha['+${stats.index}+'].period'" th:value="${hd.getHolidaydate()}" class="w3-input w3-border" readonly/></td>
+								<td style="text-align: center;">
+									<input type="checkbox" name="nhacheck" th:id="'chk'+${stats.index}" class="nhacheck w3-check w3-border" th:onclick="|setStatus(this.id,'st${stats.index}')|"/>
+									<input type="hidden" value="Inactive" th:id="'st'+${stats.index}" th:name="'createnha['+${stats.index}+'].status'" class="status" />
+									</td>
+							</tr>
+						</tbody>
+						<tfoot>
+						<tr>
+							<td colspan="3" style="text-align: right;">
+								<button id="hnaCreate" class="w3-btn w3-theme" onclick="saveNha();">Submit</button>
+							</td>
+						</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+			
+			<div class="w3-half w3-container">
+				<h5 class="w3-text-theme" style="margin-top: 25px; bottom: 2px;">NHA History</h5>
+				<div id="search_results" class="w3-padding-large w3-border ">
+					<table border="1" id="nhaHistory" class="display compact w3-table">
+						<thead>
+							<tr>
+								<th style="text-align: center;">Name</th>
+								<th style="text-align: center;">Date</th>
+								<!-- <th>&nbsp;</th>	 -->		
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="his:${nhahistory}">
+								<td style="text-align: center;">
+									<label style="color:black;" th:text="${his.getHolidayname()}">Holiday Name</label>
+								</td>
+								<td style="text-align: center;">
+								<label style="color:black;" th:text="${his.getPeriod()}">Holiday Date</label>
+								</td>
+								<!-- <td><div type="button" class="w3-btn w3-theme" id="btnDel"><i class="fa fa-trash"></i></div>  -->								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div id="noData" class="w3-responsive" style="display: none">
+								<p>No record found...</p>
+				</div>
+						
+			</div>
+			
+		</div>
+
+	</form>
+	
+		<script src="/js/nha/createNHA.js"></script>
+</div>

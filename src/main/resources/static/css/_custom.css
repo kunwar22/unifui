@@ -1,0 +1,410 @@
+.fa-arrow-circle-left:hover{
+    color: #4daaf6;
+}
+.fa-arrow-circle-up:hover{
+    color: #4daaf6;
+}
+label{
+    margin-bottom: 0 !important;
+    color: #736F6F;
+}
+* {
+    scrollbar-color: #0A4C95  #C2D2E4;
+    scrollbar-width: thin;
+}
+
+table{
+	font-size: 12px;
+}
+.my-hover:hover{
+    cursor: pointer;
+}
+.buttonbarmargin{
+    margin-right: 8px;
+}
+.buttonbarpadding{
+    padding-top: 16px;
+    padding-bottom: 24px;
+}
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+.w3-sidebar {
+    z-index: 3;
+    width: 350px;
+    top: 52px;
+    bottom: 0;
+    height: inherit;
+}
+::-webkit-scrollbar {
+    width: 2px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+div.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+b.icon-change:hover .fa-folder:before{
+    content:"\f07c";
+}
+ed.editUser:hover .fa-pencil-square-o:before{
+    content:"\f14b";
+}
+.disabled {
+    pointer-events: none;
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+.hrline{
+    border: 1px solid black;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.divTable {
+    display:table;
+    width:100%
+}
+.divTr {
+    display:table-row;
+}
+.d1 {
+    display:table-cell;
+    width:60%
+}
+.d2 {
+    display:table-cell;
+    text-align:right;
+    width:40%
+}
+.dataTables_length {
+    margin-top: 6px;
+}
+.dataTables_filter {
+    margin-bottom: 5px;
+}
+.rowMarTop{
+    margin-top: 6px;
+}
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0px !important;
+    height: 40px;
+    padding: 5px 5px !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    cursor: text;
+    padding-bottom: 11px;
+    padding-right: 5px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #888 transparent transparent transparent;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+    height: 0;
+    left: 50%;
+    margin-left: -4px;
+    margin-top: -2px;
+    position: absolute;
+    top: 70% !important;
+    width: 0;
+}
+
+.CodeMirror {
+    /* Bootstrap Settings */
+    box-sizing: border-box;
+    margin: 0;
+    font: inherit;
+    overflow: auto;
+    font-family: inherit;
+    display: block;
+    width: 100%;
+    /*padding: 6px 12px;*/
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    /*border-radius: 4px;*/
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    /* Code Mirror Settings */
+    font-family: monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.CodeMirror-focused {
+    /* Bootstrap Settings */
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.my-li-border{
+    border-bottom: 1px solid #ddd;
+}
+
+.my-p-margin{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+
+/***ADDED BY UTSAV FOR ICON BAR AND SIDEBAR***/
+
+/* Fixed/sticky icon bar (vertically aligned 50% from the top of the screen) */
+
+.icon-bar {
+  position: fixed;
+  top: 50%;
+  z-index:5;
+  /*-webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);*/
+}
+
+/* Style the icon bar links */
+.icon-bar a {
+  display: block;
+  text-align: center;
+  padding: 16px;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 20px;
+}
+
+/* Style the social media icons with color, if you want */
+.icon-bar a:hover {
+  background-color: #000;
+}
+
+.sideselect {
+  background-color: #607d8b;
+  color: #fff;
+}
+/*
+
+input[type="date"]::-webkit-datetime-edit, input[type="date"]::-webkit-inner-spin-button, input[type="date"]::-webkit-clear-button {
+    color: #fff;
+    position: relative;
+}
+
+input[type="date"]::-webkit-datetime-edit-year-field{
+    position: absolute !important;
+    padding: 2px;
+    color:#000;
+    left: 50px;
+}
+
+input[type="date"]::-webkit-datetime-edit-month-field{
+    position: absolute !important;
+    padding: 2px;
+    color:#000;
+    left: 26px;
+}
+
+
+input[type="date"]::-webkit-datetime-edit-day-field{
+    position: absolute !important;
+    color:#000;
+    padding: 2px;
+    left: 4px;
+
+}
+*/
+
+/***********************************/
+
+
+
+/**************************update by ravi for apprroval**************************/
+
+@import url("https://fonts.googleapis.com/css?family=Mukta:300,400,700");
+.tooltip,
+.container__sources:before,
+.container__build:before,
+.container__deploy:before {
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    color: #fff;
+    background: #ffb238;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2.5px;
+}
+.card,
+.container__sources div,
+.container__build div {
+    line-height: 2;
+    background: #fff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px #e6e6e6;
+}
+
+
+.tick{
+    background-color: #56d50f;
+    border-radius: 14px;
+    padding: 4px;
+    color: white;}
+
+.cancel{
+    background-color: #ff1e1e;
+    border-radius: 14px;
+    padding: 4px;
+    color: white;}
+
+.pending{
+    background-color: #e1ca05;
+    border-radius: 14px;
+    padding: 4px;
+    color: white;}
+
+
+/*.container {
+    margin: 5vh 2.5vw;
+    padding: 15vh 0;
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}*/
+.container svg {
+    height: 5rem;
+}
+.container svg line {
+    stroke: #5f39dd;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-dasharray: 2px 20px;
+    animation: animateline 5s linear both infinite;
+}
+
+.container__sources {
+    display: flex;
+    border-radius: 8px;
+    padding: 1.5rem;
+    /*background: #f9f9f9;*/
+    position: relative;
+}
+
+.container__sources div {
+    text-align: left;
+    margin: 0 1rem;
+}
+.container__build {
+    padding: 10vh 10vw;
+    border-radius: 8px;
+    background: #f9f9f9;
+    position: relative;
+}
+.container__build:before {
+    content: 'build';
+}
+.container__build div {
+    margin: 2rem 0;
+    float:left
+}
+.container__build div svg {
+    width: 4rem;
+    height: auto;
+    fill: #5f39dd;
+}
+.container__deploy {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    position: relative;
+}
+.container__deploy:before {
+    content: 'deploy';
+}
+@media (max-width: 700px) {
+    .container__sources {
+        flex-direction: column;
+    }
+    .container__sources div {
+        margin: 1rem 0;
+    }
+}
+
+.svghor{
+    display: block;
+    float:left;
+    margin-top: -116px;
+    margin-left: 172px;
+    position: absolute;
+}
+.svgver {
+    display: none;
+}
+
+@media (max-width: 500px) {
+    .svghor{
+        display: none;
+    }
+    .svgver {
+        display: block;
+    }
+}
+@-moz-keyframes animateline {
+    from {
+        stroke-dashoffset: 0;
+    }
+    to {
+        stroke-dashoffset: -5rem;
+    }
+}
+@-webkit-keyframes animateline {
+    from {
+        stroke-dashoffset: 0;
+    }
+    to {
+        stroke-dashoffset: -5rem;
+    }
+}
+@-o-keyframes animateline {
+    from {
+        stroke-dashoffset: 0;
+    }
+    to {
+        stroke-dashoffset: -5rem;
+    }
+}
+@keyframes animateline {
+    from {
+        stroke-dashoffset: 0;
+    }
+    to {
+        stroke-dashoffset: -5rem;
+    }
+}
+
+

@@ -1,0 +1,213 @@
+<div th:fragment="salaryCard">
+<style>
+.container {
+            width: 100%;
+			overflow-x: auto;
+			overflow-y: auto;
+            white-space: nowrap;
+        }
+
+#salcard{
+	border-collapse: collapse;
+			border: 1px solid black;
+            width: 90%;
+            font-size: 14px;
+			margin-left: 3px;
+}
+
+td,th
+{
+	border:1px solid black;
+}
+.coloured
+{
+	color: black;
+}
+
+
+h2, table {
+	margin: 0;
+	padding: 0;
+}
+</style>
+    <div class="w3-main" style="margin-top: 15px; margin-bottom: 16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom"></div>
+        </div>
+		<div class="container" >
+		
+			<table border="0" id="salcard" style="width:100%">
+			
+			<tr>
+                    <th colspan="4"><h5 style="text-align: center;font-weight: bold;">UTTAR PRADESH METRO RAIL CORPORATION LIMITED</h5></th>
+                </tr>
+                
+
+	<th:block th:each="salcard:${salarycard}">
+		<tr style="font-size: 13px;">
+			<td style="border:0px; width: 25%;" ><b>Employee: &nbsp;&nbsp; </b><label class="coloured"
+				th:text="${salcard.getPerson_number()}"></label></td>
+			<td colspan="4" style="border:0px; width: 25%;"  ><b>Joining Date: &nbsp;&nbsp; </b> <label class="coloured" th:text="${salcard.getJoining_date()}"></label></td>
+		</tr>
+
+		<tr style="font-size: 13px;">
+			<td style="border:0px; width: 25%;" ><b>Name: &nbsp;&nbsp; </b><label class="coloured"
+				th:text="${salcard.getPerson_name()}"></label</td>
+			<td colspan="4" style="border:0px; width: 25%;" ><b>Designation: &nbsp;&nbsp; </b><label class="coloured"
+				th:text="${salcard.getDesignation()}"></label></td>
+		</tr>
+
+		<tr>
+			<td style="border:0px;" colspan="5">&nbsp;</td>
+		</tr>
+
+		<tr>
+			<th colspan="4" align="left" style="font-size: 15px;">Earnings</th>
+		</tr>
+		<tr align="left" style="font-size: 13px;">
+			<th  style="width: 25%">Payroll Element Name</th>
+			<th style="text-align:right; width:25%;" th:text="${salcard.getPre_cal()}"></th>
+			<th style="text-align:right; width:25%;" th:text="${salcard.getCur_cal()}"></th>
+			<th style="text-align:right; width:25%;">Total</th>
+		</tr>
+
+		<th:block th:each="earn:${salcard.elem}" 
+			th:if="${earn.getElement_type()=='er'  and earn.getPrev_amt() != '0.0' and earn.getCur_amt() != '0.0' and earn.getTot_amt() != '0.0'}">
+			<tr>
+				<td id="s" style="width: 25%" align="left"
+					th:text="${earn.getElement_name()}"></td>
+				<td id="s" style="width: 25%" align="right" 
+					th:text="${earn.getPrev_amt()}"></td>
+				<td id="s" style="width: 25%" align="right" 
+					th:text="${earn.getCur_amt()}"></td>
+				<td id="s" style="width: 25%" align="right" 
+					th:text="${earn.getTot_amt()}"></td>
+			</tr>
+		</th:block>
+		<tr style="font-size: 13px;">
+			<td id="s" align="left" style="width: 25%;"><b>Total Earnings(A)</b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_earn_pre_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_earn_cur_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_earn_tot_pay}"></label></b></td>
+		</tr>
+
+		<tr>
+			<th colspan="4" align="left" style="font-size: 15px;">Deductions</th>
+		</tr>
+		<tr align="left" style="font-size: 13px;">
+			<th style="width: 25%;">Payroll Element Name</th>
+			<th style="text-align:right; width: 25%;" th:text="${salcard.getPre_cal()}"></th>
+			<th style="text-align:right; width: 25%;" th:text="${salcard.getCur_cal()}"></th>
+			<th style="text-align:right; width: 25%;">Total</th>
+		</tr>
+
+		<th:block th:each="ded:${salcard.elem}"
+			th:if="${ded.getElement_type()=='de' and (ded.getPrev_amt() != '0.0' or ded.getCur_amt() != '0.0' or ded.getTot_amt() != '0.0')}">
+			<tr>
+				<td id="s" align="left" style="width: 25%;" th:text="${ded.getElement_name()}"></td>
+				<td id="s" align="right" style="width: 25%;" th:text="${ded.getPrev_amt()}"></td>
+				<td id="s" align="right" style="width: 25%;" th:text="${ded.getCur_amt()}"></td>
+				<td id="s" align="right" style="width: 25%;" th:text="${ded.getTot_amt()}"></td>
+			</tr>
+		</th:block>
+
+		<tr style="font-size: 13px;">
+			<td id="s" align="left" style="width: 25%;"><b>Total Deductions(B)</b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_ded_pre_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_ded_cur_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_ded_tot_pay}"></label></b></td>
+		</tr>
+
+		<tr>
+			<th colspan="4">&nbsp;</th>
+		</tr>
+
+		<tr style="font-size: 13px;">
+			<td id="s" align="right" style="width: 25%;"><b>Net Salary(A-B)</b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_netPrev_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_netCur_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_netTot_pay}"></label></b></td>
+		</tr>
+
+		<tr>
+			<th colspan="4">&nbsp;</th>
+		</tr>
+
+		<tr>
+			<th colspan="4" align="left" style="font-size: 15px;">Employer
+				Contributions</th>
+		</tr>
+		<tr align="left" style="font-size: 13px;">
+			<th style="width: 25%;">Payroll Element Name</th>
+			<th style="text-align:right; width: 25%;" th:text="${salcard.getPre_cal()}"></th>
+			<th style="text-align:right; width: 25%;" th:text="${salcard.getCur_cal()}"></th>
+			<th style="text-align:right; width: 25%;">Total</th>
+		</tr>
+
+		<th:block th:each="earn:${salcard.elem}"
+			th:if="${earn.getElement_type()=='st' and earn.getPrev_amt() != '0.0' and earn.getCur_amt() != '0.0' and earn.getTot_amt() != '0.0' and earn.getElement_name() != 'Total Earning' and earn.getElement_name() != 'Total Deduction' and earn.getElement_name() != 'Net Pay'}">
+			<tr>
+				<td id="s" align="left" style="width: 25%;" th:text="${earn.getElement_name()}"></td>
+				<td id="s" align="right" style="width: 25%;" th:text="${earn.getPrev_amt()}"></td>
+				<td id="s" align="right" style="width: 25%;" th:text="${earn.getCur_amt()}"></td>
+				<td id="s" align="right" style="width: 25%;" th:text="${earn.getTot_amt()}"></td>
+			</tr>
+		</th:block>
+		
+		<tr style="font-size: 13px;" >
+			<td id="s" align="left" style="width: 25%;"><b>Total Contributions(B)</b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_emp_pre_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_emp_cur_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_emp_tot_pay}"></label></b></td>
+		</tr>
+	
+
+		<tr>
+			<th colspan="4" align="left" style="font-size: 15px;">Perquisites</th>
+		</tr>
+		<tr  style="font-size: 13px;">
+			<th style="width: 25%;">Payroll Element Name</th>
+			<th style="text-align:right; width: 25%;" th:text="${salcard.getPre_cal()}"></th>
+			<th style="text-align:right; width: 25%;" th:text="${salcard.getCur_cal()}"></th>
+			<th style="text-align:right; width: 25%;">Total</th>
+		</tr>
+
+		<th:block th:each="earn:${salcard.elem}"
+			th:if="${earn.getElement_type()=='sp' and earn.getPrev_amt() != '0.0' and earn.getCur_amt() != '0.0' and earn.getTot_amt() != '0.0'}">
+			<tr>
+				<td id="s" align="left" style="width: 25%;" th:text="${earn.getElement_name()}"></td>
+				<td id="s" align="right" style="width: 25%;" th:text="${earn.getPrev_amt()}"></td>
+				<td id="s" align="right" style="width: 25%;" th:text="${earn.getCur_amt()}"></td>
+				<td id="s" align="right" style="width: 25%;" th:text="${earn.getTot_amt()}"></td>
+			</tr>
+		</th:block>
+
+		<tr style="font-size: 13px;">
+			<td id="s" align="left" style="width: 25%;"><b>Total Perquisites</b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_per_pre_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_per_cur_pay}"></label></b></td>
+			<td id="s" align="right" style="width: 25%;"><b><label class="coloured"
+					th:text="${sum_per_tot_pay}"></label></b></td>
+		</tr>
+	</th:block>
+</table>
+		</div>
+		
+    </div>
+    <!--<script src="/js/hrreports/reports.js"></script>-->
+<script src="/js/user/corehr/docRecord.js"></script>
+</div>

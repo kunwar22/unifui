@@ -1,0 +1,86 @@
+<div th:fragment="PFBulkUpload">
+    <style>
+        .file-upload {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/bootbox/bootstrap.min.css">
+    <script src="/js/bootbox/bootstrap.min.js"></script>
+    <div class="w3-container" style="margin-top:14px;">
+        <div class="w3-bar w3-theme-l5" style="margin-top: 16px; margin-bottom: 24px;">
+            <h4 class="w3-text-theme w3-bar-item"><i class="fas fa-cloud-upload-alt"></i>&nbsp;&nbsp;PF Number Bulk Upload
+            </h4>
+        </div>
+
+        <div class="w3-row">
+            <h5 class="w3-text-theme w3-margin-left">Tips</h5>
+
+            <div>
+                <ul style="list-style-type:''; font-size: small;">
+                    <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Click here <span
+                            style="color: #e6b450;"><a id="downloadPFTemplate" 
+                                                       download>Download </a> </span>to download the Template.
+                    </li>
+                    <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Template should
+                        be filled in <span style="color: #f90e02;">Text Format only.</span></li>
+                    <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Kindly do not
+                        add or remove any column in the Template.
+                    </li>
+                    <li><i class="fas fa-check" style="color: rgb(0, 128, 255); margin-right:5px; "></i>Upload the
+                        updated Template.
+                    </li>
+                </ul>
+            </div>
+            <hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+        </div>
+        <br>
+
+
+        <div class="w3-row ">
+
+            <form method="post" id="PF_BULK_UPLOAD"
+                  enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+                <div class=w3-third>
+                    <div class="w3-container">
+                        <!--<input type="file" id="myFile" name="filename">-->
+                        <div class="input-group">
+                            <input type="text" class="form-control file-upload-text" disabled
+                                   placeholder="select a file..." id="file"/>
+                            <span class="input-group-btn">
+                              <button type="button" class="btn btn-info file-upload-btn">
+                                    Browse...
+                                    <input type="file" class="file-upload" id="myFile" name="filename"/>
+                                </button>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+            <div class=w3-third>
+                <div class="w3-container">
+                    <div type="button" class="w3-btn w3-green w3-round-large" onclick="uploadPFBulkData();"
+                         id="UplaodPFTemplate">
+                        <i class="fas fa-upload"></i>&nbsp;&nbsp;Uplaod Template
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="PF_BULK_LOADER" class="w3-modal" style="display: none">
+            <div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i>
+            </div>
+        </div>
+
+        <script src="/js/bulkuploadjs/managePFBulk.js"></script>
+
+    </div>
+
+</div>

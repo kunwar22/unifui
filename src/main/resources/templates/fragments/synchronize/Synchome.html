@@ -1,0 +1,131 @@
+<div th:fragment="Synchome">
+    <style type="text/css">
+        .thstyle {
+            width: 50%;
+        }
+    </style>
+    <div id="SYNC_LOADER" class="w3-modal" style="display: none;">
+        <div class="w3-container" style="margin-top: 12px; text-align: center;"><i class="fa fa-cog fa-spin" style="font-size: 70px; color: white;"></i></div>
+    </div>
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom">
+                <h4 style="font-weight: 400; display: inline-block;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;" />
+                    <i class="fas fa-sync-alt" style="color: tomato;"></i>&nbsp;&nbsp;&nbsp;Synchronize
+                </h4>
+                <!--<input style="display:inline-block; th:if="" margin-top:10px;" value="Save" type="button" id="savebtn" onClick="saveEmailConfig();" class="w3-btn w3-theme w3-right w3-round-large"/>-->
+            </div>
+        </div>
+        <hr class="hrline" />
+
+        <div style="display:none;">
+			<input type="text" id="createdbyuser" th:value="${createdby}"/>
+		</div>
+
+        <div class="w3-row">
+            <div class="w3-full w3-container">
+                <div class="w3-bar w3-light-grey">
+                    <button class="w3-bar-item w3-button tablink role w3-theme" onclick="openTab(event,'ROLE_SYNC_TAB');">Sync Role</button>
+                    <button class="w3-bar-item w3-button tablink login" onclick="openTab(event,'LOGIN_SYNC_TAB');">Sync Login</button>
+                </div>
+
+                <div id="ROLE_SYNC_TAB" class="rightpane w3-container w3-border w3-white">
+                    <div type="button" class="w3-btn w3-blue w3-right w3-round-large w3-margin-top" id="roleassign" onclick="myFunction();"><i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;&nbsp;Assign</div>
+                    <form method="post" id="ASSIGN_ROLE_MAPPING" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+                        <div class="w3-row">
+                            <div class="w3-quarter w3-container">
+                                <p>
+                                    <label class="w3-text-black">Mapping Name</label><span style="color: red;">*</span>
+                                    <select name="mappingname" id="mappingname" class="w3-select w3-border w3-round" onchange="disableerr();">
+                                        <option selected disabled></option>
+                                        <option th:each="mn:${mappingname}" th:text="${mn.getMappingname()}" th:value="${mn.getAutomappid()}"></option>
+                                    </select>
+                                    <!--<input type="text" id="mappingname" name="mappingname" class="w3-input w3-border w3-round" />-->
+                                    <span style="color: #ff0000; display: none;" id="mapnameerr">Select Mapping Name</span>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="w3-row">
+                        <div class="w3-full w3-container">&nbsp;</div>
+                    </div>
+                    
+                    <div class="w3-row">
+                        <div id="divRole" class="w3-container w3-full w3-margin-top" style="display:none;">                        	
+                        	<form id="roleMappings" enctype="application/x-www-form-urlencoded" onsubmit="return false;" method="POST">
+                        		<table id="allottedroles" class="w3-table-all" style="width:100%;">
+	                        		<thead>
+	                        			<tr>
+	                        				<th><input onclick="checkuncheckAll(this.id)" id="checkuncheckRolebtn" type="checkbox" class="w3-check checkClickOk" checked> </th>
+		                        			<!-- <th>Role Map Id</th> -->
+		                        			<th>Login Id</th>
+		                        			<th>Role Id</th>
+		                        			<th>Role Name</th>
+		                        			<!-- <th>Created By</th> -->
+	                        			</tr>
+	                        		</thead>
+	                        	</table>
+	                        	<div id="bulkRoleSave" class="w3-bar-item w3-right" style="margin-top: 1px; display: block; ">
+									<div type="button" style="float:left;margin-right: 20px;" class="w3-btn w3-blue w3-round-large" onclick="bulkRoleSave();" id="btnSaveRole"> <i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Save Roles</div>
+								</div>
+                        	</form>
+                       	</div>
+                        	
+                       	<div id="noData" class="w3-container w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-full w3-container">&nbsp;</div>
+                    </div>
+                </div>
+                
+                
+                <div id="LOGIN_SYNC_TAB" class="rightpane w3-container w3-border w3-white" style="display: none;">
+                <th:block th:each="ud,stats : ${userdetails}">
+					<div th:if="${stats.count > 0}" type="button" class="w3-btn w3-blue w3-right w3-round-large w3-margin-top" id="roleassign" onclick="syncLogin();"><i class="fas fa-sync-alt" aria-hidden="true"></i>&nbsp;&nbsp;Sync</div>
+				</th:block>
+					<div class="w3-row">
+                        <div class="w3-full w3-container">&nbsp;</div>
+                    </div>
+					<form method="post" id="SYNC_LOGIN" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+						
+                        <div class="w3-row">
+                            <div class="w3-full w3-container">                            
+                                <table border="1" id="usrdet" class="w3-table-all" th:if="${userdetails.length >0}">
+									<thead>
+										<tr>
+											<th>S No</th>
+											<th>Login ID</th>
+											<th>Empl ID</th>
+											<th>Email ID</th>
+											<!--<th>&nbsp;</th>-->										
+										</tr>
+									</thead>
+									<th:block th:each="ud,stats : ${userdetails}">
+										<tbody>
+											<tr>
+												<td><label style="color: black;" th:text="${stats.count}"></label><input type="hidden" th:name="'id'+${stats.index}" th:id="'id'+${stats.index}" th:value="${ud.getId()}" /><input type="hidden" th:name="'createdby'+${stats.index}" th:id="'createdby'+${stats.index}" th:value="${createdby}" /></td>
+												<td><label style="color: black;" th:text="${ud.getLoginid()}"></label><input type="hidden" th:name="'loginid'+${stats.index}" th:id="'loginid'+${stats.index}" th:value="${ud.getLoginid()}" /></td>
+												<td><label style="color: black;" th:text="${ud.getEmplid()}"></label><input type="hidden" th:name="'emplid'+${stats.index}" th:id="'emplid'+${stats.index}" th:value="${ud.getEmplid()}" /></td>
+												<td><label style="color: black;" th:text="${ud.getEmailid()}"></label><input type="hidden" th:name="'emailid'+${stats.index}" th:id="'emailid'+${stats.index}" th:value="${ud.getEmailid()}" /></td>
+												<!--<th><input type="checkbox" th:name="'chk'+${stats.count}" th:id="'chk'+${stats.index}" th:value="${ud.getId()}"/></th>-->
+											</tr>
+										</tbody>
+									</th:block>
+								</table>
+                            </div>
+                        </div>
+                    </form>
+					<div class="w3-row">
+                        <div class="w3-full w3-container">&nbsp;</div>
+                    </div>
+				</div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/synchronize/sync.js"></script>
+</div>

@@ -1,0 +1,88 @@
+<div th:fragment="employeedetails_">
+<script th:inline="javascript">
+/*<![CDATA[*/   
+    var pnum = /*[[${pno}]]*/;
+    var pname = /*[[${pname}]]*/;
+    //alert(pnum);
+/*]]>*/
+</script>
+
+<div class="w3-container" style="overflow-y: scroll;">
+	
+	<div class="w3-margin-top w3-margin w3-bar">
+		<div class=" w3-col" style="width:10%">
+			<img th:if="${(propic.getDescription() !=null) and (propic.getDescription() !='')}" class="w3-circle" onclick="openpopup();" th:src="'/getContent?location='+${propic.getDescription()}" style="width:100px; height:100px; border:2px solid lightgray;"/>
+			<img th:if="${(propic.getDescription() == null) or (propic.getDescription() =='')}" class="w3-circle" onclick="openpopup();" src="/images/profile_pic.jpg" style="width:100px; height:100px; border:2px solid lightgray;"/>
+		</div>
+		<div class="w3-rest" style="width:90%">
+			<div class="w3-right">
+			<button type="button" id="PM_DONE_BTN" class="w3-button w3-theme w3-ripple " style=" margin-top:35px; margin-right:20px; ">Close</button>
+			</div>
+			<div>
+			<p>
+			<h3 style="font-weight:bold"><span id="Person_Name" th:text="${pname}"></span> : Person Management</h3>
+			</p>
+			<p>
+			<label style="font-weight:bold">Person Number</label>
+			<label th:text="${pno}"></label>
+			</p>
+			</div>
+			
+		</div>
+	</div>
+	<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+	
+	
+	
+	<div>		 
+	 	<div class="icon-bar">
+			<a class="w3-hover-theme my-hover w3-theme" id="floatingmenu1" style="margin-left:-35px; border-radius: 3px;"><i class="fas fa-chevron-circle-right" style="font-size: 18px; width: 16px; color: white;"></i></a>
+			<div id="myDiv" class="w3-display-left" style="display:none; margin-left:-35px;">
+			 	<div class="w3-container  w3-margin-top w3-margin-bottom w3-theme" style="border-bottom: 1px solid #eceff1;min-width:250px">
+		           <ul class="w3-ul w3-margin-bottom w3-margin-top">
+		               <li onclick="w3_close()" class="w3-hover-white my-hover" id="aor"><i class="fas fa-calendar-week" style="font-size: 18px; width: 16px; color: #dc762d;"></i>&nbsp;&nbsp;&nbsp;Area of Responsibility</li>
+		               <li onclick="w3_close()" class="w3-hover-white my-hover" id="personedit"><i class="fas fa-address-card" style="font-size: 16px; width: 16px; color: #e0d219;"></i>&nbsp;&nbsp;&nbsp;Person Details</li>
+		               <li onclick="w3_close()" class="w3-hover-white my-hover" id="employeedetailedit"><i class="fas fa-id-card-alt" style="font-size: 16px; width: 16px; color: #e806e8;"></i>&nbsp;&nbsp;&nbsp;Employment Details</li>
+					   <li onclick="w3_close()" class="w3-hover-white my-hover" id="pmdocrecord"><i class="far fa-id-card" style="font-size: 16px; width: 16px; color: #05af05;"></i>&nbsp;&nbsp;&nbsp;Document of Record</li>
+		               <li onclick="w3_close()" class="w3-hover-white my-hover" id="lwp" data-toggle="modal"><i class="fas fa-money-check" style="font-size: 16px; width: 16px; color: white;"></i>&nbsp;&nbsp;&nbsp;LWP</li>
+		          	   <li onclick="w3_close()" class="w3-hover-white my-hover" id="natholdyall"><i class="fas fa-business-time" style="font-size: 16px; width: 16px; color: #ff0000;"></i>&nbsp;&nbsp;&nbsp;NHA</li>
+					   <li onclick="w3_close()" class="w3-hover-white my-hover" id="termination"><i class="fas fa-door-open" style="font-size: 16px; width: 16px; color: #f79b7c"></i>&nbsp;&nbsp;&nbsp;Termination</li>
+					</ul>
+		       </div> 
+	 		</div>
+			<a class="w3-hover-theme my-hover w3-theme" id="floatingmenu2" style="display:none; border-radius: 3px;"><i class="fas fa-chevron-circle-left" style="font-size: 18px; width: 16px; color: white;"></i></a>
+		</div>		
+	</div> 
+	<!-- <div  class="" >
+	
+      <div id="myDiv" class="w3-container  w3-margin-top w3-margin-bottom w3-display-left" style="border-bottom: 1px solid #eceff1; margin-left:40px">
+            <ul class="w3-ul w3-margin-bottom">
+                <li onclick="w3_close()" class="w3-hover-theme my-hover" id="aor"><i class="fas fa-calendar-week" style="font-size: 18px; width: 16px; color: #dc762d;"></i>&nbsp;&nbsp;&nbsp;AOR</li>
+                <li onclick="w3_close()" class="w3-hover-theme my-hover" id="personedit"><i class="fas fa-address-card" style="font-size: 16px; width: 16px; color: #e0d219;"></i>&nbsp;&nbsp;&nbsp;Person</li>
+                <li onclick="w3_close()" class="w3-hover-theme my-hover" id="employeedetailedit"><i class="fas fa-balance-scale-right" style="font-size: 16px; width: 16px; color: #e806e8;"></i>&nbsp;&nbsp;&nbsp;Employee</li>
+            </ul>
+        </div> 
+ 	</div>
+ 	<div class="icon-bar">
+		  <a  class="w3-hover-theme my-hover w3-theme" id="floatingmenu" style="margin-left:-35px">></a>
+	</div> -->
+	</div>
+	
+	<!-- <div id="btncollapzion" class="btn_collapzion"></div>
+	 -->
+	 
+	<div class="w3-main">
+		<div class="w3-row">
+	   		<div class="w3-container">
+	     		<div id="div_replace">
+	     			
+	 			</div>
+	   		</div>
+	 	</div>
+	</div>
+	
+
+
+<script src="/js/employeedetailmaster.js"></script>
+<script src="/js/collapzion.min.js"></script>
+</div>

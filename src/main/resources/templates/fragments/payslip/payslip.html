@@ -1,0 +1,297 @@
+<div th:fragment="paySlip">
+	    <style type="text/css">
+        .container {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: auto;
+            white-space: nowrap;
+        }
+        #payslip {
+            border-collapse: collapse;
+            /* border: 1px solid black; */
+            width: 95%;
+            font-size: 14px;
+        }
+
+        .coloured {
+            color: black;
+        }
+    </style>
+
+    <div class="container">
+        <table border="0" id="payslip">
+            <tr>
+                <td>
+                    <table border="0" style="width: 100%; border-collapse: collapse;">
+                        <th:block th:each="paysliprep:${payrlsum}">
+                            <tr>
+                                <td colspan="4" style="border: 1px solid black;">
+                                    <img src="/images/lmrc.png" class="w3-image" style="width: 55px; height: 55px; float: left; border-right: 1px solid black;" />
+                                    <h4 style="text-align: center;">
+                                        <b>UTTAR PRADESH METRO RAIL CORPORATION LIMITED</b>
+                                    </h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <h5 align="center">Payslip for the month of <label class="coloured" th:text="${months}"></label></h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <table border="1" style="width: 100%;">
+                                        <tr align="left">
+                                            <td width="25%" style="background-color: #d9d9d9; font-weight: bold;"><b>Name</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getPersonname()}"></label></td>
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>Employee Number</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getPersonnumber()}"></label></td>
+                                        </tr>
+
+                                        <tr align="left">
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>Designation</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getDesignation()}"></label></td>
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>PAN Number</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getPannumber()}"></label></td>
+                                        </tr>
+
+                                        <tr align="left">
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>Scale</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getScale()}"></label></td>
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>PF Number</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getPfnumber()}"></label></td>
+                                        </tr>
+
+                                        <tr align="left">
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>Level</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getLevel()}"></label></td>
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>UAN Number</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getUannumber()}"></label></td>
+                                        </tr>
+
+                                        <tr align="left">
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>Working Days</b></td>
+                                            <td><label class="coloured" th:text="${paiddays}"></label></td>
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>PRAN Number</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getPrannumber()}"></label></td>
+                                        </tr>
+
+                                        <tr align="left">
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>DOB</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getDateofbirth()}"></label></td>
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>Department</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getDepartment()}"></label></td>
+                                        </tr>
+
+                                        <tr align="left">
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>DOJ in LMRC</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getJoiningdate()}"></label></td>
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>Aadhar Number</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getAadharnumber()}"></label></td>
+                                        </tr>
+
+                                        <tr align="left">
+                                            <td style="background-color: #d9d9d9; font-weight: bold;"><b>Month of Increment</b></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getMonthofincrement()}"></label></td>
+                                            <td><b>&nbsp;</b></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th style="width: 33%;">Earnings</th>
+                                <th style="width: 33%;">Deductions</th>
+                                <th style="width: 33%;" colspan="2">Employer Charges</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align: top; border-left: 0px; border-right: 0px; border-top: 0px; border-bottom: 0px;">
+                                    <table border="1" style="border-collapse: collapse; width: 98%;">
+                                        <tr>
+                                            <th align="left" style="width: 49%; background-color: #d9d9d9; font-weight: bold;"><b>Description</b></th>
+                                            <th style="width: 49%; text-align: right; background-color: #d9d9d9; font-weight: bold;"><b>Amount</b></th>
+                                        </tr>
+
+                                        <tbody>
+                                            <th:block th:each="earn:${paysliprep.payrolldata}">
+                                                <tr th:if="${earn.getElementtype() eq 'er' and earn.getPayamt() != '0.0'}">
+                                                    <td align="left" style="width: 49%;"><label class="coloured" th:text="${earn.getAbbreviation()}"></label></td>
+                                                    <td align="right" style="width: 49%;"><label class="coloured" th:text="${earn.getPayamt()}"></label></td>
+                                                </tr>
+                                            </th:block>
+                                        </tbody>
+
+                                        <th:block th:each="earn:${paysliprep.payrolldata}">
+                                            <tr th:if="${earn.getElementtype() eq 'st' and earn.getAbbreviation() eq 'Total Earning'}">
+                                                <td style="background-color: #d9d9d9; font-weight: bold;"><b>Total</b></td>
+                                                <td align="right" style="background-color: #d9d9d9; font-weight: bold;"><label class="coloured" th:text="${earn.getPayamt()}"></label></td>
+                                            </tr>
+                                        </th:block>
+                                    </table>
+                                </th>
+                                <th style="vertical-align: top; border-left: 0px; border-right: 0px; border-top: 0px; border-bottom: 0px;">
+                                    <table id="t02" border="1" style="border-collapse: collapse; width: 98%;">
+                                        <tr>
+                                            <th align="left" style="width: 49%; background-color: #d9d9d9; font-weight: bold;"><b>Description</b></th>
+                                            <th style="width: 49%; text-align: right; background-color: #d9d9d9; font-weight: bold;"><b>Amount</b></th>
+                                        </tr>
+
+                                        <th:block th:each="earn:${paysliprep.payrolldata}">
+                                            <tr th:if="${earn.getElementtype() eq 'de' and earn.getPayamt() != '0.0'}">
+                                                <td align="left" style="width: 49%;"><label class="coloured" th:text="${earn.getAbbreviation()}"></label></td>
+                                                <td align="right" style="width: 49%;"><label class="coloured" th:text="${earn.getPayamt()}"></label></td>
+                                            </tr>
+                                        </th:block>
+
+                                        <th:block th:each="earn:${paysliprep.payrolldata}">
+                                            <tr th:if="${earn.getElementtype() eq 'st' and earn.getAbbreviation() eq 'Total Deduction'}">
+                                                <td style="background-color: #d9d9d9; font-weight: bold;"><b>Total</b></td>
+                                                <td align="right" style="background-color: #d9d9d9; font-weight: bold;"><label class="coloured" th:text="${earn.getPayamt()}"></label></td>
+                                            </tr>
+                                        </th:block>
+                                    </table>
+                                </th>
+                                <th colspan="2" style="vertical-align: top; border-left: 0px; border-right: 0px; border-top: 0px; border-bottom: 0px;">
+                                    <table id="t03" border="1" style="border-collapse: collapse; width: 100.2%;">
+                                        <tr>
+                                            <th align="left" style="width: 50.1%; background-color: #d9d9d9; font-weight: bold;"><b>Description</b></th>
+                                            <th style="width: 50.1%; text-align: right; background-color: #d9d9d9; font-weight: bold;"><b>Amount</b></th>
+                                        </tr>
+
+                                        <th:block th:each="earn:${paysliprep.payrolldata}">
+                                            <tr
+                                                th:if="${earn.getElementtype() eq 'st' and earn.getPayamt() != '0.0' and earn.getAbbreviation() !='Total Earning' and earn.getAbbreviation() !='Total Contribution' and earn.getAbbreviation() !='Total Deduction' and earn.getAbbreviation() !='Net Pay'}"
+                                            >
+                                                <td align="left" style="width: 50.1%;"><label class="coloured" th:text="${earn.getAbbreviation()}"></label></td>
+                                                <td align="right" style="width: 50.1%;"><label class="coloured" th:text="${earn.getPayamt()}"></label></td>
+                                            </tr>
+                                        </th:block>
+                                        <th:block th:each="earn:${paysliprep.payrolldata}">
+                                            <tr th:if="${earn.getElementtype() eq 'st' and earn.getAbbreviation() eq 'Total Contribution'}">
+                                                <td style="background-color: #d9d9d9; font-weight: bold;"><b>Total</b></td>
+                                                <td align="right" style="background-color: #d9d9d9; font-weight: bold;"><label class="coloured" th:text="${earn.getPayamt()}"></label></td>
+                                            </tr>
+                                        </th:block>
+                                    </table>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Net Salary</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4" style="border-left: 0px; border-right: 0px; border-top: 0px; border-bottom: 0px;">
+                                    <table border="1" style="border-collapse: collapse; width: 100%;">
+                                        <tr>
+                                            <th align="left" style="width: 50%; background-color: #d9d9d9; font-weight: bold;"><b>Description</b></th>
+                                            <th style="width: 50%; text-align: right; background-color: #d9d9d9; font-weight: bold;"><b>Amount</b></th>
+                                        </tr>
+
+                                        <th:block th:each="earn:${paysliprep.payrolldata}">
+                                            <tr th:if="${earn.getElementtype() eq 'st' and earn.getAbbreviation() eq 'Total Earning'}">
+                                                <td>Gross Monthly Earnings</td>
+                                                <td align="right"><label class="coloured" th:text="${earn.getPayamt()}"></label></td>
+                                            </tr>
+                                        </th:block>
+
+                                        <th:block th:each="earn:${paysliprep.payrolldata}">
+                                            <tr th:if="${earn.getElementtype() eq 'st' and earn.getAbbreviation() eq 'Total Deduction'}">
+                                                <td>Gross Monthly Deductions</td>
+                                                <td align="right"><label class="coloured" th:text="${earn.getPayamt()}"></label></td>
+                                            </tr>
+                                        </th:block>
+                                        <th:block th:each="earn:${paysliprep.payrolldata}">
+                                            <tr th:if="${earn.getElementtype() eq 'st' and earn.getAbbreviation() eq 'Net Pay'}">
+                                                <td style="background-color: #d9d9d9; font-weight: bold;"><b>Net Monthly Salary</b></td>
+                                                <td align="right" style="background-color: #d9d9d9; font-weight: bold;">
+                                                    <b><label class="coloured" th:text="${earn.getPayamt()}"></label></b>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Summary</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" style="border-left: 0px; border-right: 0px; border-top: 0px; border-bottom: 0px;">
+                                    <table border="1" style="border-collapse: collapse; width: 100%;">
+                                        <tr>
+                                            <th align="left" style="width: 50%; background-color: #d9d9d9; font-weight: bold;"><b>Details of Yearly Income Tax</b></th>
+                                            <th align="right" style="width: 50%; text-align: right; background-color: #d9d9d9; font-weight: bold;"><b>YTD Amount</b></th>
+                                        </tr>
+
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td align="right">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Payment Details</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" style="border-left: 0px; border-right: 0px; border-top: 0px; border-bottom: 0px;">
+                                    <table border="1" style="border-collapse: collapse; width: 100%;">
+                                        <tr>
+                                            <th align="left" style="width: 20%; background-color: #d9d9d9; font-weight: bold;"><b>Payment Type</b></th>
+                                            <th align="left" style="width: 20%; background-color: #d9d9d9; font-weight: bold;"><b>Bank</b></th>
+                                            <th align="left" style="width: 20%; background-color: #d9d9d9; font-weight: bold;"><b>IFSC Code</b></th>
+                                            <th align="left" style="width: 20%; background-color: #d9d9d9; font-weight: bold;"><b>Account Number</b></th>
+                                            <th align="right" style="width: 20%; text-align: right; background-color: #d9d9d9; font-weight: bold;"><b>Amount</b></th>
+                                        </tr>
+
+                                        <th:block th:each="earn:${paysliprep.payrolldata}">
+                                        <tr th:if="${earn.getElementtype() eq 'st' and earn.getAbbreviation() eq 'Net Pay'}">
+                                            <td>Bank Transfer</td>
+                                            <!--<td><label class="coloured" th:text="${paysliprep.getAccounttype()}"></label></td>-->
+                                            <td><label class="coloured" th:text="${paysliprep.getBankname()}"></label></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getBranchifsccode()}"></label></td>
+                                            <td><label class="coloured" th:text="${paysliprep.getBankaccountnumber()}"></label></td>
+                                            
+                                            <td align="right"><label class="coloured" th:text="${earn.getPayamt()}"></label></td>
+                                        </tr>
+                                       </th:block>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/user/corehr/docRecord.js"></script>
+</div>

@@ -1,0 +1,266 @@
+<div th:fragment="viewPayrollElement">
+    <div class="w3-container" style="margin-top:14px;">
+        <div class="w3-bar w3-theme-l5" style="margin-top: 16px; margin-bottom: 24px;">
+            <h4 class="w3-text-theme w3-bar-item">View Payroll Element</h4>
+            <div class="buttonbarpadding w3-bar-item w3-right" style="margin-top: 3px;">
+                <div id="cancilAddComponent" class="w3-bar-item w3-btn w3-grey w3-round-large buttonbarmargin" type="button"><i class="fas fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to search</div>
+            </div>
+        </div>
+
+
+        <form id="viewElement" enctype="application/x-www-form-urlencoded" onsubmit="return false;" method="post">
+			<input th:value="${element.getElementid()}" class="w3-input w3-border" required type="text" id="elementid" name="elementid" readonly hidden>
+			<input th:value="${element.getElementdetails().get(0).getAttributeid()}" class="w3-input w3-border" required type="text" id="elementid" name="elementid" readonly hidden>
+
+            <div class="w3-row-padding">
+                <div class="w3-container w3-third">
+                    <p>
+                        <label>Name</label>
+                        <input th:value="${element.getName()}" class="w3-input w3-border" required type="text" id="name" name="name" readonly>
+                    </p>
+                </div>
+                <div class="w3-container w3-third">
+                    <p>
+                        <label>Abbreviation</label>
+                        <input th:value="${element.getAbbreviation()}" class="w3-input w3-border" required type="text" id="abbreviation" name="abbreviation" readonly>
+                    </p>
+                </div>
+                <div class="w3-container w3-third" style="display:none">
+                    <p>
+                        <label>Resolution Sequence</label>
+                        <input th:value="${element.getResulationseq()}" class="w3-input w3-border" type="text" id="resulationseq" name="resulationseq" readonly>
+                    </p>
+                </div>
+            </div>
+
+            <div class="w3-container" id="elementPyaroll" th:each="ele ,stats: ${(element.getElementdetails())}">
+               
+               <input th:value="${ele.getAttributeid()}" class="w3-input w3-border" required type="text" id="attributeid" th:name="'elementdetails['+${stats.index}+'].attributeid'" hidden>
+          
+                <div class="w3-row w3-padding w3-border" style="background-color: #fbf7fb;">
+                    <div class="w3-row-padding">
+                        <div class="w3-half">
+                            <p>
+                                <label>Effective Start Date</label>
+                                <input  th:value="${ele.getStartdate()}"
+                                class="w3-input w3-border" type="date" id="startdate" th:name="'elementdetails['+${stats.index}+'].startdate'" readonly>
+                            </p>
+                            <p>
+                                <label>Effective End Date</label>
+                                <input th:value="${ele.getEnddate()}"
+                                class="w3-input w3-border" type="date" id="enddate" th:name="'elementdetails['+${stats.index}+'].enddate'" readonly>
+                            </p>
+                            <p>
+                                <label>Element Type</label>
+                                <select class="payrollElementTypeSelect w3-select" th:name="elementdetails[0].elementtype" readonly>                                    
+                                   <option th:value="${ele.getElementtype()}" 
+                                     th:text="${ele.getElementtype()}"selected> </option>
+                                    <option value="er">Earning</option>
+                                    <option value="de">Deduction</option>
+                                    <option value="re">Reimbursement</option>
+                                    <option value="st">Statutory Component</option>
+                                </select>
+                            </p>
+                            <div class="w3-half">
+
+					             <p th:if="${ele.getIspaidcomponent()=='true'}">
+									<input class="w3-check" id="ispaidcomponent"
+										 th:name="'elementdetails['+${stats.index}+'].ispaidcomponent'" type="checkbox"
+										checked="checked"
+										th:value="${ele.getIspaidcomponent()}" readonly>
+									 <label style="color: black">&nbsp;Is Paid Component</label>
+								</p>
+					
+								<p th:if="${ele.getIspaidcomponent()=='false'}">
+									<input class="w3-check"  id="ispaidcomponent"
+										 th:name="'elementdetails['+${stats.index}+'].ispaidcomponent'" type="checkbox"										
+										th:value="${ele.getIspaidcomponent()}" readonly>
+									 <label style="color: black">&nbsp;Is Paid Component</label>
+								</p>
+
+                                 <p th:if="${ele.getIsprorated()=='true'}">
+									<input class="w3-check" id="isprorated"
+										th:name="'elementdetails['+${stats.index}+'].isprorated'" type="checkbox"
+										checked="checked"
+										th:value="${ele.getIsprorated()}" readonly>
+									  <label style="color: black">&nbsp;Is Prorated</label>
+								</p>
+					
+								<p th:if="${ele.getIsprorated()=='false'}">
+									<input class="w3-check"  id="isprorated"
+										th:name="'elementdetails['+${stats.index}+'].isprorated'" type="checkbox"										
+										th:value="${ele.getIsprorated()}" readonly>
+									 <label style="color: black">&nbsp;Is Prorated</label>
+								</p>
+                                
+
+                                <p th:if="${ele.getIsprorated()=='true'}">
+									<input class="w3-check" id="isctcpart"
+										 th:name="'elementdetails['+${stats.index}+'].isctcpart'" type="checkbox"
+										checked="checked"
+										th:value="${ele.getIsctcpart()}" readonly>
+									   <label style="color: black">&nbsp;Is Part of CTC</label>
+								</p>
+					
+								<p th:if="${ele.getIsprorated()=='false'}">
+									<input class="w3-check"  id="isctcpart"
+										th:name="'elementdetails['+${stats.index}+'].isctcpart'" type="checkbox"										
+										th:value="${ele.getIsctcpart()}" readonly>
+									  <label style="color: black">&nbsp;Is Part of CTC</label>
+								</p>
+                                
+
+                                 <p th:if="${ele.getCreatedependent()=='true'}">
+									<input class="w3-check" id="createdependent"
+										th:name="'elementdetails['+${stats.index}+'].createdependent'" type="checkbox"
+										checked="checked"
+										th:value="${ele.getCreatedependent()}" readonly>
+									  <label style="color: black">&nbsp;Create Dependent Component</label>
+								</p>
+					
+								<p th:if="${ele.getCreatedependent()=='false'}">
+									<input class="w3-check"  id="createdependent"
+										th:name="'elementdetails['+${stats.index}+'].createdependent'" type="checkbox"
+										th:value="${ele.getCreatedependent()}" readonly>
+									  <label style="color: black">&nbsp;Create Dependent Component</label>
+								</p>
+                                                               
+
+                                 <p th:if="${ele.getIsactive()=='Y'}">
+									<input class="w3-check" id="isactive"
+										th:name="'elementdetails['+${stats.index}+'].isactive'" type="checkbox"
+										checked="checked"
+										th:value="${ele.getIsactive()}" readonly>
+									 <label style="color: black">&nbsp;Active</label>
+								</p>
+					
+								<p th:if="${ele.getIsactive()=='N'}">
+									<input class="w3-check"  id="isactive"
+										th:name="'elementdetails['+${stats.index}+'].isactive'" type="checkbox"										
+										th:value="${ele.getIsactive()}" readonly>
+									 <label style="color: black">&nbsp;Active</label>
+								</p>
+                            </div>
+                            <div class="w3-half">
+
+                                 <p th:if="${ele.getIsarr()=='true'}">
+									<input class="w3-check" id="isarrearr"
+										th:name="'elementdetails['+${stats.index}+'].isarr'" type="checkbox"
+										checked="checked"
+										th:value="${element.getElementdetails().get(0).getIsarr()}" readonly>
+									<label style="color: black">&nbsp;Is Arrear Element</label>
+								</p>
+					
+								<p th:if="${ele.getIsarr()=='false'}">
+									<input class="w3-check"  id="isarrearr"
+										th:name="'elementdetails['+${stats.index}+'].isarr'" type="checkbox"
+										th:value="${ele.getIsarr()}" readonly>
+									 <label style="color: black">&nbsp;Is Arrear Element</label>
+								</p>
+                                <label>Maintained By</label>
+                                <select class="w3-select w3-border" th:name="'elementdetails['+${stats.index}+'].maintainby'" disabled>
+                                    <option></option>
+                                    <option th:value="${element.getElementdetails().get(0).getMaintainby()}" 
+                                     th:text="${element.getElementdetails().get(0).getMaintainby()}"selected> </option>
+                                    <option value="SYS">System</option>
+                                    <option value="CUS">Custom</option>
+                                     
+                               </select>
+                            </div>
+                        </div>
+                        <div class="w3-half">
+                            <p>
+                            
+
+							<div  th:if="${ele.getTaxability()=='taxable'}">
+								<label>Tax Status</label><br>
+								<input type="radio" id="taxable" value="taxable" th:name="'elementdetails['+${stats.index}+'].taxability'"  checked readonly> 
+								<label>Tax Status</label><br>
+								<input type="radio" id="nontaxable"  value="nontaxable" th:name="'elementdetails['+${stats.index}+'].taxability'" readonly> 
+								 <label style="color: black">Non Taxable</label><br>
+							</div>
+							<div th:if="${ele.getTaxability()=='nontaxable'}">
+								<label>Tax Status</label><br>
+								<input type="radio" id="taxable" value="taxable" th:name="'elementdetails['+${stats.index}+'].taxability'" readonly>
+								<label>Tax Status</label><br>
+								 <input type="radio" id="nontaxable"  value="nontaxable" th:name="'elementdetails['+${stats.index}+'].taxability'"  checked readonly> 
+								 <label style="color: black">Non Taxable</label><br>
+							</div>
+
+						</p>
+                           
+
+                            <p th:if="${ele.getIstaxdistribution()=='true'}">
+									<input class="w3-check" id="taxdistribution"
+										th:name="'elementdetails['+${stats.index}+'].istaxdistribution'" type="checkbox"
+										checked="checked"
+										th:value="${element.getElementdetails().get(0).getIstaxdistribution()}" readonly>
+									   <label style="color: black">Tax is distributed across the year</label>
+								</p>
+					
+								<p th:if="${ele.getIstaxdistribution()=='false'}">
+									<input class="w3-check"  id="taxdistribution"
+										th:name="'elementdetails['+${stats.index}+'].istaxdistribution'" type="checkbox"										
+										th:value="${ele.getIstaxdistribution()}" readonly>
+									   <label style="color: black">Tax is distributed across the year</label>
+								</p>
+                            
+
+							<div  th:if="${ele.getComponenttype()=='variable'}">
+								 <label>Component Type</label><br>
+								<input type="radio" id="variablecomp" value="variable"  th:name="'elementdetails['+${stats.index}+'].componenttype'"  checked readonly> 
+								  <label style="color: black">Variable Component</label><br>
+								<input type="radio" id="fixedcomp"  value="fixed"   th:name="'elementdetails['+${stats.index}+'].componenttype'" readonly> 
+								<label style="color: black">Fixed Component</label>
+							</div>
+							<div th:if="${ele.getComponenttype()=='fixed'}">
+								 <label>Component Type</label><br>
+								<input type="radio" id="variablecomp" value="variable" th:name="'elementdetails['+${stats.index}+'].componenttype'" readonly >
+								  <label style="color: black">Variable Component</label><br>
+								 <input type="radio" id="fixedcomp"  value="fixed"  th:name="'elementdetails['+${stats.index}+'].componenttype'"  checked readonly> 
+								<label style="color: black">Fixed Component</label>
+							</div>
+                            
+                          
+                            <p>
+                                <label>Calculation Type</label>
+                                <select class="w3-select w3-border"th:name="'elementdetails['+${stats.index}+'].caltype'" disabled>
+                                    <option></option>
+                                    <option th:value="${ele.getCaltype()}" 
+                                     th:text="${ele.getCaltype()}"selected> </option>
+                                    <option value="FLT">Flat</option>
+                                    <option value="FRM">Formula</option>
+                                </select>
+                            </p>
+                            <p>
+                                <label>Value/Formula</label>
+                                <textarea class="w3-input w3-border" rows="5" style="resize: none" th:name="'elementdetails['+${stats.index}+'].formula'"
+                                th:text="${ele.getFormula()}"
+                                readonly></textarea>
+                                <!--calculationFunction-->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            
+            
+            
+        </form>
+
+    </div>
+    <style>
+    input[type="checkbox"][readonly] {
+	  pointer-events: none;
+	}
+    
+    </style>
+    <script>
+    $(':radio,:checkbox').click(function(){
+        return false;
+    });
+    </script>
+    <script src="/js/payroll/setup/addPayrollElement.js"></script>
+    <!--<script src="/js/codemirror_js/codemirror_myscript.js"></script>-->
+</div>

@@ -1,0 +1,49 @@
+<div th:fragment="createdbi">
+
+    <div class="w3-bar w3-theme-l5" style="margin-top: 32px; margin-bottom: 24px;">
+        <h4 class="w3-text-theme w3-bar-item"><i class="fas fa-database" aria-hidden="true" style="color: #ff1c1c;"></i>&nbsp;&nbsp;Database Item Creation</h4>
+        <div class="buttonbarpadding w3-bar-item w3-right" style="margin-top: 3px;">
+            <div id="DBISubmit" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" type="button" onclick="submitdbi();"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Submit</div>
+            <div id="DBICancel" rm="/dbi/managedbi" class="w3-bar-item w3-btn w3-grey w3-round-large w3-right buttonbarmargin" type="button"><i class="fa fa-times" aria-hidden="true" style="color: red"></i>&nbsp;&nbsp;Cancel</div>
+        </div>
+    </div>
+
+    <form method="post" id="DBI_FORM" enctype="application/x-www-form-urlencoded">
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <input type="hidden" name="id" th:value="${dbidata.getId()}">
+            <p>
+                <label>Title</label><span style="color: red">*</span>
+                <input id="DBI_TITLE" th:value="${dbidata.getTitle()}" type="text" name="title" class="w3-input w3-border">
+                <span id="ERR_TITLE" style="color: red"></span>
+            </p>
+            
+            <p>
+                <label>Title Name</label><span style="color: red">*</span>
+                <input id="titlecolumnname" th:value="${dbidata.getTitlecolumnname()}" type="text" name="titlecolumnname" class="w3-input w3-border">
+                <span id="ERR_TITLE_NAME" style="color: red"></span>
+            </p>
+            <p>
+                <label>Status</label><span style="color: red">*</span>
+                <select id="DBI_STATUS" type="text" name="status" class="w3-input w3-border">
+                    <option selected></option>
+                    <option th:each="status : ${status}"
+                            th:selected="${status.getDescription() eq dbidata.getStatus()}"
+                            th:value="${status}"
+                            th:text="${status}" />
+                </select>
+                <span id="ERR_STATUS" style="color: red"></span>
+            </p>
+            <p>
+                <label>Query</label><span style="color: red">*</span>
+                <textarea id="DBI_QUERY" th:text="${dbidata.getSquery()}" class="w3-border w3-input" name="squery" style="height: 200px;"></textarea>
+                <span id="ERR_QUERY" style="color: red"></span>
+            </p>
+
+        </div>
+        <div class="w3-half"></div>
+    </div>
+    </form>
+
+    <script src="/js/dbi/createdbi.js"></script>
+</div>

@@ -1,0 +1,75 @@
+<div th:fragment="createAnony">
+
+
+
+	<div class="w3-container" style="margin-top: 14px;">
+		<h4 class="w3-text-theme" style="margin-top: 2px; bottom: 2px;">Create
+			Anonymous</h4>
+			<!-- <button id="btn1">ADD</button> -->
+		<!-- 	<input id="btn1" class="w3-button w3-theme" type="button" value="+" onclick="addDiv();" style="marging-left: 5px;margin-top:23px;"/> -->
+			<input id="addProduct" class="w3-button w3-theme" type="button" value="+"  style="marging-left: 5px;margin-top:23px;" > 
+
+
+	</div>
+
+	<div class="w3-row">
+
+		<div class="w3-container" id="text" >
+		<div class="w3-padding"  >
+		  
+		 <!--  <div id="id01">
+		  </div> -->
+		  
+		  <div id="someContainer"></div>
+		  
+	</div>
+	</div>
+		
+		
+
+		<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="enterprisesetup/managedepartment">OK</a>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	
+	
+	
+	
+	<!--***Start:Error Msg** -->
+<div id="idError" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+					<label id="lblMsg"><b> Date must be latest!!</b> </label> <a id="btnerrorOK" class="w3-button w3-red"
+						rm="/enterprisesetup/managedepartment">OK</a>
+
+				</div>
+
+			</div>
+		
+		
+	</div>
+		
+		
+
+
+<script src="/js/create/createAnonymous.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+ --></div>
+	
+
+

@@ -1,0 +1,167 @@
+<div th:fragment="generatetab">
+    <!--actmode GEN and APPR -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var acttmod = /*[[${actmode}]]*/;
+        console.log(acttmod);
+        /*]]>*/
+    </script>
+
+
+<style>
+	.hider{
+		display:none;
+	}
+div.scrollmenu {  
+  overflow: auto;
+  white-space: nowrap;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+	
+</style>
+
+        <input type="hidden" id="REMID" th:value="${remid}">
+        <div class="w3-bar">
+            <div class="w3-bar-item" style="padding: 6px 0px 0px 16px; width: 20%;">
+                <label>Business Unit</label><span style="color: red"> *</span>
+                <select id="BULOV" class="w3-select w3-border w3-margin-bottom">
+                    <option value="0" disabled selected></option>
+                    <option th:each="bures : ${bures}"
+                            th:value="${bures.getBusinessunitid()}"
+                            th:text="${bures.getName()}" />
+                </select>
+            </div>
+            <div class="w3-bar-item" style="padding: 6px 0px 0px 4px; width: 20%;" >
+                <label>Reimbursement Type</label><span style="color: red"> *</span>
+                <select id="REMTYPELOV" class="w3-select w3-border w3-margin-bottom">
+                    <option value="0" disabled selected></option>
+                    <option value="1">Telephone Reimbursement</option>
+                    <option value="2">Transport Reimbursement</option>
+                    <option value="5">Entertainment Reimbursement</option>
+                    <option value="7">CDA and Vehicle Reimbursement</option>
+                    <option value="12">TADK Reimbursement</option>
+                </select>
+            </div>
+            <div class="w3-bar-item" style="padding: 6px 0px 0px 4px; width: 10%;">
+                <label>Month</label><span style="color: red"> *</span>
+                <select id="MONTHLOV" class="w3-select w3-border w3-margin-bottom">
+                    <option value="0" disabled selected></option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">Sepetember</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div class="w3-bar-item">
+                <div  type="button" id="GNRT_SEARCH_BTN"  onClick="searchgnrtempl();" class="w3-btn w3-theme w3-round-large w3-margin-top"><i class="fas fa-search"></i></div>
+            </div>
+</div>
+ <div class="w3-bar">
+            
+            <div th:if="${actmode eq 'GEN'}" class="w3-bar-item w3-right" >
+                <div style="display:none;" type="button" id="GNRT_TMPL_SBMT_BTN" onClick="savegnrtvalue('Submitted');" class="w3-btn w3-light-green w3-round-large w3-margin-top"><i class="fas fa-save"></i> Submit</div>
+            </div>
+            <div th:if="${actmode eq 'GEN'}" class="w3-bar-item w3-right">
+                <div style="display:none;" type="button" id="GNRT_TMPL_SAVE_BTN" onClick="savegnrtvalue('Saved');" class="w3-btn w3-blue w3-round-large w3-margin-top"><i class="fas fa-save"></i> Save</div>
+            </div>
+            <div th:if="${actmode eq 'APPR'}" class="w3-bar-item w3-right" >
+                <div style="display:none;" type="button" id="GNRT_TMPL_APPR" onClick="savegnrtvalue('APPR2');" class="w3-btn w3-green w3-round-large w3-margin-top"><i class="fas fa-thumbs-up"></i> Approve</div>
+            </div>
+            <div th:if="${actmode eq 'APPR'}" class="w3-bar-item w3-right" >            	  
+                <div style="display:none;" type="button" id="GNRT_TMPL_APPR1" onClick="savegnrtvalue('APPR1');" class="w3-btn w3-green w3-round-large w3-margin-top"><i class="fas fa-thumbs-up"></i> Approve</div>
+            </div>
+            <div th:if="${actmode eq 'APPR'}" class="w3-bar-item w3-right" >            
+            	<div style="display:none;" type="button" id="GNRT_TMPL_APPR1_SAVED" onClick="savegnrtvalue('SavedApprover1');" class="w3-btn w3-blue w3-round-large w3-margin-top"><i class="fas fa-save"></i> Save</div>
+            </div>
+            <div th:if="${actmode eq 'APPR'}" class="w3-bar-item w3-right" >            
+            	<div style="display:none;" type="button" id="GNRT_TMPL_APPR2_SAVED" onClick="savegnrtvalue('SavedApprover2');" class="w3-btn w3-blue w3-round-large w3-margin-top"><i class="fas fa-save"></i> Save</div>
+            </div>
+            
+            <div class="w3-bar-item" >
+                <div id="XCLXPRTBTN" class="w3-btn w3-blue w3-round-large w3-margin-top" style="display:none; transform: scale(1);" onclick="exportTableToExcel('GNRT_REM_VAL_TBL','Generated_Reimbursement_Value_Data');"><i class="fas fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</div>
+            </div>
+        </div>
+    <form id="GNRT_TEMPL_FORM1">
+
+        <div id="resultDiv" class="w3-row w3-margin-top scrollmenu" style="display:none;" >
+
+            <!--<table th:if="${actmode eq 'GEN'} and ${remid == '7'}" id="GNRT_REM_VAL_TBL" class="w3-striped w3-margin-top">
+                <thead>
+                <th>Person Number</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>HR Status</th>
+                <th>Payroll Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Amount</th>
+                <th>Arrear Amount</th>
+                <th>Recovery Amount</th>
+                </thead>
+            </table>
+            <table th:if="${actmode eq 'GEN'} and ${remid != '7'}" id="GNRT_REM_VAL_TBL" class="w3-striped w3-margin-top">
+                <thead>
+                <th>Person Number</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>HR Status</th>
+                <th>Payroll Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Amount</th>
+                <th>Arrear Amount</th>
+                <th>Recovery Amount</th>
+                </thead>
+            </table>-->
+
+            
+
+           <!-- <table th:if="${actmode eq 'APPR'}" id="GNRT_REM_VAL_TBL" class="w3-striped w3-margin-top">
+                <thead>
+                <th>Person Number</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>HR Status</th>
+                <th>Payroll Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Amount</th>
+                <th>Arrear Amount</th>
+                <th>Recovery Amount</th>
+                <th>Approver 1 Status</th>
+                <th>Final Status</th>
+                </thead>
+            </table>-->
+
+           
+        </div>
+
+
+
+        <div id="noData" class="w3-container w3-responsive" style="display: none">
+            <div>
+                <p>No record found...</p>
+            </div>
+        </div>
+
+        <hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+
+        <div id="GNRT_LOADER" class="w3-modal" style="display: none">
+            <div class='w3-container' style='margin-top:11%; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+            <!--<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>-->
+        </div>
+    </form>
+    <script src="/js/table2excel.js"></script>
+    <script src="/js/date.format.js"></script>
+    <script src="/js/revisedreimbursements/generatetab.js"></script>
+
+</div>

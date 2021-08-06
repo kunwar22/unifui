@@ -1,0 +1,87 @@
+<div th:fragment="reimbursementDetails">
+	<div class="w3-main w3-margin" >
+		<!-- <div style="position: relative;">
+			<div class="w3-theme-d2" style="opacity: .8">
+				<div class="w3-container">
+					<h3 style="font-weight: 400;">
+						<img class="w3-hide-large" src="/images/hide-grader-panel.png"
+							style="cursor: pointer;"> <i class="fa fa-info-circle"></i>
+						&nbsp;Reimbursement Details
+					</h3>
+				</div>
+			</div>
+		</div> -->
+		
+	
+			<div class="w3-row">
+			<h3 style="font-weight: bold;"> Reimbursement Details </h3>
+				<hr class="hrline">
+				<div class="w3-container w3-quarter" style="margin-top: 5px;">
+					<label style="color: grey;">Reimbursement Type:</label>
+					<select id="remtype" onchange="status();" name="reimbursement_type"
+						class="w3-select w3-border">
+						<option disabled selected>Select</option>
+						<option th:each="remtype:${lov}" th:value="${remtype.getId()}"
+							th:text="${remtype.getDescription()}">
+					</select>
+				</div>
+				<div class="w3-container w3-quarter" style="margin-top: 5px;">
+					<label style="color: grey;">Reimbursement Status:</label>
+					<select id="status" name="reimbursement_status"
+						class="w3-select w3-border" disabled="disabled"
+						onchange="fromdate();">
+						<option selected disabled>Select</option>
+						<option value="saved">Saved</option>
+						<option value="submitted">Submitted</option>
+						<option value="approved">Approved</option>
+						<option value="rejected">Rejected</option>
+					</select>
+
+				</div>
+				<div class="w3-container w3-quarter" style="margin-top: 5px;">
+					<label style="color: grey;">From Date:</label>
+					<input id="fromdate" class="w3-input w3-border" type="date"
+						onchange="todate();" data-date-format="YYYY MM DD" disabled />
+				</div>
+				<div class="w3-container w3-quarter" style="margin-top: 5px;">
+					<label style="color: grey;">To Date:</label>
+					<input id="todate" onchange="search();" class="w3-input w3-border"
+						type="date" data-date-format="YYYY MM DD" disabled />
+				</div>
+				<div class="w3-container w3-right" style="margin-top: 20px;">
+					<button id="searchbtn" onClick="loadReimbursementDetailsData()" onchange="datatable();"
+						class="w3-button w3-theme w3-center" type="button" disabled>
+						<i class="fa fa-search">Search</i>
+					</button>
+				</div>
+			</div>
+			
+			
+			
+		<div id="resultDiv" class="w3-container w3-row" style="display:none;" >
+
+			<table id="Reimbursement_History" class="w3-table w3-stripped" >
+				<thead class="w3-theme" style="border: 1px solid black;">
+					<th style="border: 1px solid black">Claim Id</th>
+					<th style="border: 1px solid black">Person Name</th>
+					<th style="border: 1px solid black">Reimbursement Name</th>
+					<th style="border: 1px solid black">Claim Amount</th>
+					<th style="border: 1px solid black">Approval Amount</th>
+					<th style="border: 1px solid black">Status</th>
+					<th style="border: 1px solid black">Submitted Date</th>
+				</thead>
+			</table>
+
+		</div>
+
+
+		<div id="noData" class="w3-container w3-responsive" style="display: none">
+			<div>
+				<p>No record found...</p>
+			</div>
+		</div>
+			
+		
+		<script src="/js/reimbursementcosolidation/reimbursementdetails.js"></script>
+		</div>
+		</div>

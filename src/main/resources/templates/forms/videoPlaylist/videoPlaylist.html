@@ -1,0 +1,94 @@
+<div th:fragment="videoPlaylist">
+
+<div class="w3-container">
+<div class="w3-main" style="margin-left:300px; margin-top: -14px; margin-bottom:16px;">
+
+  <div>
+    <header class="w3-container w3-light-grey">
+      <h3 style="font-weight: 400;"><i class="fas fa-video"></i>&nbsp;Videos</h3>
+    </header>
+    <br>
+
+	<div th:each="help:${help}">
+		<div class="w3-row">
+			<div class="w3-half">
+				<!--<iframe width="500" height="220" th:src="'https://www.youtube.com/embed/'+${help.getPath()}+'?start=1'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+				<iframe width="500" height="220" th:src="'https://www.youtube.com/embed/'+${help.getPath()}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</div>
+			<div class="w3-half">
+				<h5><b th:text="${help.getTitle()}"></b></h5>
+				<hr>
+				<p th:text="${help.getDescription()}"></p><br>
+			</div>
+		</div>
+		<hr>
+	</div>
+<!--
+
+    <div class="w3-container">           
+	      <video src=""   class="w3-left w3-margin-right" style="width:400px;height:200px;"  type='video/x-matroska; codecs="theora, vorbis"'  controls onerror="failed(event)" ></video>
+			<h5><b>Telephone Reimbursement</b></h5>
+			<hr>
+	      <p>Review the video to claim the telephone reimbursement.</p><br>     
+    </div>
+     <hr>
+ <div class="w3-container">           
+	      <video src="video/Transport.mkv" class="w3-left w3-margin-right" style="width:400px;height:200px;"  type='video/x-matroska; codecs="theora, vorbis"'  controls onerror="failed(event)" ></video>
+			<h5><b>Transport Reimbursement</b></h5>
+			<hr>
+	      <p>Review the video to claim the transport reimbursement.</p><br>     
+    </div>
+     <hr>
+ <div class="w3-container">           
+	      <video src="video/Transport.mkv" class="w3-left w3-margin-right" style="width:400px;height:200px;"  type='video/x-matroska; codecs="theora, vorbis"'  controls onerror="failed(event)" ></video>
+			<h5><b>CTG Reimbursement</b></h5>
+			<hr>
+	      <p>Review the video to claim the ctg reimbursement.</p><br>     
+    </div>
+     <hr>
+ <div class="w3-container">           
+	      <video src="video/Transport.mkv" class="w3-left w3-margin-right" style="width:400px;height:200px;"  type='video/x-matroska; codecs="theora, vorbis"'  controls onerror="failed(event)" ></video>
+			<h5><b>CDA Reimbursement</b></h5>
+			<hr>
+	      <p>Review the video to claim the cda reimbursement.</p><br>     
+    </div>
+     <hr>
+ <div class="w3-container">           
+	      <video src="video/Transport.mkv" class="w3-left w3-margin-right" style="width:400px;height:200px;"  type='video/x-matroska; codecs="theora, vorbis"'  controls onerror="failed(event)" ></video>
+			<h5><b>Medical Reimbursement</b></h5>
+			<hr>
+	      <p>Review the video to claim the medical reimbursement.</p><br>     
+    </div>
+     <hr>
+ <div class="w3-container">           
+	      <video src="video/Transport.mkv" class="w3-left w3-margin-right" style="width:400px;height:200px;"  type='video/x-matroska; codecs="theora, vorbis"'  controls onerror="failed(event)" ></video>
+			<h5><b>Medical Advance</b></h5>
+			<hr>
+	      <p>Review the video to claim the medical advance reimbursement.</p><br>     
+    </div>
+     <hr>
+
+	<div class="w3-container">           
+	      <video src="video/Transport.mkv" class="w3-left w3-margin-right" style="width:400px;height:200px;"  type='video/x-matroska; codecs="theora, vorbis"'  controls onerror="failed(event)" ></video>
+			<h5><b>Miscellaneous Reimbursement</b></h5>
+			<hr>
+	      <p>Review the video to claim the medical miscellaneous reimbursement.</p><br>     
+    </div>
+     <hr>
+	<div class="w3-container">           
+	      <video src="video/Transport.mkv" class="w3-left w3-margin-right" style="width:400px;height:200px;"  type='video/x-matroska; codecs="theora, vorbis"'  controls onerror="failed(event)" ></video>
+			<h5><b>Contingent Reimbursement</b></h5>
+			<hr>
+	      <p>Review the video to claim the medical contingent reimbursement.</p><br>     
+    </div>
+     <hr>
+	
+-->
+
+      
+
+  </div>
+</div>
+</div>
+
+</div>

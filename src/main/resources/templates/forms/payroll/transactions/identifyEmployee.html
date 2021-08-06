@@ -1,0 +1,50 @@
+<div th:fragment="identifyEmployee">
+    <div class="w3-container" style="margin-top: -42px;">
+        <div class="w3-row">
+            <h5>Employee Identification</h5>
+            <hr class="hrline">
+        </div>
+    </div>
+    <div class="w3-container">
+        <div class="w3-row w3-margin">
+            <div class="w3-third">
+                <select class="w3-select w3-border"  id="empSelectionBasis" onchange="employeeSelectionBasis()">
+                    <option selected disabled value="">--Employee Selection Basis--</option>
+                    <option value="pg">All in Pay-Group</option>
+                    <option value="ad">Select Ad-hock Employees</option>
+                </select>
+            </div>
+            <div class="w3-third">
+                &nbsp;
+            </div>
+            <div class="w3-third">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <form id="identifiedEmployeeForm">
+        <div id="emptbl" class="w3-container" style="display: none;">
+            <div class="w3-row">
+                <table id="IDENTIFY_TBL" class="w3-table-all">
+                    <thead>
+                        <tr class="w3-theme-d1">
+                            <th><input onclick="checkuncheckAll()" id="checkuncheckbtn" type="checkbox" class="w3-check"  checked></th>
+                            <th>Person Number</th>
+                            <th>Person Name</th>
+                            <th>HR Status</th>
+                            <th>Payroll Status</th>
+                            <th>Job ID</th>
+                            <th>Position ID</th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+        <div  id="noData" class="w3-responsive" style="display: none">
+            <div>
+                <p>No record found...</p>
+            </div>
+        </div>
+    </form>
+</div>

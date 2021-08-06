@@ -1,0 +1,138 @@
+<div th:fragment="addabsence" style="margin-left:300px; margin-top: -14px;" >
+	     <!-- <div class="w3-theme" style="z-index:3">
+		    <img id="PROFILE_PIC" class="pull-left" alt="" style="width:76px; height:76px; margin-left:10px" src="/icons/face-white-18dp.svg">
+			<h3 id="PAGE_NAME" style="font-weight:bold; margin-left:100px;">Page Name</h3>
+			<h4 id="USER_NAME"  style="margin-left:100px; margin-bottom:5px;">User Name</h4>
+		</div> -->
+	
+		<div class="w3-container">
+		<h3 class="w3-text-theme" >
+		<div class="w3-container"><i class="fas fa-calendar-week" style="color:#dc762d"></i> Apply New Leave</h3>
+		</div>
+	
+	
+		<div class="w3-container">	 
+		 
+
+		<div  id="TYPE_SELECTION_BLOCK" class="w3-row w3-border" style="margin-top:20px" >
+		<div class="w3-panel" >
+	             <div class="w3-quarter w3-padding-large">
+	             <label >Type <span style="color:red"> *</span></label>
+	             <select id="AB_TYPE" class="w3-select w3-border" name="type" >
+					<option selected hidden></option>
+					<option th:each="absencetype : ${absencetype}" th:rep="${absencetype.getRepeatingperiodid()}" th:value="${absencetype.getId()}" th:text="${absencetype.getDescription()}"></option>
+					<!-- <option th:each="absencetype : ${absencetype}" th:value="${absencetype.getId()}" th:text="${doccat.getDescription()}"/> -->
+				 </select> 
+          		 </div>
+		</div>
+		<hr class="w3-border-grey" style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 25px; margin-right: 25px; border-width: 1px;">
+		<div style="margin-top:10px">
+		<label class="w3-right" style="margin-right:30px; margin-bottom:10px;">Absence Type Balance<span id="AB_BALANCE" style="color:purple; font-size:25px;"> 7.000 </span>Days</label>
+		</div>
+		</div>
+		
+		
+		<!-- ******************************************BLOCK FOR WHEN START********************************************** -->
+		<div id="WHEN_BLOCK" class="w3-row w3-border" style="display:none; margin-top:25px">
+		<div class="w3-panel">
+		<div>
+		<h4 class="w3-text-theme w3-padding-large"  style="bottom:2px; display:inline">When</h4>
+		</div>
+		<hr class="w3-border-grey" style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 25px; margin-right: 25px; border-width: 1px;">
+		
+		<div  class="w3-container w3-padding-16">
+		
+			<div class=w3-half>
+			<div class="w3-container">
+					<label>Start Date and Duration<span style="color:red"> *</span></label> 
+					<div>
+					<input class="w3-input w3-border w3-half" name="" id="ABS_START_DATE"  type="date" data-date="" data-date-format="YYYY MM DD" style="width:50%; height:38px; display:inline-block;"/>
+					<select id="ABS_HALF_FULL_START" class="w3-select w3-border w3-half" name="" style="width:50%" disabled>
+						<option selected hidden></option>
+						<option th:each="hf : ${halffullday}" th:value="${hf.getDescription()}" th:text="${hf}"/>
+					</select>
+					<span id="START_DATE_ERROR" style="color:red"></span>
+					</div>
+					
+					<label>End Date and Duration<span style="color:red"> *</span></label> 
+					<div>
+					<input class="w3-input w3-border w3-half" name="" id="ABS_END_DATE"  type="date" data-date="" data-date-format="YYYY MM DD" style="width:50%; height:38px; display:inline-block;"/>
+					<select id="ABS_HALF_FULL_END" class="w3-select w3-border w3-half" name="" style="width:50%" disabled>
+						<option selected hidden></option>
+						<option th:each="hf : ${halffullday}" th:value="${hf.getDescription()}" th:text="${hf}"/>
+					</select>
+					<span id="END_DATE_ERROR" style="color:red"></span>
+					</div>
+				
+			</div>
+			</div>
+		
+			<div class=w3-half>
+			<div class="w3-container">
+			<div style="margin-left:20px">
+				<label>Absence Duration</label>
+			</div>
+			<div style="margin-left:20px" >
+				<label style="color:purple"><span id="AB_DURATION" style="color:purple; font-size:25px;"> 0.000</span>Days</label>
+			</div>
+				
+			</div>
+			</div>
+		
+		
+		</div>
+		
+		
+		<hr class="w3-border-grey" style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 25px; margin-right: 25px; border-width: 1px;">
+		<div style="margin-top:10px">
+		<label class="w3-right" style="margin-right:30px; margin-bottom:10px;">Projected Balance <span id="AB_BALANCE" style="color:grey;"> Calculate</span></label>
+		</div>
+		</div>
+		</div>
+		<!-- ******************************************BLOCK FOR WHEN END********************************************** -->
+		
+		
+		<div id="COMMENT_BLOCK" class="w3-row w3-border w3-padding-large" style="margin-top:25px; display:none">
+		<div style="margin-top:10px">
+		<h4 class="w3-text-theme w3-padding-large" style="margin-top:10px; bottom:2px; display:inline">Comments</h4>
+		</div>
+		<hr class="w3-border-grey" style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 25px; margin-right: 25px; border-width: 1px;">
+		<div  class="w3-container">
+		
+		<div class="w3-container">
+			<p>
+			<label>Comments</label>
+			<textarea class="w3-input w3-border" id="" name="" rows="4" cols="50"></textarea>
+			</p>
+		</div>
+		
+		</div>
+		<hr class="w3-border-grey" style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 25px; margin-right: 25px; border-width: 1px;">
+		</div>
+		
+		<div id="BTN_BLOCK" style="display:none">
+		<button type="button" id="CANCEL_BTN" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; ">Cancel</button>
+		<button type="button" id="SUBMIT_BTN" onclick="calculateDays();" class="w3-button w3-theme w3-ripple " style="margin-left:auto; margin-right:auto; margin-top:10px; ">Submit</button>
+		</div>
+		 
+		 
+		</div>
+		
+	
+
+		<div id="id01" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg"><b> Successfully Saved. Click OK to
+							continue.</b></label> <a id="btnOK" class="w3-button w3-green"
+						rm="user/resignation">OK</a>
+
+				</div>
+			</div>
+		</div>
+<script src="/js/moment.min.js"></script>
+<script src="/js/user/absence/addabsence.js"></script>
+</div>
+	

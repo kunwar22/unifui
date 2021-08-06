@@ -1,0 +1,487 @@
+<div th:fragment="entertainmentClaim">
+	<script th:inline="javascript">
+/*<![CDATA[*/
+    var result = /*[[${result}]]*/;
+/*]]>*/
+</script>
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"><i class="fas fa-music" style="color: #027b7b;"></i>
+						&nbsp;Entertainment Reimbursement
+					</h4>
+				</div>
+			</div>
+
+		<!--Form Content of Entertainment Reimbursement Goes here By @Suraj -->
+
+
+
+		<div class="w3-container" style="margin-top: 10px;">
+			<!-- <p class="w3-large">
+				<strong>Employee Details:</strong>
+			</p>
+
+			<div class="w3-row">
+				<div class="w3-col m4 ">
+					<div class=" w3-center" style="height: 200px;">
+						<img th:src="@{/images/avatar.png}" alt="Person"
+							style="height: 150px; width: 150px">
+					</div>
+
+				</div>
+				<div class="w3-col m4">
+
+
+					<p>
+						<label><strong>Employee Id:</strong></label>&nbsp;<label
+							th:text="${personInfo.getPersonid()}"></label>
+					</p>
+
+					<p>
+						<label><strong>Employee Name:</strong></label>&nbsp;<label
+							th:text="${personInfo.getPersonname()}"></label>
+					</p>
+
+
+					<p>
+						<label><strong>Date of Birth:</strong></label>&nbsp;<label
+							th:text="${personInfo.getDateofbirth()}"></label>
+					</p>
+
+					<p>
+						<label><strong>Nature of Employment:</strong></label>&nbsp;<label
+							th:text="${personInfo.getEmployeetype()}"></label>
+					</p>
+
+					<p>
+						<label><strong>Designation:</strong></label>&nbsp;<label
+							th:text="${personInfo.getDesignation()}"></label>
+					</p>
+				</div>
+				<div class="w3-col m4 ">
+
+
+					<p>
+						<label><strong>Enterprises Hire Date:</strong></label>&nbsp;<label
+							th:text="${personInfo.getJoiningdate()}"></label>
+					</p>
+
+					<p>
+						<label><strong>Vehicle User:</strong></label>&nbsp;<label
+							th:text="${personInfo.getVehicleused()}">AWE12</label>
+					</p>
+
+					<p>
+						<label><strong>Phone Number:</strong></label>&nbsp;<label
+							th:text="${personInfo.getPhonenumber()}"></label>
+					</p>
+
+					<p>
+						<label><strong>Email Id:</strong></label>&nbsp;<label
+							th:text="${personInfo.getEmailaid()}"></label>
+					</p>
+
+				</div>
+			</div>
+			<hr class="hrline">
+ --> 
+		</div>
+
+		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item" >Claim Details</h5>
+			
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${enter.getClaimid()==0}">
+				<div type="button" class="w3-btn w3-red w3-round-large" id="backbtn" >
+					<i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large" id="Savebtn"
+					onclick="savedata('save','save','ENTERTAINMENT_EMBRSMNT_FORM',this);"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Claim</div>
+				<!-- <div type="button" class="w3-btn w3-green w3-round-large" id="Submitbtn" onclick="savedata('edit','submit','ENTERTAINMENT_EMBRSMNT_FORM_EDIT',this)" value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit</div> -->
+			</div>
+		
+		
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${enter.getClaimid()!=0} and ${mode=='edit'}">
+				<div type="button" class="w3-btn w3-red w3-round-large" id="backbtn"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large" 
+					id="Savebtn" onclick="savedata('edit','save','ENTERTAINMENT_EMBRSMNT_FORM_EDIT',this);"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update</div>
+				<div type="button" class="w3-btn w3-green w3-round-large" id="Submitbtn" onclick="savedata('edit','submit','ENTERTAINMENT_EMBRSMNT_FORM_EDIT',this)" value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit</div>
+			</div>
+			
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${enter.getClaimid()!=0} and ${mode=='view'}">
+				<div type="button" class="w3-btn w3-red w3-round-large" id="backbtn"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-grey w3-round-large" 
+					id="Printbtn" th:onclick="|popupDeclearation(${enter.getClaimid()})|"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;Declaration</div>
+			</div>
+		</div>
+		<div class="w3-container">
+			<!-- <div class="w3-container">
+				<div class="pull-left">
+					<h5>
+						<strong>Claim Details:</strong>
+					</h5>
+				</div>
+			</div> -->
+			<div class="w3-half w3-container">
+					<p>
+						<strong><label>Entitlement: &nbsp;&nbsp;</label></strong> <label id="entertain_amt" style="color: blue;"
+							th:text="${empent}"></label>&nbsp;&nbsp;<label>INR Per
+							Month</label>
+					</p>
+				</div>
+
+			<!--******************************* Save Section:Start *************************-->
+
+			<div th:if="${enter.getClaimid()==0}">
+				<form method="post" id="ENTERTAINMENT_EMBRSMNT_FORM"
+					enctype="multipart/form-data"
+					onsubmit="return false;">
+
+					<div class="w3-container" style="display: none">
+						<input id="Rem_Id" name="reimburseid" placeholder="Reimburse Id"
+							value="5" type="text" readonly>
+						<input name="personid"
+							th:value="${personInfo.getPersonid()}" placeholder="Person Id"
+							type="text" readonly>
+						<input name="personnumber" id="personnumber"
+							th:value="${personInfo.getPersonnumber()}"
+							placeholder="Person number" type="text" readonly>
+
+					</div>
+					<div class="w3-row">
+						<div class="w3-third">
+							<div class="w3-container">
+								<p>
+									<label>From Date:</label> <span style="color: red"> *</span> <input th:value="${enter.getPeriodfrom()}" 
+										name="periodfrom" id="fromdate" class="w3-input w3-border"
+										type="date" data-date-format="YYYY MM DD"> <span
+										style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("periodfrom")!=null}'
+										th:text='${bindingResult.getFieldError("periodfrom").getDefaultMessage()}'></span>
+								</p>
+							</div>
+						</div>
+
+						<div class="w3-third">
+							<div class="w3-container">
+								<p>
+									<label>To Date:</label> <span style="color: red"> *</span> <input th:value="${enter.getPeriodto()}"
+										name="periodto" id="todate" class="w3-input w3-border"
+										type="date" data-date-format="YYYY MM DD"> <span
+										style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("periodto")!=null}'
+										th:text='${bindingResult.getFieldError("periodto").getDefaultMessage()}'></span>
+								</p>
+							</div>
+						</div>
+
+						<div class="w3-third">
+							<div class="w3-container">
+								<p>
+									<label>Amount:</label> <span style="color: red"> *</span>
+									<input
+										name="amount" id="amount" class="w3-input w3-border" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+										type="text" th:value="${enter.getAmount()}">
+									<span style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("amount")!=null}'
+										th:text='${bindingResult.getFieldError("amount").getDefaultMessage()}'></span>
+								</p>
+							</div>
+						</div>
+
+					</div>
+					<div class="w3-container w3-row " style="margin-top: 40px;">
+						<div class="w3-quarter w3-left" id="entertainmentfiles">
+							<input id="attachments" name="attachment" type="hidden" />
+							<p>
+								<label style="size: 50px;"><strong>Upload
+										Documents:</strong> </label>
+							</p>
+
+						</div>
+						<div class="w3-quarter w3-right">
+
+							<input type="file" name="file" id="file" />
+						</div>
+
+					</div>
+
+					<div class="w3-container">
+						<input id="Agree" class="w3-check" type="checkbox"> <label>I
+							have maintained the relevent papers,bills receipt etc.and same
+							will be provided as and when asked by the management.</label>
+
+					</div>
+
+					<!-- <div class="w3-container w3-right" style="margin-bottom: 15px;">
+
+						<button id="Savebtn" class="w3-button w3-theme Savebtn"
+							onclick="savedata('save','save','ENTERTAINMENT_EMBRSMNT_FORM');">Save</button>
+						<button id="Submitbtn" onclick="savedata('save','submit','ENTERTAINMENT_EMBRSMNT_FORM');"
+							class="w3-button w3-theme ">Submit for approval</button>
+
+
+					</div> -->
+				</form>
+			</div>
+
+			<!--------------------------------------------------------Edit-------------------------------------------------- -->
+
+
+			<div th:if="${enter.getClaimid()!=0} and ${mode=='edit'}">
+				<form method="post" id="ENTERTAINMENT_EMBRSMNT_FORM_EDIT"
+					enctype="application/x-www-form-urlencoded"
+					onsubmit="return false;">
+
+					<div class="w3-container">
+						<div style="display:none;">
+						<input name="claimid" th:value="${enter.getClaimid()}"
+							id="claimid" type="text" readonly>
+						<input id="Rem_Id"
+							name="reimburseid" placeholder="Reimburse Id" value="5"
+							type="text" readonly> <input name="personid"
+							th:value="${personInfo.getPersonid()}" placeholder="Person Id"
+							type="text" readonly> <input name="personnumber"  id="personnumber"
+							th:value="${personInfo.getPersonnumber()}"
+							placeholder="Person number" type="text" readonly>
+						</div>
+
+					</div>
+					<div class="w3-row">
+						<div class="w3-third">
+							<div class="w3-container">
+								<p>
+									<label>From Date:</label> <span style="color: red"> *</span> <input
+										name="periodfrom" id="fromdate"
+										th:value="${enter.getPeriodfrom()}" class="w3-input w3-border"
+										type="date" data-date-format="YYYY MM DD"> <span
+										style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("periodfrom")!=null}'
+										th:text='${bindingResult.getFieldError("periodfrom").getDefaultMessage()}'></span>
+								</p>
+							</div>
+						</div>
+
+						<div class="w3-third">
+							<div class="w3-container">
+								<p>
+									<label>To Date:</label> <span style="color: red"> *</span> <input
+										name="periodto" id="todate" th:value="${enter.getPeriodto()}"
+										class="w3-input w3-border" type="date"
+										data-date-format="YYYY MM DD"> <span
+										style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("periodto")!=null}'
+										th:text='${bindingResult.getFieldError("periodto").getDefaultMessage()}'></span>
+								</p>
+							</div>
+						</div>
+
+						<div class="w3-third">
+							<div class="w3-container">
+								<p>
+									<label>Amount:</label> <span style="color: red"> *</span> <input
+										name="amount" id="amount" th:value="${enter.getAmount()}"
+										class="w3-input w3-border" type="text"> <span
+										style="color: red"
+										th:if='${bindingResult != null && bindingResult.getFieldError("amount")!=null}'
+										th:text='${bindingResult.getFieldError("amount").getDefaultMessage()}'></span>
+								</p>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="w3-container w3-row " style="margin-top: 40px;">
+						<div class="w3-quarter w3-left" id="entertainmentfiles">
+							<input id="attachments" name="attachment" type="hidden" />
+							<p>
+								<label style="size: 50px;"><strong>Upload
+										Documents:</strong> </label>
+							</p>
+
+						</div>
+						<div class="w3-quarter w3-right">
+							<a th:if="${(enter.getAttachment()!='') and (enter.getAttachment()!=null)}" id="DOWNLOAD_LINK" th:href="${enter.getAttachment()}" target="_blank" download>Download Attachment</a>
+ 							<input type="hidden" name="attachhidden" th:value="${enter.getAttachment()}"/>
+							<input type="file" name="file" id="file" />
+						</div>
+
+					</div>
+					<div class="w3-container">
+						<input id="Agree" class="w3-check" type="checkbox">
+							 <label>I have maintained the
+							relevent papers,bills receipt etc.and same will be provided as
+							and when asked by the management.</label>
+					</div>
+
+<!-- 					<div class="w3-container w3-right" style="margin-bottom: 15px;">
+
+						<button id="Savebtn" class="w3-button w3-theme Savebtn"
+							onclick="savedata('edit','save','ENTERTAINMENT_EMBRSMNT_FORM_EDIT');">Update</button>
+						<button id="Submitbtn" onclick="savedata('edit','submit','ENTERTAINMENT_EMBRSMNT_FORM_EDIT')" class="w3-button w3-theme ">Submit</button>
+
+
+					</div> -->
+				</form>
+			</div>
+
+			<!---------------------------------------------View--------------------------------------------------------->
+
+
+			<div th:if="${enter.getClaimid()!=0} and ${mode=='view'}">
+				<form method="post" id="ENTERTAINMENT_EMBRSMNT_FORM"
+					enctype="application/x-www-form-urlencoded"
+					onsubmit="return false;">
+
+					<div class="w3-container">
+						<div style="display:none;">
+						<input name="claimid" th:value="${enter.getClaimid()}"
+							id="claimid" type="text" readonly>
+						<input id="Rem_Id" name="reimburseid" placeholder="Reimburse Id" value="5"
+							type="text" readonly> <input name="personid"
+							th:value="${personInfo.getPersonid()}" placeholder="Person Id"
+							type="text" readonly> <input name="personnumber"  id="personnumber"
+							th:value="${personInfo.getPersonnumber()}"
+							placeholder="Person number" type="text" readonly>
+						</div>
+
+					</div>
+					<div class="w3-row">
+						<div class="w3-third">
+							<div class="w3-container">
+								<p>
+									<label>From Date:</label> <span style="color: red"> *</span> <input
+										name="periodfrom" id="fromdate"
+										th:value="${enter.getPeriodfrom()}" class="w3-input w3-border"
+										type="date" data-date-format="YYYY MM DD" readonly>
+								</p>
+							</div>
+						</div>
+
+						<div class="w3-third">
+							<div class="w3-container">
+								<p>
+									<label>To Date:</label> <span style="color: red"> *</span> <input
+										name="periodto" id="todate" th:value="${enter.getPeriodto()}"
+										class="w3-input w3-border" type="date"
+										data-date-format="YYYY MM DD" readonly>
+								</p>
+							</div>
+						</div>
+
+						<div class="w3-third">
+							<div class="w3-container">
+								<p>
+									<label>Amount:</label> <span style="color: red"> *</span> <input
+										name="amount" id="amount" th:value="${enter.getAmount()}"
+										class="w3-input w3-border" type="text" readonly>
+								</p>
+							</div>
+						</div>
+
+					</div>
+					<div class="w3-container w3-row " style="margin-top: 40px;">
+						<div class="w3-quarter w3-left" id="entertainmentfiles">
+							<input id="attachments" name="attachment" type="hidden" />
+
+							<a th:if="${(enter.getAttachment()!='') and (enter.getAttachment()!=null)}" id="DOWNLOAD_LINK" th:href="${enter.getAttachment()}" target="_blank" download>Download Attachment</a>
+
+						</div>
+
+
+					</div>
+
+					<div class="w3-container">
+						<input id="Agree" class="w3-check" type="checkbox"
+							checked="checked" disabled> <label>I have
+							maintained the relevent papers,bills receipt etc.and same will be
+							provided as and when asked by the management.</label>
+
+					</div>
+
+					<!-- <div class="w3-container w3-right" style="margin-bottom: 15px;">
+						<button id="Printbtn" onclick="alert('Hello Submit')"
+							class="w3-button w3-theme ">Print In PDF</button>
+						<button id="backbtn" class="w3-button w3-theme ">Back</button>
+					</div> -->
+					
+<!-- ----------------------------------------------------Approval Section Start Here------------------ -->
+					
+					<h5 > Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${enter.getClaimid()}" aria-hidden="true" th:onclick='getapprovalhistory(5,this.id);'></i></h5>
+					<section class="container" >
+						
+						<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+						<div class="container__sources">
+
+							<div style="box-shadow: none;background: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+								<div class="sources--cms" style="width: 160px">
+									<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+									<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+									<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+
+									<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+										<i class="fa fa-check tick"></i>
+
+									</div>
+									<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+										<i class="fa fa-clock-o pending"></i>
+									</div>
+									<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+
+										<i class="fa fa-close cancel"></i>
+
+									</div>
+
+								</div>
+								<svg class="svghor" viewBox="0 10 100 100">
+									<line  x1="5" x2="100" y1="80" y2="80"></line>
+								</svg>
+								<svg class="svgver" viewBox="0 20 100 100 ">
+									<line  x1="40" x2="40" y1="0" y2="100"></line>
+								</svg>
+							</div>
+							<div style="background: none;margin-top: 40px;margin-left: 26px;" ><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+						</div>
+
+<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+
+
+					</section>
+					
+<!-- ----------------------------------------------------Approval Section Start Here------------------ -->
+					
+				</form>
+			</div>
+
+
+
+		</div>
+
+
+<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+		<script src="/js/reimbursement/entertainment/entertainment.js"></script>
+		<div id="submitblock" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight: bold"> </label> <a
+						id="okbtn" rm="reimbursement/entertainmentSearch">OK</a>
+				</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>
+
+
+
+
+

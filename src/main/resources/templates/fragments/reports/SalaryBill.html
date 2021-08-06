@@ -1,0 +1,300 @@
+<div th:fragment="SalaryBill">
+    <style type="text/css">
+        .container {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: auto;
+            /*white-space: nowrap;*/
+        }
+        #salsummtab {
+            width: 98%;
+            font-size: 15px;
+			table-layout: fixed;
+            /*margin-left: -10px;*/
+        }
+
+		/*.thstyle
+		{
+			border-top: 1px solid black; 
+			border-bottom: 1px solid black; 
+			border-left: 1px solid black; 
+			border-right: 1px solid black;
+			width : 25%;
+			font-size: 12px;
+		}
+		
+		.thstyle1
+		{
+			border-top: 1px solid black; 
+			border-bottom: 1px solid black; 
+			border-left: 1px solid black; 
+			border-right: 1px solid black;
+			background-color: #d9d9d9;
+			width : 25%;
+			font-size: 12px;
+		}*/
+    </style>
+    <div class="w3-main" style="margin-bottom: 16px;">
+		<!-- <div class="container" th:if="${pyrlsummlen==0}">
+			<p style="margin-left:10px;font-weight:bold;">No Record found with given details!!!</p>
+		</div> -->
+		<!--<p th:text="${pyrlsummlen}"></p>-->
+        <div class="container" th:if="${pyrlsummlen!=0}" id="salsummtab" >
+			<h5 style="text-align: center;">UTTAR PRADESH METRO RAIL CORPORATION</h5>
+			<h6 style="text-align: center;">ADMINISTRATIVE OFFICE, NEAR AMBEDKAR PARK, VIPIN KHAND, GOMTI NAGAR, LUCKNOW-226010</h6>
+			<table style="width: 100%">
+				<tr>
+<!--					<td><p>Salary Bill Voucher # - <label style="color: black; font-weight: bold;" th:text="${sbil.getSalaryvoucherno()}"></label></p></td>-->
+					<td style="text-align: right"><p>Date :- <span id="dt"></span></p></td>
+				</tr>
+			</table>
+			<h6 style="text-align: center; font-weight: 500;">
+			Salary Bill for the month of 
+			<label style="color: black; font-weight: 500;" th:text="${month}"></label> 
+			for <label style="color: black; font-weight: 500;" th:text="${bus_name}"></label> Employees</h6>
+
+			<table style="width: 100%;">
+				<th:block th:each="sbil,stats : ${pyrlsumm}">
+					<tr>
+						<td><p>Salary Bill Voucher # - <label style="color: black; font-weight: bold;" th:text="${sbil.getSalaryvoucherno()}"></label></p></td>
+						<!--<td style="text-align: right"><p>Date :- <span id="dt"></span></p></td>-->
+					</tr>
+
+					<tr>
+						<th colspan="2" style="text-align: left;"><label style="color: black; font-weight: bold;" th:text="'S. No:- '+${stats.count}"></label></th>
+						<th colspan="2" style="text-align: left;"><label style="color: black; font-weight: bold;" th:text="'Employee Number:- '+${sbil.getPersonnumber()}"></label></th>
+						<th colspan="2" style="text-align: left;"><label style="color: black; font-weight: bold;" th:text="'Name:- '+${sbil.getPersonname()}"></label></th>
+						<th colspan="2 style="text-align: left;"><label style="color: black; font-weight: bold;" th:text="'Nature of Employment:- '+${sbil.getEmployeetype()}"></label></th>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<th align="left" style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey;text-align:left;">Designation</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${sbil.getDesignation()}"></td>
+
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">Department</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${sbil.getDepartment()}"></td>
+
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">PAN No</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${sbil.getPannumber()}"></td>
+
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">Bank A/C No</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${sbil.getBankaccountnumber()}"></td>
+					</tr>
+					<tr>
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">Scale</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${sbil.getScale()}"></td>
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">Working Days</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${pyrlsumm[0].getPayrolldata().get(0).getPaiddays()}"></td>
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">PF No</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;"th:text="${sbil.getPfnumber()}"></td>
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">IFSC Code</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${sbil.getBranchifsccode()}"></td>
+					</tr>
+					<tr>
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">Date of Joining</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" class="tdate" th:text="${sbil.getJoiningdate()}"></td>
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">Month of Increment</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${sbil.getMonthofincrement()}"></td>
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">UAN Number</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${sbil.getUannumber()}"></td>
+						<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey; text-align:left;">Bank Name</th>
+						<td style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;" th:text="${sbil.getBankname()}"></td>
+					</tr>
+					<tr>
+						<th colspan="2" style="text-align: left;"><label style="color: black; font-weight: bold;">Earnings</label></th>
+						<th colspan="3" style="text-align: left;"><label style="color: black; font-weight: bold;">Deductions</label></th>
+						<th colspan="3" style="text-align: left;"><label style="color: black; font-weight: bold;">Employer Contribution</label></th>
+					</tr>
+					<tr>
+						<td colspan="2" style="vertical-align: top;">
+							<table border="1" style="width: 100%; border-collapse: collapse;">
+								<tr>
+									<th style="background-color: lightgrey; text-align:left;">Description</th>
+									<th style="background-color: lightgrey; text-align:right;">Amount</th>
+								</tr>
+
+								<th:block th:each="earn:${sbil.payrolldata}">
+									<tr th:if="${earn.elementtype eq 'er' and earn.payamt!='0.0'}">
+										<td th:text="${earn.abbreviation}"></td>
+										<td style="text-align: right;" th:text="${earn.payamt}"></td>
+									</tr>
+								</th:block>
+								<th:block th:each="earn:${sbil.payrolldata}">
+									<tr th:if="${earn.elementtype eq 'st' and earn.abbreviation =='Total Earning'}">
+										<th style="background-color: lightgrey; text-align:left;">Total Earnings</th>
+										<td style="text-align: right;font-weight: bold;background-color: lightgrey;" th:text="${earn.payamt}"></td>
+									</tr>
+								</th:block>
+								<!--<tr>
+									<th>Total</th>
+									<td style="text-align: right;font-weight: bold;" th:text="${sum_earn[stats.index]}"></td>
+								</tr>-->
+							</table>
+						</td>
+						<td colspan="3" style="vertical-align: top;">
+							<table border="1" style="width: 100%; border-collapse: collapse;">
+								<tr>
+									<th colspan="2" style="background-color: lightgrey; text-align:left;">Description</th>
+									<th style="background-color: lightgrey; text-align:right;">Amount</th>
+								</tr>
+
+								<th:block th:each="ded:${sbil.payrolldata}">
+									<tr th:if="${ded.elementtype eq 'de' and ded.payamt!='0.0'}">
+										<td colspan="2" th:text="${ded.abbreviation}"></td>
+										<td style="text-align: right;" th:text="${ded.payamt}"></td>
+									</tr>
+								</th:block>
+								<th:block th:each="ded:${sbil.payrolldata}">
+									<tr th:if="${ded.elementtype eq 'st' and ded.abbreviation =='Total Deduction'}">
+										<th colspan="2" style="background-color: lightgrey; text-align:left;">Total Deductions</th>
+										<td style="text-align: right;font-weight: bold;background-color: lightgrey;" th:text="${ded.payamt}"></td>
+									</tr>
+								</th:block>
+								<!--<tr>
+									<th>Total</th>
+									<td style="text-align: right;font-weight: bold;" th:text="${sum_ded[stats.index]}"></td>
+								</tr>-->
+							</table>
+						</td>
+						<td colspan="3" style="vertical-align: top;">
+							<table border="1" style="width: 100%; border-collapse: collapse;">
+								<tr>
+									<th colspan="2" style="background-color: lightgrey; text-align:left;">Description</th>
+									<th style="background-color: lightgrey; text-align:right;">Amount</th>
+								</tr>
+								<th:block th:each="cont:${sbil.payrolldata}">
+									<tr th:if="${cont.elementtype == 'st' and cont.payamt!='0.0' and cont.abbreviation !='Total Earning' and cont.abbreviation !='Total Deduction' and cont.abbreviation !='Total Contribution' and cont.abbreviation !='Net Pay'}">
+										<td colspan="2" th:text="${cont.abbreviation}"></td>
+										<td style="text-align: right;" th:text="${cont.payamt}"></td>
+									</tr>
+								</th:block>
+								<th:block th:each="cont:${sbil.payrolldata}">
+									<tr th:if="${cont.elementtype eq 'st' and cont.abbreviation =='Total Contribution'}">
+										<th colspan="2" style="background-color: lightgrey; text-align:left;">Total Contributions</th>
+										<td style="text-align: right;font-weight: bold;background-color: lightgrey;" th:text="${cont.payamt}"></td>
+									</tr>
+								</th:block>
+							</table>
+						</td>
+					</tr>
+					<th:block th:each="pb:${sbil.payrolldata}">
+						<tr th:if="${pb.elementtype eq 'st' and pb.abbreviation =='Net Pay'}">
+							<th colspan="8" style="text-align:left;">
+								<label style="color: black; font-weight: bold;" th:text="'Net Salary :-'+${pb.payamt}"></label>
+								<hr class="hrline" />
+							</th>
+						</tr>
+					</th:block>
+					<tr>
+						<th colspan="8">&nbsp;</th>
+					</tr>
+				</th:block>
+				<tr>
+                    <th colspan="8"><h5 style="text-align: center; font-weight: bold;">LMRC Salary Summary Report <label style="color: black; font-weight: bold;" th:text="${month}"></label></h5></th>
+                </tr>
+				<tr>
+                    <th colspan="8">&nbsp;</th>
+                </tr>
+				<tr>
+					<td colspan="2" style="width:33%;vertical-align: top;">
+						<table border="1" style="width:100%;border-collapse: collapse;">
+							<tr>
+								<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey;" colspan="2">Earnings</th>
+							</tr>
+							<th:block th:each="salrpt:${pyrlsummrpt}">
+								<tr th:if="${salrpt.getElementtype() == 'er' and salrpt.getPayamt()!='00.00'}">
+									<td th:text="${salrpt.getAbbreviation()}"></td>
+									<td style="text-align: right;" th:text="${salrpt.getPayamt()}"></td>
+								</tr>
+							</th:block>
+						</table>
+					</td>
+				
+					<td colspan="3" style="width:33%;vertical-align: top;">
+						<table border="1" style="width:100%;border-collapse: collapse;">
+							<tr>
+								<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey;" colspan="2">Deductions</th>
+							</tr>
+							<th:block th:each="salrpt:${pyrlsummrpt}">
+								<tr th:if="${salrpt.getElementtype() == 'de' and salrpt.getPayamt()!='00.00'}">
+									<td th:text="${salrpt.getAbbreviation()}"></td>
+									<td style="text-align: right;" th:text="${salrpt.getPayamt()}"></td>
+								</tr>
+							</th:block>
+						</table>
+					</td>
+					<td colspan="3" style="width:33%;vertical-align: top;">
+						<table border="1" style="width:100%;border-collapse: collapse;">
+							<tr>
+								<th style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;border-right:1px solid black;background-color: lightgrey;" colspan="2">Contributions</th>
+							</tr>
+							<th:block th:each="salrpt:${pyrlsummrpt}">
+								<tr th:if="${salrpt.getElementtype() == 'st' and salrpt.getPayamt()!='00.00' and salrpt.getAbbreviation()!='Total Earning' and salrpt.getAbbreviation() != 'Total Deduction' and salrpt.getAbbreviation()!='Total Contribution' and salrpt.getAbbreviation()!='Net Pay'}">
+									<td th:text="${salrpt.getAbbreviation()}"></td>
+									<td style="text-align: right;" th:text="${salrpt.getPayamt()}"></td>
+								</tr>
+							</th:block>
+						</table>
+					</td>
+                </tr>
+				<tr>
+					<td colspan="2" th:text="'Total Gross Pay:-       '+${gross}"></td>
+					<td colspan="2" th:text="'Total Net Deductions:-       '+${ded}"></td>
+					<td colspan="2" th:text="'Total Net Salary:-       '+${netpay}"></td>
+					<td colspan="2" th:text="'Total Contribution:-       '+${contri}"></td>
+				</tr>
+				<tr>
+					<td colspan="8">&nbsp;</td>					
+				</tr>	
+				<tr>
+					<td colspan="8" th:text="'Verified & Passed for Rupees:- '+${verified}"></td>					
+				</tr>
+				<tr>
+					<td colspan="8">&nbsp;</td>					
+				</tr>
+				<tr>
+					<td colspan="8">&nbsp;</td>					
+				</tr>
+				<tr>
+					<td>Prepared By</td>
+					<td>&nbsp;</td>
+					<td>Bill Drawn By</td>
+					<td>&nbsp;</td>
+					<td>Accountant</td>
+					<td>Manager (Finance)</td>
+					<td>&nbsp;</td>
+					<td>General Manager (Finance)</td>					
+				</tr>			
+			</table>
+        </div>
+    </div>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/reports/reports.js"></script>
+	<script src="/js/reports/validatereport.js"></script>
+	<script src="/js/reports/enable.js"></script>
+	<script src="/js/reports/generatereport.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+            var tdate = document.getElementsByClassName("tdate");
+            for (var i = 0; i < tdate.length; i++) {
+                var dt = tdate[i].innerHTML;
+                var p = dt.split(/\D/g);
+                var finaldate = [p[2], p[1], p[0]].join("/");
+                tdate[i].innerHTML = finaldate;
+            }
+        });
+
+        var d = new Date();
+        var dt = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+        var dt1 = document.getElementById("dt");
+        dt1.innerHTML = dt;
+    </script>
+</div>

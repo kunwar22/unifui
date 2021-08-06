@@ -1,0 +1,181 @@
+<div th:fragment="emailConfig">
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom">
+                <h4 style="font-weight: 400; display: inline-block;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;" /> <i class="fa fa-envelope" style="color: black;"></i>&nbsp;Configure Email
+                </h4>
+                <!--<input style="display:inline-block; th:if="" margin-top:10px;" value="Save" type="button" id="savebtn" onClick="saveEmailConfig();" class="w3-btn w3-theme w3-right w3-round-large"/>-->
+            </div>
+        </div>
+        <hr class="hrline" />
+
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item" >Add New Email Configuration</h5>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${emailConfigs.getId()==0}">
+	                <div type="button" class="w3-btn w3-theme w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+	                <div type="button" id="btnSave" class="w3-btn w3-theme w3-round-large"onClick="saveEmailConfig('save');"><i class="fa fa-floppy-o" aria-hidden="true"></i>Save</div>
+	            </div>
+	
+	            <div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${emailConfigs.getId()!=0} and ${display_mode == 'edit'}">
+	                <div type="button" class="w3-btn w3-theme w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+					<div type="button" id="btnUpdate" class="w3-btn w3-theme w3-round-large"onClick="saveEmailConfig('update');"><i class="fa fa-floppy-o" aria-hidden="true"></i>Update</div>	               
+	            </div>
+	
+	            <div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${emailConfigs.getId()!=0} and ${display_mode == 'view'}">
+	                <div type="button" class="w3-btn w3-theme w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>	                
+	            </div>
+		</div>
+
+        <div class="w3-card w3-margin w3-padding-large">
+            <form method="post" id="EMAIL_CONFIG" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+                				
+                    <input type="hidden" name="createdby" th:value="${createdby}" />
+                    <input type="hidden" name="updatedby" th:value="${updatedby}" />
+                
+					<div style="display: none;" th:if="${emailresult eq 'Success'}">
+						<input type="hidden" id="status" th:value="${emailresult}" />
+					</div>
+					<input type="hidden" id="status" value="" />
+					<!--<div style="display: block;" th:if="${emailConfigs.getId()!=0 and emailresult eq 'Failed'}">
+						response status ===><input type="text" id="status" value="Failed" />
+					</div>-->
+					<br />
+                    <input type="hidden" name="id" th:value="${emailConfigs.getId()}" />
+                
+                <div class="w3-row">
+                    <div class="w3-half w3-container">
+                        <p th:if="${emailConfigs.getId()==0}">
+                            <label class="w3-text-black">SMTP Host</label>
+                            <input type="text" id="smtphost" name="smtphost" class="w3-input w3-border w3-round" />
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("smtphost")!=null}' th:text="${bindingResult.getFieldError('smtphost').getDefaultMessage()}"></span>                           
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'edit'}">
+                            <label class="w3-text-black">SMTP Host</label>
+                            <input type="text" id="smtphost" name="smtphost" th:value="${emailConfigs.getSmtphost()}" class="w3-input w3-border w3-round" />
+							<span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("smtphost")!=null}' th:text="${bindingResult.getFieldError('smtphost').getDefaultMessage()}"></span>
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'view'}">
+                            <label class="w3-text-black">SMTP Host</label>
+                            <input type="text" id="smtphost" name="smtphost" th:value="${emailConfigs.getSmtphost()}" class="w3-input w3-border w3-round" readonly />
+                        </p>
+                    </div>
+                    <div class="w3-half w3-container">
+                        <p th:if="${emailConfigs.getId()==0}">
+                            <label class="w3-text-black">Port Number</label>
+                            <input type="text" id="portnum" name="portno" class="w3-input w3-border w3-round" oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"/>
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("portno")!=null}' th:text='${bindingResult.getFieldError("portno").getDefaultMessage()}'></span>
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'edit'}">
+                            <label class="w3-text-black">Port Number</label>
+                            <input type="text" id="portnum" name="portno" th:value="${emailConfigs.getPortno()}" class="w3-input w3-border w3-round" oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');"/>
+                        	<span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("portno")!=null}' th:text='${bindingResult.getFieldError("portno").getDefaultMessage()}'></span>
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'view'}">
+                            <label class="w3-text-black">Port Number</label>
+                            <input type="text" id="portnum" name="portno" th:value="${emailConfigs.getPortno()}" class="w3-input w3-border w3-round" readonly />
+                        </p>
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-half w3-container">
+                        <p th:if="${emailConfigs.getId()==0}">
+                            <label class="w3-text-black">Email ID</label>
+                            <input type="email" id="emailid" name="emailid" onblur="emailValidation();" class="w3-input w3-border w3-round" />
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("emailid")!=null}' th:text='${bindingResult.getFieldError("emailid").getDefaultMessage()}'></span>
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'edit'}">
+                            <label class="w3-text-black">Email ID</label>
+                            <input type="email" id="emailid" name="emailid" onblur="emailValidation();" th:value="${emailConfigs.getEmailid()}" class="w3-input w3-border w3-round" />
+							<span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("emailid")!=null}' th:text='${bindingResult.getFieldError("emailid").getDefaultMessage()}'></span>                       
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'view'}">
+                            <label class="w3-text-black">Email ID</label>
+                            <input type="email" id="emailid" name="emailid" th:value="${emailConfigs.getEmailid()}" class="w3-input w3-border w3-round" readonly />
+                        </p>
+                    </div>
+                    <div class="w3-half w3-container">
+                        <p th:if="${emailConfigs.getId()==0}">
+                            <label class="w3-text-black">Password</label>
+                            <input type="password" id="passwd" name="password" class="w3-input w3-border w3-round" />
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("password")!=null}' th:text='${bindingResult.getFieldError("password").getDefaultMessage()}'></span>
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'edit'}">
+                            <label class="w3-text-black">Password</label>
+                            <input type="password" id="passwd" name="password" th:value="${emailConfigs.getPassword()}" class="w3-input w3-border w3-round" />
+							<span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("password")!=null}' th:text='${bindingResult.getFieldError("password").getDefaultMessage()}'></span>                        
+                        </p>
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'view'}">
+                            <label class="w3-text-black">Password</label>
+                            <input type="password" id="passwd" name="password" th:value="${emailConfigs.getPassword()}" class="w3-input w3-border w3-round" readonly />
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w3-row">
+                    <div class="w3-half w3-container">
+                        <p th:if="${emailConfigs.getId()==0}">
+                            <label class="w3-text-black">Secret Key</label>
+                            <input type="password" id="pasresetkey" name="pasresetkey" class="w3-input w3-border w3-round" />
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("pasresetkey")!=null}' th:text='${bindingResult.getFieldError("pasresetkey").getDefaultMessage()}'></span>
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'edit'}">
+                            <label class="w3-text-black">Secret Key</label>
+                            <input type="password" id="pasresetkey" name="pasresetkey" th:value="${emailConfigs.getPasresetkey()}" class="w3-input w3-border w3-round" />
+							<span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("pasresetkey")!=null}' th:text='${bindingResult.getFieldError("pasresetkey").getDefaultMessage()}'></span>                        
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'view'}">
+                            <label class="w3-text-black">Secret Key</label>
+                            <input type="password" id="pasresetkey" name="pasresetkey" th:value="${emailConfigs.getPasresetkey()}" class="w3-input w3-border w3-round" readonly />
+                        </p>
+                    </div>
+                    <div class="w3-half w3-container">
+                        <p th:if="${emailConfigs.getId()==0}">
+                            <label class="w3-text-black">Active/Inactive</label>
+                            <!--<br><br>-->
+                            <!--<input type="checkbox" id="chkStatus" name="chkStatus" class="w3-check w3-border" style="transform: scale(1.5);"/>
+						<input type="hidden" id="txtStatus" name="txtStatus" class="w3-input w3-border w3-round" />-->
+                            <select name="status" id="status" class="w3-select w3-round w3-border">
+                                <option disabled selected></option>
+                                <option th:each="st:${status}" th:text="${st.getDescription()}" th:value="${st.getDescription()}"></option>
+                            </select>
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("status")!=null}' th:text='${bindingResult.getFieldError("status").getDefaultMessage()}'></span>
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'edit'}">
+                            <label class="w3-text-black">Active/Inactive</label>
+                            <!--<input type="checkbox" id="chkStatus" name="chkStatus" class="w3-check w3-border" style="transform: scale(1.5);"/>
+						<input type="hidden" id="txtStatus" name="txtStatus" class="w3-input w3-border w3-round" />-->
+                            <select name="status" id="status" class="w3-select w3-round w3-border">
+                                <option disabled selected></option>
+                                <option th:each="st:${status}" th:text="${st.getDescription()}" th:value="${st.getDescription()}" th:selected="${emailConfigs.getStatus() == st.getDescription()}"></option>
+                            </select>
+							<span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("status")!=null}' th:text='${bindingResult.getFieldError("status").getDefaultMessage()}'></span>                        
+                        </p>
+
+                        <p th:if="${emailConfigs.getId()!=0} and ${display_mode == 'view'}">
+                            <label class="w3-text-black">Active/Inactive</label>
+                            <!--<input type="checkbox" id="chkStatus" name="chkStatus" class="w3-check w3-border" style="transform: scale(1.5);"/>
+						<input type="hidden" id="txtStatus" name="txtStatus" class="w3-input w3-border w3-round" />-->
+                            <select name="status" id="status" class="w3-select w3-round w3-border" disabled>
+                                <option disabled selected></option>
+                                <option th:each="st:${status}" th:text="${st.getDescription()}" th:value="${st.getDescription()}" th:selected="${emailConfigs.getStatus() == st.getDescription()}"></option>
+                            </select>
+                        </p>
+                    </div>
+                </div>
+            </form>
+</div>
+        </div>
+        <script src="/js/emailconfig/emailconfig.js"></script>
+    </div>
+</div>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Claim Form for Telephone Bill</title>
+<style type="text/css">
+body {
+	font-size: 20px;
+}
+
+.heading {
+	margin-top: 100px;
+	//margin-left: 250px;
+	text-align:center;
+}
+
+.heading>h4 {
+	margin-top: 100px;
+	//margin-left: 70px;
+	text-align:center;
+}
+
+table {
+	width: 100%;
+	border-collapse:collapse;
+}
+
+p {
+	line-height: 0.5em;
+}
+
+.big {
+	line-height: 1.5em;
+}
+.sect>.left
+{
+float:left;
+display:inline;
+}
+
+.sect>.right
+{
+float:right;
+font-weight:bold;
+display:inline;
+margin-right:50px;
+
+}
+
+.boldtext{
+font-weight: bold;
+font-style: italic;
+}
+
+</style>
+</head>
+<body>
+	<div class="heading">
+		<h4>U.P. Metro Rail Corporation Ltd.</h4>
+		<h3>CLAIM FORM FOR TELEPHONE BILL</h3>
+	</div>
+	<div class="telephoneBill">
+		<table>
+			<tr>
+				<td>Name: <label class="boldtext" th:text="${personInfo.getPersonname()}"></label></td>
+				<td>Designation: <label class="boldtext" th:text="${personInfo.getDesignation()}"></label></td>
+			</tr>
+			<tr>
+				<td>Department: <label class="boldtext" th:text="${personInfo.getDepartment()}"></label></td>
+				<td>Employee ID: <label class="boldtext" th:text="${personInfo.getPersonnumber()}"></label></td>
+			</tr>
+		</table>
+	</div>
+	<br />
+	<p>To,</p>
+	<p>The DGM/HR,</p>
+	<p>UP Metro Rail Corporation</p>
+	<p>Lucknow.</p>
+	<br />
+	<br />
+	<p class="big">Kindly arrange to reimburse Telephone charge of Rs.
+		<label class="boldtext" th:text="${viewdata.getRequestedamt()}"></label> for the period from <label class="boldtext" th:text="${viewdata.getFromdate()}"></label> to <label class="boldtext" th:text="${viewdata.getTodate()}"></label> details given below.
+		The amount may be credited to my bank account.</p>
+	<br />
+	<br />
+	<p>Telephone No. <label class="boldtext" th:text="${viewdata.getPhoneno()}"></label></p>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>Month</th>
+				<th>Billed Amount</th>
+				<th>Total</th>
+				<th>Claimed Amount</th>
+			</tr>
+		</thead>
+		<tbody>			
+			<tr>
+				<td style="text-align:center;"><label class="boldtext" th:text="${viewdata.getFromdate()}"></label> to <label class="boldtext" th:text="${viewdata.getTodate()}"></label></td>
+				<td style="text-align:right;"><label class="boldtext" ></label></td>
+				<td style="text-align:right;"><label class="boldtext" th:text="${viewdata.getRequestedamt()}"></label></td>
+				<td style="text-align:right;"><label class="boldtext" th:text="${viewdata.getRequestedamt()}"></label></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3" style="text-align:right;"><strong>Total Telephone Charges</strong></td>
+				<td style="text-align:right;"><label class="boldtext" th:text="${viewdata.getRequestedamt()}"></label></td>
+			</tr>
+			<tr>
+				<td colspan="4">&nbsp;</td>
+			</tr>
+		</tfoot>
+	</table>
+	
+	<br/><br/><br/>
+	<div class="sect">
+		<div class="left"><b>Date: </b><script type="text/javascript">var d=new Date();document.write( d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear());</script></div>
+		<div class="right">Signature</div>
+	</div>
+</body>
+</html>

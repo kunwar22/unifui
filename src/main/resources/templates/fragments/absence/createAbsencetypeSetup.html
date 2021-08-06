@@ -1,0 +1,925 @@
+<div th:fragment="createabsencetype">
+	<form method="post" id="ABSENCE_SAVE"
+		enctype="application/x-www-form-urlencoded" onsubmit="return false">
+
+	<div class="w3-row w3-border w3-padding-large">
+	<div style="margin-top:10px">
+		<h4 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline">Absence Type</h4>
+		<!-- <select id="SAVE_OPTION_LOV" class="w3-border w3-right" style="margin-right:30px; height:30px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option><option value="Update">Update</option></select> -->
+		<input type="button" onclick="ajaxPost();"
+	class="w3-button w3-theme w3-grey w3-right" id="AbsenceCreate"
+			value="Submit"  style="margin-right:05px;" /> 
+			
+		<button id="AbsenceCancel" rm="absencesetup/manageabsencetype"  
+			class="w3-button w3-theme w3-grey w3-right" style="margin-right:10px;">Cancel</button>
+	
+			
+		</div>
+		
+	<br>
+	<hr class="hrline">
+	
+	<input th:value="${absencetypemaster.getActionid()}"
+	id="txtABActionid" th:name="actionid" type="text" hidden /> <input
+	th:value="${absencetypemaster.getAbsencetypeid()}" id="txtABid"
+	name="absencetypeid" type="text" hidden/> <input
+	th:value="${absencetypemaster.getAbsence().get(0).getActionid()}"
+	id="txtABid" th:name="'absence[0].actionid'" type="text"  hidden/>
+
+
+<div class=w3-half>
+	<div class="w3-container">
+
+		
+       
+			<p th:if="${absencetypemaster.getAbsence().get(0).getEffectstartdate()==null}" >
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input th:value="${absencetypemaster.getAbsence().get(0).getEffectstartdate()}" max="9999-12-31" 
+		flag="none" th:msg="${absencetypemaster.getAddtionalatr()}" class="w3-input w3-border" 
+		th:name="'absence[0].effectstartdate'" id="CR_ABS_EFFDT_START" type="date" data-date=""
+		 data-date-format="YYYY MM DD"  />
+					<span id="JOB_EFFDT_ERROR" style="color:red"></span>
+				</p>
+				
+		<p th:if="${absencetypemaster.getAbsence().get(0).getEffectstartdate()!=null}" >
+		<label>Effective Start Date</label> 
+		<input th:value="${absencetypemaster.getAbsence().get(0).getEffectstartdate()}" max="9999-12-31" 
+		flag="none" th:msg="${absencetypemaster.getAddtionalatr()}" class="w3-input w3-border" 
+		th:name="'absence[0].effectstartdate'" id="CR_ABS_EFFDT_START" type="date" data-date=""
+		 data-date-format="YYYY MM DD"  readonly/>
+		<span id="JOB_EFFDT_ERROR" style="color:red"></span>
+				</p>	
+
+
+
+<p>
+	<label>Name</label><span style="color: red"> *</span> <input
+		th:value="${absencetypemaster.getAbsence().get(0).getName()}"
+		class="w3-input w3-border" th:name="'absence[0].name'"
+		id="CR_ABS_NAME" type="text"> <span
+		id="CR_ABS_NAME_ERROR" style="color: red"></span>
+
+</p>
+
+<p th:if="${absencetypemaster.getAbsence().get(0).getCode()==null}" >
+	<label>Code</label><span style="color: red"> *</span> <input
+		style="height: 38px" class="w3-input w3-border"
+		th:value="${absencetypemaster.getAbsence().get(0).getCode()}"
+		th:name="'absence[0].code'" id="CR_ABS_ABR" type="text">
+	<span id="CR_ABS_ABR_ERROR" style="color: red"></span>
+
+</p>
+
+<p th:if="${absencetypemaster.getAbsence().get(0).getCode()!=null}" >
+	<label>Code</label><span style="color: red"> *</span> <input
+		style="height: 38px" class="w3-input w3-border"
+		th:value="${absencetypemaster.getAbsence().get(0).getCode()}"
+		th:name="'absence[0].code'" id="CR_ABS_ABR" type="text" readonly>
+	<span id="CR_ABS_ABR_ERROR" style="color: red"></span>
+
+</p>
+
+					
+
+	</div>
+
+
+</div>
+<div class=w3-half>
+	<div class="w3-container">
+
+		
+
+
+<p
+	th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0} and ${absencetypemaster.getAbsence().get(0).getRepeatingperiodid()==0}">
+	<label>Repeating Period</label> <select id="CR_ABS_REPEATING"
+		class="w3-select w3-border"
+		th:name="'absence[0].repeatingperiodid'">
+		<option value="" disabled selected></option>
+		<option th:each="rp : ${repeating}" th:value="${rp.getId()}"
+			th:text="${rp.getDescription()}"></option>
+	</select>
+</p>
+
+
+<p
+	th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()!=0} or ${absencetypemaster.getAbsence().get(0).getRepeatingperiodid()!=0}">
+	<label>Repeating Period</label> <select id="CR_ABS_REPEATING"
+		class="w3-select w3-border"
+		th:name="'absence[0].repeatingperiodid'">
+		<option value="" disabled selected></option>
+		<option th:each="rp : ${repeating}"
+			th:selected="${rp.getId() eq absencetypemaster.getAbsence().get(0).getRepeatingperiodid()}"
+			th:value="${rp.getId()}" th:text="${rp.getDescription()}"></option>
+	</select>
+</p>
+
+<p>
+	<label>Status</label><span style="color: red"> *</span> <select
+		id="statusList" class="w3-select w3-border"
+		th:name="'absence[0].status'">
+
+		<option th:each="st : ${status}" th:selected="${st == 'Active' }"
+			th:value="${st}" th:text="${st}">
+	</select> <span id="BU_STATUS_ERROR" style="color: red"></span>
+</p>
+
+
+<p>
+	<label>Description</label><span style="color: red"> *</span> <input
+		style="height: 38px" class="w3-input w3-border"
+		th:value="${absencetypemaster.getAbsence().get(0).getDescription()}"
+		th:name="'absence[0].description'" id="CR_ABS_DESCR" type="text">
+	<span id="CR_ABS_DESCR_ERROR" style="color: red"></span>
+
+		</p>
+	</div>
+
+
+
+
+</div>
+
+
+<div class="w3-container">
+
+	<div class="w3-row">
+		<a href="javascript:void(0)" onclick="openCity(event, 'Accrual');">
+	<div
+		class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Accrual</div>
+</a> <a href="javascript:void(0)"
+	onclick="openCity(event, 'Eligibility');">
+	<div
+		class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Eligibility</div>
+</a> <a href="javascript:void(0)" onclick="openCity(event, 'Rules');">
+	<div
+		class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Rules</div>
+</a> <a href="javascript:void(0)"
+	onclick="openCity(event, 'Encashment');">
+		<div
+			class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Encashment</div>
+	</a>
+</div>
+
+
+
+
+
+<div id="Accrual" class="w3-row city">
+	<div class="w3-container">
+
+		<div class=w3-half>
+			<div class="w3-container">
+
+
+			
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0} and ${absencetypemaster.getAbsence().get(0).getAccrualfrequncy()==0}">
+				<label>Accrual Frequency</label> <select id="CR_ABS_FREQ"
+					class="w3-select w3-border"
+					th:name="'absence[0].accrualfrequncy'">
+					<option value="" disabled selected></option>
+					<option th:each="af : ${AccuralFreq}" th:value="${af.getId()}"
+						th:text="${af.getDescription()}"></option>
+				</select>
+			</p>
+
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()!=0} or ${absencetypemaster.getAbsence().get(0).getAccrualfrequncy()!=0}">
+				<label>Accrual Frequency</label> <select id="CR_ABS_FREQ"
+					class="w3-select w3-border"
+					th:name="'absence[0].accrualfrequncy'">
+					<option value="" disabled selected></option>
+					<option th:each="af : ${AccuralFreq}"
+						th:selected="${af.getId() eq absencetypemaster.getAbsence().get(0).getAccrualfrequncy()}"
+						th:value="${af.getId()}" th:text="${af.getDescription()}"></option>
+				</select>
+			</p>
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0} and ${absencetypemaster.getAbsence().get(0).getAccrualon()==0}">
+				<label>Accrual On</label> <select id="CR_ABS_ACCRUAL"
+					class="w3-select w3-border" th:name="'absence[0].accrualon'">
+					<option value="" disabled selected></option>
+					<option th:each="ao : ${Accuralon}" th:value="${ao.getId()}"
+						th:text="${ao.getDescription()}"></option>
+				</select>
+			</p>
+
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()!=0} or ${absencetypemaster.getAbsence().get(0).getAccrualon()!=0}">
+				<label>Accrual On</label> <select id="CR_ABS_FREQ"
+					class="w3-select w3-border" th:name="'absence[0].accrualon'">
+					<option value="" disabled selected></option>
+					<option th:each="ao : ${Accuralon}"
+						th:selected="${ao.getId() eq absencetypemaster.getAbsence().get(0).getAccrualon()}"
+						th:value="${ao.getId()}" th:text="${ao.getDescription()}"></option>
+				</select>
+			</p>
+
+			
+		</div>
+	</div>
+
+	<div class=w3-half>
+		<div class="w3-container">
+
+			<p>
+				<label>No of Days</label><span style="color: red"> *</span> <input
+					style="height: 38px" class="w3-input w3-border"
+					th:value="${absencetypemaster.getAbsence().get(0).getNumberofdays()}"
+					th:name="'absence[0].numberofdays'" id="CR_ABS_NODAYS"
+					type="text"> <span id="CR_ABS_NODAYS_ERROR"
+					style="color: red"></span>
+
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+				<input class="w3-check" onclick="myFunction()" id="myCheck"
+					th:name="'absence[0].isprorate'" type="checkbox" value="Yes">
+				<label>Proration applicable for new joinee</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getIsprorate()=='Yes'}">
+				<input class="w3-check" onclick="myFunction()" id="myCheck"
+					th:name="'absence[0].isprorate'" type="checkbox"
+					checked="checked"
+					th:value="${absencetypemaster.getAbsence().get(0).getIsprorate()}">
+				<label>Proration applicable for new joinee</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getIsprorate()=='No'}">
+				<input class="w3-check" onclick="myFunction()" id="myCheck"
+					th:name="'absence[0].isprorate'" type="checkbox"
+					checked="checked"
+					th:value="${absencetypemaster.getAbsence().get(0).getIsprorate()}">
+				<label>Proration applicable for new joinee</label>
+			</p>
+
+
+
+
+
+
+
+		</div>
+	</div>
+	<div class="w3-container" id="text" style="display: none">
+		<h5 class="w3-text-theme"
+			style="margin-top: 2px; bottom: 2px; display: inline-block">Data
+		</h5>
+		<div class="w3-padding w3-border"  >
+			<p>				
+				<label>Add Row</label> <input id="head" 
+					class="w3-btn" type="button" value="+"
+					onclick="addRowNowGRADE();" style="marging-left: 5px"/>
+					
+			</p>
+				
+
+			<div class="w3-border">
+				<table id="GRADE_RATE_VALUE_TBL"
+					class="display compact w3-table" style="width: 100%;">
+					<thead>
+
+						<th style="width: 30%; text-align: center;">*From Date</th>
+						<th style="width: 30%; text-align: center;">*To Date</th>
+						<th style="width: 30%; text-align: center;">No of Leaves</th>
+						<th style="width: 5%; text-align: center;"></th>
+						<th style="width: 5%; text-align: center;"></th>
+
+					</thead>
+					<tbody>
+
+						 <tr
+							th:each="entry ,stats: ${(absencetypemaster.getAbsenceproration())}">
+
+							
+							<td style="width: 30%"><input
+								th:value="${entry.getFromday()}" class="w3-input w3-border"
+								style="height: 38px"
+								th:name="'absenceproration['+${stats.index}+'].fromday'"
+								type="text"></td>
+
+							<td style="width: 30%"><input
+								th:value="${entry.getToday()}" class="w3-input w3-border"
+								style="height: 38px"
+								th:name="'absenceproration['+${stats.index}+'].today'"
+								type="text"></td>
+
+
+							<td style="width: 30%"><input
+								th:value="${entry.getNoofleaves()}"
+								class="w3-input w3-border" style="height: 38px"
+								th:name="'absenceproration['+${stats.index}+'].noofleaves'"
+								type="text"></td>
+
+							<td th:if="${stats.index!=0}" style="width: 5%"><input
+								th:index="${stats.index}"
+								flg="absencetypemaster.getAbsenceproration()"
+								class="w3-btn w3-theme" id="delete" type="button" value="x">
+							</td>
+							
+							<td style="width: 30%; display: none"><input
+								th:value="${entry.getActionid()}" id="actionidAbsence"
+								class="w3-input w3-border" style="height: 38px"
+								th:name="'absenceproration['+${stats.index}+'].actionid'"
+								type="text" hidden></td>
+
+						</tr> 
+					</tbody>
+
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+</div>
+
+<hr
+	style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+</div>
+
+<div id="Eligibility" class="w3-container city"
+	style="display: none">
+<div class="w3-container">
+<div class=w3-half>
+
+	
+
+	<p
+		th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0} and ${absencetypemaster.getAbsence().get(0).getEligibilityid()==0}">
+		<label>Eligibility</label> <select id="CR_ABS_ELIGIBILITY"
+			class="w3-select w3-border" th:name="'absence[0].eligibilityid'"
+			data-toggle="modal" >
+			<option id="1" value="0" hidden selected></option>
+			<option id="2" hidden></option>
+			<option value="search" data-toggle="modal" id="btnsearch">Search....</option>
+		</select>
+
+	</p>
+
+
+	<p
+		th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()!=0} or ${absencetypemaster.getAbsence().get(0).getEligibilityid()!=0}">
+		<label>Eligibility</label> <select id="CR_ABS_ELIGIBILITY"
+			class="w3-select w3-border" th:name="'absence[0].eligibilityid'"
+			data-toggle="modal">
+			<option id="1" value="0" hidden></option>
+			<option id="2" selected hidden
+				th:value="${absencetypemaster.getAbsence().get(0).getEligibilityid()}"
+				th:text="${absencetypemaster.getAbsence().get(0).getEligibilityidname()}">
+			</option>
+			<option value="search" data-toggle="modal" id="btnsearch">Search....</option>
+		</select>
+
+	</p>
+
+</div>
+
+
+
+
+	<div class=w3-half>
+		<div class="w3-container">
+			
+		</div>
+	</div>
+
+	<div class=w3-half>
+		<div class="w3-container">
+			
+		</div>
+	</div>
+
+
+	<!-- Popup Start here  -->
+
+
+	<!-- line modal -->
+	<div id="id01" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+				<div class="modal-header">
+				
+					<h3 align="left">Search and Select:Eligibility</h3>
+					<hr class="hrline">
+
+				</div>
+				<div class="modal-body">
+					<div>
+
+
+
+
+
+
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border"
+											name="ABS_NAME" id="CR_ABS_POP_NAME" type="text">
+
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+
+
+
+						<div class=w3-half>
+							<div class="w3-container">
+
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border"
+											name="ABS_DESC" id="CR_ABS_POP_CODE" type="text">
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+
+
+
+
+
+						<br>
+
+
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="CR_ABS_POP_SRCH"
+											class="w3-button w3-theme w3-grey">Search</button>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<BR>
+
+						<div id="resultSec" class="w3-responsive"
+							style="display: none">
+							<table id="AbsenceSearchList"
+								class="display compact w3-table" style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>ID</th>
+										<th>Name</th>
+										<th>Description</th>
+
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noData" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+
+
+
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+
+							<div class="w3-right">
+								<button id="CR_ABS_POP_OK"
+									class="w3-button w3-theme w3-grey"style="display:none">OK</button>
+								<button id="CR_ABS_POP_CANCEL"
+									class="w3-button w3-theme w3-grey"
+									>Cancel</button>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- PopUp End Here -->
+
+
+	<script src="/js/create/createAbsent.js"></script>
+
+</div>
+
+<hr
+	style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+</div>
+
+
+<div id="Rules" class="w3-container city" style="display: none">
+<div class="w3-container">
+
+
+	<div class=w3-half>
+		<div class="w3-container">
+
+			<p>
+				
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+				<input class="w3-check" id="CR_ABS_Lapes"
+					th:name="'absence[0].islapse'" type="checkbox" value="Yes">
+				<label>Is Leave lapse ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getIslapse()=='Yes'}">
+				<input class="w3-check" id="CR_ABS_Lapes"
+					th:name="'absence[0].islapse'" type="checkbox"
+					checked="checked" th:value="Yes"> <label>Is
+					Leave lapse ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getIslapse()=='No'}">
+				<input class="w3-check" id="CR_ABS_Lapes"
+					th:name="'absence[0].islapse'" type="checkbox" th:value="No">
+				<label>Is Leave lapse ?</label>
+			</p>
+
+			
+
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+				<input class="w3-check" id="CR_ABS_WEEKLYOFF"
+					th:name="'absence[0].partofweeklyoff'" type="checkbox"
+					value="Yes"> <label>Is Leave Part of Weekly
+					off ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofweeklyoff()=='Yes'}">
+				<input class="w3-check" id="CR_ABS_WEEKLYOFF"
+					th:name="'absence[0].partofweeklyoff'" type="checkbox"
+					checked="checked" th:value="Yes"> <label>Is
+					Leave Part of Weekly off ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofweeklyoff()=='No'}">
+				<input class="w3-check" id="CR_ABS_WEEKLYOFF"
+					th:name="'absence[0].partofweeklyoff'" type="checkbox"
+					 th:value="No"> <label>Is
+					Leave Part of Weekly off ?</label>
+			</p>
+			
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+				<input class="w3-check" id="CR_ABS_PARTHOLIDAY"
+					th:name="'absence[0].partofholiday'" type="checkbox"
+					value="Yes"> <label>Is Leave Part of Holiday?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofholiday()=='Yes'}">
+				<input class="w3-check" id="CR_ABS_PARTHOLIDAY"
+					th:name="'absence[0].partofholiday'" type="checkbox"
+					checked="checked"
+					th:value="Yes">
+				<label>Is Leave Part of Holiday?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofholiday()=='No'}">
+				<input class="w3-check" id="CR_ABS_PARTHOLIDAY"
+					th:name="'absence[0].partofholiday'" type="checkbox"					
+					th:value="No">
+				<label>Is Leave Part of Holiday?</label>
+			</p>
+
+			
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+				<input class="w3-check" id="CR_ABS_PROCEEDING_WEEK"
+					th:name="'absence[0].partofbeforeweeklyoff'" type="checkbox"
+					value="Yes"> <label>Is Leave Part of
+					proceeding week off ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofbeforeweeklyoff()=='Yes'}">
+				<input class="w3-check" id="CR_ABS_PROCEEDING_WEEK"
+					th:name="'absence[0].partofbeforeweeklyoff'" type="checkbox"
+					checked="checked"
+					th:value="Yes">
+				<label>Is Leave Part of proceeding week off ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofbeforeweeklyoff()=='No'}">
+				<input class="w3-check" id=CR_ABS_PROCEEDING_WEEK
+					th:name="'absence[0].partofbeforeweeklyoff'" type="checkbox"
+					
+					th:value="No">
+				<label>Is Leave Part of proceeding week off ?</label>
+			</p>
+
+			
+			</div>
+		</div>
+
+		<div class=w3-half>
+			<div class="w3-container">
+			
+			
+			
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+				<input class="w3-check" id="CR_ABS_PROCEEDING_HOLIDAY"
+					th:name="'absence[0].partofbeforeholiday'" type="checkbox"
+					value="Yes"> <label>Is Leave Part of
+					proceeding holiday ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofbeforeholiday()=='Yes'}">
+				<input class="w3-check" id="CR_ABS_PROCEEDING_HOLIDAY"
+					th:name="'absence[0].partofbeforeholiday'" type="checkbox"
+					checked="checked"
+					th:value="Yes">
+				<label>Is Leave Part of proceeding holiday ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofbeforeholiday()=='No'}">
+				<input class="w3-check" id=CR_ABS_PROCEEDING_HOLIDAY
+					th:name="'absence[0].partofbeforeholiday'" type="checkbox"
+					
+					th:value="No">
+				<label>Is Leave Part of proceeding holiday ?</label>
+			</p>
+
+			
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+				<input class="w3-check" id="CR_ABS_SUCCEEDING_WEEK"
+					th:name="'absence[0].partofafterweeklyoff'" type="checkbox"
+					value="Yes"> <label>Is Leave Part of
+					succeeding week of ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofafterweeklyoff()=='Yes'}">
+				<input class="w3-check" id="CR_ABS_SUCCEEDING_WEEK"
+					th:name="'absence[0].partofafterweeklyoff'" type="checkbox"
+					checked="checked"
+					th:value="Yes">
+				<label>Is Leave Part of succeeding week of ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getPartofafterweeklyoff()=='No'}">
+				<input class="w3-check" id=CR_ABS_SUCCEEDING_WEEK
+					th:name="'absence[0].partofafterweeklyoff'" type="checkbox"
+					
+					th:value="No">
+				<label>Is Leave Part of succeeding week of ?</label>
+			</p>
+
+
+			
+				<p
+					th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+					<input class="w3-check" id="CR_ABS_SUCCEEDING_HOLIDAY"
+						th:name="'absence[0].partofafterholiday'" type="checkbox"
+						value="Yes"> <label>Is Leave Part of
+						succeeding holiday ?</label>
+				</p>
+
+				<p
+					th:if="${absencetypemaster.getAbsence().get(0).getPartofafterholiday()=='Yes'}">
+					<input class="w3-check" id="CR_ABS_SUCCEEDING_HOLIDAY"
+						th:name="'absence[0].partofafterholiday'" type="checkbox"
+						checked="checked"
+						th:value="Yes">
+					<label>Is Leave Part of succeeding holiday ?</label>
+				</p>
+
+				<p
+					th:if="${absencetypemaster.getAbsence().get(0).getPartofafterholiday()=='No'}">
+					<input class="w3-check" id=CR_ABS_SUCCEEDING_HOLIDAY
+						th:name="'absence[0].partofafterholiday'" type="checkbox"
+						
+						th:value="NO">
+					<label>Is Leave Part of succeeding holiday ?</label>
+				</p>
+			
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="Encashment" class="w3-container city" style="display: none">
+<div class="w3-container">
+
+	<div class=w3-half>
+		<div class="w3-container">
+			<p>
+				<label>Max carry forward at year end</label><span
+					style="color: red"> *</span> <input style="height: 38px"
+					class="w3-input w3-border"
+					th:name="'absence[0].carryforwardlimit'"
+					id="CR_ABS_CARRY_LIMIT"
+					th:value="${absencetypemaster.getAbsence().get(0).getCarryforwardlimit()}"
+					type="text"> <span id="CR_ABS_DESCR_ERROR"
+					style="color: red"></span>
+
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+				<input class="w3-check" id="CR_ABS_CARRY"
+					th:name="'absence[0].carryforward'" type="checkbox"
+					value="Yes"> <label>Can Carry Forword ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getCarryforward()=='Yes'}">
+				<input class="w3-check" id="CR_ABS_CARRY"
+					th:name="'absence[0].carryforward'" type="checkbox"
+					checked="checked"
+					th:value="Yes">
+				<label>Can Carry Forword ?</label>
+			</p>
+
+			<p
+				th:if="${absencetypemaster.getAbsence().get(0).getCarryforward()=='No'}">
+				<input class="w3-check" id="CR_ABS_CARRY"
+					th:name="'absence[0].carryforward'" type="checkbox"
+					
+					th:value="No">
+				<label>Can Carry Forword ?</label>
+			</p>
+
+
+
+
+		</div>
+	</div>
+
+	<div class=w3-half>
+		<div class="w3-container">
+			<p>
+				<label>Max Days Encashable</label><span style="color: red">
+					*</span> <input style="height: 38px" class="w3-input w3-border"
+					th:name="'absence[0].incashabledays'" id="CR_ABS_ENCAS_DAYS"
+					th:value="${absencetypemaster.getAbsence().get(0).getIncashabledays()}"
+					type="text"> <span id="CR_ABS_DESCR_ERROR"
+					style="color: red"></span>
+
+			</p>
+
+			
+					<p
+						th:if="${absencetypemaster.getAbsence().get(0).getAbsencetypeid()==0}">
+						<input class="w3-check" id="CR_ABS_INCASH"  
+							th:name="'absence[0].incash'" type="checkbox" value="Yes">
+						<label>Is Encashable ?</label>
+					</p>
+
+					<p
+						th:if="${absencetypemaster.getAbsence().get(0).getIncash()=='Yes'}">
+						<input class="w3-check" id="CR_ABS_INCASH"  
+							th:name="'absence[0].incash'" type="checkbox" value="Yes"
+							checked="checked" 
+							>
+						<label>Is Encashable ?</label>
+					</p>
+
+					<p
+						th:if="${absencetypemaster.getAbsence().get(0).getIncash()=='No'}">
+						<input class="w3-check" id="CR_ABS_INCASH" 
+							th:name="'absence[0].incash'" type="checkbox" value="Yes" >
+						<label>Is Encashable ?</label>
+					</p> 
+					
+					
+				
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+</div>
+
+<script>
+function openCity(evt, cityName) {
+	var i, x, tablinks;
+	x = document.getElementsByClassName("city");
+	for (i = 0; i < x.length; i++) {
+		x[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablink");
+	for (i = 0; i < x.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(
+				" w3-border-red", "");
+	}
+	var c_name = document.getElementById(cityName);
+	c_name.style.display = "block";
+	evt.currentTarget.firstElementChild.className += " w3-border-red";
+}
+</script>
+
+
+
+
+
+
+
+ <script>
+$(document).ready(function(){
+	
+$("#idError").css('display', 'none');
+	var strMsg=$("#CR_ABS_EFFDT_START").attr("msg");
+	//debugger;
+	if(strMsg=="Error")
+		{
+			$("#idError").css('display', 'block');
+			$("#AbsenceCreate").attr('id','btnSUb');
+			$("#CR_ABS_EFFDT_START").attr('flag','update');
+		}
+	else if(strMsg!="Error" || strMsg!="Correct" )
+	{
+		if(strMsg=="Correct")
+			{
+				$("#CR_ABS_EFFDT_START").attr('flag','correct');
+			}
+		if(strMsg!="Correct")
+			{
+				$("#CR_ABS_EFFDT_START").val(strMsg);
+				$("#CR_ABS_EFFDT_START").attr('flag','update');
+			}
+	}
+	
+	
+});
+</script>
+
+
+		</div>
+		
+		
+		
+		
+		
+		<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="absencesetup/manageabsencetype">OK</a>
+
+				</div>
+
+			</div>
+		</div>
+		
+		
+		
+
+
+		<script src="/js/create/createAbsent.js"></script>
+
+	</form>
+</div>

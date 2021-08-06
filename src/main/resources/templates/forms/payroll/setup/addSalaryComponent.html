@@ -1,0 +1,35 @@
+<div th:fragment="addSalaryComponent">
+    <div class="w3-container" style="margin-top:14px;">
+        <h4 class="w3-text-theme">Add Salary Component</h4>
+
+        <form id="createComponent" onsubmit="return false;" method="post">
+            <div class="w3-row w3-padding-24">
+                <div class="w3-container w3-half">
+                    <p>
+                        <input type="hidden" th:value="${salaryComponent.salarycompid}" name="salarycompid">
+                        <input type="hidden" th:value="jaishankar" name="createdby">
+                        <label>Component Name</label>
+                        <input class="w3-input w3-border" type="text" id="name" name="name">
+                    </p>
+                    <p>
+                        <label>Salary Component Type</label>
+                        <select class="componentTypeSelect w3-select" id="componentid" name="componentid">
+                            <option></option>
+                        </select>
+                    </p>
+                    <p>
+                        <label>Details</label>
+                        <textarea class="w3-input w3-border" style="resize: none" name="descr" maxlength="100" rows="5"></textarea>
+                    </p>
+                    <div class="w3-bar buttonbarpadding">
+                        <div id="componentAdd" class="w3-bar-item w3-btn w3-blue w3-round-large buttonbarmargin" type="button"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Save</div>
+                        <div id="componentAddMore" class="w3-bar-item w3-btn w3-teal w3-round-large buttonbarmargin" type="button"><i class="far fa-plus-square" aria-hidden="true"></i>&nbsp;&nbsp;Add More</div>
+                        <div id="cancilAddComponent" class="w3-bar-item w3-btn w3-grey w3-round-large buttonbarmargin" type="button"><i class="fas fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to search</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <script src="/js/payroll/setup/addSalaryComponent.js"></script>
+</div>

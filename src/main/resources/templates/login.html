@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>UNIF ERP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/w3.css" />
+    <link rel="stylesheet" type="text/css" href="/css/_custom.css" />
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="/favicon.ico"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Login_v18/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Login_v18/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/Login_v18/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <script src="/Login_v18/vendor/jquery/jquery-3.2.1.min.js"></script>
+
+    <script src="/js/ytSliderengine/jquery.js"></script>
+    <script src="/js/ytSliderengine/amazingslider.js"></script>
+    <link rel="stylesheet" type="text/css" href="/js/ytSliderengine/amazingslider-1.css">
+    <script src="/js/ytSliderengine/initslider-1.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="js/imageSliderengine/amazingslider-2.css">
+    <script src="js/imageSliderengine/initslider-2.js"></script>
+
+    <script>
+        $(document).ready(function(){
+           
+            //var url = $(this).attr("rm");
+            $('#replace_divnotice').load("/notices/managenotices");
+        });
+    </script>
+    <style>
+        .example::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .example {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+    <script>
+        $("#myiframe").on("load", function() {
+            let head = $("#myiframe").contents().find("head");
+            let css = '<style>_2p3a{width: 100% !important;}</style>';
+            $(head).append(css);
+        });
+    </script>
+
+</head>
+<body>
+<!--
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v9.0" nonce="mUuYGwbm"></script>
+-->
+
+<!-- <script type="text/javascript">
+    function open_curtain()
+    {
+        //$("#RIBBN").css("display", "none");
+        $("#curtain1").animate({width:10},3500);
+        $("#curtain2").animate({width:10},3500);
+    }
+    function close_curtain()
+    {
+        $("#curtain1").animate({width:760},3500);
+        $("#curtain2").animate({width:760},3500);
+    }
+</script> -->
+<div style="width:100%; height: 100%;">
+    <!--<img id="RIBBN" onclick="open_curtain();" style="position:absolute; z-index: 1003; width: 200px; height: 200px; horiz-align: center; vertical-align: center; cursor: pointer; margin-top: 15%;" src="images/ribbon.png">-->
+<div id="effect" style="position:relative;">
+   <!--  <img onclick="open_curtain();" style="top:0px; position:absolute; left:0px; height:100%; width: 50%; z-index: 1000;" src="images/left.jpg" id="curtain1">
+    <img onclick="open_curtain();" style="top:0px; position:absolute; right:0px; height:100%; width: 50%; z-index: 1000;" src="images/right.jpg" id="curtain2">
+ -->
+    <div>
+    <div class="w3-row">
+        <div class="w3-half w3-container w3-padding">
+            <img class="w3-left w3-image" src="/images/UPMRCL.png" width="458">
+        </div>
+        <form id="loginForm" th:object="${userCredential}" th:action="@{/login}" method="post" class="validate-form">
+            <div class="w3-half w3-container w3-padding">
+                <div class="w3-row-padding">
+                    <div class="w3-third">
+                        <input type="hidden" value="selfservice" name="usertype">
+                        <p>
+                            <label for="loginid" style="margin-bottom: 0;">Username</label>
+                            <input id="loginid" class="form-control" type="text" name="loginid" placeholder="User ID">
+                        </p>
+                    </div>
+                    <div class="w3-third">
+                        <p>
+                            <label for="pwd" style="margin-bottom: 0;">Password</label>
+                            <input id="pwd" class="form-control" type="password" name="pwd" placeholder="Password">
+                        </p>
+                    </div>
+                    <div class="w3-third" style="margin-top: 22px;">
+                        <label th:if="${isInvalid == 'Y'}" id="errMessage" style="color: #ff0000; font-size: small;margin-bottom: 0; top: 11px; position: absolute;">Incorrect Credentials.</label>
+                        <button id="submit" class="btn btn-primary" type="submit"><i class="fa fa-sign-in"></i>&nbsp;&nbsp;Login</button>
+                        <span id="forgotPwd" class="fa fa-question-circle" style="cursor:pointer; color: blue;">&nbsp;Forgot password</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="w3-row" style="border-top: 15px solid #770000">
+    <div class="w3-container">
+        <div class="w3-half">
+            <div class="amazingslider-wrapper" id="amazingslider-wrapper-2" style="display:block;position:relative;width: 100%;margin:0px auto 0px;">
+                <div class="amazingslider" id="amazingslider-2" style="display:block;position:relative;margin:0 auto;">
+                    <ul class="amazingslider-slides" style="display:none;">
+                        <li><img src="images/imsSlider/1552404299.jpeg" />
+                        </li>
+                        <li><img src="images/imsSlider/941831-agra-metro.jpg"/>
+                        </li>
+                        <li><img src="images/imsSlider/1576215295.jpg"/>
+                        </li>
+                        <li><img src="images/imsSlider/1578314765.jpg"/>
+                        </li>
+                        <li><img src="images/imsSlider/1576154496.jpg"/>
+                        </li>
+                        <!-- <li><img src="images/imsSlider/12.jpg"/></li> -->
+                        <li><img src="images/imsSlider/Employee_of_month.jpg"/></li>
+                        
+                        <!--EOTMJAN21
+                        <li><img src="images/imsSlider/1576215603.jpg"/>
+                        </li>
+                        <li><img  src="images/imsSlider/1503494198.png"/>
+                        </li>
+                        <li><img src="images/imsSlider/agra-metro.jpg"/>
+                        </li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="w3-half">
+            <div class="w3-row">
+                <div class="w3-half">
+                    <div class="w3-card" style="width: 100%;">
+                        <div class="w3-padding" style="background-color: #700; color: white; border-top: 1px dotted white;">
+                            <h5 style="margin-bottom: 0;">Office Circulars</h5>
+                        </div>
+                        <div th:fragment="loginnotice" id="replace_divnotice">
+                            <div class="example" style="max-height: 367px; overflow-y: auto;">
+                                <marquee direction="up" style="height: 365px;" scrollamount="2">
+                                <div th:each="noti,stats : ${notices}" style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px">
+                                    <div th:if="${stats.index%2==0}">
+                                        <div  class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: aliceblue;">
+                                            <span th:text="${noti.getOrderno()}"></span><br>
+                                            <p style="color: brown; font-size: revert;" th:text="${noti.getSubject()}"></p>
+                                            <div style="text-align:right">
+                                                <label style="font-size: small;">Published Date: </label><label style="font-size: small;" th:text="${noti.getPublished_date()}"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div th:if="${stats.index%2!=0}">
+                                        <!--<div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >-->
+                                            <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: #fff6ec;">
+                                                <span th:text="${noti.getOrderno()}"></span><br>
+                                                <p style="color: brown; font-size: revert;" th:text="${noti.getSubject()}"></p>
+                                                <div style="text-align:right">
+                                                    <label style="font-size: small;">Published Date: </label><label style="font-size: small;" th:text="${noti.getPublished_date()}"></label>
+                                                </div>
+                                            </div>
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <!-- <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                                     <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: #fff6ec;">
+                                         <span>OFFICE ORDER No. 111 / 2020</span><br>
+                                         <p style="color: brown; font-size: revert;">Grant of Next Higher Grade to Non-executives in UPMRC.</p>
+                                         <div style="text-align:right">
+                                             <label style="font-size: small;">Published Date: 17-Nov-2020</label>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                                     <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: aliceblue;">
+                                         <span>OFFICE ORDER No. 110 / 2020</span><br>
+                                         <p style="color: brown; font-size: revert;">Confirmation of Assistant Managers in UPMRCL on permanent basis.</p>
+                                         <div style="text-align:right">
+                                             <label style="font-size: small;">Published Date: 10-Nov-2020</label>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                                     <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: #fff6ec;">
+                                         <span>OFFICE ORDER No. 109 / 2020</span><br>
+                                         <p style="color: brown; font-size: revert;">Grant of Next Higher Grade to Non-executives in UPMRC.</p>
+                                         <div style="text-align:right">
+                                             <label style="font-size: small;">Published Date: 10-Nov-2020</label>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                                     <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: aliceblue;">
+                                         <span>OFFICE ORDER No. 108 / 2020</span><br>
+                                         <p style="color: brown; font-size: revert;">Revised duty list of HODs & Dy. HODs of Electrical Department.</p>
+                                         <div style="text-align:right">
+                                             <label style="font-size: small;">Published Date: 06-Nov-2020</label>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                                     <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: #fff6ec;">
+                                         <span>OFFICE ORDER No. 106 / 2020</span><br>
+                                         <p style="color: brown; font-size: revert;">Posting orders of Executives of UPMRC.</p>
+                                         <div style="text-align:right">
+                                             <label style="font-size: small;">Published Date: 20-Oct-2020</label>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div style="cursor: pointer; background-color: white; word-wrap: break-word; color:#462f91; padding: 12px"  >
+                                     <div class="w3-round-xlarge w3-container w3-padding w3-theme-l3 w3-card-2 w3-hover-opacity" rm="" onclick="popshow();" style="background-color: aliceblue;">
+                                         <span>OFFICE ORDER No. 104 / 2020</span><br>
+                                         <p style="color: brown; font-size: revert;">Holidays to be  observed in UPMRC during the calendar year 2021.</p>
+                                         <div style="text-align:right">
+                                             <label style="font-size: small;">Published Date: 16-Oct-2020</label>
+                                         </div>
+                                     </div>
+                                 </div>-->
+
+                                </marquee>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="w3-half">
+                    <div class="w3-card" style="width: 100%; min-height: 404px;">
+                        <div class="w3-padding" style="background-color: #700; color: white; border-top: 1px dotted white;">
+                            <h5 style="margin-bottom: 0;">Quick Links..</h5>
+                        </div>
+                        <div class="w3-padding">
+                            <a href="https://email.gov.in/" target="_blank">
+                                <div style="width: 100%; text-align: left;" type="button" class="w3-btn w3-blue w3-round-large">
+                                    <i class="fa fa-inbox" aria-hidden="true"></i>&nbsp;&nbsp;Official Email<span class="fa fa-angle-double-right" style="float: right; margin-top: 3px;"></span>
+                                </div>
+                            </a><br><br>
+                            <a href="http://136.233.120.50:8761" target="_blank">
+                                <div style="width: 100%; text-align: left;" type="button" class="w3-btn w3-blue w3-round-large">
+                                    <i class="fa fa-hdd-o" aria-hidden="true"></i>&nbsp;&nbsp;NAS Storage<span class="fa fa-angle-double-right" style="float: right; margin-top: 3px;"></span>
+                                </div>
+                            </a><br><br>
+                            <a href="https://www.lmrcl.com/" target="_blank">
+                                <div style="width: 100%; text-align: left;" type="button" class="w3-btn w3-blue w3-round-large">
+                                    <i class="fa fa-globe" aria-hidden="true"></i>&nbsp;&nbsp;Company Website<span class="fa fa-angle-double-right" style="float: right; margin-top: 3px;"></span>
+                                </div>
+                            </a><br><br>
+
+                            <a href="http://ebsprodap.lmrc.com:8005" target="_blank">
+                                <div style="width: 100%; text-align: left;" type="button" class="w3-btn w3-blue w3-round-large">
+                                    <i class="fa fa-money" aria-hidden="true"></i>&nbsp;&nbsp;ERP (Finance & Procurement)<span class="fa fa-angle-double-right" style="float: right; margin-top: 3px;"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--style="border-top: 2px solid #214e7b"-->
+<div class="w3-row-padding w3-margin-top w3-margin-bottom">
+    <div class="w3-row">
+      <div class="w3-quarter w3-padding-small">
+        <div style="border:1px solid #700 !important;padding-left: 3%; width: 100%; height: 353px; border-top: 14px solid #700 !important;">
+            <iframe id="myiframe" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FOfficialUPMetro&tabs=timeline&width=300&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" height="338" width="600px" style="overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            <!--<div style="border:1px solid #700 !important; width: 100%; height: 353px; border-top: 14px solid #700 !important;">
+                <div class="fb-page" data-href="https://www.facebook.com/facebook" data-tabs="timeline" data-width="" data-height="337" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/facebook" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/facebook">Facebook</a></blockquote></div>
+            </div>-->
+        </div>
+    </div>
+      <div class="w3-threequarter">
+       <div class="w3-half w3-padding-small">
+        <div style="border:1px solid #700 !important; width: 100%; height: 353px; border-top: 14px solid #700 !important;">
+            <a class="twitter-timeline" data-width="99%" data-height="337" href="https://twitter.com/OfficialUPMetro?ref_src=twsrc%5Etfw">Tweets by OfficialUPMetro</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        </div>
+        <div class="w3-half w3-padding-small">
+        <div style="border:1px solid #700 !important; width: 100%; height: 353px; border-top: 14px solid #700 !important;">
+            <!--End of YT Slider-->
+            <div class="amazingslider-wrapper" id="amazingslider-wrapper-1" style="display:block;position:relative;max-width:500px;margin:0px auto 56px;">
+                <div class="amazingslider" id="amazingslider-1" style="display:block;position:relative;margin:0 auto;">
+                    <ul class="amazingslider-slides" style="display:none;">
+                        <li><img src="images/ytSlider/gQ5h0WRilyg.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/gQ5h0WRilyg?v=gQ5h0WRilyg" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/uSV8FxfqU6g.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/uSV8FxfqU6g?v=uSV8FxfqU6g" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/frI-Ia1WHAw.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/frI-Ia1WHAw?v=frI-Ia1WHAw" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/P95_dKQEYUM.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/P95_dKQEYUM?v=P95_dKQEYUM" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/3YqobYlxCwc.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/3YqobYlxCwc?v=3YqobYlxCwc" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/2lEaUfCQWWA.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/2lEaUfCQWWA?v=2lEaUfCQWWA" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/MZgbdXoq4kA.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/MZgbdXoq4kA?v=MZgbdXoq4kA" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/3X5RHJ8QjDo.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/3X5RHJ8QjDo?v=3X5RHJ8QjDo" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/Obl9Q1ZTWag.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/Obl9Q1ZTWag?v=Obl9Q1ZTWag" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/NIvAHTWE5JA.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/NIvAHTWE5JA?v=NIvAHTWE5JA" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/3EJgMBcpeBk.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/3EJgMBcpeBk?v=3EJgMBcpeBk" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/x34MnHeCoTY.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/x34MnHeCoTY?v=x34MnHeCoTY" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/zVfFIQ3tl4U.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/zVfFIQ3tl4U?v=zVfFIQ3tl4U" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/5gv5FyeAFH0.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/5gv5FyeAFH0?v=5gv5FyeAFH0" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/m9SMFN0Qy_8.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/m9SMFN0Qy_8?v=m9SMFN0Qy_8" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/pNVhSHpEJRQ.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/pNVhSHpEJRQ?v=pNVhSHpEJRQ" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/i7B4jll10AY.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/i7B4jll10AY?v=i7B4jll10AY" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/fIl2El1OUOA.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/fIl2El1OUOA?v=fIl2El1OUOA" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/lNxNhtD8qFo.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/lNxNhtD8qFo?v=lNxNhtD8qFo" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/EwL_TqFEUQE.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/EwL_TqFEUQE?v=EwL_TqFEUQE" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/oIpA58GwD4M.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/oIpA58GwD4M?v=oIpA58GwD4M" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/bIN32G0acFA.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/bIN32G0acFA?v=bIN32G0acFA" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/WVnNXRlEsys.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/WVnNXRlEsys?v=WVnNXRlEsys" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/LwR8VlSUbvQ.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/LwR8VlSUbvQ?v=LwR8VlSUbvQ" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/mjFamGSlnQY.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/mjFamGSlnQY?v=mjFamGSlnQY" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/VU7Gswuw64w.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/VU7Gswuw64w?v=VU7Gswuw64w" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/Hgq8NgIbPGo.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/Hgq8NgIbPGo?v=Hgq8NgIbPGo" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/AJc6p-ukVQM.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/AJc6p-ukVQM?v=AJc6p-ukVQM" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/yjlS601mZWY.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/yjlS601mZWY?v=yjlS601mZWY" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/rWHCDSOHtRc.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/rWHCDSOHtRc?v=rWHCDSOHtRc" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/-k851CW_gBs.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/-k851CW_gBs?v=-k851CW_gBs" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/rQpp-aZTM8Q.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/rQpp-aZTM8Q?v=rQpp-aZTM8Q" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/Ji1EbF27afM.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/Ji1EbF27afM?v=Ji1EbF27afM" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/83IqJqXilWI.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/83IqJqXilWI?v=83IqJqXilWI" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/LfMviOqPsv4.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/LfMviOqPsv4?v=LfMviOqPsv4" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/V_4frkLb99c.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/V_4frkLb99c?v=V_4frkLb99c" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/xEbQlxAwwdE.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/xEbQlxAwwdE?v=xEbQlxAwwdE" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/GUWWbWMeTnI.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/GUWWbWMeTnI?v=GUWWbWMeTnI" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/pBjzHoTlW9c.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/pBjzHoTlW9c?v=pBjzHoTlW9c" ></video>
+                        </li>
+                        <li><img src="images/ytSlider/AQRkVQXYijQ.jpg" />
+                            <video preload="none" src="https://www.youtube.com/embed/AQRkVQXYijQ?v=AQRkVQXYijQ" ></video>
+                        </li>
+                    </ul>
+                    <ul class="amazingslider-thumbnails" style="display:none;">
+                        <li><img src="images/ytSlider/gQ5h0WRilyg-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/uSV8FxfqU6g-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/frI-Ia1WHAw-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/P95_dKQEYUM-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/3YqobYlxCwc-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/2lEaUfCQWWA-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/MZgbdXoq4kA-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/3X5RHJ8QjDo-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/Obl9Q1ZTWag-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/NIvAHTWE5JA-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/3EJgMBcpeBk-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/x34MnHeCoTY-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/zVfFIQ3tl4U-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/5gv5FyeAFH0-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/m9SMFN0Qy_8-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/pNVhSHpEJRQ-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/i7B4jll10AY-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/fIl2El1OUOA-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/lNxNhtD8qFo-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/EwL_TqFEUQE-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/oIpA58GwD4M-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/bIN32G0acFA-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/WVnNXRlEsys-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/LwR8VlSUbvQ-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/mjFamGSlnQY-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/VU7Gswuw64w-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/Hgq8NgIbPGo-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/AJc6p-ukVQM-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/yjlS601mZWY-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/rWHCDSOHtRc-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/-k851CW_gBs-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/rQpp-aZTM8Q-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/Ji1EbF27afM-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/83IqJqXilWI-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/LfMviOqPsv4-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/V_4frkLb99c-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/xEbQlxAwwdE-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/GUWWbWMeTnI-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/pBjzHoTlW9c-tn.jpg" /></li>
+                        <li><img src="images/ytSlider/AQRkVQXYijQ-tn.jpg" /></li>
+                    </ul>
+                </div>
+            </div>
+            <!--End of YT Slider-->
+        </div>
+    </div>
+       </div>
+    </div>
+
+</div>
+
+<div class="w3-row">
+    <div style="height: 40px; background-color: #c89393;">
+
+    </div>
+</div>
+
+<!--===============================================================================================-->
+
+<!--===============================================================================================-->
+<!--<script src="/Login_v18/vendor/animsition/js/animsition.min.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="/Login_v18/vendor/bootstrap/js/popper.js"></script>
+<script src="/Login_v18/vendor/bootstrap/js/bootstrap.min.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="/Login_v18/vendor/select2/select2.min.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="/Login_v18/vendor/daterangepicker/moment.min.js"></script>
+<script src="/Login_v18/vendor/daterangepicker/daterangepicker.js"></script>-->
+<!--===============================================================================================-->
+<!--<script src="/Login_v18/vendor/countdowntime/countdowntime.js"></script>-->
+<!--===============================================================================================-->
+<!--
+<script src="/Login_v18/js/main.js"></script>
+-->
+
+<script src="/js/bootbox/bootstrap.min.js"></script>
+
+<script src="/js/bootbox/bootbox.min.js"></script>
+
+<!--<script type="text/javascript">
+    document.getElementById('id01').style.display='block'
+</script>-->
+<!--<script type="text/javascript">
+    var background = new Array();
+    background[0] = "/images/courseThumbnails/background.jpg";
+    background[1] = "/images/courseThumbnails/background1.jpg";
+    background[2] = "/images/courseThumbnails/background2.jpg";
+    background[3] = "/images/courseThumbnails/background3.jpg";
+    background[4] = "/images/courseThumbnails/background4.jpg";
+    background[5] = "/images/courseThumbnails/background5.jpg";
+    background[6] = "/images/courseThumbnails/background6.jpg";
+    background[7] = "/images/courseThumbnails/background7.jpg";
+    background[8] = "/images/courseThumbnails/background8.jpg";
+
+    var numberGen = Math.floor(Math.random() * 9);
+    document.body.style.backgroundImage='url('+background[numberGen]+')';
+</script>-->
+<script>
+
+    function popshow() {
+        bootbox.alert("You must login to view the File.");
+    }
+
+    $(document).on('click', '#forgotPwd', function(){
+
+        var personid=document.getElementById("loginid").value;
+        if(personid=='' ||personid==null){
+            bootbox.alert("Please fill the User Id.");
+            $("#loginid").css("border","1px solid red");
+        }
+        else{
+
+            var role = "admin";
+
+            bootbox.confirm({
+                message: "Do you want to continue ?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result == true){
+                        role = "admin";
+                        var uname = document.getElementById("loginid").value;
+                        if(uname == undefined || uname == "")
+                        {
+                            bootbox.alert("Please enter the Login id before clicking the 'Forgot Password' link.");
+                        }
+                        else
+                        {
+                            $.ajax({
+                                url: "/forgotpass/"+uname+"/"+role,
+                                type: "GET",
+                                success : function(result){
+                                    if(result.message == "MAIL_FAIL")
+                                    {
+                                        bootbox.alert("Error sending mail.");
+                                    }
+                                    else if(result.message == "EMAIL_NOT_FOUND")
+                                    {
+                                        bootbox.alert("Email id not found, please contact to your HR Administrator.");
+                                    }
+                                    else
+                                    {
+                                        var t = result.message.split("^");
+                                        bootbox.alert("An email has been sent to "+t[1]+" which contains the instructions to recover your password.");
+                                    }
+                                },
+                                error: function(result){
+                                    bootbox.alert("Incorrect User ID.");
+                                    console.log(result);
+                                }
+                            });
+                        }
+                    }
+
+
+
+
+                    /*
+                         else{
+                            role = "selfservice";
+                            var uname = document.getElementById("loginid").value;
+                            if(uname == undefined || uname == "")
+                            {
+                                bootbox.alert("Please enter the Login id before clicking the 'forgot password' link.");
+                            }
+                            else
+                            {
+                                $.ajax({
+                                    url: "/forgotpass/"+uname+"/"+role,
+                                    type: "GET",
+                                    success : function(result){
+                                        if(result.message == "MAIL_FAIL")
+                                        {
+                                            bootbox.alert("Error sending mail.");
+                                        }
+                                        else if(result.message == "EMAIL_NOT_FOUND")
+                                        {
+                                            bootbox.alert("Email id not found contact to your HR.");
+                                        }
+                                        else
+                                        {
+                                            var t = result.message.split("^");
+                                            bootbox.alert("A mail has been sent to "+t[1]+" which contains the instructions for recovering your password..");
+                                        }
+                                    },
+                                    error: function(result){
+                                        bootbox.alert("Some error occcured.");
+                                        console.log(result);
+                                    }
+                                });
+                            }
+                        }
+
+                        */
+
+
+                }
+            });
+
+
+        }
+
+    });
+
+</script>
+</div>
+</div>
+</body>
+</html>
+
+
+

@@ -1,0 +1,41 @@
+<div th:fragment="fragdashboard">
+
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom">
+                <h4 style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+                         style="cursor: pointer;"> <i class="fas fa-chart-line" aria-hidden="true" style="color:blue"></i>&nbsp;&nbsp;My Dashboard
+                </h4>
+                <!-- CHANGED BY SNIGDHAA 10-NOV-2020 START -->
+                <!-- <div th:include="fragments/analytics/selfserviceanalytics :: selfserviceanalytics"></div> -->
+                <div class="w3-border">
+                    <div class="tablink">
+                        <div id="claimedreimbursement" class="w3-hover-theme my-hover w3-button dsh" onclick="opendashboard(this.id)" rm="/mydashboard/claimedreimbursement">Claimed Reimbursement</div>
+                        <div id="managereimbursement" class="w3-hover-theme my-hover w3-button dsh" onclick="opendashboard(this.id)" rm="/mydashboard/managereimbursement" style="margin-left:-4px">Managed Reimbursement</div>
+                        <div id="holiday" class="w3-hover-theme my-hover w3-bar-item w3-button dsh" onclick="opendashboard(this.id)" rm="/mydashboard/holiday" style="margin-left:-4px">UPMRC Calendar</div>
+                    </div>
+                    <div id="mydashboard"></div>
+                </div>
+                <!-- CHANGED BY SNIGDHAA 10-NOV-2020 END -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        $(document).ready(function(){
+            var id="claimedreimbursement";
+            var url = $("#"+id).attr("rm");
+            $('#mydashboard').html("<div class='w3-container' style='margin-left:100px;margin-top:20px; width: 100%; text-align: center'><i class='fa fa-spinner fa-pulse' style='font-size: 70px; color: grey;'></i></div>");
+            $('#mydashboard').load(url);
+            tablinks=document.getElementsByClassName("dsh");
+            for(i=0;i<tablinks.length;i++){
+                tablinks[i].className=tablinks[i].className.replace("w3-theme-l3","");
+            }
+            $("#"+id).addClass("w3-theme-l3");
+        });
+
+    </script>
+
+</div>

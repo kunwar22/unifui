@@ -1,0 +1,89 @@
+<div th:fragment="autoassign">
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var responseresult = /*[[${result}]]*/;
+		/*]]>*/
+	</script>
+
+    <div class="w3-main w3-margin-top">
+	<div style="position: relative;">
+		<div class="w3-container w3-margin-bottom">
+			<h4 style="font-weight: 400; display:inline-block;">
+				<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+					style="cursor: pointer;"> Auto Assign
+			</h4>
+			<input style="display:inline-block; margin-top:10px;" value="Search" type="button" id="ASGN_searchbtn" onClick="searchassign()"
+					class="w3-btn w3-theme w3-right w3-round-large" disabled/>
+		</div>
+	</div>
+	<div class="w3-container"><hr class="hrline"></div>
+	
+		<div class="w3-row">
+			<div class="w3-container w3-quarter" style="margin-top: 5px;">
+				<label>Hire Date</label><span style="color: red"> *</span>
+				<input id="ASGN_HIREDATE" class="w3-input w3-border" onchange="hirechange();" type="date" data-date-format="YYYY MM DD" />
+			</div>
+			<div class="w3-container w3-quarter" style="margin-top: 5px;">
+					<label>Paygroup</label><span style="color: red"> *</span>
+					<select id="ASGN_PAYGRP" class="w3-select w3-border" data-toggle="modal" >
+						<option value="0" disabled selected></option>
+						<option th:each="paygrp : ${paygrp}"
+								th:value="${paygrp.getPaygroupid()}"
+								th:text="${paygrp.getName()}" />
+					</select>
+			</div>
+			<div class="w3-container w3-quarter" style="margin-top: 5px;">
+				<label>Nature of Employment</label><span style="color: red"> *</span>
+				<select id="ASGN_NATEMPL" class="w3-select w3-border">
+					<option value="0" disabled selected></option>
+					<option th:each="natempl : ${natempl}"
+							th:value="${natempl.getId()}"
+							th:text="${natempl.getDescription()}" />
+				</select>
+			</div>
+
+
+			<!--
+			<div class="w3-container w3-quarter" style="margin-top: 5px;">
+				<label style="color: grey;">To Date</label>
+				<input id="todate" onchange="search();" class="w3-input w3-border"
+					type="date" data-date-format="YYYY MM DD" disabled />
+			</div>-->
+			<!-- <div class="w3-container w3-right" style="margin-top: 20px;">
+				<button id="searchbtn" onClick="loadReimbursementDetailsData()" onchange="datatable();"
+					class="w3-button w3-theme w3-center" type="button" disabled>
+					<i class="fa fa-search">Search</i>
+				</button>
+			</div> -->
+		</div>
+		
+		
+		
+	<div id="resultDiv" class="w3-container w3-row w3-margin-top" style="display:none;" >
+		<table id="ASSIGN_SEARCH_RES" class="w3-striped" >
+			<thead>
+				<th>Person Number</th>
+				<th>Hire Date</th>
+				<th>Person Name</th>
+				<th>Payroll Status</th>
+			</thead>
+		</table>
+	</div>
+	
+	
+	<div id="noData" class="w3-container w3-responsive" style="display: none">
+		<div>
+			<p>No record found...</p>
+		</div>
+	</div>
+
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		<div style="margin-bottom:15px">
+			<button type="button" id="ASGN_SUBMIT_BTN" onclick="saveautoasgn();" class="w3-button w3-theme w3-ripple " style="margin-left:15px; margin-right:auto; margin-top:10px; display:none;">Assign</button>
+		</div>
+
+<script src="/js/elementautoassign/autoassign.js"></script>
+	
+</div>
+</div>

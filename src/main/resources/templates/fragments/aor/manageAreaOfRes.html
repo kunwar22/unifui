@@ -1,0 +1,136 @@
+
+<div th:fragment="searchAreaOfRes">
+<script th:inline="javascript">
+		/*<![CDATA[*/
+		    var pnum = /*[[${pno}]]*/;
+		    var pname = /*[[${pname}]]*/;
+		   
+		/*]]>*/
+	</script>
+
+	    <div id="REPORTS_LOADER" class="w3-modal" style="display: none">
+			<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+		</div>
+
+	<div class="w3-container">
+		<h4 class="w3-text-theme">Search Area of Responsibility</h4>
+		
+	</div>
+
+	<div class="w3-row">
+		<div class=w3-third style="border-right: 2px solid black">
+
+			<div class="w3-container">
+				<div class="divTable">
+					<div class="divTr">
+
+						<div class="d1">
+							<h5 style="font-weight: bold">Find an existing Value</h5>
+						</div>
+						<div class="d2">
+							<a id="AorCreate" rm="/aor/loadAorPage"
+								class="w3-button w3-circle w3-theme w3-large">+</a>
+
+						</div>
+					</div>
+
+				</div>
+
+				<hr class="hrline">
+				<h6>Search Criteria</h6>
+				<p>
+					<label>Responsibility Name</label> <input value="" class="w3-input w3-border"
+						name="AorName" id="Aor_NAME" type="text">
+
+				</p>
+				<!-- <p>
+					<label>Responsibility Type</label> <input value="" class="w3-input w3-border"
+						name="Aortype" id="Aor_Type" type="text">
+
+				</p> -->
+				<p>
+					<label>Responsibility Type</label><span style="color:red"> *</span>
+					 <select id="Aor_Type" class="w3-select w3-border"
+							name="Aortype">
+							<option value="" disabled selected></option>
+							<option th:each="res : ${Responsibility}"
+								th:value="${res.getId()}"
+								th:text="${res.getDescription()}" />
+						</select>
+
+				</p>
+				
+
+				<p>
+					<button id="AOR_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+
+				</p>
+			</div>
+
+
+		</div>
+
+
+		
+		<div class="w3-twothird w3-container">
+			<h5 style="margin-bottom: 0px; margin-bottom: 0px; font-weight: bold;">Search Results</h5>
+			<div id="resultSec" class="w3-responsive" style="display: none">
+				<table id="AorList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<tr class="w3-theme-d3">
+						<th>Legal Employer</th>
+							<th>Location</th>
+							<th>Person Id</th>
+							<th>Person Number</th>
+							<th>From Date</th>
+							<th>To Date</th>
+							<th>Responsibility Name</th>
+							<th>Responsibility Type</th>
+							<th></th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noData" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+<!-- line modal -->
+<div id="idUD" class="w3-modal" >
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+			
+		<div class="modal-header">
+			<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('idUD').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+			<h3 align="left"></h3>
+				<hr class="hrline">
+			
+		</div>
+		<div class="modal-body">
+		
+		<p>
+					<label>Effective Start Date</label> 
+					<input   class="w3-input w3-border" name="EffectiveStartDate" id="CR_Aor_EFFDT" type="date" data-date="" data-date-format="YYYY MM DD"/>
+				</p>
+				
+		<div>
+		<button id="btnOK">OK</button>
+		</div>
+		</div>
+		</div>
+	
+	</div>
+	
+	
+	<!-- END: Update Data -->
+
+
+    <script src="/js/search/searchAreaOfRes.js"></script>
+
+</div>

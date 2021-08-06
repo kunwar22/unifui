@@ -1,0 +1,48 @@
+<!--<div th:fragment="changeLoginPassword">
+
+<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="/js/passwordReset/passwordReset.js"></script>
+<script type="text/javascript" src="/js/bootbox/bootbox.all.min.js"></script>
+<script type="text/javascript" src="/js/bootbox/bootbox.min.js"></script>
+<script type="text/javascript" src="/js/bootbox/bootstrap.min.js"></script>
+
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var result = /*[[${result}]]*/;
+
+/*]]>*/
+</script>
+
+
+</div>-->
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head>    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all" 
+          href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+  <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+<!-- JS dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  </head>
+  <body>  
+<div th:fragment="changeLoginPassword">
+<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var result = /*[[${result}]]*/;
+
+/*]]>*/
+</script>
+<script type="text/javascript" src="/js/passwordReset/passwordReset.js"></script>
+</div>
+</body>
+
+</html>

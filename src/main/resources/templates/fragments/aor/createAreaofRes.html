@@ -1,0 +1,553 @@
+<!-- <div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div> -->
+<div th:fragment="createAreaOfRes">
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var resultfinal = /*[[${result}]]*/;
+    var pnum = /*[[${pno}]]*/;
+    var pname = /*[[${pname}]]*/;
+    
+/*]]>*/
+</script>
+<form  method="post" id="AOR_SAVE" enctype="application/x-www-form-urlencoded" onsubmit="return false;"> 
+
+	<div class="w3-container" style="margin-top: 14px;">
+		<h4 class="w3-text-theme" style="margin-top: 2px; bottom: 2px;">Create Area Of Responsibility</h4>
+	</div>
+	
+	<div style="display:none">
+	<input
+	th:value="${areaOfResponsibility.getActionid()}" id="txtAORActionid"
+	name="actionid" type="text" readonly/> 
+	
+	<input
+	th:value="${areaOfResponsibility.getAorid()}" id="txtAORid"
+	name="aorid" type="text" readonly /> 		
+	
+	<p th:if="${areaOfResponsibility.getResponsibilitytype()==0}">	
+	<input th:value="${Personnumber}"
+	id="txtAORPersonNumber" th:name=personnumber type="text" readonly /> 
+	</p>
+	
+
+<p th:if="${areaOfResponsibility.getResponsibilitytype()!=0}">	
+	<input th:value="${areaOfResponsibility.getPersonnumber()}"
+	id="txtAORPersonNumber" th:name=personnumber type="text" readonly /> 
+	</p>
+	
+	</div>
+
+	<div class="w3-row">
+	
+	
+	
+	
+	
+	
+<!-- 	<div class="w3-row w3-border w3-padding-large">
+		<div style="margin-top:10px">
+		<h4 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline">Person Information</h4>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<div id="ASSIGN_BLOCK" class="w3-container">
+		
+		<div class=w3-half>
+		<div class="w3-container">
+			
+			<p>
+			<label ><b>Person Number</b></label> 
+		    <label th:text="${areaOfResponsibility.getPersonid()}"></label>
+			</p>
+			<p>
+			<label ><b>Department</b></label> 
+			<label th:text="${areaOfResponsibility.getPersonid()}"></label>
+			</p>
+			
+			
+		</div>
+		</div>
+	
+		<div class=w3-half>
+		<div class="w3-container">
+			<p>
+			<label ><b>Job</b></label> 
+			<label th:text="${areaOfResponsibility.getPersonid()}"></label>
+			</p>
+			<p>
+			<label ><b>Location</b></label> 
+			<label th:text="${areaOfResponsibility.getPersonid()}"></label>
+			</p>
+			
+		</div>
+		</div>
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div> -->
+
+	<div class="w3-row w3-border w3-padding-large">
+		<div style="margin-top:10px">
+		<h4 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline">Responsibility</h4>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<div id="ASSIGN_BLOCK" class="w3-container">
+		
+		<div class=w3-half>
+		<div class="w3-container">
+			
+			  <p>
+					<label> ResponsibilityName</label><span style="color:red"> *</span>
+					 <input 
+						class="w3-input w3-border" name="responsibilityname" id="CR_AOR_RES_NAME"
+						type="text" style="height:43px" tabindex="2" 
+						th:value="${areaOfResponsibility.getResponsibilityname()}" >
+						<span
+							style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("responsibilityname")!=null}'
+							th:text='${bindingResult.getFieldError("responsibilityname").getDefaultMessage()}'></span>
+
+				</p>
+			    <p th:if="${areaOfResponsibility.getResponsibilitytype()==0}">
+					<label>Responsibility Type</label><span style="color:red"> *</span>
+					 <select id="CR_AOR_RESP_TYPE" class="w3-select w3-border"
+							name="responsibilitytype">
+							<option value="0" disabled selected></option>
+							<option th:each="res : ${Responsibility}"
+								th:value="${res.getId()}"
+								th:text="${res.getDescription()}" />
+						</select>
+						<span
+							style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("responsibilitytype")!=null}'
+							th:text='${bindingResult.getFieldError("responsibilitytype").getDefaultMessage()}'></span>
+
+				</p>
+				
+				
+				<p th:if="${areaOfResponsibility.getResponsibilitytype()!=0}">
+					<label>Responsibility Type</label> <span style="color:red"> *</span>
+					<select id="CR_AOR_RESP_TYPE"
+						class="w3-select w3-border" name="responsibilitytype" >
+						<option value="0" disabled selected></option>
+						<option th:each="res : ${Responsibility}"
+							th:selected="${res.getId() eq areaOfResponsibility.getResponsibilitytype()}"
+							th:value="${res.getId()}"
+							th:text="${res.getDescription()}"></option>
+					</select>
+					<span
+							style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("responsibilitytype")!=null}'
+							th:text='${bindingResult.getFieldError("responsibilitytype").getDefaultMessage()}'></span>
+
+				</p>
+			
+			
+		</div>
+		</div>
+	
+		<div class=w3-half>
+		<div class="w3-container">
+			<p >
+					<label>From Date</label> <span style="color:red"> *</span>
+					<input max="9999-12-31" flag="none" class="w3-input w3-border"
+					 name="fromdate" id="CR_AOR_RES_FROMDT" type="date" data-date="" 
+					 data-date-format="YYYY MM DD" tabindex="6" 
+					 th:value="${areaOfResponsibility.getFromdate()}"/>
+					<span
+							style="color: #ff0000"
+							th:if='${bindingResult != null && bindingResult.getFieldError("fromdate")!=null}'
+							th:text='${bindingResult.getFieldError("fromdate").getDefaultMessage()}'></span>
+				</p>
+			<p >
+					<label>To Date</label>
+					<input max="9999-12-31" flag="none" class="w3-input w3-border" name="todate"
+					 id="CR_AOR_RES_TODATE" type="date" data-date="" data-date-format="YYYY MM DD" 
+					 tabindex="6"  th:value="${areaOfResponsibility.getTodate()}"/>
+					<span id="JOB_EFFDT_ERROR" style="color:red"></span>
+				</p>
+			
+			
+			
+			
+		</div>
+		</div>
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div>
+		
+		
+		<br>
+	<div class="w3-row w3-border w3-padding-large">
+		<div style="margin-top:10px">
+		<h4 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline">Scope of Responsibility</h4>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<div id="ASSIGN_BLOCK" class="w3-container">
+		
+		<div class=w3-half>
+		<div class="w3-container">
+			
+		     
+				
+				
+				   <p th:if="${areaOfResponsibility.getLegalemployer()==0}" >
+					<label> Legal Employer </label> 
+					<select id="legalEmployer" name="legalemployer"
+							class="w3-select w3-border" data-toggle="modal" >
+							<option id="1" value="" disabled selected></option>
+							<option id="2" value="2" hidden></option>
+							<option value="search" data-toggle="modal" id="btnsearchLegal">Search....</option>
+						</select>
+					</p> 
+					
+			<p th:if="${areaOfResponsibility.getLegalemployer()!=0}">
+					<label> Legal Employer </label> 
+					<select id="legalEmployer" class="w3-select w3-border" 
+					name="legalemployer" data-toggle="modal">
+					<option id="1" value="0"  hidden></option>
+                    <option id="2" hidden  selected
+                     th:value="${areaOfResponsibility.getLegalemployer()}" 
+                     th:text="${areaOfResponsibility.getLegalemployername()}">
+                       </option>
+                     <option value="search" data-toggle="modal" id="btnsearch2"  >Search</option>	 				
+	 				</select>
+	 				
+			   </p>
+			
+			
+		</div>
+		</div>
+	
+		<div class=w3-half>
+		<div class="w3-container">
+			 
+				<p  th:if="${areaOfResponsibility.getLocation()==0}">
+					<label>Location </label> 
+					<select id="CR_AOR_LOC_CODE" class="w3-select w3-border" name="location" data-toggle="modal">
+                     <option id="1" value="0"  hidden selected></option>
+                      <option id="2"  hidden></option>
+	 				<option value="search" data-toggle="modal" id="btnsearch" >Search....</option>
+					</select>
+					</p> 
+			
+			<p th:if="${areaOfResponsibility.getLocation()!=0}">
+					<label>Location </label> 
+					<select id="CR_AOR_LOC_CODE" class="w3-select w3-border" name="location" 
+					data-toggle="modal">
+					<option id="1" value="0"  hidden></option>
+                    <option id="2" hidden  selected
+                     th:value="${areaOfResponsibility.getLocation()}" 
+                     th:text="${areaOfResponsibility.getLocationname()}">
+                       </option>
+                     <option value="search" data-toggle="modal" id="btnsearch2"  >Search</option>	 				
+	 				</select>
+	 				
+			   </p>
+			
+			
+			
+		</div>
+		</div>
+		
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div>
+		
+	
+	
+	
+<br>
+		
+		<div class="w3-container w3-right">
+			<p>
+				<button id="AORCancel" rm="/aor/manageAor" tabindex="15" class="w3-button w3-theme w3-grey" style="margin-right:05px;">Cancel</button>
+			
+				<button id="AOR_CREATE" onclick="ajaxPost();" class="w3-button w3-theme w3-grey" tabindex="6" style="margin-right:10px;">Submit</button>
+						
+
+			</p>
+		</div>
+
+		<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						rm="/aor/manageAor">OK</a>
+
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	
+	
+	
+	
+	<!--***Start:Error Msg** -->
+<div id="idError" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div
+					class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+
+
+					<label id="lblMsg"><b> Date must be latest!!</b> </label> <a id="btnerrorOK" class="w3-button w3-red"
+						rm="/personedit/employeedetail">OK</a>
+
+				</div>
+
+			</div>
+		
+		
+	</div>
+		
+		
+
+<script>
+	
+	$('#btnerrorOK').on('click', function(e){
+	var url = $(this).attr("rm");
+	$('#replace_div').load(url);
+	});
+
+
+$(document).ready(function(){
+	
+$("#idError").css('display', 'none');
+	var strMsg=$("#CR_AOR_EFFDT").attr("msg");
+	//debugger;
+	if(strMsg=="Error")
+		{
+			$("#idError").css('display', 'block');
+			$("#AOR_CREATE").attr('id','btnSUb');
+			$("#CR_AOR_EFFDT").attr('flag','update');
+		}
+	else if(strMsg!="Error" || strMsg!="Correct")
+	{
+		if(strMsg=="Correct")
+			{
+				$("#CR_AOR_EFFDT").attr('flag','correct');
+			}
+		if(strMsg!="Correct")
+			{
+				$("#CR_AOR_EFFDT").val(strMsg);
+				$("#CR_AOR_EFFDT").attr('flag','update');
+			}
+	}
+	
+	
+});
+</script>
+<script src="/js/validation/validation.js"></script>
+<script src="/js/create/createAreaOfRes.js"></script>
+	
+</form>
+<!-------------------------------------------------------------  -->
+<!-- Popup  for Location Search Start here  -->
+<!-- line modal -->
+<div id="id01" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+		<div class="modal-header">
+			<h3 align="left">Search and Select:Location</h3>
+				<hr class="hrline">
+		</div>
+		<div class="modal-body">
+		<div>
+		<div class=w3-half>
+	    <div class="w3-container">
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_AOR_POP_NAME" type="text">
+	             </div>
+	             </div>
+	              <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Code:</div>
+	             <div class="w3-rest">
+	            <input value="" class="w3-input w3-border" name="Ent_Name" id="CR_AOR_POP_CODE" type="text">
+	             </div>
+	             </div>
+	</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container">
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Country:</div>
+	             <div class="w3-rest">
+	             <select id="CR_AOR_POP_CNTRY" class="w3-select w3-border" name="" >
+		 			<option value="" disabled selected></option>
+					<option th:each="CountryDetails : ${CountryDetails}" 
+					th:value="${CountryDetails.getDescription()}" 
+					th:text="${CountryDetails.getDescription()}"></option>
+				</select>
+	             </div>
+	             </div>
+	          
+	</div>
+	</div>
+			<br>
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="CR_AOR_POP_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+              
+                </div>
+               </div>
+               </div>               
+			</div>
+			<BR>
+			<div id="resultSec" class="w3-responsive" style="display: none">
+				<table id="EnterpriseList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<tr class="w3-theme-d3">
+							<th>Name</th>
+							<th>Code</th>
+							<th>Country</th>
+							<th>State</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataLOcation" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                <div class="w3-right">
+               <button id="CR_AOR_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+               <button id="CR_AOR_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+                </div>
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+<!-- PopUp End Here -->	
+
+
+
+
+<!-------------------------------------------------------------  -->
+<!-- Popup  for Legal Search Start here  -->
+<!-- line modal -->
+<div id="id02" class="w3-modal">
+		<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+		<div class="modal-header">
+			<h3 align="left">Search and Select:Location</h3>
+				<hr class="hrline">
+		</div>
+		<div class="modal-body">
+		<div>
+		<div class=w3-half>
+	    <div class="w3-container">
+	             <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Name:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Leg_Name" id="CR_AOR_LEG_POP_NAME" type="text">
+	             </div>
+	             </div>
+	  			
+	  			  <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Legal Identifier:</div>
+	             <div class="w3-rest">
+	             <input value="" class="w3-input w3-border" name="Leg_Entity" id="CR_AOR_LEG_POP_ENTITY" type="text">
+	             </div>
+	             </div>
+	</div>
+	</div>
+	<div class=w3-half>
+	<div class="w3-container">
+	            <div class="w3-row w3-section">
+	             <div class="w3-col" style="width:80px">Country:</div>
+	             <div class="w3-rest">
+	              <input value="" class="w3-input w3-border" name="Leg_Country" id="CR_AOR_LEG_POP_COUNTRY" type="text">
+	             </div>
+	             </div>
+	          
+	</div>
+	</div>
+			<br>
+			<div class="w3-container" >               
+               <div class="form-group">
+                 <div class="col-sm-12">
+                <div class="w3-right">
+             	<button id="CR_AOR_LEG_POP_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+              
+                </div>
+               </div>
+               </div>               
+			</div>
+			<BR>
+			<div id="LegalEntityresultSec" class="w3-responsive" style="display: none">
+				<table id="LegalEntityList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<tr class="w3-theme-d3">
+							<th>Name</th>
+							<th>Country</th>
+							<th>Legal Entity Identifier</th>
+							<th>Effective Start Date</th>
+							<th>Registration Place</th>
+							<th>Registration Number</th>
+							<th>Legal Entity Id</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noDataLegalEntity" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="modal-footer">
+		<div class="w3-container" >               
+               <div class="form-group">
+                <div class="w3-right">
+               <button id="CR_AOR_LEG_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+               <button id="CR_AOR_LEG_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+                </div>
+               </div>               
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+<!-- PopUp End Here -->	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- Popup  for LEGAL EMPLOYER Search endl here  -->
+
+
+</div>
+	
+
+

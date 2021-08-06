@@ -1,0 +1,302 @@
+<div th:fragment="createCdaRembApproval" style="margin-left: 300px;">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<style>
+		.col-25 {
+		float: left;
+		width: 25%;
+		margin-top: 6px;
+		}
+		.col-75 {
+		float: left;
+		width: 75%;
+		margin-top: 6px;
+		}
+		
+		#DOWNLOAD_LINK ,#DOWNLOAD_LINK1{
+         color: blue;
+		  background-color: transparent;
+		  text-decoration: none;
+          }
+		
+		/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+	</style>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		    var resultfinal = /*[[${result}]]*/;
+		   
+		/*]]>*/
+	</script>
+	<div class="w3-main" style=" margin-top: -14px;">
+		<div style="position: relative;">
+			<div class="w3-container">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;">
+					<i class="fas fa-luggage-cart" style="color: #027b7b;"></i>
+					&nbsp;CDA Reimbursement
+				</h4>
+			</div>
+		</div>
+		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item" >Approval Details</h5>
+			<!-- <div onclick="loadCreateTADKClaim();" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" style="margin-top:8px;"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Raise New Request</div> -->
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" >
+				<!-- <div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div> -->
+				<div type="button" class="w3-btn w3-red w3-round-large" id="btnSubmit"  onclick="approvalSubmit('Rejected');" ><i class="fa fa-ban" aria-hidden="true"></i>&nbsp;&nbsp;Reject</div>
+				<div type="button" class="w3-btn w3-green w3-round-large" id="btnSave" onclick="approvalSubmit('Approved');"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;Approve</div>
+			</div>
+		</div>
+		<!--Form Content Goes here-->
+		<div class="w3-row w3-padding-large w3-margin-top">
+		<p th:if="${personInfo.getJob()=='Assistant Manager'} or ${personInfo.getJob()=='assistant manager'}">
+				<strong><label>Entitlement:&nbsp;</label></strong> 
+				<label class="w3-text-blue"	th:text="2500"></label>&nbsp;<label>INR Per
+				Month</label>
+			</p>
+			<p th:if="${personInfo.getJob()=='Manager'} or ${personInfo.getJob()=='manager'}">
+				<strong><label>Entitlement:&nbsp;</label></strong> <label class="w3-text-blue"
+					th:text="3000"></label>&nbsp;<label>INR Per
+				Month</label>
+			</p>
+			<p th:if="${personInfo.getJob()=='Supervisor'} or ${personInfo.getJob()=='supervisor'}">
+				<strong><label>Entitlement CDA:&nbsp;</label></strong> <label class="w3-text-blue"
+					th:text="2000"></label>&nbsp;<label>INR Per	Month</label><br>
+				
+					<strong><label>Entitlement Vehicle:&nbsp;</label></strong> 
+				<label class="w3-text-blue"	th:text="2000"></label>&nbsp;<label>INR Per	Month</label>
+			</p>
+			<p th:if="${personInfo.getJob()=='Sr. Supervisor'} or ${personInfo.getJob()=='Sr. Supervisor'}">
+				<strong><label>Entitlement CDA:&nbsp;</label></strong> 
+				<label class="w3-text-blue"	th:text="2000"></label>&nbsp;<label>INR Per	Month</label></label><br>
+				
+				<strong><label>Entitlement Vehicle:&nbsp;</label></strong> 
+				<label class="w3-text-blue"	th:text="2000"></label>&nbsp;<label>INR Per	Month</label></label>
+				
+				
+			</p>
+			<p th:if="${personInfo.getJob()=='Non-Supervisor'} or ${personInfo.getJob()=='non-supervisor'}">
+				<strong><label>Entitlement:&nbsp;</label></strong> <label class="w3-text-blue"
+					th:text="1500"></label>&nbsp;<label>INR Per
+				Month</label>
+			</p>
+			<!-- <p>
+				<strong><label>Entitlement:&nbsp;</label></strong> <label class="w3-text-blue"
+					th:text="${empent}"></label>&nbsp;<label>INR Per
+				Month</label>
+			</p> -->
+			<h5 class="w3-text-theme" style="font-weight: bold;">Claim Details</h5>
+			<form method="post" id="CDA_Approval" enctype="multipart/form-data" onsubmit="return false;">
+				<div class="w3-row">
+					<div style="display: none;">
+						<input id="statusid" value="" type="hidden"  name="statusid"/>	
+						<input id="attachment1" name="attachment1"  type="hidden"/>
+						<p>
+							<lable>Person Id</lable>
+							<input id="txtpersonid" type="text" name="personid" th:value="${personInfo.getPersonid()}" />
+						</p>
+						<p>
+							<lable>Person Number</lable>
+							<input id="txtpersonNumber" type="text" name="personnumber" th:value="${personInfo.getPersonnumber()}" />
+						</p>
+						<p>
+							<lable>Reimbursemnet ID</lable>
+							<input id="txtRembId" type="text" name="reimburseid" value="7" />
+						</p>
+						<!-- <p>
+							<lable>Approved Amount</lable>
+							<input id="txtRembId" type="text" name="approvedamt" value="0" />
+						</p> -->
+					</div>
+					<div class="w3-half w3-container">
+						<p>
+							<label>Claim id</label> <span style="color: red;">*</span>
+							<input id="txtclaimidid" type="text" name="claimid" readonly
+								th:value="${cdaVehicle.getClaimid()}" />
+						</p>
+					</div>
+				</div>
+				<!----------------------------------------------- Page Display in View Mode start Here----------------->
+				<div th:if="${cdaVehicle.getClaimid()!=0} and ${mode=='view'}">
+					<div class="w3-row">
+						<div class="w3-half w3-container">
+							<p>
+								<label> Period From </label> 
+								<input style="height: 38px" max="9999-12-31" class="w3-input w3-border" id="CR_CDS_PRD_FROM" type="date" data-date="" data-date-format='YYYY MM DD'
+									tabindex="1" th:name="periodfromV" th:value="${cdaVehicle.getPeriodfrom()}" readonly />
+							</p>
+						</div>
+						<div class="w3-half w3-container">
+							<p>
+								<label>Period To</label> 
+								<input style="height: 38px" max="9999-12-31" class="w3-input w3-border" id="CR_CDS_PRD_TO"
+									type="date" data-date="" data-date-format='YYYY MM DD' tabindex="1" th:name="periodtoV"
+									th:value="${cdaVehicle.getPeriodto()}" readonly />
+							</p>
+						</div>
+					</div>
+					<div class="w3-row">
+						<div class="w3-half w3-container">
+							<p>
+								<label>Physical Location</label> 
+								<input class="w3-input w3-border" id="CR_CDS_PHY_LOCTION" type="text" th:name="physicalloactionV"
+									th:value="${cdaVehicle.getPhysicalloaction()}" readonly>
+							</p>
+						</div>
+						<div class="w3-half w3-container">
+							<p th:if="${cdaVehicle.getEmployeelocation()!=0}">
+								<label>Employee Location</label> 
+								<select id="CR_CDA_EMP_LOCATION" class="w3-select w3-border" th:name="employeelocationV" disabled>
+									<option value="" disabled selected></option>
+									<option th:each="loc : ${location}"
+										th:selected="${loc.getLocationid() eq cdaVehicle.getEmployeelocation()}"
+										th:value="${loc.getLocationid()}" th:text="${loc.getName()}"></option>
+								</select>
+							</p>
+						</div>
+					</div>
+					<div class="w3-row">
+						<div class="w3-half w3-container">
+							<p>
+								<label>Number of Days</label> 
+								<input style="height: 38px"
+									class="w3-input w3-border" id="CR_CDS_NO_DYS" type="text"
+									th:name="noofdaysV" th:value="${cdaVehicle.getNoofdays()}" readonly />
+							</p>
+						</div>
+						<div class="w3-half w3-container">
+							<p>
+								<label>CDA Claim Amount</label> 
+								<input style="height: 38px"
+									class="w3-input w3-border" id="CR_CDS_AMNT" type="text"
+									th:name="cdaclaimamountV"
+									th:value="${cdaVehicle.getCdaclaimamount()}" readonly />
+							</p>
+						</div>
+					</div>
+					<div class="w3-row">
+						<div class="w3-half w3-container">
+							<p>
+								<label>Number of Months</label> 
+								<input style="height: 38px"
+									class="w3-input w3-border" id="CR_CDS_NO_MNTS" type="text"
+									th:name="noofmonthsV" th:value="${cdaVehicle.getNoofmonths()}" readonly />
+							</p>
+						</div>
+						<div class="w3-half w3-container">
+							<p>
+								<label>Vehicle Allowance Amount</label> 
+								<input style="height: 38px" class="w3-input w3-border" id="CR_CDS_VHICL_AMNT" type="text"
+									th:name="vehicleallowanceamountV"
+									th:value="${cdaVehicle.getVehicleallowanceamount()}" readonly />
+							</p>
+						</div>
+					</div>
+					
+					
+					
+					
+					<div class="w3-row">
+						<div class="w3-half w3-container">
+							<p>
+								<label>Vehicle Used</label><span style="color: red"> *</span> 
+								<select id="CR_CDS_NO_MNTS" class="w3-select w3-border" tabindex="4" name="vehicleusedV" disabled>
+									<option th:each="vec : ${Vehicalused}"
+										th:selected="${vec.getDescription() eq cdaVehicle.getVehicleused()}"
+										th:value="${vec.getDescription()}" th:text="${vec.getDescription()}"></option>
+								</select>
+							</p>
+						</div>
+						<div class="w3-half w3-container">
+							<span id="DOWNLOAD_LINKsp" style="display:none" th:text="${cdaVehicle.getAttachment()}"></span>
+							<p th:if="${cdaVehicle.getAttachment() != null && cdaVehicle.getAttachment() !=''}">
+								<a id="DOWNLOAD_LINK" th:href="${cdaVehicle.getAttachment()}" target="_blank" download>Download Attachment</a>
+								<input type="hidden" name="attachhidden1" th:value="${cdaVehicle.getAttachment()}"/>
+							</p>
+							<!-- <p th:if="${cdaVehicle.getAttachment() == null}">
+								No Attachment found
+								</p> -->
+						</div>
+						
+						<div class="w3-half w3-container">
+							<span style="display:none" id="DOWNLOAD_LINK1sp" th:text="${cdaVehicle.getAttachment1()}"></span>
+							<p th:if="${cdaVehicle.getAttachment1() != null && cdaVehicle.getAttachment1() !=''}">
+								<a id="DOWNLOAD_LINK1" th:href="${cdaVehicle.getAttachment1()}" target="_blank" download>Download Hod Certificate Attachment</a>
+								<input type="hidden" name="attachhidden2" th:value="${cdaVehicle.getAttachment1()}"/>
+							</p>
+							<!-- <p th:if="${cdaVehicle.getAttachment1() == null}">
+								No Attachment found
+								</p> -->
+						</div>
+					</div>
+					
+						
+					
+					<div class="w3-row">
+						<div class="w3-full w3-container">
+							<p>
+								<input class="w3-check" id="CR_CDS_CERTIFY_V" checked="checked" disabled type="checkbox" th:value="Y">
+								<label>I hereby certify that, neither I was on Leave nor on tour for more than 15 days consequently during the claim Period.</label>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-full w3-container">
+						<h6 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">To-Do Task</h6>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-third w3-container">
+						<p>
+							<strong><label>Approved Amount: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+							<input type="text" id="txtAmount" th:value="${APPRAMT}" name="approvedamt" oninput="this.value=this.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');" class="w3-input w3-border w3-round"/>
+						</p>
+					</div>
+					<div class="w3-third w3-container">
+						<p>
+							<strong><label>Comments: &nbsp;&nbsp;</label><span style="color:red">*</span></strong>
+							<textarea name="msg" id="txtComment" class="w3-input w3-border w3-round"></textarea>
+						</p>
+					</div>
+				</div>
+								<h5 > Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${cdaVehicle.getClaimid()}" aria-hidden="true" th:onclick='getapprovalhistory(7,this.id);'></i></h5>
+				<section class="container" th:style="${mode == 'view'}?'display:block':'display:none'">
+					<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+					<div class="container__sources">
+						<div style="box-shadow: none;background: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+							<div class="sources--cms" style="width: 160px">
+								<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+								<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+								<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+								<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+									<i class="fa fa-check tick"></i>
+								</div>
+								<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+									<i class="fa fa-clock-o pending"></i>
+								</div>
+								<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+									<i class="fa fa-close cancel"></i>
+								</div>
+							</div>
+							<svg class="svghor" viewBox="0 10 100 100">
+								<line  x1="5" x2="100" y1="80" y2="80"></line>
+							</svg>
+							<svg class="svgver" viewBox="0 20 100 100 ">
+								<line  x1="40" x2="40" y1="0" y2="100"></line>
+							</svg>
+						</div>
+						<div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+					</div>
+					<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+				</section>
+				<!----------------------------------------------- Page Display in View Mode End Here----------------->
+			</form>
+		</div>
+		
+		<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+		<script src="/js/reimbursement/cdaAndVehical/createCda.js"></script>
+		<script src="/js/validation/validation.js"></script>
+	</div>
+</div>

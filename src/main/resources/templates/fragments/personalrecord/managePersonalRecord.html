@@ -1,0 +1,100 @@
+
+<div th:fragment="searchPersonalRecord">
+	<div class="w3-container">
+		<h4 class="w3-text-theme">Search Personal Record</h4>
+		
+	</div>
+
+	<div class="w3-row">
+		<div class=w3-third style="border-right: 2px solid black">
+
+			<div class="w3-container">
+				<div class="divTable">
+					<div class="divTr">
+
+						<div class="d1">
+							<h5 style="font-weight: bold">Find an existing Value</h5>
+						</div>
+						<!-- <div class="d2">
+							<a id="PersonalCreate" rm="/Personal/loadPersonalPage"
+								class="w3-button w3-circle w3-theme w3-large">+</a>
+
+						</div> -->
+					</div>
+
+				</div>
+
+				<hr class="hrline">
+				<h6>Search Criteria</h6>
+				<p>
+					<label>Person Department</label> <input value="" class="w3-input w3-border"
+						name="PersonDept" id="PERSON_DEPT" type="text"  onkeypress="handleKeyPress(event)">
+
+				</p>
+				<p>
+					<label>Person Legal Entity</label> <input value="" class="w3-input w3-border"
+						name="PersonLegalEntity" id="PERSON_LEGAL_ENTITY" type="text"  onkeypress="handleKeyPress(event)">
+
+				</p>
+				<p>
+					<label>Person Name</label> <input value="" class="w3-input w3-border"
+						name="PersonName" id="PERSON_NAME" type="text"  onkeypress="handleKeyPress(event)">
+
+				</p>
+				<p>
+					<label>Person Number</label> <input value="" class="w3-input w3-border"
+						name="PersonNumber" id="PERSON_NUMBER" type="text"  onkeypress="handleKeyPress(event)">
+
+				</p>
+				
+
+				<p>
+					<button id="Personal_SEARCH" class="w3-button w3-theme w3-grey">Search</button>
+
+				</p>
+			</div>
+
+
+		</div>
+		
+		
+		<div class="w3-twothird w3-container">
+			<h5 style="margin-bottom: 0px; margin-bottom: 0px; font-weight: bold;">Search Results</h5>
+
+			<div id="PersonalRecordresultSec" class="w3-responsive" style="display:none" >
+				<table id="PersonalRecordList" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<tr class="w3-theme-d3">
+							<th>Person Name</th>
+							<th>Person Number</th>
+							<th>Person Location</th>
+							<th>Person Department</th>
+							<th>Person Email</th>
+							<th>Person Legal Entity</th>
+							
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div  id="noData" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+			<div id="jsonLoaderPage" class="w3-responsive" style="display: none">
+				<div>
+					<div class='w3-container' style='width: 100%; margin-top:50px; text-align: center'>
+						<i class='fa fa-cog fa-spin' style='font-size: 30px;'></i>
+						<p style="color: black;">Loading......</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+    <script src="/js/search/searchPersonalRecord.js"></script>
+
+
+</div>

@@ -1,0 +1,193 @@
+<div th:fragment="pyrlfinintegration">
+    <div class="w3-main" style="margin-left: 300px; margin-top: -15px;">
+
+        <div class="w3-bar w3-light-grey" >
+            <button  class="w3-bar-item w3-button tablink w3-theme" onclick="openTab(event,'PYRL_TAB');"> Payroll Integration</button>
+            <button  class="w3-bar-item w3-button tablink " onclick="openTab(event,'PYBL_TAB');"> Account Payable</button>
+        </div>
+
+        <!--<div style="position: relative;">
+            <div class="w3-container">
+                <h4 style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;"><i class="fas fa-donate" style="color: #1ac8fd;"></i>&nbsp;Payroll Integration
+                </h4>
+            </div>
+        </div>-->
+
+<!--
+        <option th:each="calcode : ${calcode}"
+                th:value="${calcode.getCalendarcode()}"
+                th:text="${calcode.getCalendarcode()}" />-->
+
+
+        <div id="PYRL_TAB" class="w3-container legal">
+        <div class="w3-bar">
+            <div class="w3-bar-item w3-quarter">
+                <label>Calendar Code</label><span style="color: red"> *</span>
+                <!-- <select id="CALCODELOV" class="w3-select w3-border w3-margin-bottom">
+                    <option value="" disabled selected></option>
+                    <option value="LPY-AUG-2020">LPY-AUG-2020</option>
+                    <option value="LPY-SEP-2020">LPY-SEP-2020</option>
+                    <option value="LPY-OCT-2020">LPY-OCT-2020</option>
+                    <option value="LPY-NOV-2020">LPY-NOV-2020</option>
+                    <option value="LPY-DEC-2020">LPY-DEC-2020</option>
+                </select> -->
+                <select id="CALCODELOV" class="w3-select w3-border w3-margin-bottom"
+                       >
+                        <option value="" disabled selected></option>
+                        <option th:each="calc : ${calcode}" th:value="${calc.getCalendarcode()}"
+                              th:text="${calc.getCalendarcode()}"></option>
+              </select>
+            </div>
+
+            <div class="w3-bar-item w3-quarter">
+                <label>Nature Of Employment</label><span style="color: red"> *</span>
+                <select id="NATLOV" class="w3-select w3-border w3-margin-bottom">
+                    <option value="0" disabled selected></option>
+                    <option th:each="noe : ${noe}"
+                            th:value="${noe.getId()}"
+                            th:text="${noe.getDescription()}" />
+                </select>
+            </div>
+
+            <!--<div class="w3-bar-item w3-quarter">
+                <label>Element Type</label><span style="color: red"> *</span>
+                <select id="ELMTYP" class="w3-select w3-border w3-margin-bottom">
+                    <option value="" disabled selected></option>
+                    <option value="er">Earning</option>
+                    <option value="dr">Deduction</option>
+                    <option value="st">Contribution</option>
+                </select>
+            </div>-->
+
+            <div class="w3-bar-item" style="margin-top: 6px;">
+                <div style="display:inline-block; margin-inline: -20px;" type="button" id="PREPARE_BTN" onClick="preparedata();" class="w3-btn w3-theme w3-round-large w3-margin-top">Prepare Data</div>
+            </div>
+
+            <div class="w3-bar-item w3-quarter w3-right" style="margin-top: 6px;" >
+                <div style="display:none;" type="button" id="INTEGRATE_BTN" onClick="integratepayroll();" class="w3-btn w3-blue w3-round-large w3-margin-top">Integrate</div>
+            </div>
+        </div>
+
+            <div class="w3-container">
+                <div id="PREPPAYROLL" class="w3-responsive" style="display: none">
+                    <table id="PREPPYRL_TBL" class="display compact w3-table-all" style="width: 100%;">
+                        <thead>
+                        <tr>
+                           <th>Payroll ebs sync id      </th>
+							<th>Ledger id              </th>
+							<th>Accounting date        </th>
+							<th>Date created           </th>
+							<th>Actual flag            </th>
+							<th>User category Name    </th>
+							<th>User resource name      </th>
+							<th>Entered cr.             </th>
+							<th>Accounted dr.           </th>
+							<th>Accounted cr.           </th>
+							<th>Transaction date       </th>
+							<th>Reference1            </th>
+							<th>Reference10           </th>
+							<th>Period name            </th>
+							<th>Functional currency code</th>
+							<th>Code combination id     </th>
+							<th>Date       </th>
+							<th>enteredDr             </th>
+							<th>status                </th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div  id="noDataPREP" class="w3-responsive" style="display: none">
+                    <div>
+                        <p>No record found...</p>
+                    </div>
+                </div>
+            </div>
+
+        <hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+        <div id="PYRLINTGR_LOADER" class="w3-modal" style="display: none">
+            <div class='w3-container' style='margin-top:11%; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+            <!--<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>-->
+        </div>
+        </div>
+       <!-- <div style="position: relative;">
+            <div class="w3-container">
+                <h4 style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;"><i class="fas fa-donate" style="color: #fd1a97;"></i>&nbsp;Account Payable Integration
+                </h4>
+            </div>
+        </div>-->
+
+<div id="PYBL_TAB" class="w3-container legal" style="display: none;">
+        <div class="w3-bar">
+            <div class="w3-bar-item w3-quarter">
+                <label>Calendar Code</label><span style="color: red"> *</span>
+                <!-- <select id="CALCODELOV1" class="w3-select w3-border w3-margin-bottom">
+                    <option value="" disabled selected></option>
+                    <option value="LPY-AUG-2020">LPY-AUG-2020</option>
+                    <option value="LPY-SEP-2020">LPY-SEP-2020</option>
+                    <option value="LPY-OCT-2020">LPY-OCT-2020</option>
+                    <option value="LPY-NOV-2020">LPY-NOV-2020</option>
+                    <option value="LPY-DEC-2020">LPY-DEC-2020</option>
+                </select> -->
+                <select id="CALCODELOV1" class="w3-select w3-border w3-margin-bottom"
+                       >
+                        <option value="" disabled selected></option>
+                        <option th:each="calc : ${calcode}" th:value="${calc.getCalendarcode()}"
+                              th:text="${calc.getCalendarcode()}"></option>
+              </select>
+            </div>
+
+            <div class="w3-bar-item" style="margin-top: 6px;">
+                <div style="display:inline-block; margin-inline: -20px;" type="button" id="PREPARE_BTN1" onClick="preparedata1();" class="w3-btn w3-theme w3-round-large w3-margin-top">Prepare Data</div>
+            </div>
+
+            <div class="w3-bar-item w3-quarter w3-right" style="margin-top: 6px;" >
+                <div style="display:none;" type="button" id="INTEGRATE_BTN1" onClick="integratepayroll1();" class="w3-btn w3-blue w3-round-large w3-margin-top">Integrate</div>
+            </div>
+        </div>
+
+    <div class="w3-container">
+        <div id="PREPPAYABLE" class="w3-responsive" style="display: none">
+            <table id="PREPPAYABLE_TBL" class="display compact w3-table-all" style="width: 100%;">
+                <thead>
+                <tr>
+				<th>Vendor number	            </th>
+				<th>Total Amount           </th>
+				<th>Description             </th>
+				<th>Source                  </th>
+				<th>Payment method lookup code </th>
+				<th>Gl date                  </th>
+				<th>Operating unit	        </th>
+				
+				<th>Amount                  </th>
+				<th>Accounting Date          </th>
+				<th>Description			    </th>
+				<th>Dist. code concatenated    </th>
+				
+				<th>Status              </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div  id="noDataPYBL" class="w3-responsive" style="display: none">
+            <div>
+                <p>No record found...</p>
+            </div>
+        </div>
+    </div>
+
+        <hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+         <div id="PYRLINTGR_LOADER" class="w3-modal" style="display: none">
+            <div class='w3-container' style='margin-top:11%; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+            <!--<div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>-->
+        </div>
+        
+    </div>
+
+
+
+        <script src="/js/payrolltofinanceintegration/pyrlfinintegration.js"></script>
+
+    </div>
+</div>

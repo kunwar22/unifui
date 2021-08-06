@@ -1,0 +1,52 @@
+<div th:fragment="noticeview">
+
+    <div class="w3-main" style="margin-left:300px; margin-top: -14px; margin-bottom:16px;">
+
+    <div style="position: relative;">
+        <div class="w3-container w3-margin-top">
+            <h4 style="font-weight: 400;">
+                <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+                     style="cursor: pointer;">
+                <i class="far fa-newspaper" style="color:#000000"></i> Notices
+            </h4>
+        </div>
+        <hr class="hrline">
+    </div>
+
+
+    <div id="NOTICE_BLOCK" class="w3-row-padding" style="display: none;">
+        <table id="NOTICE_TBL" class="w3-striped">
+            <thead>
+                <tr>
+                    <th>OFFICE ORDER No. </th>
+                    <th>Subject</th>
+                    <th>Published Date</th>
+                    <th>Type</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+        <div  id="noData" class="w3-responsive" style="display: none">
+            <div>
+                <p>No record found...</p>
+            </div>
+        </div>
+        <!--
+        <div th:each="noti : ${notices}" class="w3-col" style="width:33.33%; ">
+            <div class="w3-panel w3-card" style="height: 100px;">
+                <h5>OFFICE ORDER No. <span th:text="${noti.getOrderno()}"></span></h5>
+                <label th:text="${noti.getSubject()}"></label>
+                <div class="w3-container w3-white" style="margin-bottom:15px">
+                    <a id="DOWNLOAD_LINK" th:href="'/getContent?location='+${noti.getFileattachement()}" target="_blank" download><i class="fa fa-download" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <script src="/js/datatables.min.js"></script>
+    <script src="/js/notices/noticeview.js"></script>
+    </div>
+</div>

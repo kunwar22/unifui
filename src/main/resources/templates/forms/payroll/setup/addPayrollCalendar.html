@@ -1,0 +1,90 @@
+<div th:fragment="addPayrollCalendar">
+    <div class="w3-container" style="margin-top:14px;">
+        <div class="w3-bar w3-theme-light" style="margin-top: 16px; margin-bottom: 16px;">
+            <h4 class="w3-bar-item w3-text-theme">Add Payroll Calendar</h4>
+            <div style="margin-top: 10px;">
+                <div id="savePayrollCalendar" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" type="button"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Save</div>
+                <div id="cancilAddPayrollCalendar" class="w3-bar-item w3-btn w3-grey w3-round-large w3-right buttonbarmargin" type="button"><i class="fa fa-times" aria-hidden="true" style="color: red"></i>&nbsp;&nbsp;Cancel</div>
+            </div>
+        </div>
+
+
+        <form id="payrollCalendar" enctype="application/x-www-form-urlencoded" onsubmit="return false;" method="POST">
+            <div class="w3-row w3-padding">
+                <div class="w3-container w3-half">
+                    <p>
+                        <label>Payroll Group</label><br>
+                        <select class="payrollGroupSelect w3-select" name="paygroupid">
+                            <option></option>
+                            <option value="1">VP Group</option>
+                            <option value="2">KMRC Payroll</option>
+                            <option value="3">AMRC Paryoll</option>
+                        </select>
+                        <input type="hidden" value="VP Group" name="paygroupname">
+                    </p>
+                </div>
+                <div class="w3-container w3-half">
+
+                </div>
+            </div>
+            <div class="w3-row w3-padding">
+                <div class="w3-container w3-threequarter">
+                    <p style="margin-bottom: 0px;">
+                        <label>Calendar Details</label>
+                    <div class="w3-responsive" style="max-height: 400px; overflow-y: scroll">
+                        <table id="calPeriodTable" class="w3-table-all">
+                            <thead>
+                            <tr class="w3-theme-d3">
+                                <td>
+                                    Pay Calendar Code
+                                </td>
+                                <td>
+                                    Period Number
+                                </td>
+                                <td>
+                                    Start Date
+                                </td>
+                                <td>
+                                    End Date
+                                </td>
+                                <td>
+                                    Days
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody id="calendarPeriod">
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="">
+                                        <input type="text" name="calPeriods[0].periodcode">
+                                    </td>
+                                    <td>
+                                    <input type="text" name="calPeriods[0].payrollperiod">
+                                    </td>
+                                    <td>
+                                        <input type="date" name="calPeriods[0].startdate" data-date-format="DD MM YYY">
+                                    </td>
+                                    <td>
+                                        <input type="date" name="calPeriods[0].enddate" data-date-format="DD MM YYY">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="calPeriods[0].dayscount" style="width: 50px;">
+                                    </td>
+                                    <td width="80px;">
+                                        <i onclick="addNewCalendarPeriod()" class="fas fa-plus-circle" style="margin-top: 6px; margin-right: 5px; color: darkgreen; cursor: pointer"></i>
+                                        <!--<i onclick="removeCalendarPeriod(this)" class="far fa-trash-alt" style="color: red; cursor: pointer"></i>-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="/js/payroll/setup/addPayrollCalendar.js"></script>
+</div>

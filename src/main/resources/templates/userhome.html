@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Home</title>
+
+<link rel="stylesheet" type="text/css" href="/css/w3.css" />
+<link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+<link rel="stylesheet" type="text/css" th:href="${theme}" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/css/gridstack.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js">
+
+
+<style>
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+.w3-sidebar {
+	z-index: 3;
+	width: 350px;
+	top: 52px;
+	bottom: 0;
+	height: inherit;
+}
+::-webkit-scrollbar {
+	width: 2px;
+}
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+	background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+div.sticky {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+}
+b.icon-change:hover .fa-folder:before{
+	content:"\f07c";
+}
+ed.editUser:hover .fa-pencil-square-o:before{
+	content:"\f14b";
+}
+.disabled {
+	pointer-events: none;
+}
+.footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+}
+.hrline{
+	border: 1px solid black;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.divTable {
+	display:table;
+	width:100%
+}
+.divTr {
+	display:table-row;
+}
+.d1 {
+	display:table-cell;
+	width:60%
+}
+.d2 {
+	display:table-cell;
+	text-align:right;
+	width:40%
+}
+.dataTables_length {
+	margin-top: 6px;
+}
+.dataTables_filter {
+	margin-bottom: 5px;
+}
+.rowMarTop{
+	margin-top: 6px;
+}
+</style>
+
+</head>
+<body>
+
+<!-- Navbar -->
+<div th:replace="fragments/topNavbar :: navbar"></div>
+<!-- Sidebar -->
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-theme w3-bar-block" style="width:15%; margin-top:24px;">
+  <a id="publicInfo" rm="/user/publicInfo" class="w3-bar-item w3-button w3-border-bottom"><img id="EDIT_NAME_BLOCK" class="pull-left" alt="" style="width:20px; height:20px; margin-right:10px" src="/images/contact-list.png">Public Info</a>
+  <!-- <a class="w3-bar-item w3-button w3-border-bottom">Skills and Qualifications</a> -->
+  <a id="personalDetails" rm="/user/personalDetails" class="w3-bar-item w3-button w3-border-bottom">Personal Details</a>
+  <!-- <a id="contactInfo" rm="/user/contactInfo" class="w3-bar-item w3-button w3-border-bottom">Contact Info</a> -->
+  <!-- <a class="w3-bar-item w3-button w3-border-bottom">Identification Info</a>
+  <a class="w3-bar-item w3-button w3-border-bottom">Family and Emergency Contacts</a>
+  <a class="w3-bar-item w3-button w3-border-bottom">Document Records</a> -->
+  <a id="employmentInfo" rm="/user/employmentInfo" class="w3-bar-item w3-button w3-border-bottom">Employment Info</a>
+  <!-- <a class="w3-bar-item w3-button w3-border-bottom">Payslips</a>
+  <a class="w3-bar-item w3-button w3-border-bottom">Payment Methods</a>
+  <a class="w3-bar-item w3-button w3-border-bottom">Existing Absences</a>
+  <a class="w3-bar-item w3-button w3-border-bottom">Benefits Summary</a> -->
+  <a id="docrecord" rm="/user/docrecord"class="w3-bar-item w3-button w3-border-bottom">Document Records</a> 
+  <a id="addabsence" rm="/user/addabsence"class="w3-bar-item w3-button w3-border-bottom">Add Absence</a>
+  <a id="resignation" rm="/user/resignation" class="w3-bar-item w3-button w3-border-bottom">Resignation</a>
+ 
+</div>
+
+
+<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+<div class="w3-main" style="magin-left:15%">
+	<div class="w3-row w3-padding-64">
+    	<div >
+
+      		<div id="replace_div">
+  			</div>
+
+    	</div>
+  	</div>
+ 
+<!-- Footer -->
+<!-- <div th:replace="fragments/footer :: footer"></div> -->
+
+<!-- END MAIN -->
+</div>
+
+<script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/user/navBarUser.js"></script>
+<script src="/js/gridstack.all.js"></script>
+
+
+<!-- Charts JS-->
+
+<script src="/js/Chart.min.js"></script>
+<script src="/js/chartJsHelper.js"></script>
+
+<!-- ------------------------------- -->
+
+<script src="/js/datatables.min.js"></script>
+
+<script type="text/javascript">
+	var grid = GridStack.init();
+</script>
+
+
+
+</body>
+</html>

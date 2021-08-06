@@ -1,0 +1,435 @@
+<div th:fragment="manageLwp">
+
+    <form method="post" id="LWP_SAVE"
+          enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+        <div class="w3-row">
+            <div id="modalpopupsts" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width:400px">
+                    <div class="w3-container w3-light-grey">
+                        <div class="modal-body">
+                            <div class="w3-row">
+                                <label>Status</label><br>
+                                <select id="lwpsts" class="w3-input w3-round w3-border" onchange="lwpPage(this.value)">
+                                    <option value="" selected disabled></option>
+                                    <option value="Active">Recovery</option>
+                                    <option value="Void">Regularise</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="loadlwppage"></div>
+
+
+        <script src="/js/lwp/LoadLwp.js"></script>
+    </form>
+</div>
+<div th:fragment="activeLwp">
+
+
+    <div class="w3-container w3-padding-large">
+        <!--<h4 class="w3-text-theme" style="margin-top: 25px; bottom: 2px;">Manage Leave Without Pay</h4>-->
+
+		<div class="w3-row">
+			<div class="w3-padding-large">
+				<h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display:inline;">Manage Leave Without Pay </h5>
+				<input onclick="addMultiledataTable();" class="w3-right w3-btn w3-theme w3-round-large" type="button" id="add" value="+" />
+			</div>
+			<!--<hr style="display: block; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">-->
+			<div class="w3-padding">
+				<p>
+					<!-- <label>View</label>
+					<button id="VIEW_BTN" class="w3-button w3-white w3-small">^</button> -->
+				</p>
+				<div class="w3-padding-large ">
+					<table id="Add_Multiple_Date_TBL" class="display compact w3-table"
+						   style="width: 100%;">
+						<thead>
+						<th style="text-align: center;">From Date</th>
+						<th style="text-align: center;">To Date<span
+								style="color: red"> *</span></th>
+						<th style="text-align: center;">Description<span
+								style="color: red"> *</span></th>
+						</thead>
+						<tbody>
+						<tr class="myrowclass newRowClass">
+							<td style="width: 30%">
+								<input style="height: 38px"
+									   max="9999-12-31" class="w3-input w3-border myclassfromdate validationfrom fromdateClass emp_list" id="LWP_FROM_DATE0"
+									   type="date" data-date="" data-date-format='YYYY MM DD' onchange="fromchange(0)"onclick="fromclick(0)"
+									   tabindex="1" name="periodfrom"
+								/>
+							</td>
+							<td style="width: 30%">
+								<input style="height: 38px"
+									   max="9999-12-31" class="w3-input w3-border mycolclasstodate validationto todateClass" id="LWP_TO_DATE0"
+									   type="date" data-date="" data-date-format='YYYY MM DD' onchange="tochange(0)" onclick="toclick(0)"
+									   tabindex="1" name="periodto" disabled
+								/>
+							</td>
+							<td style="width: 30%">
+								<input style="height: 38px"
+									   class="w3-input w3-border myclassdesc validationdescr" id="LWP_DESCR0"
+									   type="text"
+									   tabindex="1" name="Description"
+								/>
+							</td>
+							<td style="width: 5%">
+								<!--<input class="w3-btn w3-theme" id="AdMultipleDate" index="0" flg="lwprange" onclick="addMultipleDate()"
+									   type="button" value="Add" style="margin-top: 20px;"/>-->
+							</td>
+
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+
+       <!-- <div class="w3-quarter w3-container">
+            <p>
+                <label> Period From </label> <input style="height: 38px"
+                                                    max="9999-12-31" class="w3-input w3-border" id="LWP_FROM_DATE1"
+                                                    type="date" data-date="" data-date-format='YYYY MM DD'
+                                                    tabindex="1" name="periodfrom"
+            />
+            </p>
+        </div>
+        <div class="w3-quarter w3-container">
+            <p>
+                <label> Period To </label> <input style="height: 38px"
+                                                  max="9999-12-31" class="w3-input w3-border" id="LWP_TO_DATE1"
+                                                  type="date" data-date="" data-date-format='YYYY MM DD'
+                                                  tabindex="1" name="periodto" disabled
+            />
+            </p>
+        </div>
+
+        <div class="w3-quarter w3-container">
+            <p>
+                <label> Description </label> <input style="height: 38px"
+                                                    class="w3-input w3-border" id="LWP_DESCR"
+                                                    type="text"
+                                                    tabindex="1" name="Description"
+            />
+            </p>
+        </div>
+
+
+        <div class="w3-quarter w3-container">
+            <input class="w3-btn w3-theme" id="AdMultipleDate" index="0" flg="lwprange" onclick="addMultipleDate()"
+                   type="button" value="Add" style="margin-top: 20px;"/>
+        </div>
+
+
+        <br>
+        <br>
+        <br>
+
+
+        <div class="w3-container" style=" display: block;">
+            <table id="Add_Multiple_Date_TBL" class="w3-table" style="display: block;">
+                <tbody>
+                </tbody>
+            </table>
+        </div>-->
+
+        <div id="LWP_LOADER" class="w3-modal" style="display: none">
+            <div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+        </div>
+
+        <div id="mydivTableid" class="w3-padding" style="display: none;">
+            <!--<div class="w3-btn w3-theme" style="float:right" onclick="addrow()">
+                <i class="fa fa-plus"></i>
+            </div>-->
+            <br><br>
+            <div data-id="mydivTableid-2" class="w3-container w3-border" style=" display: none;">
+                <table id="MGR_DET_TBL" class="w3-table" style="display: none;">
+                    <thead>
+                    <th style="text-align: center;width:40%">From Date</th>
+                    <th style="text-align: center;width:40%">Description</th>
+                    <th style="width:20%"></th>
+                    </thead>
+                    <tbody>
+
+                    <!--
+                        <tr>
+                            <td><input class="w3-input w3-round w3-border"
+                                name="createlwp[i].period" id="LWP_FROM_DATE1"
+                                type="date" data-date="" data-date-format='YYYY MM DD'
+                                onclick="checkdate(this)">
+                            </td>
+
+
+                            <td><input class="w3-input w3-round w3-border"
+                                name="createlwp[i].description" id="LWP_DESCR"
+                                type="text">
+                            </td>
+
+                            <td><input class="w3-input w3-round w3-border"
+                                name="createlwp[i].lwpid" value="0"
+                                type="hidden">
+                            </td>
+                            <td><input class="w3-input w3-round w3-border"
+                                name="createlwp[i].personnumber"
+                                type="text">
+                            </td>
+                            <td><input class="w3-input w3-round w3-border"
+                                name="createlwp[i].status"
+                                type="text">
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+            <!--<div class="w3-btn w3-theme" style="margin-top:8px" onclick="submitdata()">
+                Submit
+            </div>-->
+
+
+        </div>
+
+        <div id="save" class="w3-btn w3-theme" style="float:right" onclick="addLwp('lwp',this.id)">
+            Submit
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+        <script src="/js/lwp/CreateLwp.js"></script>
+    </div>
+
+
+    <div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom"
+             style="max-width: 400px;">
+            <div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+                <label id="lblMsg" style="font-weight:bold"></label>
+                <a id="btnOK" rm="/personedit/managepersonedit">OK</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div th:fragment="voidLwp">
+
+    <div class="w3-container w3-padding-large">
+        <h4 class="w3-text-theme" style="margin-top: 25px; bottom: 2px;">Manage Leave Without Pay</h4>
+
+        <div id="LWP_LOADER" class="w3-modal" style="display: none">
+            <div class='w3-container' style='margin-top:12px; text-align: center'><i class='fa fa-cog fa-spin' style='font-size: 70px; color: white;'></i></div>
+        </div>
+
+        <div class="w3-padding">
+            <div class="w3-container w3-border" style="width:100%">
+                <table id="viewdata" class="w3-table">
+                    <thead>
+                    <th style="text-align: center;width:30%">Date</th>
+                    <th style="text-align: center;width:60%">Description</th>
+                    <th style="width:10%">Select</th>
+                    <th style="width:10%">Half - Day</th>
+                    <th style="width:10%"></th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="entry ,stats: ${CreateLwp}">
+                        <td><input class="w3-input w3-round w3-border"
+                                   th:name="'createlwp['+${stats.index}+'].period'"
+                                   type="date"
+                                   th:value="${entry.period}" readonly>
+                        </td>
+                        <td><input class="w3-input w3-round w3-border"
+                                   th:name="'createlwp['+${stats.index}+'].description'"
+                                   type="text"
+                                   th:value="${entry.description}" readonly>
+                        </td>
+                        <td>
+                            <input type="checkbox" zoom="2px"
+                                   onclick="checkrow(this)"
+                                   class="w3-theme"
+                                   style="height:20px;width:20px;margin:7px;cursor:pointer"
+                                   th:checked="${entry.status eq 'Void'}">
+                        </td>
+
+                        <td>
+                            <input type="checkbox" zoom="2px"
+                                   onclick="checkrowHalfDay(this)"
+                                   class="w3-theme"
+                                   style="height:20px;width:20px;margin:7px;cursor:pointer"
+                                   th:checked="${entry.leaveflag eq '0.5'}">
+                        </td>
+
+
+                        <td><input class="w3-input w3-round w3-border"
+                                   th:name="'createlwp['+${stats.index}+'].lwpid'"
+                                   th:value="${entry.lwpid}"
+                                   type="hidden">
+                        </td>
+                        <td><input class="w3-input w3-round w3-border"
+                                   th:name="'createlwp['+${stats.index}+'].personnumber'"
+                                   th:value="${entry.personnumber}"
+                                   type="hidden">
+                        </td>
+                        <td><input class="w3-input w3-round w3-border lwpsts"
+                                   th:name="'createlwp['+${stats.index}+'].status'"
+                                   th:value="${entry.status}"
+                                   type="hidden">
+                        </td>
+
+                        <td><input class="w3-input w3-round w3-border lwpleavhalf"
+                                   th:name="'createlwp['+${stats.index}+'].leaveflag'"
+                                   th:value="${entry.leaveflag}"
+                                   type="hidden">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <div id="saveData" type="button" class="w3-btn w3-theme savebutton" style="float:right" onclick="addLwp(1)">
+                Submit
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="/js/lwp/CreateLwp.js"></script>
+
+
+    <div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+        <div class="w3-modal-content w3-card-4 w3-animate-zoom"
+             style="max-width: 400px;">
+            <div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+                <label id="lblMsg" style="font-weight:bold"></label>
+                <a id="btnOK" rm="/personedit/managepersonedit">OK</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--</div>-->
+
+
+<!-- Popup  for BU Search Start here  -->
+<!-- line modal -->
+<!-- <div id="id0Manager" class="w3-modal">
+	<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+		<div
+			class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+			<div class="modal-header">
+				<button type="button" class="w3-button w3-display-topright"
+					onclick="document.getElementById('id03').style.display='none'">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h3 align="left">Search and Select:Person Id</h3>
+				<hr class="hrline">
+			</div>
+			<div class="modal-body">
+				<div>
+					<div class=w3-half>
+						<div class="w3-container">
+
+							<div class="w3-row w3-section">
+								<div class="w3-col" style="width: 80px">Person Department:</div>
+								<div class="w3-rest">
+									<input value="" class="w3-input w3-border" id="LWP_CR_PERSON_DEPT"
+										type="text">
+								</div>
+							</div>
+							
+							<div class="w3-row w3-section">
+								<div class="w3-col" style="width: 80px">Person Id:</div>
+								<div class="w3-rest">
+									<input value="" class="w3-input w3-border" id="LWP_CR_PERSON_ID"
+										type="text">
+								</div>
+							</div>
+							
+							<div class="w3-row w3-section">
+								<div class="w3-col" style="width: 80px">Person Name:</div>
+								<div class="w3-rest">
+									<input value="" class="w3-input w3-border" id="LWP_CR_PERSON_NAME"
+										type="text">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class=w3-half>
+						<div class="w3-container">
+							<div class="w3-row w3-section">
+								<div class="w3-col" style="width: 80px">Person Legal Entity:</div>
+								<div class="w3-rest">
+									<input value="" class="w3-input w3-border" id="LWP_CR_PERSON_ENTITY"
+										type="text">
+								</div>
+							</div>
+							<div class="w3-row w3-section">
+								<div class="w3-col" style="width: 80px">Person Number:</div>
+								<div class="w3-rest">
+									<input value="" class="w3-input w3-border" id="LWP_CR_PERSON_NUMBER"
+										type="text">
+								</div>
+							</div>
+							
+
+						</div>
+					</div>
+					<br>
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="col-sm-12">
+								<div class="w3-right">
+									<button id="LWP_SRCH" onclick="lwpsearch()"
+										class="w3-button w3-theme w3-grey">Search</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<BR>
+					<div id="lwpresultSec" class="w3-responsive" style="display: none">
+						<table id="LWP_LIST" class="display compact w3-table"
+							style="width: 100%;">
+							<thead>
+								<tr class="w3-theme-d3">
+								 <th> Person Number </th> 
+								 <th> Person Id </th> 								    
+							     <th> Person  Name </th> 
+							     <th> Person Email </th> 
+							     <th> Person Department </th> 
+							     <th> Person Legal Entity </th> 
+							     <th> Person Location </th> 
+
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div id="noDataLWP" class="w3-responsive" style="display: none">
+						<div>
+							<p>No record found...</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="w3-container">
+					<div class="form-group">
+						<div class="w3-right">
+							<button id="LWP_POP_OK" class="w3-button w3-theme w3-grey">OK</button>
+							<button id="LWP_POP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->
+<!-- PopUp End Here -->
+
+
+
+
+
+
+

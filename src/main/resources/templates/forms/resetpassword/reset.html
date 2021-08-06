@@ -1,0 +1,238 @@
+<!-- <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en-US">
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+	<h1>Reset Password</h1>
+	<br>
+	<h3><span th:text="${emplid}"></span></h3>
+	<hr>
+	<form action="/resetresult">
+		<table>
+			<tr>
+				<td>
+					New Password:
+				</td>
+				<td>
+					<input type="password" name="newpass" id="newpass" onkeyup="matchPass()">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Confirm Password:
+				</td>
+				<td>
+					<input type="password" id="confpass" onkeyup="matchPass()">
+				</td>
+			</tr>
+		</table>
+		<input type="hidden" th:value="${emplid}" name="emplid">
+		<input type="submit" id="submitbtn" disabled>
+	</form>
+</body>
+<script>
+	function matchPass()
+	{
+		var newpass = document.getElementById("newpass").value;
+		var conpass = document.getElementById("confpass").value;
+		
+		console.log(newpass+" : "+conpass);
+		
+		if(newpass.length >= 3)
+		{
+			if(newpass == conpass)
+			{
+				document.getElementById("submitbtn").disabled = false;
+			}
+			else
+			{
+				document.getElementById("submitbtn").disabled = true;
+			}
+		}
+		else
+		{
+			document.getElementById("submitbtn").disabled = true;
+		}
+	}
+</script>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>UPMRC PASSWORD RESET</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+body {
+  background: #fff;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.login {
+  width: 400px;
+  margin: 16px auto;
+  font-size: 16px;
+}
+
+/* Reset top and bottom margins from certain elements */
+.login-header,
+.login p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* The triangle form is achieved by a CSS hack */
+.login-triangle {
+  width: 0;
+  margin-right: auto;
+  margin-left: auto;
+  border: 12px solid transparent;
+  border-bottom-color: #28d;
+}
+
+.login-header {
+  background: #28d;
+  padding: 20px;
+  font-size: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.login-container {
+  background: #ebebeb;
+  padding: 12px;
+}
+
+/* Every row inside .login-container is defined with p tags */
+.login p {
+  padding: 12px;
+}
+
+.login input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  padding: 16px;
+  outline: 0;
+  font-family: inherit;
+  font-size: 0.95em;
+}
+
+.login input[type="email"],
+.login input[type="password"] {
+  background: #fff;
+  border-color: #bbb;
+  color: #555;
+}
+
+/* Text fields' focus effect */
+.login input[type="email"]:focus,
+.login input[type="password"]:focus {
+  border-color: #888;
+}
+
+.login input[type="submit"] {
+  background: #28d;
+  border-color: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.login input[type="submit"]:hover {
+  background: #17c;
+}
+
+/* Buttons' focus effect */
+.login input[type="submit"]:focus {
+  border-color: #05a;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
+<script src="/js/bootbox/bootstrap.min.js"></script>
+<script src="/js/bootbox/bootbox.min.js"></script>
+	<link rel="icon" type="image/ico" href="/images/icons/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="/css/w3.css" />
+	<link rel="stylesheet" type="text/css" href="/css/bootbox/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+</head>
+<body>
+
+<!-- <h2><span th:text="${emplid}"></h2> -->
+
+
+<div class="login">
+
+  
+  <h2 class="login-header">Reset Password</h2>
+
+  <form class="login-container" action="/resetresult" onsubmit="return matchPass()" 
+   method="post" enctype="application/x-www-form-urlencoded">
+    <p><input type="password" name="newpass" id="newpass" placeholder="New Password"></p>
+    <p><input type="password" name="confpass" id="confpass" placeholder="Confirm Password"></p>
+    <p><input type="submit" id="submitbtn"><p>
+    
+    <input type="hidden" th:value="${emplid}" name="emplid">
+	
+  </form>
+</div>
+
+<script>
+	function matchPass()
+	{
+		var newpass = document.getElementById("newpass").value;
+		var conpass = document.getElementById("confpass").value;
+		
+		if(newpass.length >= 5)
+		{
+			if(true){
+				if(newpass == conpass)
+				{
+					//document.getElementById("submitbtn").disabled = false;
+					return true;
+				}
+				else
+				{
+					bootbox.alert({
+						size: 'medium',
+						title:'<i class="fa fa-times-circle" style="font-size:25px; color:red;">&nbsp;&nbsp;Error</i>',
+						message:'New Password and Confirm Password do not match.'				
+					});
+					//document.getElementById("submitbtn").disabled = true;
+					return false;
+				}
+			}
+		}
+		else
+		{
+			bootbox.alert({
+				size: 'medium',
+				title:'<i class="fa fa-times-circle" style="font-size:25px; color:red;">&nbsp;&nbsp;Error</i>',
+				message:'Password must contain atleast 6 letters.'				
+			});
+			//document.getElementById("submitbtn").disabled = true;
+			return false;
+		}
+	}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+

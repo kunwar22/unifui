@@ -1,0 +1,24 @@
+<div th:fragment="MyWorklist">
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom">
+                <h4 style="font-weight: 400; display: inline-block;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;" /> <i class="fas fa-tasks" style="color: green;"></i>&nbsp;My Worklist
+                </h4>
+                <!--<input style="display:inline-block; margin-top:10px;" value="Save" type="button" id="savebtn" onClick="" class="w3-btn w3-theme w3-right w3-round-large"/>-->
+            </div>
+        </div>
+        <hr class="hrline" />
+
+        <div class="tablink">
+            <div id="completed" class="w3-hover-theme my-hover w3-button wrklst" onclick="openWorklist(this.id)" rm="/tasks/completedWorklist">Completed Tasks</div>
+            <div id="pending" class="w3-hover-theme my-hover w3-button wrklst" onclick="openWorklist(this.id)" rm="/tasks/pendingWorklist" style="margin-left: -4px;">Pending Tasks</div>
+            <!--<div id="holiday" class="w3-hover-theme my-hover w3-bar-item w3-button dsh" onclick="opendashboard(this.id)" rm="/mydashboard/holiday" style="margin-left: -4px;">UPMRC Calender</div>-->
+        </div>
+        <div id="myworklist"></div>         
+    </div>
+	<script src="/js/worklist/worklist.js"></script>
+</div>
+
+</div>
+

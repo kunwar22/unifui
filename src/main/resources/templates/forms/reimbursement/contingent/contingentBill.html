@@ -1,0 +1,103 @@
+<div th:fragment="contingentBill">
+    <div class="w3-main">
+        <!-- Contingent Reimbursement Snigdhaa Vaish start -->
+		
+		<div>
+			<h2 style="font-weight: bold; margin-top:20px; bottom: 2px; text-align:center">
+				<u>Contingent Bill</u>
+			</h2>
+			<div class="w3-row">
+				<div class="w3-quarter" style="float:left;padding:5px;">
+					<p>
+						<strong><label>Name: &nbsp;</label></strong>
+						<label  th:text="${personInfo.getPersonname()}"></label>
+					</p>
+				</div>
+				<div class="w3-quarter" style="float:left;padding:5px;">
+					<p>
+						<strong><label>Post: &nbsp;</label></strong>
+						<label th:text="${personInfo.getDesignation()}"></label>
+					</p>
+				</div>
+				<div class="w3-quarter" style="float:left;padding:5px;">
+					<p>
+						<strong><label>Department: &nbsp;</label></strong>
+						<label th:text="${personInfo.getDepartment()}"></label>
+					</p>
+				</div>
+				<div class="w3-quarter" style="float:left;padding:5px;">
+					<p>
+						<strong><label>Month: &nbsp;</label></strong>
+						<label th:text="${month}+'/'+${year}"></label>
+					</p>
+				</div>
+			</div>
+			<!-- <div class='row'>
+				<div class="column">
+					<p>
+						<strong><label>Month: &nbsp;&nbsp;</label></strong>
+						<label th:text="${month}+'/'+${year}"></label>
+					</p>
+				</div>
+			</div> -->
+			<!-- <hr class="hrline"> -->
+		</div>
+		<div class="w3-container w3-row">
+    		<table style="width:100%; height:60px;border: 1px solid black;border-collapse: collapse;">
+        		<tr class="w3-theme" style="border:1px solid black">
+        			<th style="border: 1px solid black;border-collapse: collapse;">S.N.</th>		        		
+        			<th style="border: 1px solid black;border-collapse: collapse;">Date</th>
+        			<th style="border: 1px solid black;border-collapse: collapse;">Particulars</th>
+        			<th style="border: 1px solid black;border-collapse: collapse;">Distance</th>
+        			<th style="border: 1px solid black;border-collapse: collapse;">Amount Rs</th>		
+        		</tr>
+        		<tbody>
+        			<tr th:each="dat, stats:${adhoc}">
+	        			<td th:text="${stats.index}+1" 
+	        				style="text-align:center; border: 1px solid black;border-collapse: collapse;"></td>
+	        			<td th:text="${dat.date}"
+	        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+	        			<td th:text="'From: '+${dat.fromlocation}+' To: '+${dat.tolocation}"
+	        				style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+	        			<td style="border: 1px solid black;border-collapse: collapse;padding:5px"></td>
+	        			<td th:text="${dat.claimamt}"
+	        				style="border: 1px solid black;border-collapse: collapse;padding:5px;text-align:right;"></td>	        			
+	        		</tr>
+        		</tbody>        		
+        		<tr>
+        			<td></td>
+        			<td></td>
+        			<td></td>
+        			<td style="text-align:right; border: 1px solid black;border-collapse: collapse;padding:5px"><strong>Total Amount Rs:</strong></td>
+        			<td th:text="${totalamt}" style="text-align:right;padding:5px;"></td>
+        		</tr>        		   		
+        	</table>
+        	<br><br><br><br>
+        	<div class="w3-row w3-container">
+	        	<span style="line-height: 1.5em;">I certify that the above expenses have actually been paid by me in discharge of UPMRC Duty and amount claimed has been actually spent and that the expenditure was necessary and unavoidable.</span>        	
+        	</div>
+<br><br><br><br>
+        	<div class="row">
+        		<div class="column" style="width:40%; float:right">
+        			<p style="text-align:center;">
+	        			<span><strong>Signature</strong></span>
+	        		</p>        		
+        		</div>
+        	</div>
+        	<div class="row">
+        		<div class="column">
+        			<p>
+	        			<span style="margin-left:5px;"><strong>Controlling Officer</strong></span>
+	        		</p>        		
+        		</div>
+        	</div>
+        </div>
+		
+		<!-- <div class="w3-container">
+			<br>
+			<button class="w3-button w3-theme w3-right" id="backview" onclick="backBtnFunc()">Back</button>
+		</div> -->
+		<!-- Contingent Reimbursement Snigdhaa Vaish end -->
+	</div>
+	<script src="/js/reimbursement/contingent/adhocLocalSearch.js"></script>
+</div>

@@ -1,0 +1,647 @@
+<div th:fragment="medicalAdvanceRequest">
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		    var resultfinal = [[${result}]];
+		    var pname = [[${pname}]];
+		    //alert(resultfinal);
+		/*]]>*/
+	</script>
+	<div class="w3-main" style="margin-left: 300px; margin-top: -14px;">
+		<!-- <div style="position: relative;">
+			<div class="w3-theme-d2" style="opacity: .8">
+				<div class="w3-container">
+					<h3 style="font-weight: 400;">
+						<img class="w3-hide-large" src="/images/hide-grader-panel.png"
+							style="cursor: pointer;"> <i class="fas fa-procedures"></i>
+						&nbsp;Medical Advance
+					</h3>
+				</div>
+			</div>
+			</div> -->
+		<div style="position: relative;">
+			<div class="w3-container w3-margin-bottom">
+				<h4 style="font-weight: 400;">
+					<img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"> <i class="fas fa-procedures" style="color: #fd451a;"></i>&nbsp;Medical Advance
+				</h4>
+			</div>
+		</div>
+		<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+		<div class="w3-bar w3-theme-l3">
+			<h5 class="w3-bar-item" >Claim Details</h5>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${mediadvmodel.getClaimid()==0}">
+				<div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large" id="btnSave" onclick="ajaxsave('save','Saved',this)"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Save Claim</div>
+				<div type="button" class="w3-btn w3-green w3-round-large" id="btnSubmit" onclick="ajaxsave('save','Submitted',this)" value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Save & Submit</div> 
+			</div>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+				<div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large" id="btnSave" onclick="ajaxsave('edit','Saved',this)"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Update</div>
+				<div type="button" class="w3-btn w3-green w3-round-large" id="btnSubmit" onclick="ajaxsave('submit','Submitted',this)" value="Submit Claim for Approval" ><i class="fa fa-upload" aria-hidden="true"></i>&nbsp;&nbsp;Submit</div>
+			</div>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+				<div type="button" class="w3-btn w3-red w3-round-large" onclick="backBtnFunc();" id="btnSearch"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+			</div>
+		</div>
+		
+		<!--Form Content Goes here-->
+		<div class="w3-row w3-padding-large w3-margin-top">
+			<!-- <p>
+				<label>Entitlement: &nbsp;&nbsp;</label> <label style="color: blue;"
+					th:text="${empent}" >990</label>&nbsp;<label>INR Per
+					Month</label>				
+				</p> -->
+			<!-- <h5 class="w3-text-theme" style="font-weight: bold;">Advance
+				Request Details</h5> -->
+				
+			<form method="post" enctype="multipart/form-data" id="ADV_SAVE">
+				<!-- HIDDEN FIELDS START HERE -->
+				<div class="w3-row">
+					<div style="display: none;">
+						<input id="statusid" value="" type="text" name="status" /> 
+						<input
+							type="text" id="mediadv_rembid" name="reimburseid" th:value="${mediadvmodel.getReimburseid()}"/>
+						<input
+							type="text" id="mediadv_rembid" name="reimbursename" th:value="${mediadvmodel.getReimbursename()}"/>
+						<input type="text" id="mediadv_personnumber" th:name="personnumber"
+							th:value="${personInfo.getPersonnumber()}" />
+						<input type="text" id="mediadv_personid"
+							th:name="personid" th:value="${personInfo.getPersonid()}" />
+						<input type="text" id="mediadv_claimid"
+							th:name="claimid" th:value="${mediadvmodel.getClaimid()}" /> 
+					</div>
+				</div>
+				<!-- HIDDEN FIELDS END HERE -->
+				
+				<!-- MAIN FORM START HERE -->
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<!-- FOR ADD -->
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Claim for</label> <span
+								style="color: red;">*</span> 
+							<select th:name="selfordependent"
+								id="selfordependent" class="w3-select w3-border w3-round"
+								onchange="claimforchange(this.value)">
+								<option value="0" disabled selected>Select</option>
+								<option value="Self" th:selected="${mediadvmodel.getSelfordependent() eq 'Self'}">Self</option>
+								<option value="Dependent" th:selected="${mediadvmodel.getSelfordependent() eq 'Dependent'}">Dependent</option>
+							</select>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("selfordependent")!=null}'
+								th:text='${bindingResult.getFieldError("selfordependent").getDefaultMessage()}'></span>
+						</p>
+						<!-- FOR EDIT -->
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Claim for</label> <span
+								style="color: red;">*</span> 
+							<select th:name="selfordependent"
+								id="selfordependent" class="w3-select w3-border w3-round"
+								onchange="claimforchange(this.value)">
+								<option value="0" disabled selected>Select</option>
+								<option value="Self" th:selected="${mediadvmodel.getSelfordependent() eq 'Self'}">Self</option>
+								<option value="Dependent" th:selected="${mediadvmodel.getSelfordependent() eq 'Dependent'}">Dependent</option> 
+							</select>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("selfordependent")!=null}'
+								th:text='${bindingResult.getFieldError("selfordependent").getDefaultMessage()}'></span>
+						</p>
+						<!-- FOR VIEW -->
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Claim for</label> <span
+								style="color: red;">*</span> 
+							<select th:name="selfordependent"
+								id="selfordependent" class="w3-select w3-border w3-round" disabled>
+								<option value="0" disabled selected>Select</option>
+								<option value="Self" th:selected="${mediadvmodel.getSelfordependent() eq 'Self'}">Self</option>
+								<option value="Dependent" th:selected="${mediadvmodel.getSelfordependent() eq 'Dependent'}">Dependent</option> 
+							</select>							
+						</p>
+					</div>
+				</div>
+				
+				<div class="w3-row">
+					<!-- HOSPITAL TYPE START HERE -->
+					<div class="w3-half w3-container">
+						<!-- FOR ADD -->
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Hospital Type</label> <span
+								style="color: red;">*</span> 
+							<select th:name="hospitaltypeid"
+								id="hostype" class="w3-select w3-border w3-round"
+								onchange="loadHospitalNames(event,this.value)">
+								<option value="0" disabled selected>Select</option>
+								<option th:each="ht:${hostype}"
+									th:value="${ht.getHospitaltypelovid()}"
+									th:text="${ht.getName()}"
+									th:selected="${mediadvmodel.getHospitaltypeid() == ht.getHospitaltypelovid()}"></option>
+							</select>
+							<input type="hidden" th:name="hospitaltypename" id="hosptype" readonly/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hospitaltypeid")!=null}'
+								th:text='${bindingResult.getFieldError("hospitaltypeid").getDefaultMessage()}'></span>
+						</p>
+						<!-- FOR EDIT -->
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Hospital Type</label> <span
+								style="color: red;">*</span> 
+							<select th:name="hospitaltypeid"
+								id="hostype" class="w3-select w3-border w3-round"
+								onchange="loadHospitalNames(event,this.value)">
+								<option value="0" disabled selected>Select</option>
+								<option th:each="ht:${hostype}"
+									th:value="${ht.getHospitaltypelovid()}"
+									th:text="${ht.getName()}"
+									th:selected="${mediadvmodel.getHospitaltypeid() == ht.getHospitaltypelovid()}"></option>
+							</select>
+							<input type="text" style="display:none" th:name="hospitaltypename" id="hosptype" readonly/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hospitaltypeid")!=null}'
+								th:text='${bindingResult.getFieldError("hospitaltypeid").getDefaultMessage()}'></span>
+						</p>
+						<!-- FOR VIEW -->
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Hospital Type</label> <span
+								style="color: red;">*</span> 
+							<select th:name="hospitaltypeid" disabled
+								id="hostype" class="w3-select w3-border w3-round"
+								onload="loadHospitalNames(event,this.value)">
+								<option value="0" disabled selected>Select</option>
+								<option th:each="ht:${hostype}"
+									th:value="${ht.getHospitaltypelovid()}"
+									th:text="${ht.getName()}"
+									th:selected="${mediadvmodel.getHospitaltypeid() == ht.getHospitaltypelovid()}"></option>
+							</select>
+							<input type="hidden" style="display:none" th:name="hospitaltypename" id="hosptype" readonly/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hospitaltypeid")!=null}'
+								th:text='${bindingResult.getFieldError("hospitaltypeid").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<!-- HOSPITAL TYPE ENDS HERE -->
+					<!-- HOSPITAL NAME START HERE -->
+					<div class="w3-half w3-container">
+						<!-- FOR ADD -->
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Hospital Name</label> <span
+								style="color: red;">*</span> 
+							<select th:name="hospitalnameid"
+								th:style="${mediadvmodel.getHospitaltypeid()==1 ? 'display:block':'display:none'}"
+								id="hosname" class="w3-select w3-border w3-round">
+								<option value="0" selected>Select</option>
+								<option th:each="i:${hospitalname}" 
+									th:value="${i.getHospitalnamelovid()}" th:text="${i.getName()}"
+									th:selected="${i.getName() == mediadvmodel.getHospitalname()}"></option>
+							</select>
+							<input type="text" th:value="${mediadvmodel.getHospitalname()}"
+								th:style="${mediadvmodel.getHospitaltypeid()!=1 ? 'display:block':'display:none'}" 
+								class="w3-input w3-round w3-border" style="display:none" th:name="hospitalname" id="hospname"/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hospitalname")!=null}'
+								th:text='${bindingResult.getFieldError("hospitalname").getDefaultMessage()}'></span>
+						</p>
+						<!-- FOR EDIT -->
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Hospital Name</label> <span
+								style="color: red;">*</span> 
+							<select th:name="hospitalnameid"
+								th:style="${mediadvmodel.getHospitaltypeid()==1 ? 'display:block':'display:none'}"
+								id="hosname" class="w3-select w3-border w3-round">
+								<option value="0" selected>Select</option>
+								<option th:each="i:${hospitalname}" th:value="${i.getHospitalnamelovid()}" th:text="${i.getName()}"
+									th:selected="${i.getName() == mediadvmodel.getHospitalname()}"></option>
+							</select>
+							<input type="text" th:value="${mediadvmodel.getHospitalname()}"
+								th:style="${mediadvmodel.getHospitaltypeid()!=1 ? 'display:block':'display:none'}" 
+								class="w3-input w3-round w3-border" style="display:none" th:name="hospitalname" id="hospname"/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hospitalname")!=null}'
+								th:text='${bindingResult.getFieldError("hospitalname").getDefaultMessage()}'></span>
+						</p>
+						<!-- FOR VIEW -->
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Hospital Name</label> <span
+								style="color: red;">*</span> 
+							<select th:name="hospitalnameid"
+								id="hosname" class="w3-select w3-border w3-round" disabled>
+								<option selected disabled>Select</option>
+								<option th:value="${mediadvmodel.getHospitalnameid()}" th:text="${mediadvmodel.getHospitalname()}"
+									th:selected="${mediadvmodel.getHospitalname()}"></option>
+							</select>
+							<input type="hidden" th:name="hospitalname" id="hospname" readonly/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hospitalnameid")!=null}'
+								th:text='${bindingResult.getFieldError("hospitalnameid").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<!-- HOSPITAL NAME ENDS HERE -->
+				</div>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Treatment Starting From</label> <span
+								style="color: red;">*</span> 
+							<input type="date"
+								th:name="treatmentfrom" id="treatmentStartDate"
+								th:value="${mediadvmodel.getTreatmentfrom()}"
+								class="w3-input w3-border w3-round" />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("treatmentfrom")!=null}'
+								th:text='${bindingResult.getFieldError("treatmentfrom").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Treatment Starting From</label> <span
+								style="color: red;">*</span> 
+							<input type="date"
+								th:name="treatmentfrom" id="treatmentStartDate"
+								class="w3-input w3-border w3-round" th:value="${mediadvmodel.getTreatmentfrom()}"/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("treatmentfrom")!=null}'
+								th:text='${bindingResult.getFieldError("treatmentfrom").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Treatment Starting From</label> <span
+								style="color: red;">*</span> 
+							<input type="date" readonly
+								th:name="treatmentfrom" id="treatmentStartDate" th:value="${mediadvmodel.getTreatmentfrom()}"
+								class="w3-input w3-border w3-round" />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("treatmentfrom")!=null}'
+								th:text='${bindingResult.getFieldError("treatmentfrom").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<div class="w3-half w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Treatment Ending On</label> <span
+								style="color: red;">*</span> <input type="date"
+								th:name="treatmentto" id="treatmentEndDate" th:value="${mediadvmodel.getTreatmentto()}"
+								class="w3-input w3-border w3-round"
+								onchange="calculate_hospitalization_duration();" />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("treatmentto")!=null}'
+								th:text='${bindingResult.getFieldError("treatmentto").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Treatment Ending On</label> <span
+								style="color: red;">*</span> <input type="date"
+								th:name="treatmentto" id="treatmentEndDate" th:value="${mediadvmodel.getTreatmentto()}"
+								class="w3-input w3-border w3-round"
+								onchange="calculate_hospitalization_duration();" />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("treatmentto")!=null}'
+								th:text='${bindingResult.getFieldError("treatmentto").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Treatment Ending On</label> <span
+								style="color: red;">*</span> <input type="date"
+								th:name="treatmentto" id="treatmentEndDate" th:value="${mediadvmodel.getTreatmentto()}"
+								class="w3-input w3-border w3-round" readonly
+								onchange="calculate_hospitalization_duration();" />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("treatmentto")!=null}'
+								th:text='${bindingResult.getFieldError("treatmentto").getDefaultMessage()}'></span>
+						</p>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Approx. Hospitalizaton Days</label>
+							<span style="color: red;">*</span> <input type="text"
+								th:name="hospitalizationdays" id="duration"
+								class="w3-input w3-border w3-round" th:value="${mediadvmodel.getHospitalizationdays()}" readonly />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hospitalizationdays")!=null}'
+								th:text='${bindingResult.getFieldError("hospitalizationdays").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Approx. Hospitalizaton Days</label>
+							<span style="color: red;">*</span> <input type="text"
+								th:name="hospitalizationdays" id="duration"
+								class="w3-input w3-border w3-round" th:value="${mediadvmodel.getHospitalizationdays()}" readonly />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hospitalizationdays")!=null}'
+								th:text='${bindingResult.getFieldError("hospitalizationdays").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Approx. Hospitalizaton Days</label>
+							<span style="color: red;">*</span> <input type="text"
+								th:name="hospitalizationdays" id="duration"
+								class="w3-input w3-border w3-round" th:value="${mediadvmodel.getHospitalizationdays()}" readonly />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("hospitalizationdays")!=null}'
+								th:text='${bindingResult.getFieldError("hospitalizationdays").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<div class="w3-half w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Illness Description</label> <span
+								style="color: red;">*</span> 
+							<select th:name="illnessdescription"
+								class="w3-select w3-border w3-round">
+								<option disabled selected>Select</option>
+								<option th:each="ill:${illness}" th:value="${ill.getDescription()}"
+									th:text="${ill.getDescription()}"
+									th:selected="${mediadvmodel.getIllnessdescription() == ill.getDescription()}"></option>
+							</select>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("illnessdescription")!=null}'
+								th:text='${bindingResult.getFieldError("illnessdescription").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Illness Description</label> <span
+								style="color: red;">*</span> 
+							<select th:name="illnessdescription"
+								class="w3-select w3-border w3-round">
+								<option disabled selected>Select</option>
+								<option th:each="ill:${illness}" 
+									th:value="${ill.getDescription()}"
+									th:text="${ill.getDescription()}"
+									th:selected="${mediadvmodel.getIllnessdescription() == ill.getDescription()}"></option>
+							</select>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("illnessdescription")!=null}'
+								th:text='${bindingResult.getFieldError("illnessdescription").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Illness Description</label> <span
+								style="color: red;">*</span> 
+							<select th:name="illnessdescription" disabled
+								class="w3-select w3-border w3-round">
+								<option disabled selected>Select</option>
+								<option th:each="ill:${illness}" th:value="${ill.getDescription()}"
+									th:text="${ill.getDescription()}"
+									th:selected="${mediadvmodel.getIllnessdescription() == ill.getDescription()}"></option>
+							</select>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("illnessdescription")!=null}'
+								th:text='${bindingResult.getFieldError("illnessdescription").getDefaultMessage()}'></span>
+						</p>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Approx. Hospitalizaton
+							Expenses</label> <span style="color: red;">*</span> <input type="text" onchange="checkamt()"
+								oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+								th:name="claimamt" th:value="${mediadvmodel.getClaimamt()}" id="amt"
+								class="w3-input w3-border w3-round" />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("claimamt")!=null}'
+								th:text='${bindingResult.getFieldError("claimamt").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Approx. Hospitalizaton
+							Expenses</label> <span style="color: red;">*</span> <input type="text" onchange="checkamt()"
+								oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+								th:name="claimamt" th:value="${mediadvmodel.getClaimamt()}" id="amt"
+								class="w3-input w3-border w3-round" />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("claimamt")!=null}'
+								th:text='${bindingResult.getFieldError("claimamt").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Approx. Hospitalizaton
+							Expenses</label> <span style="color: red;">*</span> <input type="text"
+								th:name="claimamt" th:value="${mediadvmodel.getClaimamt()}" readonly
+								class="w3-input w3-border w3-round" />
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("claimamt")!=null}'
+								th:text='${bindingResult.getFieldError("claimamt").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<div class="w3-half w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Pay Advance To</label> <span
+								style="color: red;">*</span> 
+							<select th:name="payadvanceto"
+								class="w3-select w3-border w3-round">
+								<option disabled selected>Select</option>
+								<option th:each="ma:${mediadvance}" th:value="${ma}"
+									th:text="${ma.getDescription()}" th:selected="${mediadvmodel.getPayadvanceto() eq ma.getDescription()}"></option>
+							</select>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("payadvanceto")!=null}'
+								th:text='${bindingResult.getFieldError("payadvanceto").getDefaultMessage()}'
+								></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Pay Advance To</label> <span
+								style="color: red;">*</span> 
+							<select th:name="payadvanceto"
+								class="w3-select w3-border w3-round">
+								<option disabled selected>Select</option>
+								<option th:each="ma:${mediadvance}" th:value="${ma}"
+									th:text="${ma.getDescription()}"
+									th:selected="${mediadvmodel.getPayadvanceto() eq ma.getDescription()}"></option>
+							</select>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("payadvanceto")!=null}'
+								th:text='${bindingResult.getFieldError("payadvanceto").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Pay Advance To</label> <span
+								style="color: red;">*</span> 
+							<select th:name="payadvanceto" disabled
+								class="w3-select w3-border w3-round">
+								<option disabled selected>Select</option>
+								<option th:each="ma:${mediadvance}" th:value="${ma}"
+									th:text="${ma.getDescription()}"
+									th:selected="${mediadvmodel.getPayadvanceto() eq ma.getDescription()}"></option>
+							</select>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("payadvanceto")!=null}'
+								th:text='${bindingResult.getFieldError("payadvanceto").getDefaultMessage()}'></span>
+						</p>
+					</div>
+				</div>
+				<div id="patientrow" class="w3-row" th:style="${mediadvmodel.getSelfordependent() eq 'Dependent' ? 'display:block':'display:none'}">
+					<div class="w3-half w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Patient Name</label> <span
+								style="color: red;">*</span> 
+							<select th:name="patientnameid"
+								id="DEP_PATIENT" class="w3-select w3-border w3-round relation"
+								onchange="loadRelation(event,'DEP_PATIENT','DEP_RELATION','RELID')">
+								<option value="0" disabled selected>Select</option>
+								<option th:each="md:${medidep}"
+									th:value="${md.getDependentdetailsid()}"
+									th:text="${md.getFullname()}"
+									th:selected="${mediadvmodel.getPatientnameid() == md.getDependentdetailsid()}"
+									th:attr="data-dep-relationship=${md.getRelationshipdsc()},data-dep-relationid=${md.getRelationship()}"></option>
+							</select>
+							<input type="text" style="display:none" th:name="patientname" id="patientname" readonly/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("patientnameid")!=null}'
+								th:text='${bindingResult.getFieldError("patientnameid").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Patient Name</label> <span
+								style="color: red;">*</span> 
+							<select th:name="patientnameid"
+								id="DEP_PATIENT" class="w3-select w3-border w3-round relation"
+								onchange="loadRelation(event,'DEP_PATIENT','DEP_RELATION','RELID')">
+								<option value="0" disabled selected>Select</option>
+								<option th:each="md:${medidep}"
+									th:value="${md.getDependentdetailsid()}"
+									th:text="${md.getFullname()}"
+									th:selected="${mediadvmodel.getPatientnameid() == md.getDependentdetailsid()}"
+									th:attr="data-dep-relationship=${md.getRelationshipdsc()},data-dep-relationid=${md.getRelationship()}"></option>
+							</select>
+							<input type="text" style="display:none" th:name="patientname" id="patientname" readonly/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("patientnameid")!=null}'
+								th:text='${bindingResult.getFieldError("patientnameid").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Patient Name</label> <span
+								style="color: red;">*</span> 
+							<select th:name="patientnameid" disabled
+								id="DEP_PATIENT" class="w3-select w3-border w3-round relation"
+								onchange="loadRelation(event,'DEP_PATIENT','DEP_RELATION','RELID')">
+								<option value="0" disabled selected></option>
+								<option th:each="md:${medidep}"
+									th:value="${md.getDependentdetailsid()}"
+									th:text="${md.getFullname()}"
+									th:selected="${mediadvmodel.getPatientnameid() == md.getDependentdetailsid()}"
+									th:attr="data-dep-relationship=${md.getRelationshipdsc()},data-dep-relationid=${md.getRelationship()}"></option>
+							</select>
+							<input type="hidden" th:name="patientname" id="patientname" readonly/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("patientnameid")!=null}'
+								th:text='${bindingResult.getFieldError("patientnameid").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<div class="w3-half w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<label style="color: black;">Relationship</label> <span
+								style="color: red;">*</span> 
+							<input type="text" th:name="relationship" th:value="${mediadvmodel.getRelationship()}"
+								id="DEP_RELATION" class="w3-input w3-border w3-round" readonly />
+							<input type="text" style="display:none" th:name="relationshipid" id="RELID" th:value=0 readonly/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("relationship")!=null}'
+								th:text='${bindingResult.getFieldError("relationship").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							<label style="color: black;">Relationship</label> <span
+								style="color: red;">*</span> 
+							<input type="text" th:name="relationship" th:value="${mediadvmodel.getRelationship()}"
+								id="DEP_RELATION" class="w3-input w3-border w3-round" readonly />
+							<input type="text" style="display:none" th:name="relationshipid" id="RELID" th:value=0 readonly/>								
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("relationship")!=null}'
+								th:text='${bindingResult.getFieldError("relationship").getDefaultMessage()}'></span>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label style="color: black;">Relationship</label> <span
+								style="color: red;">*</span> 
+							<input type="text" th:name="relationship" th:value="${mediadvmodel.getRelationship()}"
+								id="DEP_RELATION" class="w3-input w3-border w3-round" readonly />
+							<input type="hidden" th:name="relationshipid" id="RELID" th:value=0 readonly/>
+							<span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("relationship")!=null}'
+								th:text='${bindingResult.getFieldError("relationship").getDefaultMessage()}'></span>
+						</p>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-half w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<input type="hidden" th:name="attachments"
+								class="w3-input w3-border w3-round" id="mediadvestimate"/> 
+							<label
+								style="color: black;">Estimation from hospital</label> <input
+								type="file" th:name="file" class="w3-input w3-border w3-round" />
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">
+							
+							<input type="hidden"  id="DOWNLOAD_LINKsp"
+								name="attachhidden" th:value="${mediadvmodel.getAttachments()}"/>
+							<input type="hidden" th:name="attachments"
+								class="w3-input w3-border w3-round" id="mediadvestimate"/> 
+							<label
+								style="color: black;">Estimation from hospital</label> <input
+								type="file" th:name="file" class="w3-input w3-border w3-round" />
+								
+								<a id="DOWNLOAD_LINK" 
+								th:if="${mediadvmodel.getClaimid() != 0 && mediadvmodel.getAttachments()!='' && mediadvmodel.getAttachments()!=null}"
+								th:href="${mediadvmodel.getAttachments()}" 
+								target="_blank" download>Download Attachment</a>
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<label
+								style="color: black;">Estimation from hospital</label>
+							<a id="DOWNLOAD_LINK" 
+								th:if="${mediadvmodel.getClaimid() != 0 && mediadvmodel.getAttachments()!='' && mediadvmodel.getAttachments()!=null}"
+								th:href="${mediadvmodel.getAttachments()}" 
+								target="_blank" download>Download Attachment</a>
+							<input type="hidden"  id="DOWNLOAD_LINKsp"
+								name="attachhidden" th:value="${mediadvmodel.getAttachments()}"/>							
+						</p>
+					</div>
+					<div class="w3-half w3-container">&nbsp;</div>
+				</div>
+				<div class="w3-row">&nbsp;</div>
+				<div class="w3-row">
+					<div class="w3-full w3-container">
+						<p th:if="${mediadvmodel.getClaimid()==0}">
+							<input style="zoom: 1.2;" type="checkbox" name="declaration"
+								id="chkdec" class="w3-check"/>&nbsp;&nbsp;I
+							hereby declare that, the above claim has not been made from any
+							other source
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'edit'}">							
+							<input style="zoom: 1.2;" type="checkbox" name="declaration"
+								id="chkdec" class="w3-check"/>&nbsp;&nbsp;I
+							hereby declare that, the above claim has not been made from any
+							other source
+						</p>
+						<p th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}">
+							<input style="zoom: 1.2;" type="checkbox" name="declaration" checked disabled
+								id="chkdec" class="w3-check"/>&nbsp;&nbsp;I
+							hereby declare that, the above claim has not been made from any
+							other source
+						</p>
+					</div>
+				</div>
+				<div class="w3-row">&nbsp;</div>
+			</form>
+		</div>
+		<h5 th:if="${display_mode == 'view'}" style="margin-left:10px"> Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history" th:id="${mediadvmodel.getClaimid()}" aria-hidden="true" th:onclick='getapprovalhistory(9,this.id);'></i></h5>
+		<section class="container" th:if="${mediadvmodel.getClaimid()!=0} and ${display_mode == 'view'}" >
+			<!-- in the sources container show three cards, side by side, or one atop the other on smaller viewports -->
+			<div class="container__sources">
+				<div style="box-shadow: none;background-color: none;" th:each="aprdata ,stats: ${(approverdata)}" >
+					<div class="sources--cms" style="width: 160px">
+						<p>Approval <label th:text='${aprdata.getApprovallevel()}'></label></p>
+						<p><label th:text='${aprdata.getApproverpersonname()}'></label></p>
+						<p><label th:text='${aprdata.getApprovalstatus()}'></label></p>
+						<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-check tick"></i>
+						</div>
+						<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-clock-o pending"></i>
+						</div>
+						<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0;padding: 0; float:right;box-shadow: none;position: absolute;margin-top: -30px;margin-left: 124px">
+							<i class="fa fa-close cancel"></i>
+						</div>
+					</div>
+					<svg class="svghor" viewBox="0 10 100 100">
+						<line  x1="5" x2="100" y1="80" y2="80"></line>
+					</svg>
+					<svg class="svgver" viewBox="0 20 100 100 ">
+						<line  x1="40" x2="40" y1="0" y2="100"></line>
+					</svg>
+				</div>
+				<div style="background: none;margin-top: 40px;margin-left: 26px;"><i class="far fa-stop-circle" style="font-size: 58px;color: red"></i></div>
+			</div>
+			<!-- include a simple line to divide the container, and animate it to show a connection between the different containers  -->
+		</section>
+		<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+		<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+		<script type="text/javascript"
+			src="/js/reimbursement/medicalAdvance/mediAdvance.js"></script>
+	</div>
+</div>

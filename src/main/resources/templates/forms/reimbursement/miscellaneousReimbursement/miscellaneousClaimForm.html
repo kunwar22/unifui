@@ -1,0 +1,143 @@
+<html>
+<head>
+<title>Miscellaneous Expense Reimbursement</title>
+<style type="text/css">
+.heading {
+	margin-top:70px;
+	text-align: center;
+}
+
+.table {
+	font-size: 15px;
+	width: 95%;
+	margin-right: 50px;
+	margin-left:20px;
+	border:1px solid black;
+	border-collapse: collapse;	
+}
+
+th,td
+{
+padding:5px;
+border:1px solid black;
+}
+.sect>.left
+{
+float:left;
+display:inline;
+font-size: 20px;
+}
+
+.sect>.right
+{
+float:right;
+font-weight:bold;
+display:inline;
+margin-right:50px;
+font-size: 20px;
+}
+
+.footer>.declaration
+{
+	margin-left: 20px;
+	margin-right: 50px;
+	font-size: 20px;
+	text-align: justify;
+	
+}
+</style>
+</head>
+<body>
+	<div class="heading">
+		<h3>U.P. Metro Rail Corporation Ltd.</h3>
+		<h2>MISCELLANEOUS EXPENSE REIMBURSEMENT</h2>
+	</div>
+<br/><br/>
+	<table border="1" class="table">
+		<thead>
+			<tr>
+				<th style="text-align:left;" colspan="7">Employee Details</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>Employee Number</th>
+				<th>Employee Name</th>
+				<th>Employee Type</th>
+				<th>Designation</th>
+			</tr>
+			<tr>
+				<td style="text-align:center;"><label th:text="${personInfo.getPersonnumber()}"></label> </td>
+				<td style="text-align:center;"><label th:text="${personInfo.getPersonname()}"></label> </td>
+				<td style="text-align:center;"><label th:text="${personInfo.getEmployeetype()}"></label> </td>
+				<td style="text-align:center;"><label th:text="${personInfo.getDesignation()}"></label></td>
+			</tr>
+			<tr>
+				<td colspan="7">&nbsp;</td>
+			</tr>
+			<tr>
+				<th>Base Location </th>
+				<th>Work Location </th>
+				<th>Joining Date </th>
+				<th>Vehicle Used </th>
+			</tr>
+			<tr>
+				<td style="text-align:center;"><label th:text="${personInfo.getBaselocation()}"></label></td>
+				<td style="text-align:center;"><label th:text="${MiscReimb.getWorklocation()}"></label></td>
+				<td style="text-align:center;"><label th:text="${personInfo.getJoiningdate()}"></label></td>
+				<td style="text-align:center;"><label th:text="${MiscReimb.getVehicleused()}"></label></td>
+			</tr>
+			<!-- <tr>
+				<td colspan="7">&nbsp;</td>
+			</tr> -->
+		</tbody>
+	</table>
+	<br/><br/><br/><br/>
+	<table  border="1" class="table">
+		<tbody>
+			<!-- <tr>
+				<th style="text-align:left;" colspan="7">Expense Details</th>
+			</tr>
+			<tr>
+				<td colspan="7">Reimbursement Type: </td>
+			</tr> 
+			<tr>
+				<td colspan="7">&nbsp;</td>
+			</tr>-->
+			<tr>
+				<th>Expense Description</th>
+				<th>Bill No.</th>
+				<th>Bill Date</th>
+				<th>Paid To</th>
+				<th>Claim Amount</th>
+				<th>Expense Account Code</th>
+				<th>Account Description</th>
+			</tr>
+			<tr>
+				<td style="text-align:center;"><label th:text="${MiscReimb.getExpensedescription()}"></label></td>
+				<td style="text-align:right;"><label th:text="${MiscReimb.getBillno()}"></label></td>
+				<td style="text-align:center;"><label th:text="${MiscReimb.getBilldate()}"></label></td>
+				<td><label th:text="${MiscReimb.getPaidto()}"></label></td>
+				<td style="text-align:right;"><label th:text="${MiscReimb.getClaimamount()}"></label></td>
+				<td style="text-align:right;"><label th:text="${MiscReimb.getExpenseaccountcode()}"></label></td>
+				<td style="text-align:center;"><label th:text="${MiscReimb.getAccountdescription()}"></label></td>
+			</tr>
+			<!-- <tr>
+				<td colspan="7">&nbsp;</td>
+			</tr> -->
+		</tbody>
+	</table>
+	<br/><br/><br/><br/>
+	
+	
+	<div class="footer">
+		<p class="declaration">Kindly arrange to reimburse miscellaneous charges of Rs. <b><i><label th:text="${MiscReimb.getClaimamount()}"></label></i></b> for the details given above. The amount may be credited to my bank account.</p>
+		<br/>
+	</div>
+	<br/><br/>
+	<div class="sect">
+		<div class="left"><b>Date: </b><script type="text/javascript">var d=new Date();document.write( d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear());</script></div>
+		<div class="right">Signature</div>
+	</div>
+</body>
+</html>

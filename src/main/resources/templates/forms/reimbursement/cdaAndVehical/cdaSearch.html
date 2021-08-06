@@ -1,0 +1,48 @@
+<div th:fragment="cdaSearch">
+   <div class="w3-main" style="margin-left:300px; margin-top: -14px; margin-bottom:16px;">
+      <div style="position: relative;">
+         <div class="w3-container w3-margin-bottom">
+            <h4 style="font-weight: 400;">
+               <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+						style="cursor: pointer;"><i class="fas fa-luggage-cart" style="color: #027b72;"></i>&nbsp;CDA Reimbursement
+            </h4>
+         </div>
+      </div>
+      <div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+      <!-- Form Content goes here -->
+      <div class="w3-bar w3-theme-l3">
+         <h5 class="w3-bar-item">Previous Claims</h5>
+         <div onclick="loadCreateCDA();" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" style="margin-top:8px;"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Raise New Request</div>
+      </div>
+      <div class="w3-container w3-margin-top">
+         <!-- code for data table starts here -->
+         <div class="w3-row">
+            <div class="w3-full">
+               <div class="w3-container">
+                  <div id="resultCda" class="w3-responsive">
+                     <table class="w3-table-all" id="searchCdatable" style="text-align: center;">
+                        <thead>
+                           <th style="text-align: center;">Date</th>
+                           <th style="text-align: center;">Claim Id</th>
+                           <th style="text-align: center;">Amount Claimed</th>
+                           <th style="text-align: center;">Vehicle Amount</th>
+                           <th style="text-align: center;">Vehicle Used</th>
+                           <th style="text-align: center;">No of Months</th>
+                           <th style="text-align: center;">Approved Amount</th>
+                           <th style="text-align: center;">Approved Status</th>
+                           <th style="text-align: center;">View</th>
+                           <th style="text-align: center;">Edit</th>
+                        </thead>
+                     </table>
+                  </div>
+                  <div id="noCdaData" style="display:none;">
+                     <p>No Results Found...</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- CDA Reimbursement Search Page Rajat  Rawat end-->
+   </div>
+   <script src="/js/reimbursement/cdaAndVehical/cdaSearch.js"></script>
+</div>

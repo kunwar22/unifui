@@ -1,0 +1,54 @@
+<div th:fragment="travelExpenseSearch">
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom:16px;">
+        <div style="position: relative;">
+            <div class="w3-container">
+                <h4 style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png"
+                         style="cursor: pointer;">
+                    <i class="fas fa-plane-departure" style="color: greenyellow;"></i>
+
+                    &nbsp;Travel Expense Reimbursement
+                </h4>
+            </div>
+        </div>
+
+
+     <div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+        <div>
+
+
+
+            <div class="w3-bar w3-theme-l3">
+                <h5 class="w3-bar-item">Previous Claims</h5>
+                <div id="addbtn" onclick="addBtnClick()" class="w3-bar-item w3-btn w3-blue w3-round-large w3-right buttonbarmargin" style="margin-top:8px;"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Raise New Request</div>
+            </div>
+
+            <div class="w3-full w3-container w3-row" style="margin-top:10px">
+                <div id="resultTravelSec" class="w3-responsive">
+                    <table class="w3-table-all" id="searchtraveltable" style="text-align: center;">
+                        <thead>
+                        <th style="text-align: center;">Claim Id</th>
+                        <th style="text-align: center;">Traveling Out</th>
+                        <th style="text-align: center;">Return date</th>
+                        <th style="text-align: center;">Country First</th>
+                        <th style="text-align: center;">Country Second</th>
+                        <th style="text-align: center;">City First</th>
+                        <th style="text-align: center;">City Second</th>
+                        <th style="text-align: center;">Claim Amt.</th>
+                        <th style="text-align: center;">Approved Amt.</th>
+                        <th style="text-align: center;">status</th>
+                        <th></th>
+                        <th></th>
+                        </thead>
+                    </table>
+                </div>
+                <div id="noDataTravel" style="display:none">
+                    <p>No Results Found...</p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="/js/reimbursement/travelExpenseReimbursement/travelExpenseSearch.js"></script>
+</div>        

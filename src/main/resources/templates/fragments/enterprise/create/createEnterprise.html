@@ -1,0 +1,189 @@
+<div th:fragment="createEnt">
+	<div class="w3-container" style="margin-top:40px">
+		<input th:value="${enterprise.getEnterpriseid()}" id="ENT_ID"  type="text" hidden />
+		<input th:value="${enterprise.getActionid()}" id="ENT_ACTION_ID"  type="text" hidden /> 
+		<div class="w3-row w3-border w3-padding-large">
+		<div style="margin-top:10px">
+		<h4 class="w3-text-theme" style="margin-top:10px; bottom:2px; display:inline">Manage Enterprise</h4>
+		<select id="SAVE_OPTION_LOV" class="w3-border w3-right" style="margin-right:30px; height:30px; border-radius: 5px;"><option value="Save" selected hidden>Edit</option><option value="Correct">Correct</option><option value="Update">Update</option></select>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-style: inset; border-width: 1px;">
+		<div id="" class="w3-container">
+		<div class=w3-half>
+		<div class="w3-container">
+			<p>
+					<label>Effective Start Date</label> <span style="color:red"> *</span>
+					<input
+						class="w3-input w3-border" name="EffectiveStartDate"
+						max="9999-12-31"
+						th:value="${enterprise.getEffectstartdate()}"
+						id="CR_ENT_EFFDT" type="date" data-date=""
+						data-date-format="YYYY MM DD" tabindex="1" disabled/>
+						<span id="ENT_EFFDT_ERROR" style="color:red"></span>
+				</p>
+				<p>
+					<label>Effective End Date</label> <input th:value="${enterprise.getEffectenddate()}"
+						class="w3-input w3-border" name="Ent_EffectivEndtartDate"
+						max="9999-12-31"
+						id="CR_ENT_EFFENDDT" type="date" data-date=""
+						data-date-format="YYYY MM DD" tabindex="3" disabled/>
+				</p>
+				<p th:if="${enterprise.getEnterpriseid()==0}">
+					<label>Status</label> <span style="color:red"> *</span><select id="CR_ENT_STATUS" style="height:43px"
+						class="w3-select w3-border" name="option" tabindex="5">
+						<option th:each="status : ${status}" th:selected="${status == 'Active' }" th:value="${status}"
+							th:text="${status}">
+					</select>
+					<span id="ENT_STATUS_ERROR" style="color:red"></span>
+				</p>
+				<p th:if="${enterprise.getEnterpriseid()!=0}">
+					<label>Status</label> <span style="color:red"> *</span><select id="CR_ENT_STATUS" style="height:43px"
+						class="w3-select w3-border" name="option" tabindex="5" disabled>
+						<option th:each="status : ${status}" th:selected="${enterprise.getStatus() eq status}" th:value="${status}"
+							th:text="${status}">
+					</select>
+					<span id="ENT_STATUS_ERROR" style="color:red"></span>
+				</p>
+				<p>
+					<button id="ENTERPRISE_CANCEL" tabindex="15" class="w3-button w3-theme w3-grey"><a href="/home" style="text-decoration:none">Cancel</a></button>
+					<button id="ENTERPRISE_SAVE" class="w3-button w3-theme w3-grey" tabindex="6" style="display:none">Save</button>
+				</p>
+		</div>
+		</div>
+		<div class=w3-half>
+		<div class="w3-container">
+		<p>
+					<label>Name</label><span style="color:red"> *</span> <input tabindex="2" th:value="${enterprise.getName()}" class="w3-input w3-border"
+						name="Ent_Name" id="CR_ENT_NAME" type="text" disabled>
+						<span id="ENT_NAME_ERROR" style="color:red"></span>
+				</p>
+				<p th:if="${enterprise.getEnterpriseid()==0}">
+					<label>Location</label>
+					<span style="color:red"> *</span>
+					<select th:value="${enterprise.getLocation()}"  style="height:43px" id="CR_ENT_LOC_CODE" class="w3-select w3-border"
+						name="option" data-toggle="modal" tabindex="4">
+						<option id="1" disabled selected></option>
+						<option id="2" value="2"></option>
+						<option value="search" data-toggle="modal" id="btnsearch">Search....</option>
+					</select>
+					<span id="ENT_LOC_ERROR" style="color:red"></span>
+				</p>
+				<p th:if="${enterprise.getEnterpriseid()!=0}">
+					<label>Location</label>
+					<span style="color:red"> *</span>
+					<select  style="height:43px" id="CR_ENT_LOC_CODE" class="w3-select w3-border"
+						name="option" data-toggle="modal" tabindex="4" disabled>
+						<option id="1" th:value="${enterprise.getLocation()}" th:text="${enterprise.getLocationname()}" disabled selected hidden></option>
+						<option id="2" value="2"></option>
+						<option value="search" data-toggle="modal" id="btnsearch">Search....</option>
+					</select>
+					<span id="ENT_LOC_ERROR" style="color:red"></span>
+				</p>
+		</div>
+		</div>
+		</div>
+		<hr style="display: block;margin-top: 0.5em; margin-bottom: 0.5em; margin-left: auto; margin-right: auto; border-width: 0.5px;">
+		</div>
+</div>
+	<!-- Popup Start here  -->
+	<!-- line modal -->
+	<div id="id01" class="w3-modal">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div
+				class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+				<div class="modal-header">
+					<h3 align="left">Search and Select:Location</h3>
+					<hr class="hrline">
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Name:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="CR_ENT_POP_NAME" type="text">
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Code:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="CR_ENT_POP_CODE" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class=w3-half>
+							<div class="w3-container">
+								<div class="w3-row w3-section">
+									<div class="w3-col" style="width: 80px">Country:</div>
+									<div class="w3-rest">
+										<input value="" class="w3-input w3-border" name="Ent_Name"
+											id="CR_ENT_POP_CNTRY" type="text">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br>
+						<div class="w3-container">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<div class="w3-right">
+										<button id="CR_ENT_POP_SEARCH"
+											class="w3-button w3-theme w3-grey">Search</button></div>
+								</div>
+							</div>
+						</div>
+						<BR>
+						<div id="resultSec" class="w3-responsive" style="display: none">
+							<table id="EnterpriseList" class="display compact w3-table"
+								style="width: 100%;">
+								<thead>
+									<tr class="w3-theme-d3">
+										<th>Name</th>
+										<th>Code</th>
+										<th>Country</th>
+										<th>State</th>
+										<th>Status</th>
+										<th >Location Id</th>
+										
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div id="noData" class="w3-responsive" style="display: none">
+							<div>
+								<p>No record found...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="w3-container">
+						<div class="form-group">
+							<div class="w3-right">
+								<button id="CR_ENT_POP_OK" class="w3-button w3-theme w3-grey" style="display:none">OK</button>
+								<button id="CR_ENT_POP_CANCEL"
+									class="w3-button w3-theme w3-grey">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- PopUp End Here -->
+	<div id="AFTER_SUBMIT_STATUS_BLOCK" class="w3-modal">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom"
+				style="max-width: 400px;">
+				<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+					<label id="lblMsg" style="font-weight:bold"> </label> <a id="btnOK"
+						href="/home" style="text-decoration:none">OK</a>
+				</div>
+			</div>
+		</div>
+	<script src="/js/search/enterprisesearch.js"></script>
+	<script src="/js/validation/validation.js"></script>
+</div>

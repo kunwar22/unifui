@@ -1,0 +1,194 @@
+<div th:fragment="commonLookup">
+<form  method="post" id="LOOKUP_SAVE" enctype="application/x-www-form-urlencoded" onsubmit="return false;">    
+		<div class="w3-container" style="margin-top:14px;">
+		<h3 class="w3-text-theme" style="margin-top:2px; bottom:2px; ">Common Lookup</h3>
+		</div>
+		<div class="w3-row">
+		<div class=w3-half>	
+		<hr class="hrline">
+		<div class="w3-container"  style="margin-top:43px;">
+		<h5 class="w3-text-theme" style="margin-top:2px; bottom:2px; display:inline-block">Search</h5>
+			<p>
+			<label>Lookup Type</label>
+			<input value="" class="w3-input w3-border" id="LOOKUP_TYPE" type="text" />
+			</p>
+			<p>
+			<label>Meaning</label>
+			<input value="" class="w3-input w3-border" id="LOOKUP_MEANING" type="text"/>
+			</p>
+			<p>
+			<input value="Search" class="w3-theme w3-button" id="LOOKUP_BTN" type="button"/> 
+			</p>		
+		</div>
+		</div>
+		<div class=w3-half>
+		<div class="w3-container" style="margin-top:90px;">
+			<p>
+			<label>Description</label>
+			<input value="" class="w3-input w3-border" id="LOOKUP_DESCR" type="text">
+			</p>
+			<p>
+			<label>Module</label> 
+			<select id="LOOKUP_MODULE" class="w3-select w3-border">
+				<option value="" disabled selected></option>
+				<option th:each="status : ${status}" th:value="${status}" th:text="${status}">
+			</select>
+			</p>
+		</div>
+		</div>
+<!--------------------------------------TABLE FOR SEARCH RESULT ON HITTING SEARCH BUTTON---------------------------------------->
+		<div class="w3-container">
+		<h5 class="w3-text-theme" style="margin-top:2px; bottom:2px;">Search Results</h5>
+		<div class="w3-padding w3-border">
+				<div>
+				<label>View</label> 
+				<button id="VIEW_BTN" class="w3-button w3-white w3-small">^</button> 
+				<label>Format</label> 
+				<button id="FORMAT_BTN" class="w3-button w3-white w3-small">^</button> 
+				</div>
+			<div id="lookupresult" class="w3-border">
+				<table id="SEARCH_RESULT_TBL" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<th style="width:30%">Lookup Type</th>
+						<th style="width:70%">Description</th>
+					</thead>
+					<tbody>
+					</tbody>	
+				</table>					
+			</div>
+			<div  id="noDataLookup" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+			</div>
+		</div>
+<!--------------------------------------TABLE FOR ALL LOOKUP DATA ON CLICKING A PARTICALUAR ROW---------------------------------------->
+		<div class="w3-container">
+		<h5 class="w3-text-theme" style="margin-top:2px; bottom:2px;">Lookup Codes</h5>
+		<div style="display:none">
+		<p>
+			<label>Lookup Type</label>
+			<input value="" class="w3-input w3-border" name="lookuptype" id="LOOKUP_TYPE_INPUT" type="text">
+		</p>
+		
+		</div>
+		<div class="w3-padding w3-border">
+				<div>
+				<label>View</label> 
+				<button id="VIEW_BTN" class="w3-button w3-white w3-small">^</button> 
+				<label>Format</label> 
+				<button id="FORMAT_BTN" class="w3-button w3-white w3-small">^</button> 
+				<label id="ADD_LABEL">Add</label> 
+				<input style="marging-left:5px" id="ADDROW_BTN" class="w3-btn"   type="button" value="+" onclick="addRowNowLOOKUPCODES();"/>
+				</div>
+			<div id="lookupcodes" class="w3-border">
+				<table id="LOOKUP_CODES_TBL" class="display compact w3-table" style="width: 100%;">
+					<thead>
+						<th style="width:20%">Lookup</th>
+						<th style="width:20%">Lookup Code</th>
+						<th style="width:10%">Enabled</th>
+						<th style="width:15%">Start Date</th>
+						<th style="width:30%">Meaning</th>
+						<th style="width:5%"></th>
+					</thead>
+					<tbody>
+					</tbody>	
+				</table>					
+			</div>
+			<div  id="noDataLookupCodes" class="w3-responsive" style="display: none">
+				<div>
+					<p>No record found...</p>
+				</div>
+			</div>
+			</div>
+		</div>
+		<div class="w3-container">
+			<p>
+			<button onclick="saveLookup();" id="SUBMIT_BTN" class="w3-button w3-theme " style="margin-left:5px; display:none;">Submit</button>	
+			<!-- <button type="button" id="temp_btn" class="w3-button w3-theme " style="margin-left:5px">POPUP</button> -->	
+			</p>
+		</div>
+	</div>
+	</form>
+	
+<!--*************************** POPUP  FOR ROW EDIT START HERE ***************************** -->
+<!-- LINE MODAL -->
+		<div id="EDIT_POPUP" class="w3-modal">
+		
+			<div  class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<div  class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey" >
+					<div class="modal-header">
+					<button type="button" class="w3-button w3-display-topright" onclick="document.getElementById('EDIT_POPUP').style.display='none'"><span aria-hidden="true" >&times;</span><span class="sr-only" >Close</span></button>
+					<h3 id="POP_HEAD" align="left"></h3>
+					<hr class="hrline">
+					</div>
+			<div class="modal-body">
+			 
+			<div> 
+			<form  method="post" id="POPUP_EDIT_FORM" enctype="application/x-www-form-urlencoded" >
+			<input id="POP_ID" type="text" name="id" hidden>
+				<div class=w3-half>
+				<div class="w3-container">
+					<div class="w3-row w3-section">
+					<div class="w3-col" style="width:80px">Lookup:</div>
+					<div class="w3-rest">
+					<input  class="w3-input w3-border"  name="lookup" id="POP_LOOKUP" type="text">
+					</div>
+					</div>
+					<div class="w3-row w3-section">
+					<div class="w3-col" style="width:80px">Lookup Code:</div>
+					<div class="w3-rest">
+					<input class="w3-input w3-border" name="lookupcode"  id="POP_LOOKUPCODE" type="text">
+					</div>
+					</div>
+					<div class="w3-row w3-section">
+					<div class="w3-col" style="width:80px">Meaning:</div>
+					<div class="w3-rest">
+					<input  class="w3-input w3-border" name="lookuptypedescription" id="POP_DESCR" type="text">
+					</div>
+					</div>
+				</div>
+				</div>
+				<div class=w3-half>
+				<div class="w3-container">
+					<div class="w3-row w3-section">
+					<div class="w3-col" style="width:80px">Start Date:</div>
+					<div class="w3-rest">
+					<input class="w3-input w3-border" name="effectstartdate" id="POP_DATE"  type="date" data-date="" data-date-format="YYYY MM DD"/>
+					</div>
+					</div>
+					<div class="w3-row w3-section">
+					<div class="w3-col" style="width:80px">Status:</div>
+					<div class="w3-rest">
+					<select id="POP_STAT" class="w3-select w3-border" name="status" >
+						<option id="1" hidden></option>
+						<option th:each="status : ${status}" th:selected="${status eq 'Active'}" th:value="${status}" th:text="${status}">
+					</select>
+					</div>
+					</div>
+				</div>
+				</div>
+			
+			</form>
+			</div>
+			</div>
+			
+			<div class="modal-footer">
+			<div class="w3-container" >               
+               <div class="form-group">
+               <div class="w3-right">
+               <button id="POP_LOOKUP_CANCEL" class="w3-button w3-theme w3-grey">Cancel</button>
+               <button type="button" onclick="editLookup()" id="POP_LOOKUP_CORRECT" class="w3-button w3-theme w3-grey">Correct</button>
+               </div>
+               </div>               
+			</div>
+			</div>
+			
+			</div>
+			</div>
+		</div>
+<!----------------------- POPUP END HERE ------------------------->
+<script src="/js/search/commonLookup.js"></script>
+
+</div>

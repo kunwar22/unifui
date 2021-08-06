@@ -1,0 +1,534 @@
+<div th:fragment="ctgapproval">
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	var resultfinal = /*[[${result}]]*/ ;
+	/*]]>*/
+	</script>
+	<form method="post" id="CTG_SAVE" enctype="multipart/form-data" onsubmit="return false;">
+		<!-- <input id="statusid" value="" type="hidden" name="statusid" /> -->
+		<input id="ctgstatusid" value="" type="hidden" name="ctgstatusid" />
+		<div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+			<div style="position: relative;">
+				<div class="w3-container">
+					<h4 style="font-weight: 400;">
+						<img onclick="w3_open()" class="w3-hide-large"
+							src="/images/hide-grader-panel.png" style="cursor: pointer;">
+						<i class="fas fa-suitcase" style="color: chocolate;"></i>
+						&nbsp;Approval for CTG Reimbursement
+					</h4> </div>
+			</div>
+			<!-- Telephone Reimbursement snigdhaa vaish start-->
+			<div id="submitblock" class="w3-modal">
+				<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width: 400px;">
+					<div class="w3-center w3-container w3-border-top w3-padding-16 w3-light-grey">
+						<label id="lblMsg" style="font-weight: bold"> </label> <a id="okbtn" rm="reimbursement/telephoneSearch">OK</a> </div>
+				</div>
+			</div>
+			<div class="w3-container w3-row">
+				<div id="fragmaent_container" th:include="forms/reimbursement/header :: header"></div>
+				<div class="w3-bar w3-theme-l3">
+					<h5 class="w3-bar-item">Approval Details</h5>
+					<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${status eq 'Unread'}">
+					    <div type="button" class="w3-btn w3-blue w3-round-large " id="btnBack" rm="/tasks/myWorklist"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</div>
+						<div type="button" class="w3-btn w3-red w3-round-large" id="btnSubmit" onclick="approvalSubmitCtg('Rejected');"> <i class="fa fa-ban" aria-hidden="true"></i>&nbsp;&nbsp;Reject </div>
+						<div type="button" class="w3-btn w3-green w3-round-large" id="btnSave" onclick="approvalSubmitCtg('Approved');"> <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>&nbsp;&nbsp;Approve </div>
+					</div>
+					<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${status eq 'Read'}" >					
+					    <div type="button" class="w3-btn w3-blue w3-round-large " id="btnBack" rm="/tasks/myWorklist"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Back</div>
+			        </div>
+				</div>
+				
+				<br>
+				<h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">
+					Claim Details</h5>
+				<div class="w3-half w3-container">
+					<p> <strong><label>Basic Pay&nbsp;</label></strong>
+						<label class="w3-text-blue" th:text="${personInfo.getRop()}"></label>
+						<label>&nbsp;INR Per Month</label>
+					</p>
+				</div>
+				<div class="w3-row" style="display: none">
+					<div class="w3-quarter w3-container">
+						<p>
+							<lable>CTG Id</lable>
+							<input id="txtclaimid" type="text" name="claimid" th:value="${CtgReimburse.getClaimid()}" /> </p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<lable>Person Id</lable>
+							<input id="txtpersonid" type="text" name="personid" th:value="${personInfo.getPersonid()}" /> </p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<lable>Person Number</lable>
+							<input id="txtpersonNumber" type="text" name="personnumber" th:value="${personInfo.getPersonnumber()}" /> </p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<lable>Reimbursemnet ID</lable>
+							<input id="txtRembId" type="text" name="reimburseid" value="11" /> </p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<lable>Current Basic Pay</lable>
+							<input id="txtCurrentBasicPay" type="text" name="CurrentBasicPay" th:value="${ctgBasicPay.getCurrentbasicpay()}" /> </p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<lable>Previous Basic Pay</lable>
+							<input id="txtPreviousBasicPay" type="text" name="PreviousBasicPay" th:value="${ctgBasicPay.getPreviousbasicpay()}" /> </p>
+					</div>
+				</div>
+			</div>
+			<!----------------------------------------------- Page Display in View Mode start Here----------------->
+			<!-- <div class="w3-row"
+            th:style="${mode == 'view'}?'display:block':'display:none'"> -->
+			<div th:if="${CtgReimburse.getClaimid()!=0} and ${mode=='view'}">
+				<div class=w3-half>
+					<div class="w3-container">
+						<p>
+							<label> Transfer Date </label>
+							<input style="height: 38px" max="9999-12-31" class="w3-input w3-border" id="CR_CTG_TRNSFR" type="date" data-date="" data-date-format='YYYY MM DD' tabindex="1" name="transferdate_V" th:value="${CtgReimburse.getTransferdate()}" readonly /> </p>
+						<p th:if="${CtgReimburse.getWorklocationid()!=0}">
+							<label>Work Location</label>
+							<select id="CR_CTG_WRK_LCN" class="w3-select w3-border" name="worklocation_V" disabled>
+								<option value="" disabled selected></option>
+								<option th:each="loc : ${location}" th:value="${loc.getLocationid()}" th:text="${loc.getName()}" th:selected="${loc.getLocationid() eq CtgReimburse.getWorklocationid()}"></option>
+							</select>
+						</p>
+						<p>
+							<label>City From</label>
+							<input class="w3-input w3-border" id="CR_CTG_CITY_FRM" type="text" name="cityfrom_V" th:value="${CtgReimburse.getCityfrom()}" readonly> </p>
+						<p th:if="${CtgReimburse.getTransfersamecity()!=null}">
+							<label>Transfer in Same City</label>
+							<select id="CR_CTG_TRNS_CITY" class="w3-select w3-border" name="transfersamecity_V" disabled>
+								<option th:value="${CtgReimburse.getTransfersamecity()}" th:text="${CtgReimburse.getTransfersamecity()}" selected hidden></option>
+								<option th:each="st : ${samecity}" th:value="${st}" th:text="${st}"></option>
+							</select>
+						</p>
+						<!-- <p>
+                     <label>Total Expenditure</label> <input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                        style="height: 38px" class="w3-input w3-border"
+                        id="CR_CTG_ACTUL_AMNT" type="text"
+                        name="totalactualpaidamount_V"
+                        th:value="${CtgReimburse.getTotalactualpaidamount()}" readonly />
+                  </p> -->
+					</div>
+				</div>
+				<div class=w3-half>
+					<div class="w3-container">
+						<p>
+							<label>Journey Date</label>
+							<input style="height: 38px;" readonly max="9999-12-31" class="w3-input w3-border" id="CR_CTG_JOURNEY" type="date" data-date="" data-date-format='YYYY MM DD' name="journeydate_V" th:value="${CtgReimburse.getJourneydate()}" /> </p>
+						<p th:if="${CtgReimburse.getOmprojectid()!=0}">
+							<label>OM/Project</label>
+							<select id="CR_CTG_OM_PRJ" class="w3-select w3-border" name="om_project_V" disabled>
+								<option value="" disabled selected></option>
+								<option th:each="om : ${om_project}" th:value="${om.getId()}" th:text="${om.getDescription()}" th:selected="${om.getId() eq CtgReimburse.getOmprojectid()}"></option>
+							</select>
+						</p>
+						<p>
+							<label>City To</label>
+							<input style="height: 38px" class="w3-input w3-border" id="CR_CTG_CITYTO" type="text" name="cityto_V" th:value="${CtgReimburse.getCityto()}" readonly /> </p>
+						<!-- <p th:if="${CtgReimburse.getTransferorjoiningenclose()!=null}">
+                     <label>Transfer /Joining Order Enclose</label> 
+                     <select
+                        id="CR_CTG_TRNS_JOIN" class="w3-select w3-border"
+                        name="transferorjoiningenclose_V" disabled>
+                        <option th:value="${CtgReimburse.getTransferorjoiningenclose()}"
+                           th:text="${CtgReimburse.getTransferorjoiningenclose()}"
+                           selected hidden></option>
+                        <option th:each="st : ${samecity}" th:value="${st}"
+                           th:text="${st}"></option>
+                     </select>
+                  </p> -->
+						<p>
+							<label>Eligible Claim Amount</label>
+							<input style="height: 38px" class="w3-input w3-border" id="CR_CTG_CLAIM_AMNT" type="text" name="totalclaimamount_V" th:value="${CtgReimburse.getTotalclaimamount()}" readonly /> </p>
+					</div>
+				</div>
+				<!--------------------------------------------------------------------- -->
+				<div class="w3-row">
+					<div class="w3-third w3-container ">
+						<p>
+							<label>Total Expenditure</label>
+							<input style="height: 38px" class="w3-input w3-border" id="CR_CTG_ACTUL_AMNT" type="text" name="totalactualpaidamount" readonly th:value="${CtgReimburse.getTotalactualpaidamount()}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" /> <span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("totalactualpaidamount")!=null}' th:text='${bindingResult.getFieldError("totalactualpaidamount").getDefaultMessage()}'></span> </p>
+					</div>
+					<div class="w3-third w3-container">
+						<p>
+							<label>Transfer /Joining Order/ Allotment Letter Enclose</label>
+							<select id="CR_CTG_TRNS_JOIN" class="w3-select w3-border" name="transferorjoiningenclose" disabled>
+								<option id="1" disabled selected></option>
+								<option th:value="${CtgReimburse.getTransferorjoiningenclose()}" th:text="${CtgReimburse.getTransferorjoiningenclose()}" selected hidden></option>
+								<option th:each="st : ${samecity}" th:value="${st}" th:text="${st}"></option>
+							</select> <span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("transferorjoiningenclose")!=null}' th:text='${bindingResult.getFieldError("transferorjoiningenclose").getDefaultMessage()}'></span> </p>
+					</div>
+					<div class="w3-third w3-container">
+						<p th:if="${CtgReimburse.getClaimid()!=0}"> <a th:if="${CtgReimburse.getAttachment4()!='' and CtgReimburse.getAttachment4()!=null}" id="DOWNLOAD_LINK4" th:href="${CtgReimburse.getAttachment4()}" target="_blank" th:style="${ CtgReimburse.getTransportationpersonalconvey() eq 'No' ? 'pointer-events: none; cursor: default;' : ''}" download>Transfer /Joining Order/ Allotment Letter
+								Attachment</a>
+							<input type="hidden" name="attachhidden4" th:value="${CtgReimburse.getAttachment4()}" />
+							<input type="hidden" name="attachment4" th:value="${CtgReimburse.getAttachment4()}" /> </p>
+					</div>
+				</div>
+				
+				
+				
+				
+	<!--------------------------------------------------------------------------------------------------->			
+		<!-- 		<div class="w3-row">
+					<div class="w3-quarter w3-container ">
+						<p th:if="${CtgReimburse.getCtgclaimstatus()!=null}">
+							<label>CTG Claim</label>
+							<select id="CR_CTG_CLAIM" class="w3-select w3-border" name="ctgclaimstatus_V" disabled>
+								<option th:value="${CtgReimburse.getCtgclaimstatus()}" th:text="${CtgReimburse.getCtgclaimstatus()}" selected hidden></option>
+								<option th:each="st : ${ctgclaim}" th:value="${st}" th:text="${st}"></option>
+							</select>
+						</p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<label>CTG Claim Amount</label>
+							<input style="height: 38px" class="w3-input w3-border" id="ctgclaimamount" type="text" th:value="${CtgReimburse.getCtgclaimamount()}" readonly name="ctgclaimamount" value="0" /> <span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}' th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span> </p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<label>CTG Approved Amount</label> <input style="height: 38px"
+								class="w3-input w3-border" id="ctgapproveamount" type="text"
+								th:value="${CtgReimburse.getCtgapproveamount()}" 
+								onblur="totalExpenceApproved(this.id);"
+								name="ctgapproveamount" value="0" /> <span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}'
+								th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p th:if="${CtgReimburse.getClaimid()!=0}"> <a th:if="${CtgReimburse.getAttachment1()!='' and CtgReimburse.getAttachment1()!=null}" id="DOWNLOAD_LINK1" th:href="${CtgReimburse.getAttachment1()}" target="_blank" th:style="${ CtgReimburse.getCtgclaimstatus() eq 'No' ? 'pointer-events: none; cursor: default;' : ''}" download>CTG Download Attachment</a>
+							<input type="hidden" name="attachhidden1" th:value="${CtgReimburse.getAttachment1()}" /> </p>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-third w3-container ">
+					<div class="w3-quarter w3-container ">
+						<p th:if="${CtgReimburse.getClaimid()!=0}">
+							<label>Transportation of Personal Effect Chain</label>
+							<select id="CR_CTG_TRNS_CHAIN" class="w3-select w3-border" name="tranportationofpersonaleffectchain_V" disabled>
+								<option th:value="${CtgReimburse.getTranportationofpersonaleffectchain()}" th:text="${CtgReimburse.getTranportationofpersonaleffectchain()}" selected hidden></option>
+								<option th:each="st : ${effectchain}" th:value="${st}" th:text="${st}"></option>
+							</select>
+						</p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<label>Transportation Claim Amount</label>
+							<input style="height: 38px" readonly class="w3-input w3-border" id="personaleffectclaimamount" type="text" name="personaleffectclaimamount" th:value="${CtgReimburse.getPersonaleffectclaimamount()}" /> <span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}' th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span> </p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<label>Transportation Approved Amount</label> <input
+								style="height: 38px"  class="w3-input w3-border"
+								id="personaleffectapproveamounts" type="text"
+								onblur="totalExpenceApproved(this.id);"
+								name="personaleffectapproveamount"
+								th:value="${CtgReimburse.getPersonaleffectapproveamount()}" /> <span
+								style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}'
+								th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p th:if="${CtgReimburse.getClaimid()!=0}"> <a th:if="${CtgReimburse.getAttachment2()!='' and CtgReimburse.getAttachment2()!=null}" id="DOWNLOAD_LINK2" th:href="${CtgReimburse.getAttachment2()}" target="_blank" th:style="${ CtgReimburse.getTranportationofpersonaleffectchain() eq 'No' ? 'pointer-events: none; cursor: default;' : ''}" download>Personal Effect Chain Download Attachment</a>
+							<input type="hidden" name="attachhidden2" th:value="${CtgReimburse.getAttachment2()}" /> </p>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-third w3-container ">
+					<div class="w3-quarter w3-container ">
+						<p th:if="${CtgReimburse.getClaimid()!=0}">
+							<label>Transportation of Personal Conveyance - vehicle claim</label>
+							<select id="CR_CTG_TRANS_CONVYNCE" class="w3-select w3-border" name="transportationpersonalconvey_V" disabled>
+								<option th:value="${CtgReimburse.getTransportationpersonalconvey()}" th:text="${CtgReimburse.getTransportationpersonalconvey()}" selected hidden></option>
+								<option th:each="st : ${personalconv}" th:value="${st}" th:text="${st}"></option>
+							</select>
+						</p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<label>Personal Conveyance Claim Amount</label>
+							<input style="height: 38px" readonly class="w3-input w3-border" id="vehicleclaimamount" type="text" name="vehicleclaimamount" th:value="${CtgReimburse.getVehicleclaimamount()}" /> <span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}' th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span> </p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<label>Personal Conveyance Approved Amount</label> <input
+								style="height: 38px"  class="w3-input w3-border"
+								onblur="totalExpenceApproved(this.id);"
+								id="vehicleapproveamount" type="text" name="vehicleapproveamount"
+								th:value="${CtgReimburse.getVehicleapproveamount()}" /> <span
+								style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}'
+								th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span>
+						</p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p th:if="${CtgReimburse.getClaimid()!=0}"> <a th:if="${CtgReimburse.getAttachment3()!='' and CtgReimburse.getAttachment3()!=null}" id="DOWNLOAD_LINK3" th:href="${CtgReimburse.getAttachment3()}" target="_blank" th:style="${ CtgReimburse.getTransportationpersonalconvey() eq 'No' ? 'pointer-events: none; cursor: default;' : ''}" download>Personal Conveyance Download Attachment</a>
+							<input type="hidden" name="attachhidden3" th:value="${CtgReimburse.getAttachment3()}" /> </p>
+					</div>
+				</div>
+				<div class="w3-row">
+					<div class="w3-quarter w3-container ">
+						<p th:if="${CtgReimburse.getClaimid()!=0}">
+							<label>Fare</label>
+							<select id="CR_CTG_FAIR" class="w3-select w3-border" name="fair" disabled>
+								<option id="1" disabled selected></option>
+								<option th:value="${CtgReimburse.getFair()}" th:text="${CtgReimburse.getFair()}" selected hidden></option>
+								<option th:each="st : ${fair}" th:value="${st}" th:text="${st}" th:selected="${st.getDescription() eq CtgReimburse.getFair()}"></option>
+							</select>
+						</p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<label>Fare Claim Amount</label>
+							<input style="height: 38px" readonly class="w3-input w3-border" id="fairclaimamount" type="text" required name="fairclaimamount" th:value="${CtgReimburse.getFairclaimamount()}" /> </p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p>
+							<label>Fare Approved Amount</label> <input style="height: 38px"
+								 class="w3-input w3-border" id="fairapproveamount"
+								 onblur="totalExpenceApproved(this.id);"
+								type="text" required name="fairapproveamount"
+								th:value="${CtgReimburse.getFairapproveamount()}" />
+						</p>
+					</div>
+					<div class="w3-quarter w3-container">
+						<p th:if="${CtgReimburse.getClaimid()!=0}"> <a th:if="${CtgReimburse.getAttachment5()!='' and CtgReimburse.getAttachment5()!=null}" id="DOWNLOAD_LINK5" th:href="${CtgReimburse.getAttachment5()}" target="_blank" th:style="${ CtgReimburse.getTransportationpersonalconvey() eq 'No' ? 'pointer-events: none; cursor: default;' : ''}" download>Fare Download Attachment</a>
+							<input type="hidden" name="attachhidden5" th:value="${CtgReimburse.getAttachment5()}" /> </p>
+					</div>
+				</div>
+				 -->
+				
+				
+				<div class="w3-row">
+	<div class="w3-twothird w3-container">
+		<div class="w3-row">
+			<!-- OM/PROJECT STARTS -->
+			<div class="w3-third w3-container w3-padding">
+				<p th:if="${CtgReimburse.getCtgclaimstatus()!=null}">
+					<label>CTG Claim</label>
+					<select id="CR_CTG_CLAIM" class="w3-select w3-border" name="ctgclaimstatus_V" disabled>
+						<option th:value="${CtgReimburse.getCtgclaimstatus()}" th:text="${CtgReimburse.getCtgclaimstatus()}" selected hidden></option>
+						<option th:each="st : ${ctgclaim}" th:value="${st}" th:text="${st}"></option>
+					</select>
+				</p>
+				
+			</div>
+
+			<div class="w3-third w3-container w3-padding">
+				<p>
+				<label>CTG Claim Amount</label>
+				<input style="height: 38px" class="w3-input w3-border" id="ctgclaimamount" type="text" th:value="${CtgReimburse.getCtgclaimamount()}" readonly name="ctgclaimamount" value="0" /> <span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}' th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span> </p>
+				
+			</div>
+			
+			<div class="w3-third w3-container w3-padding">
+				<p th:if="${CtgReimburse.getClaimid()!=0}"> <a th:if="${CtgReimburse.getAttachment1()!='' and CtgReimburse.getAttachment1()!=null}" id="DOWNLOAD_LINK1" th:href="${CtgReimburse.getAttachment1()}" target="_blank" th:style="${ CtgReimburse.getCtgclaimstatus() eq 'No' ? 'pointer-events: none; cursor: default;' : ''}" download>CTG Download Attachment</a>
+							<input type="hidden" name="attachhidden1" th:value="${CtgReimburse.getAttachment1()}" /> </p>
+				
+			</div>
+
+		</div>
+		
+		
+		
+		
+		<div class="w3-row">
+			<!-- OM/PROJECT STARTS -->
+			<div class="w3-third w3-container w3-padding">
+				<p th:if="${CtgReimburse.getClaimid()!=0}">
+							<label>Transportation of Personal Effect Chain</label>
+							<select id="CR_CTG_TRNS_CHAIN" class="w3-select w3-border" name="tranportationofpersonaleffectchain_V" disabled>
+								<option th:value="${CtgReimburse.getTranportationofpersonaleffectchain()}" th:text="${CtgReimburse.getTranportationofpersonaleffectchain()}" selected hidden></option>
+								<option th:each="st : ${effectchain}" th:value="${st}" th:text="${st}"></option>
+							</select>
+						</p>
+				
+			</div>
+
+			<div class="w3-third w3-container w3-padding">
+			<p>
+							<label>Transportation Claim Amount</label>
+							<input style="height: 38px" readonly class="w3-input w3-border" id="personaleffectclaimamount" type="text" name="personaleffectclaimamount" th:value="${CtgReimburse.getPersonaleffectclaimamount()}" /> <span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}' th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span> </p>				
+			</div>
+			
+			<div class="w3-third w3-container w3-padding">
+				<p th:if="${CtgReimburse.getClaimid()!=0}"> <a th:if="${CtgReimburse.getAttachment2()!='' and CtgReimburse.getAttachment2()!=null}" id="DOWNLOAD_LINK2" th:href="${CtgReimburse.getAttachment2()}" target="_blank" th:style="${ CtgReimburse.getTranportationofpersonaleffectchain() eq 'No' ? 'pointer-events: none; cursor: default;' : ''}" download>Personal Effect Chain Download Attachment</a>
+							<input type="hidden" name="attachhidden2" th:value="${CtgReimburse.getAttachment2()}" /> </p>				
+			</div>
+
+		</div>
+		
+		<div class="w3-row">
+			<!-- OM/PROJECT STARTS -->
+			<div class="w3-third w3-container w3-padding">
+				<p th:if="${CtgReimburse.getClaimid()!=0}">
+							<label>Transportation of Personal Conveyance - vehicle claim</label>
+							<select id="CR_CTG_TRANS_CONVYNCE" class="w3-select w3-border" name="transportationpersonalconvey_V" disabled>
+								<option th:value="${CtgReimburse.getTransportationpersonalconvey()}" th:text="${CtgReimburse.getTransportationpersonalconvey()}" selected hidden></option>
+								<option th:each="st : ${personalconv}" th:value="${st}" th:text="${st}"></option>
+							</select>
+						</p>
+				
+			</div>
+
+			<div class="w3-third w3-container w3-padding">
+				<p>
+							<label>Personal Conveyance Claim Amount</label>
+							<input style="height: 38px" readonly class="w3-input w3-border" id="vehicleclaimamount" type="text" name="vehicleclaimamount" th:value="${CtgReimburse.getVehicleclaimamount()}" /> <span style="color: #ff0000" th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}' th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span> </p>	
+			</div>
+			
+			<div class="w3-third w3-container w3-padding">
+				<p th:if="${CtgReimburse.getClaimid()!=0}"> <a th:if="${CtgReimburse.getAttachment3()!='' and CtgReimburse.getAttachment3()!=null}" id="DOWNLOAD_LINK3" th:href="${CtgReimburse.getAttachment3()}" target="_blank" th:style="${ CtgReimburse.getTransportationpersonalconvey() eq 'No' ? 'pointer-events: none; cursor: default;' : ''}" download>Personal Conveyance Download Attachment</a>
+							<input type="hidden" name="attachhidden3" th:value="${CtgReimburse.getAttachment3()}" /> </p>
+			</div>
+
+		</div>
+		
+		
+		
+		<div class="w3-row">
+			<!-- OM/PROJECT STARTS -->
+			<div class="w3-third w3-container w3-padding">
+				<p th:if="${CtgReimburse.getClaimid()!=0}">
+							<label>Fare</label>
+							<select id="CR_CTG_FAIR" class="w3-select w3-border" name="fair" disabled>
+								<option id="1" disabled selected></option>
+								<option th:value="${CtgReimburse.getFair()}" th:text="${CtgReimburse.getFair()}" selected hidden></option>
+								<option th:each="st : ${fair}" th:value="${st}" th:text="${st}" th:selected="${st.getDescription() eq CtgReimburse.getFair()}"></option>
+							</select>
+						</p>
+				
+			</div>
+
+			<div class="w3-third w3-container w3-padding">
+				<p>
+							<label>Fare Claim Amount</label>
+							<input style="height: 38px" readonly class="w3-input w3-border" id="fairclaimamount" type="text" required name="fairclaimamount" th:value="${CtgReimburse.getFairclaimamount()}" /> </p>
+			</div>
+			
+			<div class="w3-third w3-container w3-padding">
+				<p th:if="${CtgReimburse.getClaimid()!=0}"> <a th:if="${CtgReimburse.getAttachment5()!='' and CtgReimburse.getAttachment5()!=null}" id="DOWNLOAD_LINK5" th:href="${CtgReimburse.getAttachment5()}" target="_blank" th:style="${ CtgReimburse.getTransportationpersonalconvey() eq 'No' ? 'pointer-events: none; cursor: default;' : ''}" download>Fare Download Attachment</a>
+							<input type="hidden" name="attachhidden5" th:value="${CtgReimburse.getAttachment5()}" /> </p>
+			</div>
+
+		</div>
+	
+	</div>
+	
+					
+	
+	
+	
+	<div class="w3-third w3-container w3-border w3-border-black">
+	<h4 style="text-align:center"> Approver Action</h4>
+		<div class="w3-row">
+			<p>
+				<label style="color: black;">CTG Approved Amount</label>
+				<input style="height: 38px"
+								class="w3-input w3-border" id="ctgapproveamount" type="text"
+								th:value="${CtgReimburse.getCtgapproveamount()}" 
+								onblur="totalExpenceApproved(this.id);"
+								name="ctgapproveamount" value="0" /> <span style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}'
+								th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span>
+				 </p>
+			<p>
+				<label style="color: black;">Transportation Approved Amount</label>
+				 <input
+								style="height: 38px"  class="w3-input w3-border"
+								id="personaleffectapproveamounts" type="text"
+								onblur="totalExpenceApproved(this.id);"
+								name="personaleffectapproveamount"
+								th:value="${CtgReimburse.getPersonaleffectapproveamount()}" /> <span
+								style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}'
+								th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span>
+		    </p>
+			<p>
+				<label style="color: black;">Personal Conveyance Approved Amount</label>
+				<input
+								style="height: 38px"  class="w3-input w3-border"
+								onblur="totalExpenceApproved(this.id);"
+								id="vehicleapproveamount" type="text" name="vehicleapproveamount"
+								th:value="${CtgReimburse.getVehicleapproveamount()}" /> <span
+								style="color: #ff0000"
+								th:if='${bindingResult != null && bindingResult.getFieldError("cityto")!=null}'
+								th:text='${bindingResult.getFieldError("cityto").getDefaultMessage()}'></span> </p>
+			<p>
+				<label style="color: black;">Fare Approved Amount</label>
+				<input style="height: 38px"
+								 class="w3-input w3-border" id="fairapproveamount"
+								 onblur="totalExpenceApproved(this.id);"
+								type="text" required name="fairapproveamount"
+								th:value="${CtgReimburse.getFairapproveamount()}" /> </p>
+			
+		</div>
+	</div>
+</div>
+				
+	<!--------------------------------------------------------------------------------------------------->			
+				
+				<h6 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px;">
+					To-Do Task</h6>
+				<div class="w3-row">
+					<div class="w3-third w3-container">
+						<p> <strong><label>Approved Amount: &nbsp;&nbsp;</label><span
+								style="color: red">*</span></strong>
+							<input id="txtAmount" th:value="${APPRAMT}" readonly oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" name="approvedamt" class="w3-input w3-border w3-round" /> </p>
+						<label id="amterror"></label>
+					</div>
+					<div class="w3-third w3-container">
+						<p> <strong><label>Comments: &nbsp;&nbsp;</label><span
+								style="color: red">*</span></strong>
+							<textarea id="txtComment" name="msg" class="w3-input w3-border w3-round"></textarea>
+						</p>
+						<label id="msgerror"></label>
+					</div>
+				</div>
+				<!----------------------------------------------- Page Display in View Mode End Here----------------->
+				<h5>
+					Approval History&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-history"
+						th:id="${CtgReimburse.getClaimid()}" aria-hidden="true"
+						th:onclick='getapprovalhistory(11,this.id);'></i>
+				</h5>
+				<section class="container">
+					<div class="container__sources">
+						<div style="box-shadow: none; background-color: none;" th:each="aprdata ,stats: ${(approverdata)}">
+							<div class="sources--cms" style="width: 160px">
+								<p> Approval
+									<label th:text='${aprdata.getApprovallevel()}'></label>
+								</p>
+								<p>
+									<label th:text='${aprdata.getApproverpersonname()}'></label>
+								</p>
+								<p>
+									<label th:text='${aprdata.getApprovalstatus()}'></label>
+								</p>
+								<div th:if='${aprdata.getApprovalstatus() == "Approved"}' style="margin: 0; padding: 0; float: right; box-shadow: none; position: absolute; margin-top: -30px; margin-left: 124px"> <i class="fa fa-check tick"></i> </div>
+								<div th:if='${aprdata.getApprovalstatus()== "Submitted" or aprdata.getApprovalstatus()== "Pending"}' style="margin: 0; padding: 0; float: right; box-shadow: none; position: absolute; margin-top: -30px; margin-left: 124px"> <i class="fa fa-clock-o pending"></i> </div>
+								<div th:if='${aprdata.getApprovalstatus() == "Rejected"}' style="margin: 0; padding: 0; float: right; box-shadow: none; position: absolute; margin-top: -30px; margin-left: 124px"> <i class="fa fa-close cancel"></i> </div>
+							</div>
+							<svg class="svghor" viewBox="0 10 100 100">
+								<line x1="5" x2="100" y1="80" y2="80"></line>
+							</svg>
+							<svg class="svgver" viewBox="0 20 100 100 ">
+								<line x1="40" x2="40" y1="0" y2="100"></line>
+							</svg>
+						</div>
+						<div style="background: none; margin-top: 40px; margin-left: 26px;"> <i class="far fa-stop-circle" style="font-size: 58px; color: red"></i> </div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<div th:include="forms/reimbursement/approvalhistory :: fragapprovalhistory"></div>
+		<script type="text/javascript" src="/js/reimbursement/approvalhistory.js"></script>
+		<script src="/js/reimbursement/ctgReimbursement/ctgCreate.js"></script>
+	</form>
+</div>

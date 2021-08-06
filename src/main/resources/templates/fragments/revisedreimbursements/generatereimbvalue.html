@@ -1,0 +1,31 @@
+<div th:fragment="generatereimbvalue">
+    <div class="w3-main" style="margin-left: 300px;">
+        <div style="position: relative;">
+            <div class="w3-container">
+                <h4 style="font-weight: 400;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;"><i class="fab fa-superpowers" style="color: #ff0048;"></i>&nbsp;Generate Reimbursement Value
+                </h4>
+            </div>
+        </div>
+
+        <hr class="w3-margin hrline">
+
+        <div class="w3-row">
+            <div class="w3-bar w3-container">
+                <!--border-bottom: solid #23de01;
+                border-bottom-width: medium;-->
+                <div id="BTN_01" class="w3-bar-item w3-left" onclick="setborder(this.id,'BTN_02');" style="width: 49.5%; background: lightgray; height: 50px; cursor: pointer;">
+                    <p class="w3-center"><b>Generate</b></p>
+                </div>
+                <div id="BTN_02" class="w3-bar-item w3-right" onclick="setborder(this.id,'BTN_01');" style="width: 49.5%; background: lightgray; height: 50px; cursor: pointer;">
+                    <p class="w3-center"><b>View History</b></p>
+                </div>
+            </div>
+
+            <div id="generatediv"></div>
+
+        </div>
+
+    </div>
+    <script src="/js/revisedreimbursements/generatereimbvalue.js"></script>
+</div>

@@ -1,0 +1,302 @@
+<div th:fragment="RoleAssignmentCreate">
+    <style type="text/css">
+        .thstyle {
+            width: 50%;
+        }
+    </style>
+    <div class="w3-main" style="margin-left: 300px; margin-top: -14px; margin-bottom: 16px;">
+        <div style="position: relative;">
+            <div class="w3-container w3-margin-bottom">
+                <h4 style="font-weight: 400; display: inline-block;">
+                    <img onclick="w3_open()" class="w3-hide-large" src="/images/hide-grader-panel.png" style="cursor: pointer;" /> <i class="fas fa-user-ninja" style="color: olive;"></i>&nbsp;&nbsp;&nbsp;Role Assignment
+                </h4>
+                <!--<input style="display:inline-block; th:if="" margin-top:10px;" value="Save" type="button" id="savebtn" onClick="saveEmailConfig();" class="w3-btn w3-theme w3-right w3-round-large"/>-->
+            </div>
+        </div>
+        <hr class="hrline" />
+		
+		<input type="hidden" id="status" th:value="${roleassignresult}" />
+
+        <div class="w3-bar w3-theme-l3">
+            <h5 class="w3-bar-item">Create Role Mapping</h5>
+
+            <div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${userautorolemapping.getAutomappid()==0}">
+                <div type="button" class="w3-btn w3-red w3-round-large" id="cancelbtn" onclick="backBtnFunc();"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large" id="addsave" onclick="saveMapping('save')"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Save Role Mapping</div>
+            </div>
+            <div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'edit'}">
+                <div type="button" class="w3-btn w3-red w3-round-large" id="cancelbtn" onclick="backBtnFunc();"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+				<div type="button" class="w3-btn w3-blue w3-round-large" id="addsave" onclick="saveMapping('update')"><i class="fa fa-save" aria-hidden="true"></i>&nbsp;&nbsp;Update Role Mapping</div>
+            </div>
+			<div class="w3-bar-item w3-right" style="margin-top: 1px;" th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'view'}">
+                <div type="button" class="w3-btn w3-red w3-round-large" id="cancelbtn" onclick="backBtnFunc();"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Return to Search</div>
+            </div>
+        </div>
+        <div class="w3-card w3-margin w3-padding-large">
+            <form method="post" id="ROLE_MAPPING" enctype="application/x-www-form-urlencoded" onsubmit="return false;">
+				<div class="w3-row">
+					<div class="w3-full w3-container" th:if="${display_mode == 'edit'}" style="display: block;">
+						<p>
+							<label>Automappid</label>
+							<input type="hidden" name="automappid" th:value = "${userautorolemapping.getAutomappid()}"/>
+						</p>						
+					</div>
+				</div>
+                <div class="w3-row">
+                    <div class="w3-half w3-container">
+                        <p th:if="${userautorolemapping.getAutomappid()==0}">
+                            <label class="w3-text-black">Mapping Name</label> <span style="color: red;">*</span>
+                            <input type="text" id="mappingname" name="mappingname" 
+								th:value="${userautorolemapping.getMappingname()}" 
+								class="w3-input w3-border w3-round" />
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("mappingname")!=null}' th:text="${bindingResult.getFieldError('mappingname').getDefaultMessage()}"></span>
+                        </p>
+
+						<p th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'edit'}">
+                            <label class="w3-text-black">Mapping Name</label> <span style="color: red;">*</span>
+                            <input type="text" id="mappingname" name="mappingname" 
+								th:value="${userautorolemapping.getMappingname()}" 
+								class="w3-input w3-border w3-round" />
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("mappingname")!=null}' th:text="${bindingResult.getFieldError('mappingname').getDefaultMessage()}"></span>
+                        </p>
+
+						<p th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'view'}">
+                            <label class="w3-text-black">Mapping Name</label> <span style="color: red;">*</span>
+                            <input type="text" id="mappingname" name="mappingname" 
+								th:value="${userautorolemapping.getMappingname()}" readonly
+								class="w3-input w3-border w3-round" />
+                        </p>
+
+                    </div>
+                    <div class="w3-half w3-container">
+                        <p th:if="${userautorolemapping.getAutomappid()==0}">
+                            <label class="w3-text-black">Status</label> <span style="color: red;">*</span>
+                            <select name="status" id="status" class="w3-select w3-round w3-border">
+                                <option disabled selected></option>
+                                <option th:each="st:${status}" th:text="${st.getDescription()}" 
+									th:value="${st.getDescription()}" th:selected="${userautorolemapping.getStatus() == st.getDescription()}"></option>></option>
+                            </select>
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("status")!=null}' th:text="${bindingResult.getFieldError('status').getDefaultMessage()}"></span>
+                        </p>
+					
+						<p th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'edit'}">
+                            <label class="w3-text-black">Status</label> <span style="color: red;">*</span>
+                            <select name="status" id="status" class="w3-select w3-round w3-border">
+                                <option disabled selected></option>
+                                <option th:each="st:${status}" th:text="${st.getDescription()}" 
+									th:value="${st.getDescription()}" th:selected="${userautorolemapping.getStatus() == st.getDescription()}"></option>
+                            </select>
+                            <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("status")!=null}' th:text="${bindingResult.getFieldError('status').getDefaultMessage()}"></span>
+                        </p>
+
+						<p th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'view'}">
+                            <label class="w3-text-black">Status</label> <span style="color: red;">*</span>
+                            <select name="status" id="status" class="w3-select w3-round w3-border" disabled>
+                                <option disabled selected></option>
+                                <option th:each="st:${status}" th:text="${st.getDescription()}" 
+									th:value="${st.getDescription()}" th:selected="${userautorolemapping.getStatus() == st.getDescription()}"></option>
+                            </select>
+                        </p>
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <div class="w3-full w3-container">
+                        <div class="w3-padding-large">
+                            <h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display: inline;">Associated Criteria</h5>                            
+                        </div>
+						<hr class="hrline"/>
+						<input onclick="addrowmanager('criteria_table');" class="w3-right w3-btn w3-theme w3-round-large" th:if="${display_mode != 'view'}" type="button" id="addmgr" value="Add" />
+                        <br/><br/>
+						<table id="criteria_table" border="0" class="w3-table w3-border">
+                            <tr>
+                                <th class="thstyle">Criteria</th>
+                                <th class="thstyle">Values</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            <tr class="mycrivalrow" th:if="${userautorolemapping.getAutomappid()==0}" th:each="criteria,stats : ${userautorolemapping.getAutomappcriteria()}">
+                                <td class="thstyle">
+                                    <select id="criteria0" class="condtype w3-select w3-round w3-border" onchange="bindCriteriaValues(this.id,0);">
+                                        <option disabled selected></option>
+                                        <option th:each="ct:${condtype}" th:text="${ct.getTitle()}" th:ctcol="${ct.getTitlecolumnname()}"
+											th:selected="${criteria.getCriterianame() == ct.getTitle()}"></option>
+                                        <!--<option value="Position">Position</option>-->
+                                    </select>
+									<input type="hidden" th:name ="'automappcriteria['+${stats.index}+'].criterianame'" id = "condtypename0" th:value="${criteria.getCriterianame()}"/>
+									<input type="hidden" th:name="'automappcriteria['+${stats.index}+'].criteriaid'" id="condtype0" th:value="${criteria.getCriteriaid()}"/>
+									<input type="hidden" th:name="'automappcriteria['+${stats.index}+'].criteriacolumnname'" id="condcol0" th:value="${criteria.getCriteriacolumnname()}"/>
+                                    <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("criterianame")!=null}' th:text="${bindingResult.getFieldError('criterianame').getDefaultMessage()}"></span>
+                                </td>
+                                <td class="thstyle">
+                                    <select th:name="'automappcriteria['+${stats.index}+'].criteriavalueid'" id="values0" class="values w3-select w3-round w3-border" 
+											onchange="getCriValName(this.id,0)" th:onload="|bindCriteriaValues('criteria${stats.index}',${stats.index})|">
+											
+											</select>
+                                    <input type="hidden" th:name ="'automappcriteria['+${stats.index}+'].criteriavaluename'" id = "condtypevalue0"/>
+									<span
+                                        style="color: #ff0000;"
+                                        th:if='${bindingResult != null && bindingResult.getFieldError("criteriavaluename")!=null}'
+                                        th:text="${bindingResult.getFieldError('criteriavaluename').getDefaultMessage()}"
+                                    ></span>
+                                </td>
+								<td>&nbsp;</td>
+                            </tr>
+
+							<tr class="mycrivalrow" th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'edit'}" th:each="criteria,stats : ${userautorolemapping.getAutomappcriteria()}">
+                                <td class="thstyle">
+                                    <select th:id="'criteria'+${stats.index}" class="condtype w3-select w3-round w3-border" th:onchange="|bindCriteriaValues(this.id,${stats.index})|">
+                                        <option disabled selected></option>
+                                        <option th:each="ct:${condtype}" th:text="${ct.getTitle()}" 
+											th:selected="${criteria.getCriterianame() == ct.getTitle()}"></option>
+                                        <!--<option value="Position">Position</option>-->
+                                    </select>
+									<input type="hidden" th:name ="'automappcriteria['+${stats.index}+'].criterianame'" th:id = "'condtypename'+${stats.index}" th:value="${criteria.getCriterianame()}"/>
+									<input type="hidden" th:name="'automappcriteria['+${stats.index}+'].criteriaid'" th:id="'condtype'+${stats.index}" th:value="${criteria.getCriteriaid()}"/>
+									<input type="hidden" th:name="'automappcriteria['+${stats.index}+'].criteriacolumnname'" id="condcol0" th:value="${criteria.getCriteriacolumnname()}"/>
+                                    <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("criterianame")!=null}' th:text="${bindingResult.getFieldError('criterianame').getDefaultMessage()}"></span>
+                                </td>
+                                <td class="thstyle">
+                                    <select th:name="'automappcriteria['+${stats.index}+'].criteriavalueid'" th:id="'values'+${stats.index}" class="values w3-select w3-round w3-border" onchange="getCriValName(this.id,0)" th:onload="|bindCriteriaValues('criteria${stats.index}',${stats.index})|">
+										<option th:text="${criteria.getCriteriavaluename()}" th:value="${criteria.getCriteriavalueid()}"></option>
+									</select>
+                                    <input type="hidden" readonly th:name ="'automappcriteria['+${stats.index}+'].criteriavaluename'" th:id = "'condtypevalue'+${stats.index}" th:value="${criteria.getCriteriavaluename()}"/>
+									<span
+                                        style="color: #ff0000;"
+                                        th:if='${bindingResult != null && bindingResult.getFieldError("criteriavaluename")!=null}'
+                                        th:text="${bindingResult.getFieldError('criteriavaluename').getDefaultMessage()}"
+                                    ></span>
+                                </td>
+								<td style="width:20%" th:if="${stats.index!=0}">
+									<input class="w3-btn w3-theme" id="deletecrit" th:dex="${stats.index}" type="button" value="x" onclick="deleterow(this,'criteria_table');"/>
+								</td>
+
+                            </tr>
+
+							<tr class="mycrivalrow" th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'view'}" th:each="criteria,stats : ${userautorolemapping.getAutomappcriteria()}">
+                                <td class="thstyle">
+                                    <select th:id="'criteria'+${stats.index}" class="condtype w3-select w3-round w3-border" disabled>
+                                        <option disabled selected></option>
+                                        <option th:each="ct:${condtype}" th:text="${ct.getTitle()}" 
+											th:selected="${criteria.getCriterianame() == ct.getTitle()}"></option>
+                                        <!--<option value="Position">Position</option>-->
+                                    </select>
+									<input type="hidden" th:name ="'automappcriteria['+${stats.index}+'].criterianame'" th:id = "'condtypename'+${stats.index}" th:value="${criteria.getCriterianame()}"/>
+									<input type="hidden" th:name="'automappcriteria['+${stats.index}+'].criteriaid'" th:id="'condtype'+${stats.index}" th:value="${criteria.getCriteriaid()}"/>
+									<input type="hidden" th:name="'automappcriteria['+${stats.index}+'].criteriacolumnname'" id="condcol0" th:value="${criteria.getCriteriacolumnname()}"/>
+                                </td>
+                                <td class="thstyle">
+                                    <select th:name="'automappcriteria['+${stats.index}+'].criteriavalueid'" id="values0" class="values w3-select w3-round w3-border" disabled>
+										<option th:text="${criteria.getCriteriavaluename()}" th:value="${criteria.getCriteriavalueid()}"></option>
+									</select>
+                                    <input type="hidden" readonly th:name ="'automappcriteria['+${stats.index}+'].criteriavaluename'" id = "condtypevalue0" th:value="${criteria.getCriteriavaluename()}"/>
+                                </td>
+                            </tr>
+							
+
+                        </table>
+                    </div>
+					
+					<div class="w3-row">
+                        <div class="w3-full w3-container">&nbsp;</div>
+					</div>
+					
+                    <div class="w3-row">
+                        <div class="w3-full w3-container">
+                            <div class="w3-padding-large">
+                                <h5 class="w3-text-theme" style="font-weight: bold; margin-top: 2px; bottom: 2px; display: inline;">Associated Roles</h5>
+                            </div>
+							<hr class="hrline"/>
+							<input onclick="addrowmanager('role_table');" class="w3-right w3-btn w3-theme w3-round-large" th:if="${display_mode != 'view'}" type="button" id="addmgr" value="Add" />
+							<br/><br/>
+                            <table id="role_table" style="width: 33%;" border="0" class="w3-table w3-border">
+                                <tr>
+                                    <th>Role Name</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                                <tr class="myrolerow" th:if="${userautorolemapping.getAutomappid()==0}" th:each="roles,stats : ${userautorolemapping.getAutomappingrole()}">
+                                    <td>
+                                        <select th:name="'automappingrole['+${stats.index}+'].rolesid'" id="usrrolesid0" class="usrroles w3-select w3-round w3-border" onchange="getRoleName(this.id,0);">
+                                            <option disabled selected></option>
+                                            <option th:each="usrrole:${usrroles}" th:text="${usrrole.getRolename()}" 
+												th:value="${usrrole.getRoleId()}"
+												th:selected="${roles.getRolesid() eq usrrole.getRoleId()}"></option>
+                                        </select>
+										<input type="hidden" th:name ="'automappingrole['+${stats.index}+'].rolename'" id = "usrrolesname0" th:value="${roles.getRolename()}"/>
+										<input type="hidden" th:name="'automappingrole['+${stats.index}+'].automapproleid'" th:value = "${roles.getAutomapproleid()}"/>
+                                        <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("rolename")!=null}' th:text="${bindingResult.getFieldError('rolename').getDefaultMessage()}"></span>
+                                    </td>
+									<td>&nbsp;</td>
+                                </tr>
+								<tr class="myrolerow" th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'edit'}" th:each="roles,stats : ${userautorolemapping.getAutomappingrole()}">
+                                    <td>
+                                        <select th:name="'automappingrole['+${stats.index}+'].rolesid'" th:id="'usrrolesid'+${stats.index}" class="usrroles w3-select w3-round w3-border" onchange="getRoleName(this.id,0);">
+                                            <option disabled selected></option>
+                                            <option th:each="usrrole:${usrroles}" th:text="${usrrole.getRolename()}" 
+												th:value="${usrrole.getRoleId()}"
+												th:selected="${roles.getRolesid() eq usrrole.getRoleId()}"></option>
+                                        </select>
+										<input type="hidden" th:name ="'automappingrole['+${stats.index}+'].rolename'" th:id = "'usrrolesname'+${stats.index}" th:value="${roles.getRolename()}"/>
+										<input type="hidden" th:name="'automappingrole['+${stats.index}+'].automapproleid'" th:value = "${roles.getAutomapproleid()}"/>
+                                        <span style="color: #ff0000;" th:if='${bindingResult != null && bindingResult.getFieldError("rolename")!=null}' th:text="${bindingResult.getFieldError('rolename').getDefaultMessage()}"></span>
+                                    </td>
+									<td style="width:20%" th:if="${stats.index!=0}">
+										<input class="w3-btn w3-theme" id="deleterol" type="button" value="x" th:dex="${stats.index}" onclick="deleterow(this,'role_table');"/>
+									</td>
+                                </tr>
+								<tr class="myrolerow" th:if="${userautorolemapping.getAutomappid()!=0} and ${display_mode == 'view'}" th:each="roles,stats : ${userautorolemapping.getAutomappingrole()}">
+                                    <td>
+                                        <select th:name="'automappingrole['+${stats.index}+'].rolesid'" id="usrrolesid0" disabled class="usrroles w3-select w3-round w3-border">
+                                            <option disabled selected></option>
+                                            <option th:each="usrrole:${usrroles}" th:text="${usrrole.getRolename()}" 
+												th:value="${usrrole.getRoleId()}"
+												th:selected="${roles.getRolesid() eq usrrole.getRoleId()}"></option>
+                                        </select>
+										<input type="hidden" th:name ="'automappingrole['+${stats.index}+'].rolename'" id = "usrrolesname0" th:value="${roles.getRolename()}"/>
+										<input type="hidden" th:name="'automappingrole['+${stats.index}+'].automapproleid'" id = "automaproleid0" th:value = "${roles.getAutomapproleid()}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="w3-third w3-container">
+                            &nbsp;
+                        </div>
+                        <div class="w3-third w3-container">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-third w3-container">
+                            <input type="button" class="w3-btn w3-theme w3-round" id="btnAdd" name="btnAdd" value="Add" onclick="addCriteria();" style="display: none;" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+			<div class="w3-row">
+				<div class="w3-full w3-container">&nbsp;</div>
+			</div>
+            <div class="w3-row">
+                <div class="w3-full w3-container">
+                    <table border="0" id="crvaldata" class="compact w3-table-all" style="display: none;">
+                        <tr>
+                            <th>Criteria Type</th>
+                            <th>Associated Values</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+		<script src="/js/roleassignment/roleassign.js"></script>
+		<!--<script type="text/javascript">
+		$(document).ready(function(){
+			
+			var crit = document.getElementsByClassName("condtype");
+			var id = "";
+			for(var i =0; i<crit.length;i++)
+			{
+				id= crit[i].id;
+				$("#"+id +" option[text='All']").remove();
+			} 
+		});
+		</script>-->
+    </div>
+</div>
